@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author />
+      <authoring_tool>Rhinoceros 7.1.20343.9491</authoring_tool>
+      <comments>Output from Rhinoceros COLLADA Exporter</comments>
+      <copyright />
+      <source_data />
+    </contributor>
+    <created>2021-06-15T08:48:35Z</created>
+    <modified>2021-06-15T08:48:35Z</modified>
+    <unit meter="0.001" name="Millimeters" />
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5" name="Material-Paint_Orange_">
+      <instance_effect url="#fx-cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5" />
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="fx-cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0.000000 0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color>0.000000 0.000000 0.000000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color>1.000000 0.749020 0.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color>1.000000 1.000000 1.000000 1.000000</color>
+            </specular>
+            <shininess>
+              <float>1.000000</float>
+            </shininess>
+            <reflective>
+              <color>1.000000 1.000000 1.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float>0.000000</float>
+            </reflectivity>
+            <transparent>
+              <color>1.000000 1.000000 1.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float>1.000000</float>
+            </transparency>
+            <index_of_refraction>
+              <float>0.000000</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+      <extra>
+        <technique profile="Rhino">
+          <appearance_hash>545644826</appearance_hash>
+        </technique>
+      </extra>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="mesh-fb9c9d6c-7999-407b-b2b3-88250b6f957c">
+      <mesh>
+        <source id="lib-position-fb9c9d6c-7999-407b-b2b3-88250b6f957c" name="position">
+          <float_array id="lib-position-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" count="48" digits="17" magnitude="308">10 -10 -20 -10 -10 -20 -8.88178419700125E-16 -1.53654866608122E-13 8.88178419700125E-16 -10 -10 -20 -10 10 -20 -8.88178419700125E-16 -1.53654866608122E-13 8.88178419700125E-16 -10 10 -20 10 10 -20 -8.88178419700125E-16 -1.53654866608122E-13 8.88178419700125E-16 10 10 -20 10 -10 -20 -8.88178419700125E-16 -1.53654866608122E-13 8.88178419700125E-16 10 -10 -20 -10 -10 -20 -10 10 -20 10 10 -20</float_array>
+          <technique_common>
+            <accessor count="16" offset="0" source="#lib-position-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="lib-normal-fb9c9d6c-7999-407b-b2b3-88250b6f957c" name="normal">
+          <float_array id="lib-normal-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" count="48">0.000000 -0.894427 0.447214 0.000000 -0.894427 0.447214 0.000000 -0.894427 0.447214 -0.894427 0.000000 0.447214 -0.894427 0.000000 0.447214 -0.894427 0.000000 0.447214 0.000000 0.894427 0.447214 0.000000 0.894427 0.447214 0.000000 0.894427 0.447214 0.894427 0.000000 0.447214 0.894427 0.000000 0.447214 0.894427 0.000000 0.447214 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000</float_array>
+          <technique_common>
+            <accessor count="16" offset="0" source="#lib-normal-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="lib-map1-fb9c9d6c-7999-407b-b2b3-88250b6f957c" name="map1">
+          <float_array id="lib-map1-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" count="32">0.998535 0.406065 0.998535 0.726780 0.641430 0.566422 0.998535 0.000000 0.998535 0.320715 0.641430 0.160357 0.000000 0.453559 0.319250 0.453559 0.159625 0.810665 0.320715 0.453559 0.639965 0.453559 0.480340 0.810665 0.453559 0.226047 0.226780 0.452095 0.000000 0.226047 0.226780 0.000000</float_array>
+          <technique_common>
+            <accessor count="16" offset="0" source="#lib-map1-array-fb9c9d6c-7999-407b-b2b3-88250b6f957c" stride="2">
+              <param name="S" type="float" />
+              <param name="T" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="lib-vertices-fb9c9d6c-7999-407b-b2b3-88250b6f957c">
+          <input semantic="POSITION" source="#lib-position-fb9c9d6c-7999-407b-b2b3-88250b6f957c" />
+        </vertices>
+        <triangles count="6" material="material-cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5">
+          <input offset="0" semantic="VERTEX" source="#lib-vertices-fb9c9d6c-7999-407b-b2b3-88250b6f957c" />
+          <input offset="1" semantic="NORMAL" source="#lib-normal-fb9c9d6c-7999-407b-b2b3-88250b6f957c" />
+          <input offset="2" semantic="TEXCOORD" source="#lib-map1-fb9c9d6c-7999-407b-b2b3-88250b6f957c" />
+          <p>2 2 2 1 1 1 0 0 0 5 5 5 4 4 4 3 3 3 8 8 8 7 7 7 6 6 6 11 11 11 10 10 10 9 9 9 13 13 13 14 14 14 15 15 15 15 15 15 12 12 12 13 13 13</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode">
+      <node id="ad451bb3-c2ec-4d4a-b0e5-6f6742d51e72" name="Brep">
+        <instance_geometry url="#mesh-fb9c9d6c-7999-407b-b2b3-88250b6f957c">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="material-cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5" target="#cbfe2cc8-a1f9-4f6a-a071-c73fea04d4e5" />
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode" />
+  </scene>
+</COLLADA>
