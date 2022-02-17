@@ -149,12 +149,12 @@ public class UIEventManager : MonoBehaviour
     public void OnObjPosYChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.position = new Vector3(sceneManager.SelectedObj.transform.position.x, float.Parse(value), sceneManager.SelectedObj.transform.position.z);
+            sceneManager.SelectedObj.transform.position = new Vector3(sceneManager.SelectedObj.transform.position.x, sceneManager.SelectedObj.transform.position.y, -float.Parse(value));
     }
     public void OnObjPosZChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.position = new Vector3(sceneManager.SelectedObj.transform.position.x, sceneManager.SelectedObj.transform.position.y, -float.Parse(value));
+            sceneManager.SelectedObj.transform.position = new Vector3(sceneManager.SelectedObj.transform.position.x, float.Parse(value), sceneManager.SelectedObj.transform.position.z);
     }
     public void OnObjRotationXChanged(string value)
     {
@@ -164,12 +164,12 @@ public class UIEventManager : MonoBehaviour
     public void OnObjRotationYChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.eulerAngles = new Vector3(sceneManager.SelectedObj.transform.eulerAngles.x, float.Parse(value), sceneManager.SelectedObj.transform.eulerAngles.z);
+            sceneManager.SelectedObj.transform.eulerAngles = new Vector3(sceneManager.SelectedObj.transform.eulerAngles.x, sceneManager.SelectedObj.transform.eulerAngles.y, float.Parse(value));
     }
     public void OnObjRotationZChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.eulerAngles = new Vector3(sceneManager.SelectedObj.transform.eulerAngles.x, sceneManager.SelectedObj.transform.eulerAngles.y, float.Parse(value));
+            sceneManager.SelectedObj.transform.eulerAngles = new Vector3(sceneManager.SelectedObj.transform.eulerAngles.x, float.Parse(value), sceneManager.SelectedObj.transform.eulerAngles.z);
     }
     public void OnObjScaleXChanged(string value)
     {
@@ -179,12 +179,12 @@ public class UIEventManager : MonoBehaviour
     public void OnObjScaleYChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.localScale = new Vector3(sceneManager.SelectedObj.transform.localScale.x, float.Parse(value), sceneManager.SelectedObj.transform.localScale.z);
+            sceneManager.SelectedObj.transform.localScale = new Vector3(sceneManager.SelectedObj.transform.localScale.x, sceneManager.SelectedObj.transform.localScale.y, float.Parse(value));
     }
     public void OnObjScaleZChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            sceneManager.SelectedObj.transform.localScale = new Vector3(sceneManager.SelectedObj.transform.localScale.x, sceneManager.SelectedObj.transform.localScale.y, float.Parse(value));
+            sceneManager.SelectedObj.transform.localScale = new Vector3(sceneManager.SelectedObj.transform.localScale.x, float.Parse(value), sceneManager.SelectedObj.transform.localScale.z);
     }
     public void OnObjFixPosXChanged(bool value)
     {
@@ -198,7 +198,7 @@ public class UIEventManager : MonoBehaviour
         }
         
     }
-    public void OnObjFixPosYChanged(bool value)
+    public void OnObjFixPosZChanged(bool value)
     {
         if (value)
         {
@@ -209,7 +209,7 @@ public class UIEventManager : MonoBehaviour
             sceneManager.SelectedObj.GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
         }
     }
-    public void OnObjFixPosZChanged(bool value)
+    public void OnObjFixPosYChanged(bool value)
     {
         if (value)
         {
@@ -231,7 +231,7 @@ public class UIEventManager : MonoBehaviour
             sceneManager.SelectedObj.GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezeRotationX;
         }
     }
-    public void OnObjFixRotationYChanged(bool value)
+    public void OnObjFixRotationZChanged(bool value)
     {
         if (value)
         {
@@ -242,7 +242,7 @@ public class UIEventManager : MonoBehaviour
             sceneManager.SelectedObj.GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezeRotationY;
         }
     }
-    public void OnObjFixRotationZChanged(bool value)
+    public void OnObjFixRotationYChanged(bool value)
     {
         if (value)
         {

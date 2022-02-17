@@ -112,13 +112,13 @@ public class RobotClient : MonoBehaviour
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             int recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
-            Debug.Log(Encoding.Default.GetString(recvData));
+            //Debug.Log(Encoding.Default.GetString(recvData));
             string[] data = Encoding.Default.GetString(recvData).Split(',');
             float[] tempAngle;
             if (data[0].Equals("fire"))
             {
                 RobotController.Grabber.Toggle();
-                RobotController.Launcher.Fire();
+                RobotController.Launcher.Toggle();
                 tempAngle = new float[] { float.Parse(data[1]), float.Parse(data[2]), float.Parse(data[3]) };
             }
             else
@@ -140,7 +140,6 @@ public class RobotClient : MonoBehaviour
     {
         Debug.Log(value);
         isRecvingMode = value;
-        Joystick.SetActive(!isRecvingMode);
     }
 
     public void StartPlay()

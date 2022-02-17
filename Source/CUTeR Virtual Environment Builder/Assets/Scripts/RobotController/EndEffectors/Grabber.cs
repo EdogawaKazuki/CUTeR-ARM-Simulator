@@ -16,6 +16,7 @@ public class Grabber : MonoBehaviour
     public bool Grabbed = false;
     public bool toggle = false;
     Transform playingScene;
+    static public bool isActive;
     int colliderCounter;
     // Start is called before the first frame update
     void Start()
@@ -104,7 +105,7 @@ public class Grabber : MonoBehaviour
 
     public void Toggle()
     {
-        if (gameObject.activeSelf)
+        if (isActive && SceneManager.isPlaying)
         {
             toggle = true;
         }

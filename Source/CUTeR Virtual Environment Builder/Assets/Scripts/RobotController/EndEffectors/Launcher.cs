@@ -5,22 +5,42 @@ using UnityEngine.UI;
 
 public class Launcher : MonoBehaviour
 {
-    float force = 0;
+    float force = 50;
     Text forceValue;
+    public bool toggle = false;
+    GameObject Parent;
+    static public bool isActive;
     // Start is called before the first frame update
     void Start()
     {
         forceValue = GameObject.Find("Canvas/Joystick/Panel/Force/Handle Slide Area/Handle/Value").GetComponent<Text>();
+        Parent = transform.parent.gameObject;
     }
+    void Update()
+    {
 
+        if (toggle)
+        {
+            Fire();
+            toggle = false;
+        }
+    }
     public void SetForce(float value)
     {
         force = value;
         forceValue.text = value.ToString("F0");
     }
+    public void Toggle()
+    {
+        Debug.Log(isActive +"," + SceneManager.isPlaying);
+        if (isActive && SceneManager.isPlaying)
+        {
+            toggle = true;
+        }
+    }
     public void Fire()
     {
-        if (gameObject.activeSelf && SceneManager.isPlaying)
+        if (isActive && SceneManager.isPlaying)
         {
             GameObject Bullet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             Bullet.transform.position = transform.position;

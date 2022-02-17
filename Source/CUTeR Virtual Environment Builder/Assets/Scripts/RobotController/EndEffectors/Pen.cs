@@ -22,17 +22,22 @@ public class Pen : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collider)
     {
-        currentLine = NewLine(collider.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), ObjectManager.Scene.transform);
+        if (SceneManager.isPlaying)
+            currentLine = NewLine(collider.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), collider.transform);
     }
     void OnTriggerStay(Collider collider)
     {
-        currentLine.positionCount++;
-        currentLine.SetPosition(currentLine.positionCount - 1, collider.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        if (SceneManager.isPlaying)
+        {
+            currentLine.positionCount++;
+            currentLine.SetPosition(currentLine.positionCount - 1, collider.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        }
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        selfMaterial.color = selfColor;
+        if (SceneManager.isPlaying)
+            selfMaterial.color = selfColor;
     }
 
     LineRenderer NewLine(Vector3 startPoint, Transform parent)

@@ -24,22 +24,22 @@ is_playing = False
 
 # init robot angle
 robot_joint_angle = [90, 180, 10]
-grab = False 
+fire = False 
 
 # control robot arm according to the trajectory list
 def process_trajectory():
-    global grab
+    global fire
     # get generated trajectory
     angle_lists = Trajectory.generate_trajectory()
     # set the angle of robots
     for i in range(len(angle_lists[0])):
         if is_playing:
-            if angle_lists[0][i] == "grab":
-                grab = True
+            if angle_lists[0][i] == "fire":
+                fire = True
                 continue
             for j in range(3):
                 robot_joint_angle[j] = angle_lists[j][i]
-            #time.sleep(1/40)
+            time.sleep(1/50)
         else:
             break
 
@@ -49,7 +49,7 @@ def handle_request():
     global last_time
     global robot_joint_angle
     global is_playing
-    global grab
+    global fire
     while True:
         try:
             data, address = sock.recvfrom(max_length)
@@ -59,10 +59,10 @@ def handle_request():
             # <request type>,<request data 1>,...,<request data n>,end
             data = data.decode('UTF-8').split(',')
             if data[0] == "get":
-                if grab:
-                    angle_str = "grab," + str(robot_joint_angle[0]) + "," + str(robot_joint_angle[1]) + \
+                if fire:
+                    angle_str = "fire," + str(robot_joint_angle[0]) + "," + str(robot_joint_angle[1]) + \
                                 "," + str(robot_joint_angle[2]) + ",end"
-                    grab = False
+                    fire = False
                 else:
                     angle_str = "" + str(robot_joint_angle[0]) + "," + str(robot_joint_angle[1]) + \
                             "," + str(robot_joint_angle[2]) + ",end"

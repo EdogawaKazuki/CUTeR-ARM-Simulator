@@ -55,7 +55,7 @@ public class SceneManager : MonoBehaviour
         }
         //newObj.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10;
         newObj.AddComponent<SceneObjectController>().parent = newObj.transform;
-        newObj.transform.position = new Vector3(20, 5, 0);
+        newObj.transform.position = new Vector3(20, 0, 0);
         newObj.transform.SetParent(Scene.transform);
         newObj.layer = LayerMask.NameToLayer("Scene");
         Dictionary<string, object> objDict = new Dictionary<string, object>();
@@ -301,6 +301,9 @@ public class SceneManager : MonoBehaviour
     }
     public void StartScene()
     {
+        InputEventManager.selectedObject = null;
+        ObjectManager.Axis.SetActive(false);
+        ObjectManager.AttributePanel.SetActive(false);
         if (isPlaying)
         {
             return;
@@ -313,16 +316,36 @@ public class SceneManager : MonoBehaviour
             if (rigidbody)
             {
                 rigidbody.isKinematic = false;
+                rigidbody.centerOfMass = Vector3.zero;
+                rigidbody.inertiaTensorRotation = Quaternion.identity;
             }
             else
             {
-                Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>());
+                if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>());
+                }
             }
         }
         ObjectManager.Scene.SetActive(false);
     }
     public void ResetScene()
     {
+        InputEventManager.selectedObject = null;
+        ObjectManager.Axis.SetActive(false);
+        ObjectManager.AttributePanel.SetActive(false);
         Destroy(PlayingScene);
         ObjectManager.Scene.SetActive(true);
         isPlaying = false;

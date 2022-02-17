@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class InputEventManager : MonoBehaviour
 {
-    GameObject Axis;
+    static public GameObject Axis;
     ArrayList AxisList;
     bool isSelectAxis;
     bool isSelectScene;
-    Transform selectedObject;
+    static public Transform selectedObject;
     char movingAxis;
     int movineMode;
     Vector3 hitPoint;
@@ -208,6 +208,7 @@ public class InputEventManager : MonoBehaviour
                 //Axis.transform.GetChild(1).GetChild(1).eulerAngles = new Vector3(0, 180 + Camera.main.transform.localEulerAngles.y, 0);
                 //Axis.transform.GetChild(1).GetChild(2).eulerAngles = new Vector3(-Camera.main.transform.localEulerAngles.y - 180, -90, 90);
             }
+            UpdateAttriPanel();
         }
     }
     public void SetAxis(int mode)
@@ -248,23 +249,23 @@ public class InputEventManager : MonoBehaviour
     {
         ObjectManager.AttributePanel.transform.Find("Name/Options/InputField").GetComponent<InputField>().text = selectedObject.name;
         ObjectManager.AttributePanel.transform.Find("Position/Options/X/InputField").GetComponent<InputField>().text = (-selectedObject.transform.position.x).ToString();
-        ObjectManager.AttributePanel.transform.Find("Position/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.position.y.ToString();
-        ObjectManager.AttributePanel.transform.Find("Position/Options/Z/InputField").GetComponent<InputField>().text = (-selectedObject.transform.position.z).ToString();
+        ObjectManager.AttributePanel.transform.Find("Position/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.position.y.ToString();
+        ObjectManager.AttributePanel.transform.Find("Position/Options/Y/InputField").GetComponent<InputField>().text = (-selectedObject.transform.position.z).ToString();
         ObjectManager.AttributePanel.transform.Find("Rotation/Options/X/InputField").GetComponent<InputField>().text = selectedObject.transform.eulerAngles.x.ToString();
-        ObjectManager.AttributePanel.transform.Find("Rotation/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.eulerAngles.y.ToString();
-        ObjectManager.AttributePanel.transform.Find("Rotation/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.eulerAngles.z.ToString();
+        ObjectManager.AttributePanel.transform.Find("Rotation/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.eulerAngles.y.ToString();
+        ObjectManager.AttributePanel.transform.Find("Rotation/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.eulerAngles.z.ToString();
         ObjectManager.AttributePanel.transform.Find("Scale/Options/X/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.x.ToString();
-        ObjectManager.AttributePanel.transform.Find("Scale/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.y.ToString();
-        ObjectManager.AttributePanel.transform.Find("Scale/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.z.ToString();
+        ObjectManager.AttributePanel.transform.Find("Scale/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.y.ToString();
+        ObjectManager.AttributePanel.transform.Find("Scale/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.z.ToString();
         bool isRigidbody = ObjectManager.AttributePanel.transform.Find("IsRigidbody/Options/Toggle").GetComponent<Toggle>().isOn = selectedObject.GetComponent<Rigidbody>() != null;
         if (isRigidbody)
         {
             ObjectManager.AttributePanel.transform.Find("FixPosition/Options/X/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionX) != RigidbodyConstraints.None;
-            ObjectManager.AttributePanel.transform.Find("FixPosition/Options/Y/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionY) != RigidbodyConstraints.None;
-            ObjectManager.AttributePanel.transform.Find("FixPosition/Options/Z/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionZ) != RigidbodyConstraints.None;
+            ObjectManager.AttributePanel.transform.Find("FixPosition/Options/Z/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionY) != RigidbodyConstraints.None;
+            ObjectManager.AttributePanel.transform.Find("FixPosition/Options/Y/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionZ) != RigidbodyConstraints.None;
             ObjectManager.AttributePanel.transform.Find("FixRotation/Options/X/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezeRotationX) != RigidbodyConstraints.None;
-            ObjectManager.AttributePanel.transform.Find("FixRotation/Options/Y/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezeRotationY) != RigidbodyConstraints.None;
-            ObjectManager.AttributePanel.transform.Find("FixRotation/Options/Z/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezeRotationZ) != RigidbodyConstraints.None;
+            ObjectManager.AttributePanel.transform.Find("FixRotation/Options/Z/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezeRotationY) != RigidbodyConstraints.None;
+            ObjectManager.AttributePanel.transform.Find("FixRotation/Options/Y/Toggle").GetComponent<Toggle>().isOn = (selectedObject.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezeRotationZ) != RigidbodyConstraints.None;
 
             ObjectManager.AttributePanel.transform.Find("UseGravity/Options/Toggle").GetComponent<Toggle>().isOn = selectedObject.GetComponent<Rigidbody>().useGravity;
 

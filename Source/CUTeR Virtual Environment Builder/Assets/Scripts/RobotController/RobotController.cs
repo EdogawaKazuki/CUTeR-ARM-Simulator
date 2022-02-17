@@ -98,12 +98,22 @@ public class RobotController : MonoBehaviour
     }
     public void setEndEffector(int value)
     {
-        for(int i = 0; i < EndEffectors.Length; i++)
+        for (int i = 0; i < EndEffectors.Length; i++)
         {
             EndEffectors[i].gameObject.SetActive(false);
         }
         Sliders[3].interactable = value == 3;
         EndEffectors[value].gameObject.SetActive(true);
+        if (value == 1)
+        {
+            Grabber.isActive = true;
+            Launcher.isActive = false;
+        }
+        else if (value == 3)
+        {
+            Grabber.isActive = false;
+            Launcher.isActive = true;
+        }
     }
     void MoveRobot()
     {
