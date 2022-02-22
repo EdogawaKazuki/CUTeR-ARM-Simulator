@@ -75,7 +75,11 @@ public class InputEventManager : MonoBehaviour
                         selectedObject = hit.transform.gameObject.GetComponent<SceneObjectController>().parent;
                         SetAxis(movineMode);
                         Axis.SetActive(true);
+#if UNITY_WEBGL && !UNITY_EDITOR
+                        ObjectManager.GameAdmin.GetComponent<WebGL_SceneManager>().SelectedObj = selectedObject.gameObject;
+#else
                         ObjectManager.GameAdmin.GetComponent<SceneManager>().SelectedObj = selectedObject.gameObject;
+#endif
                         ObjectManager.DeletePanelName.text = selectedObject.name;
                         ObjectManager.AttributePanel.SetActive(true);
                         UpdateAttriPanel();
@@ -208,7 +212,8 @@ public class InputEventManager : MonoBehaviour
                 //Axis.transform.GetChild(1).GetChild(1).eulerAngles = new Vector3(0, 180 + Camera.main.transform.localEulerAngles.y, 0);
                 //Axis.transform.GetChild(1).GetChild(2).eulerAngles = new Vector3(-Camera.main.transform.localEulerAngles.y - 180, -90, 90);
             }
-            UpdateAttriPanel();
+            if(SceneManager.isPlaying)
+                UpdateAttriPanel();
         }
     }
     public void SetAxis(int mode)

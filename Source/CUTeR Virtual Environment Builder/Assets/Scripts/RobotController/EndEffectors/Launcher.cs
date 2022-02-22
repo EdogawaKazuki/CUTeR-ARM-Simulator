@@ -32,21 +32,21 @@ public class Launcher : MonoBehaviour
     }
     public void Toggle()
     {
-        Debug.Log(isActive +"," + SceneManager.isPlaying);
-        if (isActive && SceneManager.isPlaying)
+        Debug.Log(isActive +"," + WebGL_SceneManager.isPlaying);
+        if (isActive && WebGL_SceneManager.isPlaying)
         {
             toggle = true;
         }
     }
     public void Fire()
     {
-        if (isActive && SceneManager.isPlaying)
+        if (isActive && WebGL_SceneManager.isPlaying)
         {
             GameObject Bullet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             Bullet.transform.position = transform.position;
             Rigidbody rigidboty = Bullet.AddComponent<Rigidbody>();
             rigidboty.AddForce(transform.up * force * 100);
-            Bullet.transform.SetParent(SceneManager.PlayingScene.transform);
+            Bullet.transform.SetParent(WebGL_SceneManager.PlayingScene.transform);
         }
     }
 }

@@ -24,15 +24,9 @@ public class WebGL_LoadObj : MonoBehaviour, IPointerDownHandler
     private static extern void UploadFileWithName(string gameObjectName, string methodName, string filter, bool multiple);
 
     public void OnPointerDown(PointerEventData eventData) {
-        //UploadFile(gameObject.name, "OnFileUpload", ".obj", false);
         UploadFileWithName(gameObject.name, "OnPathFind", "", true);
     }
     
-    // Called from browser
-    public void OnFileUpload(string url) {
-        //StartCoroutine("Load", url);
-        Load(url);
-    }
     // Called from browser
     public void OnPathFind(string url) {
         //StartCoroutine("Load", url);

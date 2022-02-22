@@ -321,6 +321,11 @@ public class WebGL_SceneManager : MonoBehaviour
     }
     public void StartScene()
     {
+        InputEventManager.selectedObject = null;
+        ObjectManager.Axis.SetActive(false);
+        ObjectManager.AttributePanel.SetActive(false);
+        ObjectManager.SceneStatus.text = "Playing";
+        ObjectManager.SceneBG.color = new Color32(100, 255, 100, 160);
         if (isPlaying)
         {
             return;
@@ -336,23 +341,35 @@ public class WebGL_SceneManager : MonoBehaviour
             }
             else
             {
-                Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>());
+                if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>());
+                }
+                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>())
+                {
+                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>());
+                }
             }
         }
         ObjectManager.Scene.SetActive(false);
     }
     public void ResetScene()
     {
+        ObjectManager.SceneStatus.text = "Editing";
+        ObjectManager.SceneBG.color = new Color32(255, 255, 255, 78);
+        InputEventManager.selectedObject = null;
+        ObjectManager.Axis.SetActive(false);
+        ObjectManager.AttributePanel.SetActive(false);
         Destroy(PlayingScene);
         ObjectManager.Scene.SetActive(true);
         isPlaying = false;
-    }
-    string GetFileName(string str)
-    {
-        Debug.Log(str);
-        string[] splitedPath = str.Split('/');
-        string name = splitedPath[splitedPath.Length - 1];
-        splitedPath = name.Split('\\');
-        return splitedPath[splitedPath.Length - 1].Split('.')[0];
     }
 }

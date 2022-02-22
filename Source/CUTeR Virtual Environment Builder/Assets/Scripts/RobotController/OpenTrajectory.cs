@@ -115,15 +115,14 @@ public class OpenTrajectory : MonoBehaviour, IPointerDownHandler
             }
             RobotController.trajLength = RobotController.Trajs[0].Count;
             Result.text = "Done!";
+            ObjectManager.TrajectoryStatus.text = "Ready to play";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
         catch(Exception e)
         {
             Debug.Log(e);
             Result.text = "Load Failed...";
         }
-    }
-    void Update()
-    {
     }
 
 }

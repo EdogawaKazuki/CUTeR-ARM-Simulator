@@ -22,12 +22,12 @@ public class WebGL_LoadScene : MonoBehaviour, IPointerDownHandler
     private static extern void UploadFileWithName(string gameObjectName, string methodName, string filter, bool multiple);
 
     public void OnPointerDown(PointerEventData eventData) {
-        UploadFileWithName(gameObject.name, "OnFileUpload", ".json", false);
+        UploadFileWithName(gameObject.name, "OnPathFind", "", true);
     }
-
+    
     // Called from browser
-    public void OnFileUpload(string url) {
-        //StartCoroutine(OutputRoutine(url));
+    public void OnPathFind(string url) {
+        //StartCoroutine("Load", url);
         Load(url);
     }
 #else
@@ -47,11 +47,15 @@ public class WebGL_LoadScene : MonoBehaviour, IPointerDownHandler
     {
         //ObjectManager.GameAdmin.GetComponent<UIEventManager>().ScanSceneFolder();
         //ObjectManager.LoadScenePanel.SetActive(true);
-        var paths = StandaloneFileBrowser.OpenFilePanel("Open Scene File", ObjectManager.SceneFolder, "json", false);
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open Scene File", ObjectManager.SceneFolder, "", true);
+        for(int i = 0; i < paths.Length; i++)
+        {
+            paths[i] = System.IO.Path.GetFileName(paths[i]) + "," + paths[i];
+        }
         if (paths.Length > 0)
         {
             //StartCoroutine(OutputRoutine(paths[0]));
-            Load(paths[0]);
+            Load(string.Join(";", paths));
         }
     }
 #endif
@@ -62,28 +66,7 @@ public class WebGL_LoadScene : MonoBehaviour, IPointerDownHandler
     }
     void Load(string path)
     {
-        Debug.Log(path);
-        string[] kv = path.Split(',');
-        SceneManager.LoadScene(kv[0], true);
-        transform.parent.parent.Find("Trigger").GetComponent<UIEventManager>().TurnOffToggle();
-    }
-    private IEnumerator OutputRoutine(string url)
-    {
-        var request = UnityWebRequest.Get(url);
-        yield return request.SendWebRequest();
-        switch (request.result)
-        {
-            case UnityWebRequest.Result.ConnectionError:
-            case UnityWebRequest.Result.DataProcessingError:
-                Debug.LogError("Error: " + request.error);
-                break;
-            case UnityWebRequest.Result.ProtocolError:
-                Debug.LogError("HTTP Error: " + request.error);
-                break;
-            case UnityWebRequest.Result.Success:
-                Debug.Log("Success");
-                break;
-        }
-        SceneManager.LoadScene(url, true);
+        ObjectManager.WebGL_FileManager.Clear();
+        ObjectManager.WebGL_FileManager.AddFile(path);
     }
 }

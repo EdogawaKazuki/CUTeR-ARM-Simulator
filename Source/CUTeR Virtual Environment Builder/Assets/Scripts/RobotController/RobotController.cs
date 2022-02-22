@@ -17,6 +17,8 @@ public class RobotController : MonoBehaviour
     static public Grabber Grabber;
     static public Launcher Launcher;
 
+    Button FunctionBtn;
+
     Slider[] Sliders = new Slider[4];
 
     Text[] SliderValueTexts = new Text[3];
@@ -41,6 +43,8 @@ public class RobotController : MonoBehaviour
             JointLocalEularAngles[i] = new Vector3(0, 0, 0);
         }
         Sliders[3] = GameObject.Find("Canvas/Joystick/Panel/Force").GetComponent<Slider>();
+        FunctionBtn = GameObject.Find("Canvas/Joystick/Panel/Function").GetComponent<Button>();
+        FunctionBtn.interactable = false;
         EndEffectors = new Transform[EndEffectorNames.Length];
         for(int i = 0; i < EndEffectorNames.Length; i++)
         {
@@ -79,6 +83,8 @@ public class RobotController : MonoBehaviour
             }
             else
             {
+                ObjectManager.TrajectoryStatus.text = "Finised";
+                ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
                 runTraj = false;
                 currentTrajIndex = 0;
             }
@@ -108,11 +114,18 @@ public class RobotController : MonoBehaviour
         {
             Grabber.isActive = true;
             Launcher.isActive = false;
+            FunctionBtn.interactable = true;
         }
         else if (value == 3)
         {
             Grabber.isActive = false;
             Launcher.isActive = true;
+            FunctionBtn.interactable = true;
+        }
+        else
+        {
+
+            FunctionBtn.interactable = false;
         }
     }
     void MoveRobot()
@@ -138,9 +151,11 @@ public class RobotController : MonoBehaviour
     {
         if (!RobotClient.isConnectedToRobot)
         {
-            if (!runTraj)
+            if (!runTraj && (Trajs[0].Count!= 0))
             {
                 runTraj = true;
+                ObjectManager.TrajectoryStatus.text = "Playing";
+                ObjectManager.TrajectoryBG.color = new Color32(100, 255, 100, 160);
             }
             else
             {
@@ -150,8 +165,10 @@ public class RobotController : MonoBehaviour
     }
     public void StopTraj()
     {
-        if (!RobotClient.isConnectedToRobot)
+        if (!RobotClient.isConnectedToRobot && (Trajs[0].Count != 0))
         {
+            ObjectManager.TrajectoryStatus.text = "Ready to play";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
             runTraj = false;
             currentTrajIndex = 0;
             JointAngle[0] = 0;

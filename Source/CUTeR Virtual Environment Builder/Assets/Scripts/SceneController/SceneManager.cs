@@ -304,6 +304,8 @@ public class SceneManager : MonoBehaviour
         InputEventManager.selectedObject = null;
         ObjectManager.Axis.SetActive(false);
         ObjectManager.AttributePanel.SetActive(false);
+        ObjectManager.SceneStatus.text = "Playing";
+        ObjectManager.SceneBG.color = new Color32(100, 255, 100, 160);
         if (isPlaying)
         {
             return;
@@ -343,6 +345,8 @@ public class SceneManager : MonoBehaviour
     }
     public void ResetScene()
     {
+        ObjectManager.SceneStatus.text = "Editing";
+        ObjectManager.SceneBG.color = new Color32(255, 255, 255, 78);
         InputEventManager.selectedObject = null;
         ObjectManager.Axis.SetActive(false);
         ObjectManager.AttributePanel.SetActive(false);

@@ -43,6 +43,11 @@ public class ObjectManager : MonoBehaviour
     static public Text DebugMsg;
     static public Text InformationText;
     static public Text DeletePanelName;
+    static public Text SceneStatus;
+    static public Text TrajectoryStatus;
+
+    static public Image SceneBG;
+    static public Image TrajectoryBG;
 
     static public ArrayList ObjectList;
     static public ArrayList SceneList;
@@ -91,6 +96,11 @@ public class ObjectManager : MonoBehaviour
         DebugMsg = GameObject.Find("Canvas/DebugMsg").GetComponent<Text>();
         InformationText = GameObject.Find("Canvas/InformationText").GetComponent<Text>();
         DeletePanelName = GameObject.Find("Canvas/DeleteObjPanel/Window/Name").GetComponent<Text>();
+        SceneStatus = GameObject.Find("Canvas/SceneCtrlBtnGroup/status/Text").GetComponent<Text>();
+        TrajectoryStatus = GameObject.Find("Canvas/TrajCtrlBtnGroup/status/Text").GetComponent<Text>();
+
+        SceneBG = GameObject.Find("Canvas/SceneCtrlBtnGroup/status/Image").GetComponent<Image>();
+        TrajectoryBG = GameObject.Find("Canvas/TrajCtrlBtnGroup/status/Image").GetComponent<Image>();
 
         // hide objects
         Axis.SetActive(false);

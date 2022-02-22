@@ -7,6 +7,9 @@ using UnityEngine.Networking;
 
 public class WebGL_FileManager : MonoBehaviour
 {
+    int fileCount;
+    int uploadedFileCount;
+    string sceneFile;
     static public Dictionary<string, string> fileDict;
     static public Dictionary<string, Stream> streamDict;
     // Start is called before the first frame update
@@ -19,10 +22,18 @@ public class WebGL_FileManager : MonoBehaviour
     {
         Debug.Log("adding url: " + urls);
         string[] file = urls.Split(';');
+        fileCount = 0;
+        uploadedFileCount = 0;
         for(int i = 0; i < file.Length - 1; i++)
         {
             string[] kv = file[i].Split(',');
+            string[] tmp = kv[0].Split('.');
+            if (tmp[tmp.Length - 1].Equals("meta"))
+                continue;
+            if (tmp[tmp.Length - 1].Equals("json"))
+                sceneFile = kv[0];
             Debug.Log("adding kv: " + kv[0] + "," + kv[1]);
+            fileCount++;
             if (fileDict.ContainsKey(kv[0]))
             {
                 fileDict[kv[0]] = kv[1];
@@ -33,6 +44,11 @@ public class WebGL_FileManager : MonoBehaviour
             }
             StartCoroutine(OutputRoutine(kv));
         }
+    }
+    public void Clear()
+    {
+        fileDict.Clear();
+        streamDict.Clear();
     }
     private IEnumerator OutputRoutine(string[] kv)
     {
@@ -65,6 +81,12 @@ public class WebGL_FileManager : MonoBehaviour
             else
             {
                 streamDict.Add(kv[0], stream);
+            }
+            uploadedFileCount++;
+            Debug.Log(uploadedFileCount + "," + fileCount);
+            if(fileCount == uploadedFileCount)
+            {
+                ObjectManager.GameAdmin.gameObject.GetComponent<WebGL_SceneManager>().LoadScene(sceneFile, true);
             }
         }
         catch (Exception e)
