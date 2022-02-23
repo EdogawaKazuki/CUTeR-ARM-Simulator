@@ -11,15 +11,20 @@ public class RobotController : MonoBehaviour
     static public Transform[] EndEffectors;
     static public List<List<float>> Trajs;
     static public float[] JointAngle = { 0, 180, -170 };
+    public float[] Angle = { 0, 180, -170 };
     static public int currentTrajIndex = 0;
     static public int trajLength = 0;
     static public bool runTraj = false;
     static public Grabber Grabber;
     static public Launcher Launcher;
+    public float x = 0;
+    public float y = 0;
+    public float z = 0;
+    public Transform cube;
 
     Button FunctionBtn;
 
-    Slider[] Sliders = new Slider[4];
+    static public Slider[] Sliders = new Slider[4];
 
     Text[] SliderValueTexts = new Text[3];
 
@@ -58,6 +63,10 @@ public class RobotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+    public void setangle2()
+    {
+        JointAngle = Angle;
     }
     public void FixedUpdate()
     {
@@ -176,4 +185,5 @@ public class RobotController : MonoBehaviour
             JointAngle[2] = -170;
         }
     }
+
 }

@@ -14,13 +14,11 @@ public class WebGL_InputEventManager : MonoBehaviour
     char movingAxis;
     int movineMode;
     Vector3 hitPoint;
-    float cameraDistance;
     float cameraView;
 
     // Start is called before the first frame update
     void Start()
     {
-        cameraDistance = 2.0f; // Constant factor
         cameraView = 2.0f * Mathf.Tan(0.5f * Mathf.Deg2Rad * Camera.main.fieldOfView); // Visible height 1 meter in front
         isSelectAxis = false;
         isSelectScene = false;

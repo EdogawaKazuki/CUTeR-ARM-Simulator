@@ -13,7 +13,9 @@ public class RobotController : MonoBehaviour
     static public int trajLength = 0;
     static public bool runTraj = false;
 
-    Slider[] Sliders = new Slider[3];
+    static public Slider[] Sliders = new Slider[3];
+
+    Image TrajectoryBG;
 
     Text[] SliderValueTexts = new Text[3];
 
@@ -21,6 +23,7 @@ public class RobotController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TrajectoryBG = GameObject.Find("Canvas/WSBtnGroup/RunTrajectory/Image").GetComponent<Image>();
         Trajs = new List<List<float>>();
         for (int i = 0; i < 3; i++)
         {
@@ -59,6 +62,7 @@ public class RobotController : MonoBehaviour
             }
             else
             {
+                TrajectoryBG.color = new Color32(255, 255, 255, 78);
                 runTraj = false;
                 currentTrajIndex = 0;
             }
@@ -97,27 +101,33 @@ public class RobotController : MonoBehaviour
 
     public void StartTraj()
     {
-        if (!Server.isConnectedToRobot)
+        if (!RobotClient.isConnectedToRobot || !RobotClient.isRecvingMode)
         {
             if (!runTraj)
             {
-                runTraj = true;
+                if (trajLength != 0)
+                {
+                    runTraj = true;
+                    TrajectoryBG.color = new Color32(100, 255, 100, 160);
+                }
             }
             else
             {
                 runTraj = false;
+                TrajectoryBG.color = new Color32(255, 255, 100, 160);
             }
         }
     }
     public void StopTraj()
     {
-        if (!Server.isConnectedToRobot)
+        if (!RobotClient.isConnectedToRobot || !RobotClient.isRecvingMode)
         {
             runTraj = false;
             currentTrajIndex = 0;
             JointAngle[0] = 0;
             JointAngle[1] = 180;
             JointAngle[2] = -170;
+            TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
     }
 }

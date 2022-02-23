@@ -1,4 +1,5 @@
 using SFB;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -95,26 +96,100 @@ public class OpenTrajectory : MonoBehaviour, IPointerDownHandler
     {
         try
         {
-            string[] trajsTextArray = trajText.Split(';');
             for (int i = 0; i < 3; i++)
             {
                 RobotController.Trajs[i].Clear();
-                string[] tmp = trajsTextArray[i].Split(',');
-                foreach (var point in tmp)
+            }
+            string[] trajsTextArray = trajText.Split(';');
+            if (trajsTextArray[0].Equals("angle"))
+            {
+                for (int i = 1; i < 4; i++)
                 {
-                    RobotController.Trajs[i].Add(float.Parse(point));
+                    string[] tmp = trajsTextArray[i].Split(',');
+                    foreach (var point in tmp)
+                    {
+                        if (point.Equals("fire"))
+                        {
+                            RobotController.Trajs[i - 1].Add(1000);
+                        }
+                        else
+                        {
+                            RobotController.Trajs[i - 1].Add(float.Parse(point));
+                        }
+                    }
                 }
+            }
+            else if (trajsTextArray[0].Equals("point"))
+            {
+                string[] pointX = trajsTextArray[1].Split(',');
+                string[] pointY = trajsTextArray[2].Split(',');
+                string[] pointZ = trajsTextArray[3].Split(',');
+                for (int i = 0; i < pointX.Length; i++)
+                {
+                    float[] angles = CartesianToAngle(float.Parse(pointX[i]), float.Parse(pointY[i]), float.Parse(pointZ[i]));
+                    for (int j = 0; j < 3; j++)
+                        RobotController.Trajs[j].Add(angles[j]);
+                }
+            }
+            else
+            {
+                Result.text = "Load Failed...";
+                return;
             }
             RobotController.trajLength = RobotController.Trajs[0].Count;
             Result.text = "Done!";
         }
-        catch
+        catch (Exception e)
         {
+            Debug.Log(e);
             Result.text = "Load Failed...";
         }
     }
-    void Update()
-    {
-    }
 
+    float[] CartesianToAngle(float x, float y, float z)
+    {
+        x = -x;
+        y = -y;
+        float[] angles = new float[3];
+        float l1 = 10.18f;
+        float l2 = 19.41f;
+        float l3 = 2.91f;
+        float l23 = Mathf.Sqrt(l2 * l2 + l3 * l3);
+        float l4 = 20.2f;
+        float alpha = Mathf.Atan(l3 / l2);
+        if (x == 0)
+        {
+            angles[0] = Mathf.PI / 2;
+        }
+        else
+        {
+            if (x > 0)
+            {
+                angles[0] = Mathf.Atan(-y / x);
+            }
+            else
+            {
+                angles[0] = Mathf.PI - Mathf.Atan(y / x);
+            }
+        }
+        float A = -y * Mathf.Sin(angles[0]) + x * Mathf.Cos(angles[0]);
+        float B = z - l1;
+        float tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
+        if (tmp < -1)
+            tmp = -0.999999f;
+        if (tmp > 1)
+            tmp = 0.99999f;
+        angles[2] = -Mathf.Acos(tmp);
+        if ((A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])) > 0)
+            angles[1] = Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
+                                   (A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
+        else
+            angles[1] = Mathf.PI - Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
+                                   -(A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
+
+        angles[0] = angles[0] / Mathf.PI * 180 - 90;
+        angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
+        angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
+        return angles;
+    }
 }
