@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,7 +76,8 @@ public class RobotClient : MonoBehaviour
             {
                 if (isRecvingMode)
                 {
-                    ReceiveFromRealRobot();
+                    if(isPlaying)
+                        ReceiveFromRealRobot();
                 }
                 else
                 {
@@ -99,11 +101,52 @@ public class RobotClient : MonoBehaviour
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             Debug.Log("send to " + RobotServerIP + ":" + RobotServerPort + ". Data: " + sendStr);
-            Thread.Sleep(10);
+            Thread.Sleep(20);
         }
         catch (Exception e)
         {
             Debug.Log(e.ToString());
+        }
+    }
+    string GetObjDict()
+    {
+        if (SceneManager.isPlaying)
+        {
+            string[] objDataStrList = new string[SceneManager.PlayingScene.transform.childCount];
+
+            // Get all objects
+            for (int i = 0; i < objDataStrList.Length; i++)
+            {
+                Transform obj = SceneManager.PlayingScene.transform.GetChild(i);
+                Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                serializableDict.Add("name", obj.name);
+                serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                //Debug.Log(objDataStrList[i]);
+            }
+            return JsonConvert.SerializeObject(objDataStrList);
+        }
+        else
+        {
+
+            string[] objDataStrList = new string[ObjectManager.Scene.transform.childCount];
+
+            // Get all objects
+            for (int i = 0; i < objDataStrList.Length; i++)
+            {
+                Transform obj = ObjectManager.Scene.transform.GetChild(i);
+                Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                serializableDict.Add("name", obj.name);
+                serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                //Debug.Log(objDataStrList[i]);
+            }
+            return JsonConvert.SerializeObject(objDataStrList);
         }
     }
     void ReceiveFromRealRobot()
@@ -136,7 +179,6 @@ public class RobotClient : MonoBehaviour
             }
             else if (data[0].Equals("end"))
             {
-
                 sendStr = "post," + RobotController.JointAngle[0] + "," + RobotController.JointAngle[1] + "," + RobotController.JointAngle[2] + ",end";
                 sendData = Encoding.ASCII.GetBytes(sendStr);
                 ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
@@ -144,7 +186,37 @@ public class RobotClient : MonoBehaviour
                 isPlaying = false;
                 isFinished = true;
             }
-            else
+            else if (data[0].Equals("obj"))
+            {
+                if (data[1].Equals("ALL"))
+                {
+                    sendStr = GetObjDict();
+                    sendData = Encoding.ASCII.GetBytes(sendStr);
+                    ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+                }
+                else
+                {
+                    Transform obj;
+                    if (SceneManager.isPlaying)
+                    {
+                        obj = SceneManager.PlayingScene.transform.Find(data[1]);
+                    }
+                    else
+                    {
+                        obj = ObjectManager.Scene.transform.Find(data[1]);
+                    }
+                    Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                    serializableDict.Add("name", obj.name);
+                    serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                    serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                    serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                    sendStr = JsonConvert.SerializeObject(serializableDict);
+                    sendData = Encoding.ASCII.GetBytes(sendStr);
+                    ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+                }
+                return;
+            }
+            else 
             {
                 isFinished = false;
                 tempAngle = new float[] { float.Parse(data[0]), float.Parse(data[1]), float.Parse(data[2]) };
@@ -155,7 +227,7 @@ public class RobotClient : MonoBehaviour
             {
                 RobotController.JointAngle[i] = tempAngle[i];
             }
-            Thread.Sleep(10);
+            Thread.Sleep(20);
         }
         catch(Exception e)
         {

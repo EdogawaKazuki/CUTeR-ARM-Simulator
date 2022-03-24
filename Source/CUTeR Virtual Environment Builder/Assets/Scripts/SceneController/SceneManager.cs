@@ -10,7 +10,7 @@ using System.Linq;
 public class SceneManager : MonoBehaviour
 {
     GameObject Scene;
-    ArrayList sceneObjList;
+    static public ArrayList sceneObjList;
     string SceneFolder;
     public string SceneName;
     public string SceneDescription;

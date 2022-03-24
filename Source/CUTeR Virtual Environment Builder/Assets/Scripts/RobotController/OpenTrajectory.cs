@@ -49,7 +49,7 @@ public class OpenTrajectory : MonoBehaviour, IPointerDownHandler
         var paths = StandaloneFileBrowser.OpenFilePanel("Open Trajectory", Application.dataPath + "/../", "txt", false);
         if (paths.Length > 0)
         {
-            StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
+            StartCoroutine(OutputRoutine(new Uri(paths[0]).AbsoluteUri));
         }
     }
 #endif

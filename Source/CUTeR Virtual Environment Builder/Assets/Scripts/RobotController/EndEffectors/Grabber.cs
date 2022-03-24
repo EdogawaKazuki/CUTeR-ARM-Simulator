@@ -105,7 +105,7 @@ public class Grabber : MonoBehaviour
 
     public void Toggle()
     {
-        if (isActive && WebGL_SceneManager.isPlaying)
+        if (isActive && (WebGL_SceneManager.isPlaying || SceneManager.isPlaying))
         {
             toggle = true;
         }

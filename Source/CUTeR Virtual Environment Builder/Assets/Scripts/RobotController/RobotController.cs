@@ -158,7 +158,7 @@ public class RobotController : MonoBehaviour
 
     public void StartTraj()
     {
-        if (!RobotClient.isConnectedToRobot)
+        if (!RobotClient.isRecvingMode)
         {
             if (!runTraj && (Trajs[0].Count!= 0))
             {
@@ -174,7 +174,7 @@ public class RobotController : MonoBehaviour
     }
     public void StopTraj()
     {
-        if (!RobotClient.isConnectedToRobot && (Trajs[0].Count != 0))
+        if (!RobotClient.isRecvingMode && (Trajs[0].Count != 0))
         {
             ObjectManager.TrajectoryStatus.text = "Ready to play";
             ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);

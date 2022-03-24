@@ -8,13 +8,18 @@ public class RobotController : MonoBehaviour
     static public Transform RobotArm;
     static public Transform[] Joints = new Transform[4];
     static public List<List<float>> Trajs;
-    static public float[] JointAngle = { 0, 180, -170 };
+    static public float[] JointAngle = { 0, 140, -140 };
     static public int currentTrajIndex = 0;
     static public int trajLength = 0;
     static public bool runTraj = false;
 
-    static public Slider[] Sliders = new Slider[3];
+    static public float A1 = 10;  //length properties of the teaching robot arm (in cm)
+    static public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
+    static public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
+    static public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
 
+    static public Slider[] Sliders = new Slider[3];
+    bool isLoop = false;
     Image TrajectoryBG;
 
     Text[] SliderValueTexts = new Text[3];
@@ -40,6 +45,8 @@ public class RobotController : MonoBehaviour
             JointLocalEularAngles[i] = new Vector3(0, 0, 0);
         }
         JointLocalEularAngles[1] = new Vector3(0, 90, 0);
+        //GameObject.Find("Canvas/Joystick").GetComponent<Renderer>().enabled = false; ;
+        //GameObject.Find("Canvas/Joystick").SetActive(false);
     }
 
     // Update is called once per frame
@@ -62,9 +69,12 @@ public class RobotController : MonoBehaviour
             }
             else
             {
-                TrajectoryBG.color = new Color32(255, 255, 255, 78);
-                runTraj = false;
+                runTraj = isLoop;
                 currentTrajIndex = 0;
+                if (!runTraj)
+                {
+                    TrajectoryBG.color = new Color32(255, 255, 255, 78);
+                }
             }
         }
     }
@@ -95,12 +105,13 @@ public class RobotController : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Sliders[i].value = JointAngle[i];
-            SliderValueTexts[i].text = Sliders[i].value.ToString("F0");
+            SliderValueTexts[i].text = Sliders[i].value.ToString("F2");
         }
     }
 
     public void StartTraj()
     {
+        Debug.Log(Trajs[0].Count);
         if (!RobotClient.isConnectedToRobot || !RobotClient.isRecvingMode)
         {
             if (!runTraj)
@@ -118,11 +129,21 @@ public class RobotController : MonoBehaviour
             }
         }
     }
+    public void LoopTraj()
+    {
+        if (trajLength != 0)
+        {
+            runTraj = true;
+            TrajectoryBG.color = new Color32(100, 255, 100, 160);
+            isLoop = true;
+        }
+    }
     public void StopTraj()
     {
         if (!RobotClient.isConnectedToRobot || !RobotClient.isRecvingMode)
         {
             runTraj = false;
+            isLoop = false;
             currentTrajIndex = 0;
             JointAngle[0] = 0;
             JointAngle[1] = 180;
