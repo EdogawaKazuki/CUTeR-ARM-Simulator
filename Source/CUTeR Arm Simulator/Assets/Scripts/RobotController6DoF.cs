@@ -40,9 +40,6 @@ public class RobotController6DoF : MonoBehaviour
             JointLocalEularAngles[i] = new Vector3(0, 0, 0);
         }
         JointLocalEularAngles[1] = new Vector3(0, 90, 0);
-        JointLocalEularAngles[3] = new Vector3(0, -90, 90);
-        JointLocalEularAngles[4] = new Vector3(0, 0, -90);
-        JointLocalEularAngles[5] = new Vector3(0, 0, 90);
         //GameObject.Find("Canvas/Joystick").GetComponent<Renderer>().enabled = false; ;
         //GameObject.Find("Canvas/Joystick").SetActive(false);
     }
@@ -109,9 +106,9 @@ public class RobotController6DoF : MonoBehaviour
         JointLocalEularAngles[0].y = JointAngle[0];
         JointLocalEularAngles[1].x = JointAngle[1];
         JointLocalEularAngles[2].x = JointAngle[2];
-        JointLocalEularAngles[3].x = JointAngle[3];
+        JointLocalEularAngles[3].z = JointAngle[3];
         JointLocalEularAngles[4].x = JointAngle[4];
-        JointLocalEularAngles[5].x = JointAngle[5];
+        JointLocalEularAngles[5].z = JointAngle[5];
         for (int i = 0; i < 6; i++)
         {
             Joints[i].localEulerAngles = JointLocalEularAngles[i];

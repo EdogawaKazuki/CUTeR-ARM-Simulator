@@ -76,16 +76,18 @@ public class RobotController : MonoBehaviour
         {
             if (currentTrajIndex < trajLength)
             {
-                for (int i = 0; i < 3; i++)
+                if (Trajs[0][currentTrajIndex] == 1000)
                 {
-                    if(Trajs[i][currentTrajIndex] == 1000)
+                    Grabber.Toggle();
+                    Launcher.Fire();
+                }
+                else
+                {
+                    for (int i = 0; i < 3; i++)
                     {
-                        Grabber.Toggle();
-                        Launcher.Fire();
-                    }
-                    else
-                    {
-                        JointAngle[i] = Trajs[i][currentTrajIndex];
+                        {
+                            JointAngle[i] = Trajs[i][currentTrajIndex];
+                        }
                     }
                 }
                 currentTrajIndex++;

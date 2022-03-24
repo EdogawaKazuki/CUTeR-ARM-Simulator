@@ -126,9 +126,17 @@ public class OpenTrajectory : MonoBehaviour, IPointerDownHandler
                 string[] pointZ = trajsTextArray[3].Split(',');
                 for (int i = 0; i < pointX.Length; i++)
                 {
-                    float[] angles = CartesianToAngle(float.Parse(pointX[i]), float.Parse(pointY[i]), float.Parse(pointZ[i]));
-                    for (int j = 0; j < 3; j++)
-                        RobotController.Trajs[j].Add(angles[j]);
+                    if (pointX[i].Equals("fire"))
+                    {
+                        for (int j = 0; j < 3; j++)
+                            RobotController.Trajs[j].Add(1000);
+                    }
+                    else
+                    {
+                        float[] angles = CartesianToAngle(float.Parse(pointX[i]), float.Parse(pointY[i]), float.Parse(pointZ[i]));
+                        for (int j = 0; j < 3; j++)
+                            RobotController.Trajs[j].Add(angles[j]);
+                    }
                 }
             }
             else

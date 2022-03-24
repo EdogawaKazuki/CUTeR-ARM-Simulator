@@ -14,13 +14,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Exercise.unity
     guid: 7c2a256a2471bf84cbf9ab00dec4d5fa
   - enabled: 0
     path: Assets/Scenes/Exercise_WebGL.unity
     guid: 213cf0af53a96504ca5c3833a8ffa53b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main_6DoF.unity
     guid: 5f2ec56d6892afe4489940b3bda94275
   m_configObjects: {}

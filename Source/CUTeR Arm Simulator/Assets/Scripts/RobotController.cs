@@ -63,6 +63,8 @@ public class RobotController : MonoBehaviour
             {
                 for (int i = 0; i < 3; i++)
                 {
+                    if (Trajs[i][currentTrajIndex] == 1000)
+                        continue;
                     JointAngle[i] = Trajs[i][currentTrajIndex];
                 }
                 currentTrajIndex++;
