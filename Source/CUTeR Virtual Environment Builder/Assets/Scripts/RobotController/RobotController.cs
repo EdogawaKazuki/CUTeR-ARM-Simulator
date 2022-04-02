@@ -5,68 +5,115 @@ using UnityEngine.UI;
 
 public class RobotController : MonoBehaviour
 {
-    static public Transform RobotArm;
-    static public Transform[] Joints = new Transform[4];
+    static public Transform currentRobotArm;
+    
+    static public Transform[] Joints = new Transform[7];
     string[] EndEffectorNames = { "Nothing", "Hand", "Pen", "Launcher" };
     static public Transform[] EndEffectors;
     static public List<List<float>> Trajs;
-    static public float[] JointAngle = { 0, 180, -170 };
-    public float[] Angle = { 0, 180, -170 };
+    static public float[] JointAngle = { 0, 180, -170, 0, 0, 0 };
     static public int currentTrajIndex = 0;
     static public int trajLength = 0;
     static public bool runTraj = false;
     static public Grabber Grabber;
     static public Launcher Launcher;
-    public float x = 0;
-    public float y = 0;
-    public float z = 0;
-    public Transform cube;
+    
+    GameObject RobotArm;
+    GameObject RobotArm6DoF;
+    GameObject Joystick;
+    GameObject Joystick6DoF;
 
     Button FunctionBtn;
 
-    static public Slider[] Sliders = new Slider[4];
+    static public Slider[] Sliders = new Slider[7];
 
-    Text[] SliderValueTexts = new Text[3];
+    Text[] SliderValueTexts = new Text[6];
 
-    Vector3[] JointLocalEularAngles = new Vector3[3];
+    Vector3[] JointLocalEularAngles = new Vector3[6];
     // Start is called before the first frame update
     void Start()
     {
-        Trajs = new List<List<float>>();
-        for (int i = 0; i < 3; i++)
-        {
-            Trajs.Add(new List<float>());
-        }
-        currentTrajIndex = 0;
-        RobotArm = GameObject.Find("RobotArm").transform;
-        Joints[0] = RobotArm.Find("Joint0");
-        for (int i = 0; i < 3; i++)
-        {
-            Joints[i + 1] = Joints[i].Find("Joint" + (i + 1));
-            Sliders[i] = GameObject.Find("Canvas/Joystick/Panel/Joint" + i).GetComponent<Slider>();
-            SliderValueTexts[i] = Sliders[i].transform.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
-            JointLocalEularAngles[i] = new Vector3(0, 0, 0);
-        }
-        Sliders[3] = GameObject.Find("Canvas/Joystick/Panel/Force").GetComponent<Slider>();
-        FunctionBtn = GameObject.Find("Canvas/Joystick/Panel/Function").GetComponent<Button>();
-        FunctionBtn.interactable = false;
-        EndEffectors = new Transform[EndEffectorNames.Length];
-        for(int i = 0; i < EndEffectorNames.Length; i++)
-        {
-            EndEffectors[i] = Joints[3].Find(EndEffectorNames[i]);
-        }
-        JointLocalEularAngles[1] = new Vector3(0, 90, 0);
-        Grabber = Joints[3].Find("Hand/HoldingPoint").GetComponent<Grabber>();
-        Launcher = Joints[3].Find("Launcher/Sphere").GetComponent<Launcher>();
+        RobotArm = GameObject.Find("RobotArm");
+        RobotArm6DoF = GameObject.Find("RobotArm6DoF");
+        Joystick = GameObject.Find("Canvas/Joystick");
+        Joystick6DoF = GameObject.Find("Canvas/Joystick6DoF");
+        usingRobot(0);
+        usingRobot(1);
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    public void setangle2()
+
+    public void usingRobot(int value)
     {
-        JointAngle = Angle;
+        if(value == 0)
+        {
+            RobotArm.SetActive(true);
+            RobotArm6DoF.SetActive(false);
+            Joystick.SetActive(true);
+            Joystick6DoF.SetActive(false);
+            Trajs = new List<List<float>>();
+            for (int i = 0; i < 3; i++)
+            {
+                Trajs.Add(new List<float>());
+            }
+            currentTrajIndex = 0;
+            currentRobotArm = GameObject.Find("RobotArm").transform;
+            Joints[0] = currentRobotArm.Find("Joint0");
+            for (int i = 0; i < 3; i++)
+            {
+                Joints[i + 1] = Joints[i].Find("Joint" + (i + 1));
+                Sliders[i] = GameObject.Find("Canvas/Joystick/Panel/Joint" + i).GetComponent<Slider>();
+                SliderValueTexts[i] = Sliders[i].transform.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
+                JointLocalEularAngles[i] = new Vector3(0, 0, 0);
+            }
+            Sliders[3] = GameObject.Find("Canvas/Joystick/Panel/Force").GetComponent<Slider>();
+            FunctionBtn = GameObject.Find("Canvas/Joystick/Panel/Function").GetComponent<Button>();
+            FunctionBtn.interactable = false;
+            EndEffectors = new Transform[EndEffectorNames.Length];
+            for (int i = 0; i < EndEffectorNames.Length; i++)
+            {
+                EndEffectors[i] = Joints[3].Find(EndEffectorNames[i]);
+            }
+            JointLocalEularAngles[1] = new Vector3(0, 90, 0);
+            Grabber = Joints[3].Find("Hand/HoldingPoint").GetComponent<Grabber>();
+            Launcher = Joints[3].Find("Launcher/Sphere").GetComponent<Launcher>();
+        }
+        else
+        {
+            RobotArm.SetActive(false);
+            RobotArm6DoF.SetActive(true);
+            Joystick.SetActive(false);
+            Joystick6DoF.SetActive(true);
+            Trajs = new List<List<float>>();
+            for (int i = 0; i < 6; i++)
+            {
+                Trajs.Add(new List<float>());
+            }
+            currentTrajIndex = 0;
+            currentRobotArm = GameObject.Find("RobotArm6DoF").transform;
+            Joints[0] = currentRobotArm.Find("Joint0");
+            for (int i = 0; i < 6; i++)
+            {
+                Joints[i + 1] = Joints[i].Find("Joint" + (i + 1));
+                Sliders[i] = GameObject.Find("Canvas/Joystick6DoF/Panel/Joint" + i).GetComponent<Slider>();
+                SliderValueTexts[i] = Sliders[i].transform.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
+                JointLocalEularAngles[i] = new Vector3(0, 0, 0);
+            }
+            Sliders[6] = GameObject.Find("Canvas/Joystick6DoF/Panel/Force").GetComponent<Slider>();
+            FunctionBtn = GameObject.Find("Canvas/Joystick6DoF/Panel/Function").GetComponent<Button>();
+            FunctionBtn.interactable = false;
+            EndEffectors = new Transform[EndEffectorNames.Length];
+            for (int i = 0; i < EndEffectorNames.Length; i++)
+            {
+                EndEffectors[i] = Joints[5].Find(EndEffectorNames[i]);
+            }
+            JointLocalEularAngles[1] = new Vector3(0, 90, 0);
+            Grabber = Joints[5].Find("Hand/HoldingPoint").GetComponent<Grabber>();
+            Launcher = Joints[5].Find("Launcher/Sphere").GetComponent<Launcher>();
+        }
     }
     public void FixedUpdate()
     {
