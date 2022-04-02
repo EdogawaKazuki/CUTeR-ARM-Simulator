@@ -206,8 +206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: RobotController, Assembly-CSharp
+      - m_Target: {fileID: 1414837735}
+        m_TargetAssemblyTypeName: RobotController6DoF, Assembly-CSharp
         m_MethodName: StopTraj
         m_Mode: 1
         m_Arguments:
@@ -1057,8 +1057,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: RobotController, Assembly-CSharp
+      - m_Target: {fileID: 1414837735}
+        m_TargetAssemblyTypeName: RobotController6DoF, Assembly-CSharp
         m_MethodName: StartTraj
         m_Mode: 1
         m_Arguments:
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1414837732}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aca4c84e0780877428b451c9f564d90c, type: 3}
   m_Name: 
@@ -4103,7 +4103,7 @@ GameObject:
   - component: {fileID: 1318873143975812831}
   - component: {fileID: 1318873143975812830}
   m_Layer: 0
-  m_Name: Part
+  m_Name: Part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4116,7 +4116,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873143975812829}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64606b0f647a8c54eb1a41abfcfc7ea6, type: 3}
   m_Name: 
@@ -4128,9 +4128,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873143975812829}
-  m_LocalRotation: {x: -0.030662263, y: -0.70644194, z: -0.030662293, w: 0.7064414}
-  m_LocalPosition: {x: -2.6027687, y: -31.052805, z: 21.415648}
-  m_LocalScale: {x: 0.1, y: 0.10000001, z: 0.10000001}
+  m_LocalRotation: {x: -0.030662252, y: -0.70644194, z: -0.030662302, w: 0.7064414}
+  m_LocalPosition: {x: -2.6027787, y: -30.339035, z: 21.415667}
+  m_LocalScale: {x: 0.10000002, y: 0.100000024, z: 0.1}
   m_Children:
   - {fileID: 8052994912490347765}
   - {fileID: 3874851128294658997}
@@ -4388,7 +4388,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873144190434647}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64606b0f647a8c54eb1a41abfcfc7ea6, type: 3}
   m_Name: 
@@ -4426,7 +4426,7 @@ GameObject:
   - component: {fileID: 1318873144190434641}
   - component: {fileID: 1318873144190434640}
   m_Layer: 0
-  m_Name: Part
+  m_Name: Part6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4607,7 +4607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873144449248788}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.12863913, y: -0.71383, z: -5.5}
+  m_LocalPosition: {x: 0, y: 0, z: -5.5}
   m_LocalScale: {x: 0.10000001, y: 0.10000001, z: 0.1}
   m_Children:
   - {fileID: 1318873144080756389}
@@ -4623,7 +4623,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873144565240211}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64606b0f647a8c54eb1a41abfcfc7ea6, type: 3}
   m_Name: 
@@ -4657,7 +4657,7 @@ GameObject:
   - component: {fileID: 1318873144565240205}
   - component: {fileID: 1318873144565240204}
   m_Layer: 0
-  m_Name: Part
+  m_Name: Part5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5425,7 +5425,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318873145584974560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0035, z: -0.2082}
+  m_LocalPosition: {x: -0, y: 0, z: -0.2082}
   m_LocalScale: {x: 0.008, y: 0.008, z: 0.008}
   m_Children:
   - {fileID: 6699659917034619174}
