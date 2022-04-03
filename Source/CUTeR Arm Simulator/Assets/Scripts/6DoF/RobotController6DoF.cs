@@ -35,6 +35,7 @@ public class RobotController6DoF : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             Joints[i + 1] = Joints[i].Find("Joint" + (i + 1));
+            Debug.Log(Joints[i + 1]);
             Sliders[i] = GameObject.Find("Canvas/Joystick/Panel/Joint" + i).GetComponent<Slider>();
             SliderValueTexts[i] = Sliders[i].transform.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
             JointLocalEularAngles[i] = new Vector3(0, 0, 0);

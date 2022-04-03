@@ -26,13 +26,28 @@ public class ARController : MonoBehaviour
         else
         {
             Base = RobotController6DoF.RobotArm;
-            LastJoint = RobotController6DoF.Joints[5];
+            LastJoint = RobotController6DoF.Joints[6];
             PointHead = RobotController6DoF.RobotArm.Find("PointHead").transform;
         }
         HeadLine.gameObject.SetActive(false);
         PointHead.gameObject.SetActive(false);
     }
 
+    public void setRobot(int value)
+    {
+        if(value == 0)
+        {
+            Base = RobotController6DoF.RobotArm;
+            LastJoint = RobotController6DoF.Joints[3];
+            PointHead = RobotController6DoF.RobotArm.Find("PointHead").transform;
+        }
+        else
+        {
+            Base = RobotController6DoF.RobotArm;
+            LastJoint = RobotController6DoF.Joints[6];
+            PointHead = RobotController6DoF.RobotArm.Find("PointHead").transform;
+        }
+    }
     // Update is called once per frame
     void Update()
     {

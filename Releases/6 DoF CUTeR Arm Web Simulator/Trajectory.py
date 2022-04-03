@@ -1,5 +1,5 @@
 # output the trajectory
-# the result should be a 2d (3*n) list
+# the result should be a 2d (6*n) list
 # each row represents a servo, each column represents a frame using three angles for the three servo
 # the robot will move frame by frame, you can change the frequency
 def generate_trajectory():
