@@ -135,6 +135,7 @@ public class MTLLoader
     /// <returns>Dictionary containing loaded materials</returns>
     public Dictionary<string, Material> Load(Stream input)
     {
+        input.Position = 0;
         var inputReader = new StreamReader(input);
         var reader = new StringReader(inputReader.ReadToEnd());
 

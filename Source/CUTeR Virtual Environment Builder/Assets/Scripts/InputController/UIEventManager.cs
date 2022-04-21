@@ -121,10 +121,6 @@ public class UIEventManager : MonoBehaviour
     {
         sceneManager.LoadScene(ObjectManager.SceneFolder + "/" + value + ".json", false);
     }
-    public void OnObjDropdpwnValueChanged(int value)
-    {
-        ObjectManager.GameAdmin.GetComponent<SceneManager>().CreateObjectFromFile(value);
-    }
     public void OnNewObjClicked(int value)
     {
         ObjectManager.GameAdmin.GetComponent<SceneManager>().CreatePrimitiveObject(value);
@@ -278,5 +274,10 @@ public class UIEventManager : MonoBehaviour
     public void OnObjUseGravityChanged(bool value)
     {
         sceneManager.SelectedObj.GetComponent<Rigidbody>().useGravity = value;
+    }
+
+    public void ToggleTraj(bool value)
+    {
+        sceneManager.SelectedObj.GetComponent<ObjTrajectoryExecutor>().TrajSwitch = value;
     }
 }

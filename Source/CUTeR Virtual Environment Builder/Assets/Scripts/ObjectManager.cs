@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Net;
@@ -20,6 +21,7 @@ public class ObjectManager : MonoBehaviour
     static public GameObject SaveScenePanel;
     static public GameObject AttributePanel;
     static public GameObject LoadScenePanel;
+    static public GameObject FileListPanel;
 
     static public GameObject HandToolToggleMark;
     static public GameObject MoveToolToggleMark;
@@ -30,6 +32,9 @@ public class ObjectManager : MonoBehaviour
 
     static public Transform SceneListContiner;
     static public Transform SceneListEle;
+
+    static public Transform FileListContiner;
+    static public Transform FileListEle;
 
     static public Camera EditorCamera;
     static public Camera AxisCamera;
@@ -112,31 +117,40 @@ public class ObjectManager : MonoBehaviour
         DebugMsg.gameObject.SetActive(false);
 
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        InformationText.text = "Scene: New Scene.";
-#else
-        // check scene/object folder
-        if (!Directory.Exists(SceneFolder))
-        {
-            Debug.Log("Creating folder: " + SceneFolder);
-            Directory.CreateDirectory(SceneFolder);
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Contains("WebGL")){
+
+            InformationText.text = "Scene: New Scene.";
+            FileListPanel = GameObject.Find("Canvas/FileListPanel");
+            FileListContiner = FileListPanel.transform.Find("Window/FileList/Viewport/Content");
+            FileListEle = FileListContiner.transform.GetChild(0);
+            FileListPanel.SetActive(false);
+            FileListEle.gameObject.SetActive(false);
         }
-        if (!Directory.Exists(ObjectFolder))
+        else
         {
-            Debug.Log("Creating folder: " + ObjectFolder);
-            Directory.CreateDirectory(ObjectFolder);
-        }
-        // get ip address
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
-        {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            // check scene/object folder
+            if (!Directory.Exists(SceneFolder))
             {
-                ipAddress = ip.ToString();
+                Debug.Log("Creating folder: " + SceneFolder);
+                Directory.CreateDirectory(SceneFolder);
             }
+            if (!Directory.Exists(ObjectFolder))
+            {
+                Debug.Log("Creating folder: " + ObjectFolder);
+                Directory.CreateDirectory(ObjectFolder);
+            }
+            // get ip address
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    ipAddress = ip.ToString();
+                }
+            }
+            InformationText.text = "Scene: New Scene. IP: " + ipAddress + " Server " + serverStatus;
         }
-        InformationText.text = "Scene: New Scene. IP: " + ipAddress + " Server " + serverStatus;
-#endif
     }
 
     // Update is called once per frame

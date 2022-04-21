@@ -19,12 +19,14 @@ public class WebGL_SceneManager : MonoBehaviour
     public GameObject SelectedObj;
     public static GameObject PlayingScene;
     public static bool isPlaying = false;
+    public static Dictionary<string, GameObject> objPool;
     // Start is called before the first frame update
     void Start()
     {
         SceneFolder = ObjectManager.SceneFolder;
         sceneObjList = new ArrayList();
         Scene = ObjectManager.Scene;
+        objPool = new Dictionary<string, GameObject>();
         //Time.timeScale = 0;
     }
 
@@ -67,25 +69,14 @@ public class WebGL_SceneManager : MonoBehaviour
         sceneObjList.Add(objDict);
         return newObj;
     }
-    public GameObject CreateObjectFromFile(int objIndex)
-    {
-        if (objIndex != 0 && objIndex < ObjectManager.ObjectList.Count)
-        {
-            Debug.Log(ObjectManager.ObjectList[objIndex]);
-            return CreateObjectFromFile(ObjectManager.ObjectList[objIndex].ToString().Split('\\')[1].Split('.')[0]);
-        }
-        else
-        {
-            return null;
-        }
-    }
     public GameObject CreateObjectFromFile(string name, bool isWebGL=false)
     {
         GameObject newObj;
         if (isWebGL)
         {
+            print(name);
             // read obj from www
-            newObj = new OBJLoader().Load(name + ".obj", true);
+            newObj = new OBJLoader().Load(name, true);
         }
         else
         {
@@ -113,15 +104,16 @@ public class WebGL_SceneManager : MonoBehaviour
         sceneObjList.Add(objDict);
         return newObj;
     }
-    public void SaveScene()
+    public string GetSceneString()
     {
+
         Debug.Log("save scene " + SceneName);
         // Check Name
         if (SceneName.Length == 0)
         {
-            return;
+            return "";
         }
-        
+
         // Init Dict
         Dictionary<string, object> sceneDict = new Dictionary<string, object>();
         HashSet<string> objFileList = new HashSet<string>();
@@ -140,12 +132,13 @@ public class WebGL_SceneManager : MonoBehaviour
             // create serializable dictionary
             Transform trans = (Transform)objDict["trans"];
             Dictionary<string, object> serializableDict = new Dictionary<string, object>();
-            if(int.Parse(objDict["type"].ToString()) == 4)
+            if (int.Parse(objDict["type"].ToString()) == 4)
             {
                 objFileList.Add(objDict["name"].ToString());
+                serializableDict.Add("filename", objDict["name"]);
             }
             serializableDict.Add("type", objDict["type"]);
-            serializableDict.Add("name", objDict["name"]);
+            serializableDict.Add("name", trans.name);
             serializableDict.Add("position", trans.localPosition.ToString("F8"));
             serializableDict.Add("eulerAngles", trans.localEulerAngles.ToString("F8"));
             serializableDict.Add("scale", trans.localScale.ToString("F8"));
@@ -168,12 +161,22 @@ public class WebGL_SceneManager : MonoBehaviour
         sceneDict.Add("data", objDataStrList);
 
         // Serialize Dict to Json string
-        string objDictJsonString = JsonConvert.SerializeObject(sceneDict);
+        return JsonConvert.SerializeObject(sceneDict);
         //Debug.Log(objDictJsonString);
 
+    }
+    public void SaveScene()
+    {
+
+        Debug.Log("save scene " + SceneName);
+        // Check Name
+        if (SceneName.Length == 0)
+        {
+            return;
+        }
         // Save to file
         Debug.Log("saving to json " + SceneFolder + "/" + SceneName + ".json");
-        File.WriteAllText(SceneFolder + "/" + SceneName + ".json", objDictJsonString);
+        File.WriteAllText(SceneFolder + "/" + SceneName + ".json", GetSceneString());
         Debug.Log("saving to png " + SceneFolder + "/" + SceneName + ".png");
         ScreenCapture.CaptureScreenshot(SceneFolder + "/" + SceneName + ".png");
         ObjectManager.InformationText.text = "Scene: " + SceneName;
@@ -187,6 +190,7 @@ public class WebGL_SceneManager : MonoBehaviour
         {
             using (StreamReader reader = new StreamReader(WebGL_FileManager.streamDict[path], Encoding.UTF8))
             {
+                WebGL_FileManager.streamDict[path].Position = 0;
                 sceneDictString = reader.ReadToEnd();
                 Debug.Log(sceneDictString);
             }
@@ -246,13 +250,14 @@ public class WebGL_SceneManager : MonoBehaviour
                 if (isWebGL)
                 {
 
-                    newObj = CreateObjectFromFile(objDict["name"].ToString(), true);
+                    newObj = CreateObjectFromFile(objDict["name"].ToString() + ".obj", true);
                 }
                 else
                     newObj = CreateObjectFromFile(objDict["name"].ToString());
             }
 
             // Recovery transform
+            newObj.name = objDict["name"].ToString();
             string[] v3StrArray = objDict["position"].ToString().Trim(new char[] { '(', ')' }).Split(',');
             newObj.transform.position = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
             v3StrArray = objDict["eulerAngles"].ToString().Trim(new char[] { '(', ')' }).Split(',');

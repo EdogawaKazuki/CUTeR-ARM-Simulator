@@ -96,6 +96,7 @@ public class OpenTrajectory6DoF : MonoBehaviour, IPointerDownHandler
     {
         try
         {
+            int jointsLength = 0;
             for (int i = 0; i < 6; i++)
             {
                 RobotController6DoF.Trajs[i].Clear();
@@ -105,17 +106,32 @@ public class OpenTrajectory6DoF : MonoBehaviour, IPointerDownHandler
             {
                 for (int i = 1; i < 7; i++)
                 {
-                    string[] tmp = trajsTextArray[i].Split(',');
-                    foreach (var point in tmp)
+                    if (i < trajsTextArray.Length - 1)
                     {
-                        if (point.Equals("fire"))
+                        string[] tmp = trajsTextArray[i].Split(',');
+                        if (jointsLength != 0 && jointsLength != tmp.Length)
                         {
-                            RobotController6DoF.Trajs[i - 1].Add(1000);
+                            Debug.Log(jointsLength + ", " + tmp.Length + ", " + i);
+                            Result.text = "Load Failed, lists' length are not identical.";
+                            return;
                         }
-                        else
+                        jointsLength = tmp.Length;
+                        foreach (var point in tmp)
                         {
-                            RobotController6DoF.Trajs[i - 1].Add(float.Parse(point));
+                            if (point.Equals("fire"))
+                            {
+                                RobotController6DoF.Trajs[i - 1].Add(1000);
+                            }
+                            else
+                            {
+                                RobotController6DoF.Trajs[i - 1].Add(float.Parse(point));
+                            }
                         }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < jointsLength; j++)
+                            RobotController6DoF.Trajs[i - 1].Add(0);
                     }
                 }
             }
@@ -125,7 +141,7 @@ public class OpenTrajectory6DoF : MonoBehaviour, IPointerDownHandler
                 return;
             }
             RobotController6DoF.trajLength = RobotController6DoF.Trajs[0].Count;
-            Result.text = "Done!";
+            Result.text = "Done! Loaded " + (trajsTextArray.Length - 2) + " joints.";
         }
         catch (Exception e)
         {

@@ -20,10 +20,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Exercise_WebGL.unity
     guid: 213cf0af53a96504ca5c3833a8ffa53b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Main_6DoF.unity
     guid: 5f2ec56d6892afe4489940b3bda94275
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main_6DoF_WebGL.unity
     guid: ce2c59eb07ef66b43a631f16c1459c39
   m_configObjects: {}

@@ -9,7 +9,7 @@ using System.Linq;
 
 public class SceneManager : MonoBehaviour
 {
-    GameObject Scene;
+    static public GameObject Scene;
     static public ArrayList sceneObjList;
     string SceneFolder;
     public string SceneName;
@@ -49,13 +49,35 @@ public class SceneManager : MonoBehaviour
             case 3:
                 newObj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                 break;
+            case 4:
+                newObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                break;
             default:
                 newObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 break;
         }
         //newObj.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10;
         newObj.AddComponent<SceneObjectController>().parent = newObj.transform;
+        newObj.AddComponent<ObjTrajectoryExecutor>();
         newObj.transform.position = new Vector3(20, 0, 0);
+        if (i == 4) // ground
+        {
+            newObj.name = "Ground";
+            newObj.transform.position = new Vector3(0,-5.5f,0);
+            newObj.transform.eulerAngles = new Vector3(0,0,0);
+            newObj.transform.localScale = new Vector3(1000,10,1000);
+            Rigidbody rigidbody = newObj.AddComponent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            rigidbody.constraints |= RigidbodyConstraints.FreezePositionX;
+            rigidbody.constraints |= RigidbodyConstraints.FreezePositionY;
+            rigidbody.constraints |= RigidbodyConstraints.FreezePositionZ;
+            rigidbody.constraints |= RigidbodyConstraints.FreezeRotationX;
+            rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
+            rigidbody.constraints |= RigidbodyConstraints.FreezeRotationZ;
+            rigidbody.useGravity = false;
+            newObj.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/Ground");
+
+        }
         newObj.transform.SetParent(Scene.transform);
         newObj.layer = LayerMask.NameToLayer("Scene");
         Dictionary<string, object> objDict = new Dictionary<string, object>();
@@ -101,6 +123,7 @@ public class SceneManager : MonoBehaviour
         newObj.transform.SetParent(Scene.transform);
         newObj.transform.position = new Vector3(20, 5, 0);
         newObj.transform.gameObject.AddComponent<SceneObjectController>().parent = newObj.transform;
+        newObj.AddComponent<ObjTrajectoryExecutor>();
         // newObj.GetComponent<MeshCollider>().convex = true;
         // newObj.layer = LayerMask.NameToLayer("Scene");
         // add the obj to the objlist
@@ -141,9 +164,10 @@ public class SceneManager : MonoBehaviour
             if(int.Parse(objDict["type"].ToString()) == 4)
             {
                 objFileList.Add(objDict["name"].ToString());
+                serializableDict.Add("filename", objDict["name"]);
             }
             serializableDict.Add("type", objDict["type"]);
-            serializableDict.Add("name", objDict["name"]);
+            serializableDict.Add("name", trans.name);
             serializableDict.Add("position", trans.localPosition.ToString("F8"));
             serializableDict.Add("eulerAngles", trans.localEulerAngles.ToString("F8"));
             serializableDict.Add("scale", trans.localScale.ToString("F8"));
@@ -176,102 +200,103 @@ public class SceneManager : MonoBehaviour
         ScreenCapture.CaptureScreenshot(SceneFolder + "/" + SceneName + ".png");
         ObjectManager.InformationText.text = "Scene: " + SceneName + ". IP: " + ObjectManager.ipAddress + " Server " + ObjectManager.serverStatus;
     }
-    public void LoadScene(string path, bool isWebGL, string content=null)
+    public void LoadScene(string path, bool isWebGL, string content = null)
     {
         NewScene();
-            // Deserialize Json String
-            string sceneDictString;
-            if (isWebGL)
-                sceneDictString = content;
-            else
-                sceneDictString = File.ReadAllText(path);
-            Debug.Log("loading " + path);
-            Dictionary<string, object> sceneDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(sceneDictString);
-            SceneName = sceneDict["name"].ToString();
-            SceneDescription = sceneDict["description"].ToString();
-            ObjectManager.SceneName.text = SceneName;
-            ObjectManager.SceneDescription.text = SceneDescription;
-            string[] objFileList = JsonConvert.DeserializeObject<string[]>(sceneDict["objFileList"].ToString());
-            string[] objDataStrList = JsonConvert.DeserializeObject<string[]>(sceneDict["data"].ToString());
+        // Deserialize Json String
+        string sceneDictString;
+        if (isWebGL)
+            sceneDictString = content;
+        else
+            sceneDictString = File.ReadAllText(path);
+        Debug.Log("loading " + path);
+        Dictionary<string, object> sceneDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(sceneDictString);
+        SceneName = sceneDict["name"].ToString();
+        SceneDescription = sceneDict["description"].ToString();
+        ObjectManager.SceneName.text = SceneName;
+        ObjectManager.SceneDescription.text = SceneDescription;
+        string[] objFileList = JsonConvert.DeserializeObject<string[]>(sceneDict["objFileList"].ToString());
+        string[] objDataStrList = JsonConvert.DeserializeObject<string[]>(sceneDict["data"].ToString());
 
-            ObjectManager.DebugMsg.text += "loading " + path + "\n";
-            // Check existance of obj files
-            foreach (string objFile in objFileList)
+        ObjectManager.DebugMsg.text += "loading " + path + "\n";
+        // Check existance of obj files
+        foreach (string objFile in objFileList)
+        {
+            if (!File.Exists(ObjectManager.ObjectFolder + "/" + objFile + ".obj"))
             {
-                if (!File.Exists(ObjectManager.ObjectFolder + "/" + objFile + ".obj"))
-                {
-                    Debug.Log(ObjectManager.ObjectFolder + "/" + objFile + ".obj Not Exists! Cannot Load Scene!");
-                    return;
-                }
+                Debug.Log(ObjectManager.ObjectFolder + "/" + objFile + ".obj Not Exists! Cannot Load Scene!");
+                return;
             }
+        }
 
-            // Load Objects
-            for (int i = 0; i < objDataStrList.Length; i++)
+        // Load Objects
+        for (int i = 0; i < objDataStrList.Length; i++)
+        {
+            Dictionary<string, object> objDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(objDataStrList[i]);
+            //Debug.Log(objDataStrList[i]);
+            //Debug.Log(objDict["name"]);
+
+            // Create object
+            int type = int.Parse(objDict["type"].ToString());
+            GameObject newObj;
+            if (type != 4)
             {
-                Dictionary<string, object> objDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(objDataStrList[i]);
-                //Debug.Log(objDataStrList[i]);
-                //Debug.Log(objDict["name"]);
-
-                // Create object
-                int type = int.Parse(objDict["type"].ToString());
-                GameObject newObj;
-                if (type != 4)
+                newObj = CreatePrimitiveObject(type);
+            }
+            else
+            {
+                if (isWebGL)
                 {
-                    newObj = CreatePrimitiveObject(type);
+                    string[] tmp = path.Split('/');
+                    string url = string.Join("/", tmp.Take(tmp.Length - 2).ToArray());
+                    url += "/objects/" + objDict["filename"].ToString() + ".obj";
+                    newObj = CreateObjectFromFile(url, true);
                 }
                 else
-                {
-                    if (isWebGL)
-                    {
-                        string[] tmp = path.Split('/');
-                        string url = string.Join("/", tmp.Take(tmp.Length - 2).ToArray());
-                        url += "/objects/" + objDict["name"].ToString() + ".obj";
-                        newObj = CreateObjectFromFile(url, true);
-                    }
-                    else
-                        newObj = CreateObjectFromFile(objDict["name"].ToString(), false);
-                }
-
-                // Recovery transform
-                string[] v3StrArray = objDict["position"].ToString().Trim(new char[] { '(', ')' }).Split(',');
-                newObj.transform.position = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
-                v3StrArray = objDict["eulerAngles"].ToString().Trim(new char[] { '(', ')' }).Split(',');
-                newObj.transform.eulerAngles = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
-                v3StrArray = objDict["scale"].ToString().Trim(new char[] { '(', ')' }).Split(',');
-                newObj.transform.localScale = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
-                newObj.transform.SetParent(Scene.transform);
-                if (bool.Parse(objDict["isRigidbody"].ToString()))
-                {
-                    Rigidbody rigidbody = newObj.AddComponent<Rigidbody>();
-                    rigidbody.isKinematic = true;
-                    if (bool.Parse(objDict["fixPositionX"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezePositionX;
-                    }
-                    if (bool.Parse(objDict["fixPositionY"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezePositionY;
-                    }
-                    if (bool.Parse(objDict["fixPositionZ"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezePositionZ;
-                    }
-                    if (bool.Parse(objDict["fixRotationX"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezeRotationX;
-                    }
-                    if (bool.Parse(objDict["fixRotationY"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
-                    }
-                    if (bool.Parse(objDict["fixRotationZ"].ToString()))
-                    {
-                        rigidbody.constraints |= RigidbodyConstraints.FreezeRotationZ;
-                    }
-                    rigidbody.useGravity = bool.Parse(objDict["useGravity"].ToString());
-                }
+                    newObj = CreateObjectFromFile(objDict["filename"].ToString(), false);
             }
-            ObjectManager.InformationText.text = "Scene: " + SceneName + ". IP: " + ObjectManager.ipAddress + " Server " + ObjectManager.serverStatus;
+
+            // Recovery transform
+            newObj.name = objDict["name"].ToString();
+            string[] v3StrArray = objDict["position"].ToString().Trim(new char[] { '(', ')' }).Split(',');
+            newObj.transform.position = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
+            v3StrArray = objDict["eulerAngles"].ToString().Trim(new char[] { '(', ')' }).Split(',');
+            newObj.transform.eulerAngles = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
+            v3StrArray = objDict["scale"].ToString().Trim(new char[] { '(', ')' }).Split(',');
+            newObj.transform.localScale = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
+            newObj.transform.SetParent(Scene.transform);
+            if (bool.Parse(objDict["isRigidbody"].ToString()))
+            {
+                Rigidbody rigidbody = newObj.AddComponent<Rigidbody>();
+                rigidbody.isKinematic = true;
+                if (bool.Parse(objDict["fixPositionX"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezePositionX;
+                }
+                if (bool.Parse(objDict["fixPositionY"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezePositionY;
+                }
+                if (bool.Parse(objDict["fixPositionZ"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezePositionZ;
+                }
+                if (bool.Parse(objDict["fixRotationX"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezeRotationX;
+                }
+                if (bool.Parse(objDict["fixRotationY"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
+                }
+                if (bool.Parse(objDict["fixRotationZ"].ToString()))
+                {
+                    rigidbody.constraints |= RigidbodyConstraints.FreezeRotationZ;
+                }
+                rigidbody.useGravity = bool.Parse(objDict["useGravity"].ToString());
+            }
+        }
+        ObjectManager.InformationText.text = "Scene: " + SceneName + ". IP: " + ObjectManager.ipAddress + " Server " + ObjectManager.serverStatus;
 
     }
     public void NewScene()
@@ -312,6 +337,7 @@ public class SceneManager : MonoBehaviour
         }
         isPlaying = true;
         PlayingScene = Instantiate(ObjectManager.Scene);
+        Debug.Log(PlayingScene.transform.childCount);
         for (int i = 0; i < PlayingScene.transform.childCount; i++)
         {
             Rigidbody rigidbody = PlayingScene.transform.GetChild(i).gameObject.GetComponent<Rigidbody>();

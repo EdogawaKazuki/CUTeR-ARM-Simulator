@@ -108,7 +108,7 @@ namespace Dummiesman
         /// <returns>Returns a GameObject represeting the OBJ file, with each imported object as a child.</returns>
         public GameObject Load(Stream input, bool isWebGL = false)
         {
-            Debug.Log("From Stream");
+            input.Position = 0;
             var reader = new StreamReader(input);
             //var reader = new StringReader(inputReader.ReadToEnd());
 

@@ -32,102 +32,13 @@ public class WebGL_UIEventManager : MonoBehaviour
     {
         gameObject.GetComponent<Toggle>().isOn = false;
     }
-    public void LoadObj()
-    {
-
-    }
-    public void ScanObjFolder()
-    {
-
-        ObjectDropdown.options.Clear();
-        ObjectList.Clear();
-
-        ObjectDropdown.options.Add(new Dropdown.OptionData("Select .obj..."));
-        ObjectList.Add("Placeholder");
-
-        if (Directory.Exists(ObjectManager.ObjectFolder))
-        {
-            Debug.Log("Obj folder exists: " + ObjectManager.ObjectFolder);
-            foreach (string file in Directory.GetFiles(ObjectManager.ObjectFolder + "\\", "*.obj"))
-            {
-                Debug.Log(file);
-                string[] splitedPath = file.Split('.');
-                if (splitedPath[splitedPath.Length - 1].Equals("obj"))
-                {
-                    ObjectDropdown.options.Add(new Dropdown.OptionData(file.Split('\\')[1]));
-                    ObjectList.Add(file);
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Scene folder doesn't exist");
-        }
-        ObjectDropdown.value = 0;
-
-    }
-    public void ScanSceneFolder()
-    {
-        SceneList.Clear();
-
-        SceneList.Add("Placeholder");
-
-        for(int i = 1; i < SceneListContiner.childCount; i++)
-        {
-            Destroy(SceneListContiner.GetChild(i).gameObject);
-        }
-
-        if (Directory.Exists(ObjectManager.SceneFolder))
-        {
-            Debug.Log("Scene folder exists");
-            foreach (string file in Directory.GetFiles(ObjectManager.SceneFolder, "*.json"))
-            {
-                Debug.Log(file);
-                string[] splitedPath = file.Split('.');
-                Debug.Log(splitedPath[splitedPath.Length - 1]);
-                if (splitedPath[splitedPath.Length - 1].Equals("json"))
-                {
-                    Debug.Log("parsing " + file);
-                    string name = file.Split('\\')[1].Split('.')[0];
-                    SceneList.Add(file);
-                    Transform newEle = Instantiate(SceneListEle);
-                    newEle.SetParent(SceneListContiner);
-                    newEle.gameObject.SetActive(true);
-                    newEle.name = name;
-                    // read scene info
-                    string sceneDictString = File.ReadAllText(file);
-                    Dictionary<string, object> sceneDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(sceneDictString);
-                    // load screenshot image
-                    Texture2D tex = new Texture2D(2, 2);
-                    tex.LoadImage(File.ReadAllBytes(file.Replace(".json", ".png")));
-                    // modify the scene card
-                    newEle.Find("Name").GetComponent<Text>().text = sceneDict["name"].ToString();
-                    newEle.Find("Date").GetComponent<Text>().text = sceneDict["date"].ToString();
-                    newEle.Find("Desc").GetComponent<Text>().text = sceneDict["description"].ToString();
-                    newEle.Find("Path").GetComponent<Text>().text = ObjectManager.SceneFolder + "/" + sceneDict["name"].ToString() + ".json";
-                    newEle.Find("Image").GetComponent<Image>().overrideSprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-                    newEle.GetComponent<Button>().onClick.AddListener(delegate { OnSceneEleClicked(name); ObjectManager.LoadScenePanel.SetActive(false); });
-
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Scene folder doesn't exist");
-        }
-
-    }
     public void OnSceneEleClicked(string value)
     {
         sceneManager.LoadScene(ObjectManager.SceneFolder + "/" + value + ".json", false);
     }
-    public void OnObjDropdpwnValueChanged(int value)
-    {
-        ObjectManager.GameAdmin.GetComponent<SceneManager>().CreateObjectFromFile(value);
-    }
     public void OnNewObjClicked(int value)
     {
-        ObjectManager.GameAdmin.GetComponent<SceneManager>().CreatePrimitiveObject(value);
+        ObjectManager.GameAdmin.GetComponent<WebGL_SceneManager>().CreatePrimitiveObject(value);
     }
     public void OnSceneNameValueChanged(string value)
     {

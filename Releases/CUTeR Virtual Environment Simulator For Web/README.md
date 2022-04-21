@@ -9,4 +9,3 @@
     - Move: Hold middle mouse button, then drag.
     - Orbit: Hold right mouse button, then drag.
     - Zoom: Use the scroll whell.
-- To load scene, please select all needed files, included json file, obj files and mtl files.

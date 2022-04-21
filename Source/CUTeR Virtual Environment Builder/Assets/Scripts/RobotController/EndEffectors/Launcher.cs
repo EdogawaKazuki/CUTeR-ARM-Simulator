@@ -32,7 +32,7 @@ public class Launcher : MonoBehaviour
     }
     public void Toggle()
     {
-        Debug.Log(isActive +"," + (WebGL_SceneManager.isPlaying || SceneManager.isPlaying));
+        //Debug.Log(isActive +"," + (WebGL_SceneManager.isPlaying || SceneManager.isPlaying));
         if (isActive && (WebGL_SceneManager.isPlaying || SceneManager.isPlaying))
         {
             toggle = true;
