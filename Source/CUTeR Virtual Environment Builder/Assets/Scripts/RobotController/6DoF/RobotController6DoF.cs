@@ -72,6 +72,9 @@ public class RobotController6DoF : MonoBehaviour
 
     public void FixedUpdate()
     {
+        ObjectManager.DebugMsg.text = Time.deltaTime.ToString();
+
+
         MoveRobot();
         UpdateUI();
         if (runTraj)
