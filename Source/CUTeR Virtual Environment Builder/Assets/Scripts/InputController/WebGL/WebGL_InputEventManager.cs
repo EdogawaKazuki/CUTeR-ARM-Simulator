@@ -10,7 +10,7 @@ public class WebGL_InputEventManager : MonoBehaviour
     ArrayList AxisList;
     bool isSelectAxis;
     bool isSelectScene;
-    Transform selectedObject;
+    static public Transform selectedObject;
     char movingAxis;
     int movineMode;
     Vector3 hitPoint;

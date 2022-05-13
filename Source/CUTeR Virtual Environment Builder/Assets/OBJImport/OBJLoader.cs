@@ -82,7 +82,13 @@ namespace Dummiesman
         {
             if (isWebGL)
             {
-                Materials = new MTLLoader().Load(WebGL_FileManager.streamDict[mtlLibPath]);
+
+                Stream stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(WebGL_FileManager.fileDataDict[mtlLibPath]);
+                writer.Flush();
+                stream.Position = 0;
+                Materials = new MTLLoader().Load(stream);
                 return;
             }
             if (_objInfo != null)
@@ -323,7 +329,12 @@ namespace Dummiesman
         {
             if (isWebGL)
             {
-                return Load(WebGL_FileManager.streamDict[path], true);
+                Stream stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(WebGL_FileManager.fileDataDict[path]);
+                writer.Flush();
+                stream.Position = 0;
+                return Load(stream, true);
             }
             _objInfo = new FileInfo(path);
             if (!string.IsNullOrEmpty(mtlPath) && File.Exists(mtlPath))

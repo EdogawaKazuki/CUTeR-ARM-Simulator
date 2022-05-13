@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,17 +18,14 @@ public class RobotClient6DoF : MonoBehaviour
     string sendStr;
     byte[] recvData = new byte[10240];
     byte[] sendData = new byte[10240];
-    int recvLen;
     static public bool isRecvingMode = false;
     static public bool isConnectedToRobot = false;
-    bool isPlaying = false;
     Thread SendThread;
     bool isFinished = false;
-    Image TrajectoryBG;
+    bool isPlaying = false;
     // Start is called before the first frame update
     void Start()
     {
-        TrajectoryBG = GameObject.Find("Canvas/WSBtnGroup/RunTrajectory/Image").GetComponent<Image>();
         // init socket
         ServerEndPoint = new IPEndPoint(IPAddress.Parse(RobotServerIP), RobotServerPort);
         ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -40,7 +38,8 @@ public class RobotClient6DoF : MonoBehaviour
     {
         if (isFinished)
         {
-            TrajectoryBG.color = new Color32(255, 255, 255, 78);
+            ObjectManager.TrajectoryStatus.text = "Finised";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
     }
     public void SetRobotIP(string value)
@@ -76,7 +75,8 @@ public class RobotClient6DoF : MonoBehaviour
             {
                 if (isRecvingMode)
                 {
-                    ReceiveFromRealRobot();
+                    if (isPlaying)
+                        ReceiveFromRealRobot();
                 }
                 else
                 {
@@ -90,21 +90,62 @@ public class RobotClient6DoF : MonoBehaviour
     {
         try
         {
-            Debug.Log("" + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5]);
+            Debug.Log("" + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end");
             /*
             realAngle[0] = (Robot.angle[0] - offset[0]) / scale[0];
             realAngle[1] = 180 - (angle[1] - offset[1]) / scale[1];
             realAngle[2] = (Robot.angle[2] - offset[2]) / scale[2];
             */
-            sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+            sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             Debug.Log("send to " + RobotServerIP + ":" + RobotServerPort + ". Data: " + sendStr);
-            Thread.Sleep(10);
+            Thread.Sleep(20);
         }
         catch (Exception e)
         {
             Debug.Log(e.ToString());
+        }
+    }
+    string GetObjDict()
+    {
+        if (SceneManager.isPlaying)
+        {
+            string[] objDataStrList = new string[SceneManager.PlayingScene.transform.childCount];
+
+            // Get all objects
+            for (int i = 0; i < objDataStrList.Length; i++)
+            {
+                Transform obj = SceneManager.PlayingScene.transform.GetChild(i);
+                Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                serializableDict.Add("name", obj.name);
+                serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                //Debug.Log(objDataStrList[i]);
+            }
+            return JsonConvert.SerializeObject(objDataStrList);
+        }
+        else
+        {
+
+            string[] objDataStrList = new string[ObjectManager.Scene.transform.childCount];
+
+            // Get all objects
+            for (int i = 0; i < objDataStrList.Length; i++)
+            {
+                Transform obj = ObjectManager.Scene.transform.GetChild(i);
+                Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                serializableDict.Add("name", obj.name);
+                serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
+                //Debug.Log(objDataStrList[i]);
+            }
+            return JsonConvert.SerializeObject(objDataStrList);
         }
     }
     void ReceiveFromRealRobot()
@@ -122,15 +163,57 @@ public class RobotClient6DoF : MonoBehaviour
             if (data[0].Equals("point"))
             {
                 tempAngle = CartesianToAngle(float.Parse(data[1]), float.Parse(data[2]), float.Parse(data[3]));
+                if (data[1].Equals("fire"))
+                {
+                    RobotController6DoF.Grabber.Toggle();
+                    RobotController6DoF.Launcher.Toggle();
+                    tempAngle = new float[] { float.Parse(data[2]), float.Parse(data[3]), float.Parse(data[4]) };
+                }
+            }
+            else if (data[0].Equals("fire"))
+            {
+                RobotController6DoF.Grabber.Toggle();
+                RobotController6DoF.Launcher.Toggle();
+                tempAngle = new float[] { float.Parse(data[1]), float.Parse(data[2]), float.Parse(data[3]), float.Parse(data[4]), float.Parse(data[5]), float.Parse(data[6]) };
             }
             else if (data[0].Equals("end"))
             {
-                sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+                sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
                 sendData = Encoding.ASCII.GetBytes(sendStr);
                 ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
                 tempAngle = RobotController6DoF.JointAngle;
                 isPlaying = false;
                 isFinished = true;
+            }
+            else if (data[0].Equals("obj"))
+            {
+                if (data[1].Equals("ALL"))
+                {
+                    sendStr = GetObjDict();
+                    sendData = Encoding.ASCII.GetBytes(sendStr);
+                    ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+                }
+                else
+                {
+                    Transform obj;
+                    if (SceneManager.isPlaying)
+                    {
+                        obj = SceneManager.PlayingScene.transform.Find(data[1]);
+                    }
+                    else
+                    {
+                        obj = ObjectManager.Scene.transform.Find(data[1]);
+                    }
+                    Dictionary<string, object> serializableDict = new Dictionary<string, object>();
+                    serializableDict.Add("name", obj.name);
+                    serializableDict.Add("position", obj.localPosition.ToString("F8"));
+                    serializableDict.Add("eulerAngles", obj.localEulerAngles.ToString("F8"));
+                    serializableDict.Add("scale", obj.localScale.ToString("F8"));
+                    sendStr = JsonConvert.SerializeObject(serializableDict);
+                    sendData = Encoding.ASCII.GetBytes(sendStr);
+                    ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+                }
+                return;
             }
             else
             {
@@ -138,12 +221,12 @@ public class RobotClient6DoF : MonoBehaviour
                 tempAngle = new float[] { float.Parse(data[0]), float.Parse(data[1]), float.Parse(data[2]), float.Parse(data[3]), float.Parse(data[4]), float.Parse(data[5]) };
             }
             Debug.Log(Encoding.Default.GetString(recvData));
-            Debug.Log(tempAngle[0] + "," + tempAngle[1] + "," + tempAngle[2] + tempAngle[3] + "," + tempAngle[4] + "," + tempAngle[5]);
+            Debug.Log(tempAngle[0] + "," + tempAngle[1] + "," + tempAngle[2]);
             for (int i = 0; i < 6; i++)
             {
                 RobotController6DoF.JointAngle[i] = tempAngle[i];
             }
-            Thread.Sleep(10);
+            Thread.Sleep(20);
         }
         catch (Exception e)
         {
@@ -200,15 +283,17 @@ public class RobotClient6DoF : MonoBehaviour
     public void SetRecvingMode(bool value)
     {
         isRecvingMode = value;
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 3; i++)
             RobotController6DoF.Sliders[i].interactable = !value;
         if (isRecvingMode)
         {
-            TrajectoryBG.color = new Color32(255, 255, 255, 78);
+            ObjectManager.TrajectoryStatus.text = "Ready to play";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
         else
         {
-            TrajectoryBG.color = new Color32(255, 255, 255, 78);
+            ObjectManager.TrajectoryStatus.text = "No Trajectory";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
 
 
@@ -225,7 +310,8 @@ public class RobotClient6DoF : MonoBehaviour
                 sendData = Encoding.ASCII.GetBytes(sendStr);
                 ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
                 isFinished = false;
-                TrajectoryBG.color = new Color32(100, 255, 100, 160);
+                ObjectManager.TrajectoryStatus.text = "Playing";
+                ObjectManager.TrajectoryBG.color = new Color32(100, 255, 100, 160);
             }
             else
             {
@@ -234,7 +320,8 @@ public class RobotClient6DoF : MonoBehaviour
                 sendData = Encoding.ASCII.GetBytes(sendStr);
                 ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
                 isFinished = false;
-                TrajectoryBG.color = new Color32(255, 255, 100, 160);
+                ObjectManager.TrajectoryStatus.text = "Pause";
+                ObjectManager.TrajectoryBG.color = new Color32(255, 255, 100, 160);
             }
         }
     }
@@ -243,11 +330,12 @@ public class RobotClient6DoF : MonoBehaviour
         if (isRecvingMode && isConnectedToRobot)
         {
             isPlaying = false;
-            sendStr = "stop," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+            sendStr = "stop," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             isFinished = false;
-            TrajectoryBG.color = new Color32(255, 255, 255, 78);
+            ObjectManager.TrajectoryStatus.text = "Ready to play";
+            ObjectManager.TrajectoryBG.color = new Color32(255, 255, 255, 78);
         }
     }
     private void OnApplicationQuit()

@@ -90,13 +90,13 @@ public class RobotClient6DoF : MonoBehaviour
     {
         try
         {
-            Debug.Log("" + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5]);
+            Debug.Log("" + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5]);
             /*
             realAngle[0] = (Robot.angle[0] - offset[0]) / scale[0];
             realAngle[1] = 180 - (angle[1] - offset[1]) / scale[1];
             realAngle[2] = (Robot.angle[2] - offset[2]) / scale[2];
             */
-            sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+            sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             Debug.Log("send to " + RobotServerIP + ":" + RobotServerPort + ". Data: " + sendStr);
@@ -125,7 +125,7 @@ public class RobotClient6DoF : MonoBehaviour
             }
             else if (data[0].Equals("end"))
             {
-                sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+                sendStr = "post," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
                 sendData = Encoding.ASCII.GetBytes(sendStr);
                 ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
                 tempAngle = RobotController6DoF.JointAngle;
@@ -135,10 +135,14 @@ public class RobotClient6DoF : MonoBehaviour
             else
             {
                 isFinished = false;
+                for(int i= 0; i < data.Length; i++)
+                {
+                    Debug.Log(data[i]);
+                }
                 tempAngle = new float[] { float.Parse(data[0]), float.Parse(data[1]), float.Parse(data[2]), float.Parse(data[3]), float.Parse(data[4]), float.Parse(data[5]) };
             }
             Debug.Log(Encoding.Default.GetString(recvData));
-            Debug.Log(tempAngle[0] + "," + tempAngle[1] + "," + tempAngle[2] + tempAngle[3] + "," + tempAngle[4] + "," + tempAngle[5]);
+            Debug.Log(tempAngle[0] + "," + tempAngle[1] + "," + tempAngle[2] + "," + tempAngle[3] + "," + tempAngle[4] + "," + tempAngle[5]);
             for (int i = 0; i < 6; i++)
             {
                 RobotController6DoF.JointAngle[i] = tempAngle[i];
@@ -243,7 +247,7 @@ public class RobotClient6DoF : MonoBehaviour
         if (isRecvingMode && isConnectedToRobot)
         {
             isPlaying = false;
-            sendStr = "stop," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
+            sendStr = "stop," + RobotController6DoF.JointAngle[0] + "," + RobotController6DoF.JointAngle[1] + "," + RobotController6DoF.JointAngle[2] + "," + RobotController6DoF.JointAngle[3] + "," + RobotController6DoF.JointAngle[4] + "," + RobotController6DoF.JointAngle[5] + ",end";
             sendData = Encoding.ASCII.GetBytes(sendStr);
             ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
             isFinished = false;

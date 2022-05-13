@@ -59,6 +59,7 @@ public class WebGL_SceneManager : MonoBehaviour
         }
         //newObj.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10;
         newObj.AddComponent<SceneObjectController>().parent = newObj.transform;
+        newObj.AddComponent<ObjTrajectoryExecutor>();
         newObj.transform.position = new Vector3(20, 5, 0);
         newObj.transform.SetParent(Scene.transform);
         newObj.layer = LayerMask.NameToLayer("Scene");
@@ -94,6 +95,7 @@ public class WebGL_SceneManager : MonoBehaviour
         newObj.transform.SetParent(Scene.transform);
         newObj.transform.position = new Vector3(20, 5, 0);
         newObj.transform.gameObject.AddComponent<SceneObjectController>().parent = newObj.transform;
+        newObj.AddComponent<ObjTrajectoryExecutor>();
         // newObj.GetComponent<MeshCollider>().convex = true;
         // newObj.layer = LayerMask.NameToLayer("Scene");
         // add the obj to the objlist
@@ -188,9 +190,13 @@ public class WebGL_SceneManager : MonoBehaviour
         string sceneDictString;
         if (isWebGL)
         {
-            using (StreamReader reader = new StreamReader(WebGL_FileManager.streamDict[path], Encoding.UTF8))
+            Stream stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(WebGL_FileManager.fileDataDict[path]);
+            writer.Flush();
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
-                WebGL_FileManager.streamDict[path].Position = 0;
                 sceneDictString = reader.ReadToEnd();
                 Debug.Log(sceneDictString);
             }
@@ -211,7 +217,7 @@ public class WebGL_SceneManager : MonoBehaviour
         {
             foreach (string objFile in objFileList)
             {
-                if (!WebGL_FileManager.streamDict.ContainsKey(objFile + ".obj"))
+                if (!WebGL_FileManager.fileDataDict.ContainsKey(objFile + ".obj"))
                 {
                     Debug.Log(objFile + ".obj Not Exists! Cannot Load Scene!");
                     return;

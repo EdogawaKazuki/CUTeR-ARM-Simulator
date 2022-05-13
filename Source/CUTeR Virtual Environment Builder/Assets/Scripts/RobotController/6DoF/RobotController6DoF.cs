@@ -159,7 +159,7 @@ public class RobotController6DoF : MonoBehaviour
     }
     void MoveRobot()
     {
-        JointLocalEularAngles[0].y = JointAngle[0];
+        JointLocalEularAngles[0].y = -JointAngle[0];
         JointLocalEularAngles[1].x = JointAngle[1];
         JointLocalEularAngles[2].x = JointAngle[2];
         JointLocalEularAngles[3].z = JointAngle[3];
@@ -212,4 +212,22 @@ public class RobotController6DoF : MonoBehaviour
         }
     }
 
+    public void StartObjTraj()
+    {
+        if(SceneManager.isPlaying)
+            for (int i = 0; i < SceneManager.PlayingScene.transform.childCount; i++)
+            {
+                SceneManager.PlayingScene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().TrajPosition = SceneManager.Scene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().TrajPosition;
+                SceneManager.PlayingScene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().TrajRotation = SceneManager.Scene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().TrajRotation;
+                SceneManager.PlayingScene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().StartTraj();
+            }
+    }
+    public void StopObjTraj()
+    {
+        if(SceneManager.isPlaying)
+            for (int i = 0; i < SceneManager.PlayingScene.transform.childCount; i++)
+            {
+                SceneManager.PlayingScene.transform.GetChild(i).GetComponent<ObjTrajectoryExecutor>().StopTraj();
+            }
+    }
 }

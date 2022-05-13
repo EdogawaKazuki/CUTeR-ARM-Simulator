@@ -105,19 +105,28 @@ public class ObjTrajectoryLoader: MonoBehaviour, IPointerDownHandler
             string[] xRotationArray = gestureTextArray[3].Split(',');
             string[] yRotationArray = gestureTextArray[4].Split(',');
             string[] zRotationArray = gestureTextArray[5].Split(',');
-            List<Vector3> TrajPosition = InputEventManager.selectedObject.GetComponent<ObjTrajectoryExecutor>().TrajPosition;
-            List<Vector3> TrajRotation = InputEventManager.selectedObject.GetComponent<ObjTrajectoryExecutor>().TrajRotation;
-            InputEventManager.selectedObject.GetComponent<ObjTrajectoryExecutor>().trajLength = zRotationArray.Length;
+            Transform selectedObj = null;
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Contains("WebGL"))
+            {
+                selectedObj = WebGL_InputEventManager.selectedObject;
+            }
+            else
+            {
+                selectedObj = InputEventManager.selectedObject;
+
+            }
+            List<Vector3> TrajPosition = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajPosition;
+            List<Vector3> TrajRotation = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajRotation;
+            selectedObj.GetComponent<ObjTrajectoryExecutor>().trajLength = zRotationArray.Length;
             TrajPosition.Clear();
             TrajRotation.Clear();
-            for (int i = 0;i< xPositionArray.Length; i++)
+            for (int i = 0; i < xPositionArray.Length; i++)
             {
-                TrajPosition.Add(new Vector3(float.Parse(xPositionArray[i]), float.Parse(yPositionArray[i]), float.Parse(zPositionArray[i])));
-                TrajRotation.Add(new Vector3(float.Parse(xRotationArray[i]), float.Parse(yRotationArray[i]), float.Parse(zRotationArray[i])));
+                TrajPosition.Add(new Vector3(-float.Parse(xPositionArray[i]), float.Parse(zPositionArray[i]), -float.Parse(yPositionArray[i])));
+                TrajRotation.Add(new Vector3(float.Parse(xRotationArray[i]), float.Parse(zRotationArray[i]), float.Parse(yRotationArray[i])));
             }
-            InputEventManager.selectedObject.transform.localPosition = TrajPosition[0];
-            InputEventManager.selectedObject.transform.localEulerAngles = TrajRotation[0];
-
+            selectedObj.transform.localPosition = TrajPosition[0];
+            selectedObj.transform.localEulerAngles = TrajRotation[0];
         }
         catch (Exception e)
         {

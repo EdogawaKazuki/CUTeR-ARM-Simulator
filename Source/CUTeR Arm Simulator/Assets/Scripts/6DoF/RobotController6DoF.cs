@@ -104,7 +104,7 @@ public class RobotController6DoF : MonoBehaviour
     }
     void MoveRobot()
     {
-        JointLocalEularAngles[0].y = JointAngle[0];
+        JointLocalEularAngles[0].y = -JointAngle[0];
         JointLocalEularAngles[1].x = JointAngle[1];
         JointLocalEularAngles[2].x = JointAngle[2];
         JointLocalEularAngles[3].z = JointAngle[3];

@@ -190,4 +190,8 @@ public class WebGL_UIEventManager : MonoBehaviour
     {
         sceneManager.SelectedObj.GetComponent<Rigidbody>().useGravity = value;
     }
+    public void ToggleTraj(bool value)
+    {
+        sceneManager.SelectedObj.GetComponent<ObjTrajectoryExecutor>().TrajSwitch = value;
+    }
 }

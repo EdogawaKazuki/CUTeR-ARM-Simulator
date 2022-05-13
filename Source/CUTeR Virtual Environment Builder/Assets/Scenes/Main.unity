@@ -3973,7 +3973,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 708105424}
   m_HandleRect: {fileID: 708105423}
   m_Direction: 2
-  m_Value: 1.0000018
+  m_Value: 1
   m_Size: 0.9514286
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -24586,7 +24586,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 669219940}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6

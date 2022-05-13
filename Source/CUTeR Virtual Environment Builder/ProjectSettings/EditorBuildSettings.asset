@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: dd158a9b55854b948ad51dda283cb1db
   - enabled: 0
     path: Assets/Scenes/Main_WebGL.unity
     guid: af6d47ff15b472e438e32558082d58f3
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/6DoF_Main.unity
     guid: cd42b985ef65abb4eb516de7866fe5e8
+  - enabled: 0
+    path: Assets/Scenes/6DoF_Main_WebGL.unity
+    guid: d2f13228a528b0947891c534564e5e0f
   m_configObjects: {}

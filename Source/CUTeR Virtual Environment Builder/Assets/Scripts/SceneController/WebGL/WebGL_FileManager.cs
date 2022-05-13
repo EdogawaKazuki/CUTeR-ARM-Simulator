@@ -14,7 +14,8 @@ public class WebGL_FileManager : MonoBehaviour
     int uploadedFileCount;
     string sceneFile;
     WebGL_SceneManager SceneManager;
-    static public Dictionary<string, string> fileDict;
+    static public Dictionary<string, string> filePathDict;
+    static public Dictionary<string, string> fileDataDict;
     static public Dictionary<string, Stream> streamDict;
     static public List<string> objList;
     static public List<string> sceneList;
@@ -25,7 +26,8 @@ public class WebGL_FileManager : MonoBehaviour
         SceneManager = GameObject.Find("GameAdmin").GetComponent<WebGL_SceneManager>();
         FileListContiner = ObjectManager.FileListContiner;
         FileListEle = ObjectManager.FileListEle;
-        fileDict = new Dictionary<string, string>();
+        filePathDict = new Dictionary<string, string>();
+        fileDataDict = new Dictionary<string, string>();
         streamDict = new Dictionary<string, Stream>();
         objList = new List<string>();
         sceneList = new List<string>();
@@ -49,25 +51,25 @@ public class WebGL_FileManager : MonoBehaviour
             string[] kv = { tmp[tmp.Length - 1], file[i] };
 #endif
             fileCount++;
-            if (fileDict.ContainsKey(kv[0]))
+            if (filePathDict.ContainsKey(kv[0]))
             {
-                fileDict[kv[0]] = kv[1];
+                filePathDict[kv[0]] = kv[1];
             }
             else
             {
-                fileDict.Add(kv[0], kv[1]);
+                filePathDict.Add(kv[0], kv[1]);
+                fileList.Add(kv[0]);
+                if (Path.GetExtension(kv[0]).Equals(".json"))
+                    sceneList.Add(kv[0]);
+                else if (Path.GetExtension(kv[0]).Equals(".obj"))
+                    objList.Add(kv[0]);
             }
-            fileList.Add(kv[0]);
-            if (Path.GetExtension(kv[0]).Equals(".json"))
-                sceneList.Add(kv[0]);
-            else if (Path.GetExtension(kv[0]).Equals(".obj"))
-                objList.Add(kv[0]);
             StartCoroutine(OutputRoutine(kv));
         }
     }
     public void Clear()
     {
-        fileDict.Clear();
+        filePathDict.Clear();
         streamDict.Clear();
     }
     private IEnumerator OutputRoutine(string[] kv)
@@ -90,18 +92,14 @@ public class WebGL_FileManager : MonoBehaviour
         try
         {
             print(kv[0]);
-            Stream stream = new MemoryStream();
-            var writer = new StreamWriter(stream);
-            writer.Write(request.downloadHandler.text);
-            writer.Flush();
-            stream.Position = 0;
-            if (streamDict.ContainsKey(kv[0]))
+
+            if (fileDataDict.ContainsKey(kv[0]))
             {
-                streamDict[kv[0]] = stream;
+                fileDataDict[kv[0]] = request.downloadHandler.text;
             }
             else
             {
-                streamDict.Add(kv[0], stream);
+                fileDataDict.Add(kv[0], request.downloadHandler.text);
             }
             uploadedFileCount++;
             Debug.Log("uploaded: " + uploadedFileCount + ",total needed: " + fileCount);
