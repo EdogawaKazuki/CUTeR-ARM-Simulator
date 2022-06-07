@@ -11,6 +11,7 @@ public class RobotController6DoF : MonoBehaviour
     string[] EndEffectorNames = { "Nothing", "Hand", "Pen", "Launcher" };
     static public Transform[] EndEffectors;
     static public Transform[] EndEffectors6DoF;
+    static public string trajString = "";
     static public List<List<float>> Trajs;
     static public float[] JointAngle = { 0, 180, -170, 0, 0, 0 };
     static public int currentTrajIndex = 0;

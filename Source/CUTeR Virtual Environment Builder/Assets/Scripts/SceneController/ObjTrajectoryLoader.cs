@@ -118,6 +118,7 @@ public class ObjTrajectoryLoader: MonoBehaviour, IPointerDownHandler
             List<Vector3> TrajPosition = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajPosition;
             List<Vector3> TrajRotation = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajRotation;
             selectedObj.GetComponent<ObjTrajectoryExecutor>().trajLength = zRotationArray.Length;
+            selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajString = trajText;
             TrajPosition.Clear();
             TrajRotation.Clear();
             for (int i = 0; i < xPositionArray.Length; i++)

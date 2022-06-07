@@ -66,7 +66,7 @@ public class Grabber : MonoBehaviour
         if(collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
         {
             Transform obj = collider.transform.GetComponent<SceneObjectController>().parent;
-            obj.GetComponent<ObjTrajectoryExecutor>().runTraj = false;
+            //obj.GetComponent<ObjTrajectoryExecutor>().runTraj = false;
             if (colliderDict.ContainsKey(obj))
             {
                 colliderDict[obj]++;
@@ -86,8 +86,8 @@ public class Grabber : MonoBehaviour
         if (collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
         {
             Transform obj = collider.transform.GetComponent<SceneObjectController>().parent;
-            if(SceneManager.isPlaying)
-                obj.GetComponent<ObjTrajectoryExecutor>().runTraj = true;
+            //if(SceneManager.isPlaying)
+            //    obj.GetComponent<ObjTrajectoryExecutor>().runTraj = false;
             if (colliderDict.ContainsKey(obj))
             {
                 colliderDict[obj]--;
@@ -159,6 +159,7 @@ public class Grabber : MonoBehaviour
             if (targetObject)
             {
                 Debug.Log(targetObject.name);
+                target.GetComponent<ObjTrajectoryExecutor>().runTraj = false;
                 playingScene = targetObject.transform.parent;
                 targetObject.transform.SetParent(transform);
                 Rigidbody rigidbody = targetObject.GetComponent<Rigidbody>();

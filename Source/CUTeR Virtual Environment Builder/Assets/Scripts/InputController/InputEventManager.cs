@@ -262,6 +262,7 @@ public class InputEventManager : MonoBehaviour
         ObjectManager.AttributePanel.transform.Find("Scale/Options/X/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.x.ToString();
         ObjectManager.AttributePanel.transform.Find("Scale/Options/Z/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.y.ToString();
         ObjectManager.AttributePanel.transform.Find("Scale/Options/Y/InputField").GetComponent<InputField>().text = selectedObject.transform.localScale.z.ToString();
+        ObjectManager.AttributePanel.transform.Find("LoadTrajectory/Options/Switch/Toggle").GetComponent<Toggle>().isOn = selectedObject.GetComponent<ObjTrajectoryExecutor>().TrajSwitch;
         bool isRigidbody = ObjectManager.AttributePanel.transform.Find("IsRigidbody/Options/Toggle").GetComponent<Toggle>().isOn = selectedObject.GetComponent<Rigidbody>() != null;
         if (isRigidbody)
         {

@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class ObjTrajectoryExecutor : MonoBehaviour
 {
-    public List<Vector3> TrajPosition;
-    public List<Vector3> TrajRotation;
-    public bool runTraj;
+    public string TrajString;
+    public List<Vector3> TrajPosition = new List<Vector3>();
+    public List<Vector3> TrajRotation = new List<Vector3>();
+    public bool runTraj = false;
     public int currentTrajIndex = 0;
     public int trajLength = 0;
     public bool TrajSwitch = true;
     // Start is called before the first frame update
     void Start()
     {
-        TrajPosition = new List<Vector3>();
-        TrajRotation = new List<Vector3>();
-        runTraj = false;
     }
 
     // Update is called once per frame

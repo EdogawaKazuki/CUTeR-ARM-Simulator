@@ -58,7 +58,6 @@ public class SceneManager : MonoBehaviour
         }
         //newObj.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10;
         newObj.AddComponent<SceneObjectController>().parent = newObj.transform;
-        newObj.AddComponent<ObjTrajectoryExecutor>();
         newObj.transform.position = new Vector3(20, 0, 0);
         if (i == 4) // ground
         {
@@ -123,13 +122,13 @@ public class SceneManager : MonoBehaviour
         newObj.transform.SetParent(Scene.transform);
         newObj.transform.position = new Vector3(20, 5, 0);
         newObj.transform.gameObject.AddComponent<SceneObjectController>().parent = newObj.transform;
-        newObj.AddComponent<ObjTrajectoryExecutor>();
         // newObj.GetComponent<MeshCollider>().convex = true;
         // newObj.layer = LayerMask.NameToLayer("Scene");
         // add the obj to the objlist
         Dictionary<string, object> objDict = new Dictionary<string, object>();
         objDict.Add("type", 4);
         objDict.Add("name", newObj.name);
+        objDict.Add("filename", newObj.name);
         objDict.Add("trans", newObj.transform);
         sceneObjList.Add(objDict);
         return newObj;
@@ -149,6 +148,7 @@ public class SceneManager : MonoBehaviour
         sceneDict.Add("name", SceneName);
         sceneDict.Add("description", SceneDescription);
         sceneDict.Add("date", DateTime.Now);
+        sceneDict.Add("robotTraj", RobotController6DoF.trajString);
         string[] objDataStrList = new string[sceneObjList.Count];
 
         // Get all objects
@@ -164,7 +164,7 @@ public class SceneManager : MonoBehaviour
             if(int.Parse(objDict["type"].ToString()) == 4)
             {
                 objFileList.Add(objDict["name"].ToString());
-                serializableDict.Add("filename", objDict["name"]);
+                serializableDict.Add("filename", objDict["filename"]);
             }
             serializableDict.Add("type", objDict["type"]);
             serializableDict.Add("name", trans.name);
@@ -182,6 +182,15 @@ public class SceneManager : MonoBehaviour
                 serializableDict.Add("fixRotationY", (rigidbody.constraints & RigidbodyConstraints.FreezeRotationY) != RigidbodyConstraints.None);
                 serializableDict.Add("fixRotationZ", (rigidbody.constraints & RigidbodyConstraints.FreezeRotationZ) != RigidbodyConstraints.None);
                 serializableDict.Add("useGravity", rigidbody.useGravity);
+            }
+            if(trans.gameObject.GetComponent<ObjTrajectoryExecutor>().TrajString != null)
+            {
+                serializableDict.Add("useTrajectory", true);
+                serializableDict.Add("trajectory", trans.gameObject.GetComponent<ObjTrajectoryExecutor>().TrajString);
+            }
+            else
+            {
+                serializableDict.Add("useTrajectory", false);
             }
             objDataStrList[i] = JsonConvert.SerializeObject(serializableDict);
             //Debug.Log(objDataStrList[i]);
@@ -213,6 +222,8 @@ public class SceneManager : MonoBehaviour
         Dictionary<string, object> sceneDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(sceneDictString);
         SceneName = sceneDict["name"].ToString();
         SceneDescription = sceneDict["description"].ToString();
+        if(sceneDict.ContainsKey("robotTraj"))
+            ProcessRobotTraj(sceneDict["robotTraj"].ToString());
         ObjectManager.SceneName.text = SceneName;
         ObjectManager.SceneDescription.text = SceneDescription;
         string[] objFileList = JsonConvert.DeserializeObject<string[]>(sceneDict["objFileList"].ToString());
@@ -265,6 +276,17 @@ public class SceneManager : MonoBehaviour
             v3StrArray = objDict["scale"].ToString().Trim(new char[] { '(', ')' }).Split(',');
             newObj.transform.localScale = new Vector3(float.Parse(v3StrArray[0]), float.Parse(v3StrArray[1]), float.Parse(v3StrArray[2]));
             newObj.transform.SetParent(Scene.transform);
+            newObj.AddComponent<ObjTrajectoryExecutor>();
+            if (objDict.ContainsKey("useTrajectory"))
+            {
+                if (bool.Parse(objDict["useTrajectory"].ToString()))
+                {
+                    if (objDict.ContainsKey("trajectory"))
+                    {
+                        processObjTraj(objDict["trajectory"].ToString(), newObj.transform);
+                    }
+                }
+            }
             if (bool.Parse(objDict["isRigidbody"].ToString()))
             {
                 Rigidbody rigidbody = newObj.AddComponent<Rigidbody>();
@@ -361,9 +383,16 @@ public class SceneManager : MonoBehaviour
                 {
                     Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>());
                 }
-                else if (PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>())
+                else
                 {
-                    Destroy(PlayingScene.transform.GetChild(i).gameObject.GetComponent<MeshCollider>());
+                    for (int j = 0; j < PlayingScene.transform.GetChild(i).childCount; j++)
+                    {
+                        if (PlayingScene.transform.GetChild(i).GetChild(j).gameObject.GetComponent<MeshCollider>())
+                        {
+                            Destroy(PlayingScene.transform.GetChild(i).GetChild(j).gameObject.GetComponent<MeshCollider>());
+                        }
+                    }
+
                 }
             }
         }
@@ -387,5 +416,90 @@ public class SceneManager : MonoBehaviour
         string name = splitedPath[splitedPath.Length - 1];
         splitedPath = name.Split('\\');
         return splitedPath[splitedPath.Length - 1].Split('.')[0];
+    }
+    void processObjTraj(string trajText, Transform selectedObj)
+    {
+        try
+        {
+            string[] gestureTextArray = trajText.Split(';');
+            string[] xPositionArray = gestureTextArray[0].Split(',');
+            string[] yPositionArray = gestureTextArray[1].Split(',');
+            string[] zPositionArray = gestureTextArray[2].Split(',');
+            string[] xRotationArray = gestureTextArray[3].Split(',');
+            string[] yRotationArray = gestureTextArray[4].Split(',');
+            string[] zRotationArray = gestureTextArray[5].Split(',');
+            List<Vector3> TrajPosition = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajPosition;
+            List<Vector3> TrajRotation = selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajRotation;
+            selectedObj.GetComponent<ObjTrajectoryExecutor>().trajLength = zRotationArray.Length;
+            selectedObj.GetComponent<ObjTrajectoryExecutor>().TrajString = trajText;
+            TrajPosition.Clear();
+            TrajRotation.Clear();
+            for (int i = 0; i < xPositionArray.Length; i++)
+            {
+                TrajPosition.Add(new Vector3(-float.Parse(xPositionArray[i]), float.Parse(zPositionArray[i]), -float.Parse(yPositionArray[i])));
+                TrajRotation.Add(new Vector3(float.Parse(xRotationArray[i]), float.Parse(zRotationArray[i]), float.Parse(yRotationArray[i])));
+            }
+            selectedObj.transform.localPosition = TrajPosition[0];
+            selectedObj.transform.localEulerAngles = TrajRotation[0];
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    void ProcessRobotTraj(string trajText)
+    {
+        try
+        {
+            RobotController6DoF.trajString = trajText;
+            int jointsLength = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                RobotController6DoF.Trajs[i].Clear();
+            }
+            string[] trajsTextArray = trajText.Split(';');
+            if (trajsTextArray[0].Equals("angle"))
+            {
+                for (int i = 1; i < 7; i++)
+                {
+                    if (i < trajsTextArray.Length - 1)
+                    {
+                        string[] tmp = trajsTextArray[i].Split(',');
+                        if (jointsLength != 0 && jointsLength != tmp.Length)
+                        {
+                            Debug.Log(jointsLength + ", " + tmp.Length + ", " + i);
+                            return;
+                        }
+                        jointsLength = tmp.Length;
+                        foreach (var point in tmp)
+                        {
+                            if (point.Equals("fire"))
+                            {
+                                RobotController6DoF.Trajs[i - 1].Add(1000);
+                            }
+                            else
+                            {
+                                RobotController6DoF.Trajs[i - 1].Add(float.Parse(point));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < jointsLength; j++)
+                            RobotController6DoF.Trajs[i - 1].Add(0);
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+            RobotController6DoF.trajLength = RobotController6DoF.Trajs[0].Count;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 }

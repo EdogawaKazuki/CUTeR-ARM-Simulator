@@ -96,6 +96,7 @@ public class OpenTrajectory6DoF : MonoBehaviour, IPointerDownHandler
     {
         try
         {
+            RobotController6DoF.trajString = trajText;
             int jointsLength = 0;
             for (int i = 0; i < 6; i++)
             {
