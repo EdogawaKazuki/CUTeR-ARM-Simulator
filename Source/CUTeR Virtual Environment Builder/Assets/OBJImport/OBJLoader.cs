@@ -85,7 +85,6 @@ namespace Dummiesman
 
                 Stream stream = new MemoryStream();
                 var writer = new StreamWriter(stream);
-                writer.Write(WebGL_FileManager.fileDataDict[mtlLibPath]);
                 writer.Flush();
                 stream.Position = 0;
                 Materials = new MTLLoader().Load(stream);
@@ -331,7 +330,6 @@ namespace Dummiesman
             {
                 Stream stream = new MemoryStream();
                 var writer = new StreamWriter(stream);
-                writer.Write(WebGL_FileManager.fileDataDict[path]);
                 writer.Flush();
                 stream.Position = 0;
                 return Load(stream, true);
