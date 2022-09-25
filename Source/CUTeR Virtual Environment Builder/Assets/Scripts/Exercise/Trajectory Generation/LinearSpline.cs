@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LinearSpline : MonoBehaviour
 {
@@ -54,5 +55,12 @@ public class LinearSpline : MonoBehaviour
     {
         float.TryParse(value, out t);
         UpdateTrajectory();
+    }
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

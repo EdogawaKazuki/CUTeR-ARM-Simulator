@@ -25,7 +25,7 @@ public class EndEffectorController : MonoBehaviour
             _endEffectors[i].SetRobotController(_robotController);
             //Debug.Log(_endEffectorNames[i]);
         }
-        SetEndEffector(0);
+        SetEndEffector(_endEffectors.Count - 1);
     }
     #endregion
     #region Methods

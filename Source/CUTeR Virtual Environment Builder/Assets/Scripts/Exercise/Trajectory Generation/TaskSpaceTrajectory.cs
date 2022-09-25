@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TaskSpaceTrajectory : MonoBehaviour
 {
@@ -219,5 +220,12 @@ public class TaskSpaceTrajectory : MonoBehaviour
         angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
         angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
         return angles;
+    }
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

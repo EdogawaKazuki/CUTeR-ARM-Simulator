@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuinticSpline : MonoBehaviour
 {
@@ -92,5 +93,12 @@ public class QuinticSpline : MonoBehaviour
     {
         float.TryParse(value, out t);
         UpdateTrajectory();
+    }
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

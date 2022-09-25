@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ParabolicBlend : MonoBehaviour
 {
@@ -129,5 +130,12 @@ public class ParabolicBlend : MonoBehaviour
     {
         float.TryParse(value, out tf);
         UpdateTrajectory();
+    }
+    public void Clear()
+    {
+        foreach(var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

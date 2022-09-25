@@ -11,6 +11,8 @@ public class FeedbackCalibration : MonoBehaviour
     DrawGraph drawer;
     private List<Text> PWMTextList = new List<Text>();
     private List<Text> thetaTextList = new List<Text>();
+    private List<InputField> offsetIFList = new List<InputField>();
+    private List<InputField> scaleIFList = new List<InputField>();
     private List<float> offsetList = new List<float> {0,0,0 };
     private List<float> scaleList = new List<float> {0,0,0 };
     // Start is called before the first frame update
@@ -23,6 +25,8 @@ public class FeedbackCalibration : MonoBehaviour
             //Debug.Log("Input/Line" + (i + 1) + "/Value");
             PWMTextList.Add(transform.Find("Input/Line" + (i + 2) + "/PWM").GetComponent<Text>());
             thetaTextList.Add(transform.Find("Input/Line" + (i + 2) + "/£c").GetComponent<Text>());
+            offsetIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<InputField>());
+            scaleIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<InputField>());
         }
     }
     private void FixedUpdate()
@@ -87,5 +91,12 @@ public class FeedbackCalibration : MonoBehaviour
     public void SetCaliData()
     {
         _robotController.SetCaliData(offsetList, scaleList);
+    }
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

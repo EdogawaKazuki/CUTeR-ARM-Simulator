@@ -150,7 +150,7 @@ public class MultipleCubicSpline : MonoBehaviour
         for (int i = 0; i < 20 * t1 + 1; i++)
         {
             float _t = i / 20f;
-            Debug.Log(_t);
+            //Debug.Log(_t);
             float angle = a0 + a1 * _t + a2 * _t * _t + a3 * _t * _t * _t;
             JointAngleList.Add(angle);
             _trajController.PushTrajPoints(new List<float>{angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2)});
@@ -158,18 +158,19 @@ public class MultipleCubicSpline : MonoBehaviour
             AngularVelocityList.Add(a1 + 2 * a2 * _t + 3 * a3 * _t * _t);
 
             AngularAccelerationList.Add(2 * a2 + 6 * a3 * _t);
-            LinearJointAngleList.Add((thetaEnd - theta0) / (tEnd - t0) * _t);
+            LinearJointAngleList.Add((theta1 - theta0) / (t1 - t0) * (_t - t0) + theta0);
         }
         for (int i = (int)t1 * 20; i < 20 * tEnd + 1; i++)
         {
             float _t = i / 20f;
-            Debug.Log(_t);
+            //Debug.Log(_t);
             float angle = b0 + b1 * _t + b2 * _t * _t + b3 * _t * _t * _t;
             JointAngleList.Add(angle);
             _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
 
             AngularVelocityList.Add(b1 + 2 * b2 * _t + 3 * b3 * _t * _t);
-            LinearJointAngleList.Add((thetaEnd - theta0) / (tEnd - t0) * _t);
+            LinearJointAngleList.Add((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);
+            Debug.Log((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);
 
             AngularAccelerationList.Add(2 * b2 + 6 * b3 * _t);
         }
@@ -215,5 +216,12 @@ public class MultipleCubicSpline : MonoBehaviour
         Mode = value;
         Debug.Log(value);
         UpdateTrajectory();
+    }
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

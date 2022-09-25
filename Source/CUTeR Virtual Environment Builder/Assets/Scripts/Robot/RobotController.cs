@@ -40,14 +40,14 @@ public class RobotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        _pathRecoder.AddPoint(_robotJointController.GetJointTransformByIndex(_currentDoF).position);
+
     }
     #endregion
     #region Methods
     public void SetJointAngle(int index, float angle)
     {
         //LockRobotArm();
-        _pathRecoder.AddPoint(_robotJointController.GetJointTransformByIndex(_currentDoF).position);
         _robotJointController.SetJointAngle(index, angle);
         _joystickController.SetAngleSliderValue(index, angle);
         _pwmList[index] = (int)(GetJointAngle(index) * _scale[index] + _offset[index]);

@@ -35,12 +35,12 @@ public class CommandCalibration : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int index = i;
-            thetaInputfield[i].onEndEdit.RemoveAllListeners();
-            thetaInputfield[i].onEndEdit.AddListener((value) => { SetTheta(index, value); });
-            scaleInputfield[i].onEndEdit.RemoveAllListeners();
-            scaleInputfield[i].onEndEdit.AddListener((value) => { SetScale(index, value); });
-            offsetInputfield[i].onEndEdit.RemoveAllListeners();
-            offsetInputfield[i].onEndEdit.AddListener((value) => { SetOffset(index, value); });
+            thetaInputfield[i].onValueChanged.RemoveAllListeners();
+            thetaInputfield[i].onValueChanged.AddListener((value) => { SetTheta(index, value); });
+            scaleInputfield[i].onValueChanged.RemoveAllListeners();
+            scaleInputfield[i].onValueChanged.AddListener((value) => { SetScale(index, value); });
+            offsetInputfield[i].onValueChanged.RemoveAllListeners();
+            offsetInputfield[i].onValueChanged.AddListener((value) => { SetOffset(index, value); });
         }
     }
     private void OnDisable()
@@ -73,5 +73,13 @@ public class CommandCalibration : MonoBehaviour
     public void SetPWM()
     {
         _robotController.SetJointPWMs(pwmList);
+    }
+
+    public void Clear()
+    {
+        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        {
+            ele.text = "";
+        }
     }
 }

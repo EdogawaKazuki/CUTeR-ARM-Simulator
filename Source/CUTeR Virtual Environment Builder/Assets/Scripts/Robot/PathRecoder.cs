@@ -36,11 +36,18 @@ public class PathRecoder : MonoBehaviour
     }
     public void AddPoint(Vector3 point)
     {
-        if (isRecording)
+        try
         {
-            PathLine.positionCount = pathPointCount + 1;
-            PathLine.SetPosition(pathPointCount, point);
-            pathPointCount++;
+            if (isRecording)
+            {
+                PathLine.positionCount = pathPointCount + 1;
+                PathLine.SetPosition(pathPointCount, point);
+                pathPointCount++;
+            }
+        }
+        catch
+        {
+            ClearRecording();
         }
     }
     public void setRobotDoF(int value)
