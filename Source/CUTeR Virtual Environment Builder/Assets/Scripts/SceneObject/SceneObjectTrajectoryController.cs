@@ -31,9 +31,6 @@ public class SceneObjectTrajectoryController : MonoBehaviour
     public bool _useTraj = true;
     #endregion
 
-#if UNITY_WEBGL
-        _isWebGL=true;
-#endif
     // Start is called before the first frame update
     void Start()
     {

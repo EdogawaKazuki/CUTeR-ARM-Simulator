@@ -11,6 +11,7 @@ public class Barrel : EndEffector
     private void Start()
     {
         //m_Barrel.SetParent(GameObject.Find("Robot").transform);
+        Physics.gravity = new Vector3(0, -1000.0F, 0);
     }
     private void Update()
     {
@@ -21,12 +22,11 @@ public class Barrel : EndEffector
     {
         m_Barrel.SetParent(GameObject.Find("Robot/RobotArm").transform);
         m_Barrel.gameObject.SetActive(true);
-        GetComponent<CharacterJoint>().connectedBody = m_Barrel.GetComponent<Rigidbody>();
-        GetComponent<CharacterJoint>().connectedAnchor = new Vector3(0,3,0);
+        GetComponent<ConfigurableJoint>().connectedBody = m_Barrel.GetComponent<Rigidbody>();
+        GetComponent<ConfigurableJoint>().connectedAnchor = new Vector3(0,3,0);
     }
     private void OnDisable()
     {
-        m_Barrel.SetParent(transform);
         m_Barrel.gameObject.SetActive(false);
     }
     #region EndEffector Methods
