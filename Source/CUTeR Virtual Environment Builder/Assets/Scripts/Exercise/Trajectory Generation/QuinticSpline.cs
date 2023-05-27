@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class QuinticSpline : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -20,8 +19,9 @@ public class QuinticSpline : MonoBehaviour
     void Start()
     {
     }
-    private void OnEnable()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
     }
@@ -37,18 +37,18 @@ public class QuinticSpline : MonoBehaviour
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + a4 + "," + a5 + "," + t);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 20 * t + 1; i++)
+        for (int i = 0; i < 50 * t + 1; i++)
         {
-            float t = i / 20f;
+            float t = i / 50f;
             float angle = a0 + a1 * t + a2 * t * t + a3 * t * t * t + a4 * t * t * t * t + a5 * t * t * t * t * t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
+            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
 
             AngularVelocityList.Add(a1 + 2 * a2 * t + 3 * a3 * t * t + 4 * a4 * t * t * t + 5 * a5 * t * t * t * t);
 
             AngularAccelerationList.Add(2 * a2 + 6 * a3 * t + 12 * a4 * t * t + 20 * a5 * t * t * t);
         }
-        _trajController.SetStatus("Ready to play", new Color32(255, 255, 255, 78));
+        _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         drawer.ClearGraph("JointAngle");
         drawer.ShowGraph(JointAngleList, "JointAngle");
 

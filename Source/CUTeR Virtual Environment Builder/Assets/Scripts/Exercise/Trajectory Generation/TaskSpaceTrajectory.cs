@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class TaskSpaceTrajectory : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -28,8 +27,9 @@ public class TaskSpaceTrajectory : MonoBehaviour
     {
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
     }
@@ -50,9 +50,9 @@ public class TaskSpaceTrajectory : MonoBehaviour
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + b0 + "," + b1 + "," + b2 + "," + b3 + "," + c0 + "," + c1 + "," + c2 + "," + c3 + "," + t);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 20 * t + 1; i++)
+        for (int i = 0; i < 50 * t + 1; i++)
         {
-            float t = i / 20f;
+            float t = i / 50f;
             float x = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
             PositionListX.Add(x);
             AngularVelocityListX.Add(a1 + 2 * a2 * t + 3 * a3 * t * t);
@@ -74,7 +74,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
 
         }
 
-        _trajController.SetStatus("Ready to play", new Color32(255, 255, 255, 78));
+        _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         switch (showTable)
         {
 

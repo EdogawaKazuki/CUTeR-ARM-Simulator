@@ -5,12 +5,12 @@ using UnityEngine;
 public class ExercisePanel : MonoBehaviour
 {
     private Transform _currentSelectedPanel;
+    public RobotController RobotController;
     // Start is called before the first frame update
     void Start()
     {
         
     }
-
     // Update is called once per frame
     void Update()
     {

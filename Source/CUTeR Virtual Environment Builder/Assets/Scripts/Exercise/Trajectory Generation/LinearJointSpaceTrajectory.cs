@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class LinearJointSpaceTrajectory : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -20,8 +19,9 @@ public class LinearJointSpaceTrajectory : MonoBehaviour
     void Start()
     {
     }
-    private void OnEnable()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
     }
@@ -37,9 +37,9 @@ public class LinearJointSpaceTrajectory : MonoBehaviour
 
         Debug.Log("" + a0 + "," + a1 + "," + b0 + "," + b1 + "," + c0 + "," + c1 + "," + t);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 20 * t + 1; i++)
+        for (int i = 0; i < 50 * t + 1; i++)
         {
-            float t = i / 20f;
+            float t = i / 50f;
             float angle0 = a0 + a1 * t;
             JointAngleList1.Add(angle0);
 
@@ -51,7 +51,7 @@ public class LinearJointSpaceTrajectory : MonoBehaviour
 
             _trajController.PushTrajPoints(new List<float> { angle0, angle1, angle2 });
         }
-        _trajController.SetStatus("Ready to play", new Color32(255, 255, 255, 78));
+        _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         drawer.ClearGraph("JointAngle1");
         drawer.ShowGraph(JointAngleList1, "JointAngle1");
 

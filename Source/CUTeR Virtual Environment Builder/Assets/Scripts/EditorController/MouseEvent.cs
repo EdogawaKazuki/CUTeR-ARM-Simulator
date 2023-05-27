@@ -29,6 +29,8 @@ public class MouseEvent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.touchCount > 0)
+            return;
         // get mouse position
         _mouseX = Input.GetAxis("Mouse X");
         _mouseY = Input.GetAxis("Mouse Y");
@@ -43,44 +45,44 @@ public class MouseEvent : MonoBehaviour
                 // move object
                 if (_handleController.CheckCurrentHandleType(HandleController.HandleType.position))
                 {
-                    if (movingAxis == 'x')
-                        _selectedObject.position = new Vector3(_selectedObject.position.x + Vector3.Dot(Vector3.right, Camera.main.transform.right) * _mouseX + Vector3.Dot(Vector3.right, Camera.main.transform.up) * _mouseY, _selectedObject.position.y, _selectedObject.position.z);
-                    if (movingAxis == 'z')
-                        _selectedObject.position = new Vector3(_selectedObject.position.x, _selectedObject.position.y + Vector3.Dot(Vector3.up, Camera.main.transform.right) * _mouseX + Vector3.Dot(Vector3.up, Camera.main.transform.up) * _mouseY, _selectedObject.position.z);
                     if (movingAxis == 'y')
+                        _selectedObject.position = new Vector3(_selectedObject.position.x + Vector3.Dot(Vector3.right, Camera.main.transform.right) * _mouseX + Vector3.Dot(Vector3.right, Camera.main.transform.up) * _mouseY, _selectedObject.position.y, _selectedObject.position.z);
+                    if (movingAxis == 'x')
+                        _selectedObject.position = new Vector3(_selectedObject.position.x, _selectedObject.position.y + Vector3.Dot(Vector3.up, Camera.main.transform.right) * _mouseX + Vector3.Dot(Vector3.up, Camera.main.transform.up) * _mouseY, _selectedObject.position.z);
+                    if (movingAxis == 'z')
                         _selectedObject.position = new Vector3(_selectedObject.position.x, _selectedObject.position.y, _selectedObject.position.z + Vector3.Dot(Vector3.forward, Camera.main.transform.right) * _mouseX + Vector3.Dot(Vector3.forward, Camera.main.transform.up) * _mouseY);
                 }
                 // rotate object
                 else if (_handleController.CheckCurrentHandleType(HandleController.HandleType.rotation))
                 {
                     Vector3 tangent;
-                    if (movingAxis == 'x')
+                    if (movingAxis == 'y')
                     {
                         tangent = Vector3.Cross(Vector3.right, hitPoint - _handleContainer.position);
-                        _selectedObject.RotateAround(_selectedObject.transform.position, Vector3.right, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
+                        _selectedObject.RotateAround(_selectedObject.transform.position, -Vector3.right, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
+
+                    }
+                    if (movingAxis == 'x')
+                    {
+                        tangent = Vector3.Cross(Vector3.up, hitPoint - _handleContainer.position);
+                        _selectedObject.RotateAround(_selectedObject.transform.position, -Vector3.up, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
 
                     }
                     if (movingAxis == 'z')
                     {
-                        tangent = Vector3.Cross(Vector3.up, hitPoint - _handleContainer.position);
-                        _selectedObject.RotateAround(_selectedObject.transform.position, Vector3.up, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
-
-                    }
-                    if (movingAxis == 'y')
-                    {
                         tangent = Vector3.Cross(Vector3.forward, hitPoint - _handleContainer.position);
-                        _selectedObject.RotateAround(_selectedObject.transform.position, Vector3.forward, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
+                        _selectedObject.RotateAround(_selectedObject.transform.position, -Vector3.forward, Vector3.Dot(tangent, Camera.main.transform.right) * _mouseX + Vector3.Dot(tangent, Camera.main.transform.up) * _mouseY);
 
                     }
                 }
                 // scale object
                 else if (_handleController.CheckCurrentHandleType(HandleController.HandleType.scale))
                 {
-                    if (movingAxis == 'x')
-                        _selectedObject.localScale = new Vector3(_selectedObject.localScale.x - Vector3.Dot(_selectedObject.right, Camera.main.transform.right) * _mouseX - Vector3.Dot(_selectedObject.right, Camera.main.transform.up) * _mouseY, _selectedObject.localScale.y, _selectedObject.localScale.z);
-                    if (movingAxis == 'z')
-                        _selectedObject.localScale = new Vector3(_selectedObject.localScale.x, _selectedObject.localScale.y + Vector3.Dot(_selectedObject.up, Camera.main.transform.right) * _mouseX + Vector3.Dot(_selectedObject.up, Camera.main.transform.up) * _mouseY, _selectedObject.localScale.z);
                     if (movingAxis == 'y')
+                        _selectedObject.localScale = new Vector3(_selectedObject.localScale.x - Vector3.Dot(_selectedObject.right, Camera.main.transform.right) * _mouseX - Vector3.Dot(_selectedObject.right, Camera.main.transform.up) * _mouseY, _selectedObject.localScale.y, _selectedObject.localScale.z);
+                    if (movingAxis == 'x')
+                        _selectedObject.localScale = new Vector3(_selectedObject.localScale.x, _selectedObject.localScale.y + Vector3.Dot(_selectedObject.up, Camera.main.transform.right) * _mouseX + Vector3.Dot(_selectedObject.up, Camera.main.transform.up) * _mouseY, _selectedObject.localScale.z);
+                    if (movingAxis == 'z')
                         _selectedObject.localScale = new Vector3(_selectedObject.localScale.x, _selectedObject.localScale.y, _selectedObject.localScale.z - Vector3.Dot(_selectedObject.forward, Camera.main.transform.right) * _mouseX - Vector3.Dot(_selectedObject.forward, Camera.main.transform.up) * _mouseY);
                 }
 
@@ -122,7 +124,6 @@ public class MouseEvent : MonoBehaviour
     }
     private void MoveCamera()
     {
-
         if (Input.GetMouseButton(1))
         {
             Camera.main.transform.RotateAround(Camera.main.transform.position, Vector3.up, _mouseX * 5);
@@ -152,7 +153,7 @@ public class MouseEvent : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if(_editorController.GetSceneManager().GetPlayingScene() != null)
+            if (_editorController.GetSceneManager().GetPlayingScene() != null)
             {
                 Debug.Log(hit.transform.name);
                 _editorController.SelectObj(hit.transform);
@@ -179,5 +180,5 @@ public class MouseEvent : MonoBehaviour
         //Debug.Log(list.Count);
         return list.Count > 0;
     }
-    
+
 }

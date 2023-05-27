@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,6 @@ using UnityEngine.UI;
 
 public class ParabolicBlend : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -23,8 +23,9 @@ public class ParabolicBlend : MonoBehaviour
     void Start()
     {
     }
-    private void OnEnable()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
     }
@@ -37,48 +38,58 @@ public class ParabolicBlend : MonoBehaviour
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + b0 + "," + b1 + "," + c0 + "," + c1 + "," + c2 + "," + tb + "," + tf);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 20 * tb + 1; i++)
+        if(tb != 0)
+            for (int i = 0; i < 50 * tb + 1; i++)
+            {
+                float t = i / 50f;
+                float angle = a0 + a1 * t + a2 * t * t;
+                JointAngleList.Add(angle);
+                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+
+                AngularVelocityList.Add(a1 + 2 * a2 * t);
+
+                AngularAccelerationList.Add(2 * a2);
+            }
+        if(tf - tb != 0)
+            for (int i = (int)(50 * tb + 1); i < 50 * (tf - tb) + 1; i++)
+            {
+                float t = i / 50f;
+                float angle = b0 + b1 * t;
+                JointAngleList.Add(angle);
+                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+
+                AngularVelocityList.Add(b1);
+
+                AngularAccelerationList.Add(0);
+            }
+        if(tb != 0)
+            for (int i = (int)(50 * (tf - tb) + 1); i < 50 * tf + 1; i++)
+            {
+                float t = i / 50f;
+                float angle = c0 + c1 * t + c2 * t * t;
+                JointAngleList.Add(angle);
+                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+
+                AngularVelocityList.Add(c1 + 2 * c2 * t);
+
+                AngularAccelerationList.Add(2 * c2);
+            }
+        _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
+        try
         {
-            float t = i / 20f;
-            float angle = a0 + a1 * t + a2 * t * t;
-            JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
+            drawer.ClearGraph("JointAngle");
+            drawer.ShowGraph(JointAngleList, "JointAngle");
 
-            AngularVelocityList.Add(a1 + 2 * a2 * t);
+            drawer.ClearGraph("AngularVelocity");
+            drawer.ShowGraph(AngularVelocityList, "AngularVelocity");
 
-            AngularAccelerationList.Add(2 * a2);
+            drawer.ClearGraph("AngularAcceleration");
+            drawer.ShowGraph(AngularAccelerationList, "AngularAcceleration");
         }
-        for (int i = (int)(20 * tb + 1); i < 20 * (tf - tb) + 1; i++)
+        catch(Exception e)
         {
-            float t = i / 20f;
-            float angle = b0 + b1 * t;
-            JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
-
-            AngularVelocityList.Add(b1);
-
-            AngularAccelerationList.Add(0);
+            Debug.Log(e);
         }
-        for (int i = (int)(20 * (tf - tb) + 1); i < 20 * tf + 1; i++)
-        {
-            float t = i / 20f;
-            float angle = c0 + c1 * t + c2 * t * t;
-            JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
-
-            AngularVelocityList.Add(c1 + 2 * c2 * t);
-
-            AngularAccelerationList.Add(2 * c2);
-        }
-        _trajController.SetStatus("Ready to play", new Color32(255, 255, 255, 78));
-        drawer.ClearGraph("JointAngle");
-        drawer.ShowGraph(JointAngleList, "JointAngle");
-
-        drawer.ClearGraph("AngularVelocity");
-        drawer.ShowGraph(AngularVelocityList, "AngularVelocity");
-
-        drawer.ClearGraph("AngularAcceleration");
-        drawer.ShowGraph(AngularAccelerationList, "AngularAcceleration");
     }
 
     public void SetA0(string value)

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HomogeneousTransformation3 : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     Text[] matrix1Text;
@@ -21,11 +20,12 @@ public class HomogeneousTransformation3 : MonoBehaviour
     float Angle2Cos;
     float Angle23Sin;
     float Angle23Cos;
+    List<List<float>> _JointSetList = new List<List<float>> { new List<float> { -60, 60, -120 } };
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        _robotController.SetJointAngles(new List<float> { 0, 0, 0 });
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         matrix1Text = new Text[16];
         for (int i = 0; i < 16; i++)
         {
@@ -36,12 +36,17 @@ public class HomogeneousTransformation3 : MonoBehaviour
         {
             matrix2Text[i] = transform.Find("Input/Line6/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
+
+    }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
+    public void UpdateTable()
+    {
+        float a1 = _robotController.GetJointAngle(0);
+        float a2 = _robotController.GetJointAngle(1);
+        float a3 = _robotController.GetJointAngle(2);
 
         Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
@@ -51,26 +56,19 @@ public class HomogeneousTransformation3 : MonoBehaviour
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
 
-    }
-    public void UpdateTable()
-    {
-        float a1 = _robotController.GetJointAngle(0);
-        float a2 = _robotController.GetJointAngle(1);
-        float a3 = _robotController.GetJointAngle(2);
-        matrix1Text[0].text = "cos(" +a1+"��)";
-        matrix1Text[1].text = "-sin(" + a1 + "��)cos(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[2].text = "sin(" + a1 + "��)sin(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[3].text = "-19.2sin(" + a1 + "��)cos(" + a2 + "��)\n-2.8sin(" + a1 + "��)sin(" + a2 + "��)";
-        matrix1Text[4].text = "sin(" + a1 + "��)";
-        matrix1Text[5].text = "cos(" + a1 + "��)cos(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[6].text = "-cos(" + a1 + "��)sin(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[7].text = "19.2cos(" + a1 + "��)cos(" + a2 + "��)\n+2.8cos(" + a1 + "��)sin(" + a2 + "��)";
+        matrix1Text[0].text = "cos(" +a1.ToString("F0") + "°)";
+        matrix1Text[1].text = "-sin(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + ": " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[2].text = "sin(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[3].text = "-19.2sin(" + a1.ToString("F2") + "°)cos(" + a2.ToString("F0") + "°" + ")\n- 2.8sin(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°)";
+        matrix1Text[4].text = "sin(" + a1.ToString("F0") + "°)";
+        matrix1Text[5].text = "cos(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[6].text = "-cos(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[7].text = "19.2cos(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + ")\n+ 2.8cos(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°)";
         matrix1Text[8].text = "0";
-        matrix1Text[9].text = "sin(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[10].text = "cos(" + a2 + "��+" + a3 + "��)";
-        matrix1Text[11].text = "19.2sin(" + a2 + "��)\n-2.8cos(" + a2 + "��)+10";
+        matrix1Text[9].text = "sin(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[10].text = "cos(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
+        matrix1Text[11].text = "19.2sin(" + a2.ToString("F0") + "°)\n- 2.8cos(" + a2.ToString("F0") + "°) + 10";
         matrix1Text[12].text = "0";
         matrix1Text[13].text = "0";
         matrix1Text[14].text = "0";
@@ -81,24 +79,8 @@ public class HomogeneousTransformation3 : MonoBehaviour
         matrix2Text[2].text = (Angle23Sin * 21 + (19.2 * Angle2Sin - 2.8 * Angle2Cos) + 10.001).ToString("F2") + " cm";
 
     }
-    public void SetBaseAngle(float value)
+    public void SetJointAngles(int index)
     {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        UpdateTable();
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
+        _robotController.MoveJointsTo(_JointSetList[index]);
     }
 }

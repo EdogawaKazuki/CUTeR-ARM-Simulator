@@ -101,6 +101,7 @@ public class SceneObjectAttrPanelController : MonoBehaviour
         }
         else
         {
+            //_selectedObj = _selectedObj.GetComponent<SceneObjectPart>().GetParent();
             gameObject.SetActive(true);
         }
     }
@@ -108,21 +109,21 @@ public class SceneObjectAttrPanelController : MonoBehaviour
     {
 
         _nameInputField.text = _selectedObj.name;
-        _posXInputField.text = _selectedObj.transform.localPosition.x.ToString("F3");
-        _posYInputField.text = _selectedObj.transform.localPosition.y.ToString("F3");
-        _posZInputField.text = _selectedObj.transform.localPosition.z.ToString("F3");
-        _rotXInputField.text = _selectedObj.transform.localEulerAngles.x.ToString("F3");
-        _rotYInputField.text = _selectedObj.transform.localEulerAngles.y.ToString("F3");
-        _rotZInputField.text = _selectedObj.transform.localEulerAngles.z.ToString("F3");
-        _scaleXInputField.text = _selectedObj.transform.localScale.x.ToString("F3");
-        _scaleYInputField.text = _selectedObj.transform.localScale.y.ToString("F3");
+        _posYInputField.text = (-_selectedObj.transform.position.x).ToString("F3");
+        _posXInputField.text = _selectedObj.transform.position.y.ToString("F3");
+        _posZInputField.text = (-_selectedObj.transform.position.z).ToString("F3");
+        _rotYInputField.text = _selectedObj.transform.eulerAngles.x.ToString("F3");
+        _rotXInputField.text = _selectedObj.transform.eulerAngles.y.ToString("F3");
+        _rotZInputField.text = _selectedObj.transform.eulerAngles.z.ToString("F3");
+        _scaleYInputField.text = _selectedObj.transform.localScale.x.ToString("F3");
+        _scaleXInputField.text = _selectedObj.transform.localScale.y.ToString("F3");
         _scaleZInputField.text = _selectedObj.transform.localScale.z.ToString("F3");
         _useTrajToggle.isOn = _selectedObj.GetComponent<SceneObjectTrajectoryController>().GetIsUseTraj();
         _selectedObj.GetComponent<SceneObjectTrajectoryController>().AddOnClickListener(_uploadTrajButton, _uploadTrajResultText);
         SceneObjectController selectedObjController = _selectedObj.GetComponent<SceneObjectController>();
         _isRigidbodyToggle.isOn = selectedObjController.isRigidbody;
-        _fixPosXToggle.isOn = selectedObjController.fixPositionX;
-        _fixPosYToggle.isOn = selectedObjController.fixPositionY;
+        _fixPosYToggle.isOn = selectedObjController.fixPositionX;
+        _fixPosXToggle.isOn = selectedObjController.fixPositionY;
         _fixPosZToggle.isOn = selectedObjController.fixPositionZ;
         _useGravityToggle.isOn = selectedObjController.useGravity;
     }
@@ -141,12 +142,12 @@ public class SceneObjectAttrPanelController : MonoBehaviour
     {
         _selectedObj.name = value;
     }
-    public void OnObjPosXChanged(string value)
+    public void OnObjPosYChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            _selectedObj.transform.position = new Vector3(float.Parse(value), _selectedObj.transform.position.y, _selectedObj.transform.position.z);
+            _selectedObj.transform.position = new Vector3(-float.Parse(value), _selectedObj.transform.position.y, _selectedObj.transform.position.z);
     }
-    public void OnObjPosYChanged(string value)
+    public void OnObjPosXChanged(string value)
     {
         if (float.TryParse(value, out float n))
             _selectedObj.transform.position = new Vector3(_selectedObj.transform.position.x, float.Parse(value), _selectedObj.transform.position.z);
@@ -154,14 +155,14 @@ public class SceneObjectAttrPanelController : MonoBehaviour
     public void OnObjPosZChanged(string value)
     {
         if (float.TryParse(value, out float n))
-            _selectedObj.transform.position = new Vector3(_selectedObj.transform.position.x, _selectedObj.transform.position.y, float.Parse(value));
+            _selectedObj.transform.position = new Vector3(_selectedObj.transform.position.x, _selectedObj.transform.position.y, -float.Parse(value));
     }
-    public void OnObjRotationXChanged(string value)
+    public void OnObjRotationYChanged(string value)
     {
         if (float.TryParse(value, out float n))
             _selectedObj.transform.eulerAngles = new Vector3(float.Parse(value), _selectedObj.transform.eulerAngles.y, _selectedObj.transform.eulerAngles.z);
     }
-    public void OnObjRotationYChanged(string value)
+    public void OnObjRotationXChanged(string value)
     {
         if (float.TryParse(value, out float n))
             _selectedObj.transform.eulerAngles = new Vector3(_selectedObj.transform.eulerAngles.x, float.Parse(value), _selectedObj.transform.eulerAngles.z);
@@ -171,12 +172,12 @@ public class SceneObjectAttrPanelController : MonoBehaviour
         if (float.TryParse(value, out float n))
             _selectedObj.transform.eulerAngles = new Vector3(_selectedObj.transform.eulerAngles.x, _selectedObj.transform.eulerAngles.y, float.Parse(value));
     }
-    public void OnObjScaleXChanged(string value)
+    public void OnObjScaleYChanged(string value)
     {
         if (float.TryParse(value, out float n))
             _selectedObj.transform.localScale = new Vector3(float.Parse(value), _selectedObj.transform.localScale.y, _selectedObj.transform.localScale.z);
     }
-    public void OnObjScaleYChanged(string value)
+    public void OnObjScaleXChanged(string value)
     {
         if (float.TryParse(value, out float n))
             _selectedObj.transform.localScale = new Vector3(_selectedObj.transform.localScale.x, float.Parse(value), _selectedObj.transform.localScale.z);
@@ -186,7 +187,7 @@ public class SceneObjectAttrPanelController : MonoBehaviour
         if (float.TryParse(value, out float n))
             _selectedObj.transform.localScale = new Vector3(_selectedObj.transform.localScale.x, _selectedObj.transform.localScale.y, float.Parse(value));
     }
-    public void OnObjFixPosXChanged(bool value)
+    public void OnObjFixPosYChanged(bool value)
     {
         _selectedObj.GetComponent<SceneObjectController>().fixPositionX = value;
     }
@@ -194,11 +195,11 @@ public class SceneObjectAttrPanelController : MonoBehaviour
     {
         _selectedObj.GetComponent<SceneObjectController>().fixPositionZ = value;
     }
-    public void OnObjFixPosYChanged(bool value)
+    public void OnObjFixPosXChanged(bool value)
     {
         _selectedObj.GetComponent<SceneObjectController>().fixPositionY = value;
     }
-    public void OnObjFixRotationXChanged(bool value)
+    public void OnObjFixRotationYChanged(bool value)
     {
         _selectedObj.GetComponent<SceneObjectController>().fixRotationX = value;
     }
@@ -206,7 +207,7 @@ public class SceneObjectAttrPanelController : MonoBehaviour
     {
         _selectedObj.GetComponent<SceneObjectController>().fixRotationZ = value;
     }
-    public void OnObjFixRotationYChanged(bool value)
+    public void OnObjFixRotationXChanged(bool value)
     {
         _selectedObj.GetComponent<SceneObjectController>().fixRotationY = value;
     }

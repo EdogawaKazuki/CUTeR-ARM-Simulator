@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class LoadScenePanelController : MonoBehaviour
 {
-    [SerializeField]
     private SceneManager _sceneManager;
     [SerializeField]
     private Transform _sceneListContiner;
@@ -30,6 +29,8 @@ public class LoadScenePanelController : MonoBehaviour
     }
     private void OnEnable()
     {
+        _sceneManager = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetSceneManager();
+        //_debugText = transform.Find("../DebugText").GetComponent<Text>();
         _sceneListEle.gameObject.SetActive(false);
         _sceneFolder = Application.dataPath + "/Resources/scenes";
         if (_sceneList == null)

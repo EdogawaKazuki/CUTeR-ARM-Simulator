@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ForwardKinematics : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     Text[] matrix1Text;
@@ -24,8 +23,9 @@ public class ForwardKinematics : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _robotController.SetJointAngles(new List<float>{ 0,0,0});
         matrix1Text = new Text[16];
         for (int i = 0; i < 16; i++)
@@ -42,25 +42,21 @@ public class ForwardKinematics : MonoBehaviour
         {
             matrix3Text[i] = transform.Find("Input/Line6/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
 
+        UpdateTable();
+    }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
+    public void UpdateTable()
+    {
         Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void UpdateTable()
-    {
         matrix1Text[0].text = (Angle1Cos + 0.00001f).ToString("F3");
         matrix1Text[1].text = (-Angle1Sin * Angle23Cos + 0.00001f).ToString("F3");
         matrix1Text[2].text = (Angle1Sin * Angle23Sin + 0.00001f).ToString("F3");
@@ -183,25 +179,5 @@ public class ForwardKinematics : MonoBehaviour
         z = (m[1][0] - m[0][1]) / s;
         return new float[] { angle, x, y, z };
     }
-    public void SetBaseAngle(float value)
-    {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        UpdateTable();
 
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
 }

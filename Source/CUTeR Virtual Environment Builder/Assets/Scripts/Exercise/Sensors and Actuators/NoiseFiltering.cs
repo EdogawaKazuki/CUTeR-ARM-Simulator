@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class NoiseFiltering : MonoBehaviour
 {
-    [SerializeField]
     private RobotController _robotController;
 
     List<GameObject> lineList = new List<GameObject>();
@@ -19,8 +18,9 @@ public class NoiseFiltering : MonoBehaviour
     //private int _graphLength =1000;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         m_DataDiagram.PreDestroyLineEvent += (s, e) => { lineList.Remove(e.line); };
         for(int i = 0; i < 3; i++)
         {

@@ -11,21 +11,14 @@ public class SceneManager : MonoBehaviour
 {
     [SerializeField]
     private Transform _sceneContainer;
-    [SerializeField]
     private Text _sceneStatusText;
-    [SerializeField]
     private Image _sceneStatusBackground;
-    [SerializeField]
-    private Transform _saveScenePanel;
-    [SerializeField]
     private InputField _sceneNameIF;
-    [SerializeField]
     private InputField _sceneDescriptionIF;
-    [SerializeField]
     private EditorController _editorController;
-    [SerializeField]
     private StaticRobotTrajectoryController _robotTrajectoryController;
     private string _sceneFolder = "";
+    private Text _debugText;
 
     public string sceneName;
     public string description;
@@ -33,13 +26,30 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _sceneFolder = Application.dataPath + "/Resources/scenes";
     }
-
+    private void OnEnable()
+    {
+        _editorController = GameObject.Find("EditorAdmin").GetComponent<EditorController>();
+        _robotTrajectoryController = _editorController.GetRobotController().GetTrajController();
+        _sceneFolder = Application.dataPath + "/Resources/scenes";
+        _debugText = GetComponent<EditorController>().GetBuilderCanvas().Find("DebugText").GetComponent<Text>();
+        Transform _saveScenePanel = GetComponent<EditorController>().GetBuilderCanvas().Find("SaveScenePanel");
+        _sceneNameIF = _saveScenePanel.Find("Window/Name/InputField").GetComponent<InputField>();
+        _sceneDescriptionIF = _saveScenePanel.Find("Window/Description/InputField").GetComponent<InputField>();
+        Transform _sceneCtrlBtnGroup = GetComponent<EditorController>().GetBuilderCanvas().Find("SceneCtrlBtnGroup");
+        SetupControlBar(_sceneCtrlBtnGroup);
+    }
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+    public void SetupControlBar(Transform robotCtrlBtnGroup)
+    {
+        robotCtrlBtnGroup.Find("PlayToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => StartScene(value));
+        robotCtrlBtnGroup.Find("ResetButton").GetComponent<Button>().onClick.AddListener(() => StopScene());
+        _sceneStatusText = robotCtrlBtnGroup.Find("status/Text").GetComponent<Text>();
+        _sceneStatusBackground = robotCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
     }
     public Transform GetSceneContainer()
     {
@@ -88,7 +98,7 @@ public class SceneManager : MonoBehaviour
     public void LoadSceneByPath(string path)
     {
         Debug.Log(path);
-        _editorController.debugText.text = path + "\n" + _editorController.debugText.text;
+        _debugText.text = path + "\n" + _debugText.text;
         LoadScene(File.ReadAllText(path));
     }
     public void SaveScene()
@@ -121,7 +131,7 @@ public class SceneManager : MonoBehaviour
     }
     public void StartScene(bool value)
     {
-        if(_playingScene != null)
+        if (_playingScene != null)
         {
             if (!value)
             {
@@ -140,7 +150,7 @@ public class SceneManager : MonoBehaviour
         {
             _playingScene = Instantiate(_sceneContainer).transform;
             _playingScene.SetParent(_sceneContainer.parent);
-            _playingScene.localPosition = _editorController.GetRobotController().transform.localPosition;
+            _playingScene.localPosition = transform.position;
             _playingScene.localEulerAngles = _sceneContainer.localEulerAngles;
             Debug.Log(_playingScene.transform.childCount);
             for (int i = 0; i < _playingScene.transform.childCount; i++)

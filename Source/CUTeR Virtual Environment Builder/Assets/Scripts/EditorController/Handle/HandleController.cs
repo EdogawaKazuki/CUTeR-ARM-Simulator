@@ -1,21 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HandleController : MonoBehaviour
 {
-    [SerializeField]
     private EditorController _editorController;
-    [SerializeField]
     private Transform _handleUI;
-
-    [SerializeField]
     private Transform _positionHandle;
-    [SerializeField]
     private Transform _rotateHandle;
-    [SerializeField]
     private Transform _scaleHandle;
-    [SerializeField]
     private Transform _rotateHidingPlane;
 
     private HandleType _currentHandleType;
@@ -30,9 +24,20 @@ public class HandleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _editorController = GameObject.Find("EditorAdmin").GetComponent<EditorController>();
+        _handleUI = _editorController.GetBuilderCanvas().Find("ToolBtnGroup");
+        _positionHandle = transform.Find("Translate");
+        _rotateHandle = transform.Find("Rotate");
+        _scaleHandle = transform.Find("Scale");
+        _rotateHidingPlane = _rotateHandle.Find("Hider");
+        for (int i = 0; i < _handleUI.childCount; i++)
+        {
+            int x = i;
+            _handleUI.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SetHandle((HandleType)x));
+        }
         SetHandle(HandleType.position);
+        HideHandle();
     }
-
     private void OnEnable()
     {
     }
@@ -42,7 +47,7 @@ public class HandleController : MonoBehaviour
     {
         //Debug.Log(_editorController.GetSelectedObj());
         if (_editorController.GetSelectedObj())
-            transform.position = Camera.main.transform.position - Vector3.Normalize(Camera.main.transform.position - _editorController.GetSelectedObj().localPosition) * 50; 
+            transform.position = Camera.main.transform.position - Vector3.Normalize(Camera.main.transform.position - _editorController.GetSelectedObj().position) * 50; 
         if(_currentHandleType == HandleType.rotation)
         {
             _rotateHidingPlane.eulerAngles = new Vector3(Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ExpandMenu : MonoBehaviour
 {
+    [SerializeField]
+    bool initStatus;
     float width;
     float height;
     float containerWidth;
@@ -21,6 +23,7 @@ public class ExpandMenu : MonoBehaviour
         containerWidth = ContainerRT.rect.width;
         containerHeight = ContainerRT.rect.height;
         rowHeight = transform.GetChild(0).GetComponent<RectTransform>().rect.height;
+        ExpandOption(initStatus);
     }
 
     // Update is called once per frame

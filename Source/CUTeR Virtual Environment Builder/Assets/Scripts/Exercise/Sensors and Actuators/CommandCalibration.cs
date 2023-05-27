@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class CommandCalibration : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     private List<Text> PWMTextList = new List<Text>() { null, null, null };
     private List<InputField> thetaInputfield = new List<InputField>() { null, null, null };
@@ -17,12 +16,9 @@ public class CommandCalibration : MonoBehaviour
     private List<int> pwmList = new List<int> { 0, 0, 0 };
     //private int scale = 1;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-    }
-    private void OnEnable()
-    {
-
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _robotController.GetJoystickController().HideHandleText();
         for (int i = 0; i < 3; i++)
         {
@@ -42,10 +38,11 @@ public class CommandCalibration : MonoBehaviour
             offsetInputfield[i].onValueChanged.RemoveAllListeners();
             offsetInputfield[i].onValueChanged.AddListener((value) => { SetOffset(index, value); });
         }
+        _robotController.PauseSendCmdToRobot();
     }
     private void OnDisable()
     {
-
+        _robotController.StartSendCmdToRobot();
         _robotController.GetJoystickController().ShowHandleText();
     }
     private void FixedUpdate()
@@ -73,6 +70,10 @@ public class CommandCalibration : MonoBehaviour
     public void SetPWM()
     {
         _robotController.SetJointPWMs(pwmList);
+    }
+    public void SetCaliData()
+    {
+        _robotController.SetCmdCaliData(offsetList, scaleList);
     }
 
     public void Clear()

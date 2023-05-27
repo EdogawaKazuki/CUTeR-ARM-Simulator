@@ -5,9 +5,27 @@ using UnityEngine.UI;
 
 public class HomogeneousTransformation1 : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
+    [SerializeField]
+    LineRenderer _blueLine;
+    [SerializeField]
+    LineRenderer _greenLine;
+    [SerializeField]
+    LineRenderer _redLine;
+    [SerializeField]
+    Transform _blueLineHead;
+    [SerializeField]
+    Transform _greenLineHead;
+    [SerializeField]
+    Transform _redLineHead;
+    Vector3 _redLineStart;
+    Vector3 _redLineEnd;
+    Vector3 _blueLineStart;
+    Vector3 _blueLineEnd;
+    Vector3 _greenLineStart;
+    Vector3 _greenLineEnd;
+    List<Transform> _jointTransformList;
     Text[] matrix1Text;
     Text[] matrix2Text;
     Slider BaseSlider;
@@ -26,12 +44,13 @@ public class HomogeneousTransformation1 : MonoBehaviour
     float x2;
     float y2;
     float z2;
+    List<List<float>> _JointSetList = new List<List<float>> { new List<float> { 0, 0, 0 }, new List<float> { -90, 0, 0 }, new List<float> { -90, 90, 0 } };
 
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        _robotController.SetJointAngles(new List<float> { 0, 0, 0 });
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         matrix1Text = new Text[9];
         for (int i = 0; i < 9; i++)
         {
@@ -42,20 +61,21 @@ public class HomogeneousTransformation1 : MonoBehaviour
         {
             matrix2Text[i] = transform.Find("Input/Line6/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
+        _jointTransformList = _robotController.GetJointTransforms();
+    }
+    private void FixedUpdate()
+    {
         UpdateTable();
     }
     public void UpdateTable()
     {
+        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
+        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
+        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
+        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
+        Angle3Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
+        Angle3Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
+
         matrix1Text[0].text = (Angle1Cos).ToString("F3");
         matrix1Text[1].text = (-Angle1Sin * Angle2Cos).ToString("F3");
         matrix1Text[2].text = (Angle1Sin * Angle2Sin).ToString("F3");
@@ -70,25 +90,27 @@ public class HomogeneousTransformation1 : MonoBehaviour
         Debug.Log((x2 +","+ Angle1Sin + "," + y2 +","+ Angle1Cos * Angle2Cos + "," + z2 + "," + Angle1Cos * Angle2Sin + "," + y1));
         matrix2Text[1].text = (x2 * Angle1Sin + y2 * Angle1Cos * Angle2Cos + z2 * -Angle1Cos * Angle2Sin + y1).ToString();
         matrix2Text[2].text = (x2 * 0 + y2 * Angle2Sin + z2 * Angle2Cos + z1).ToString();
-    }
-    public void SetBaseAngle(float value)
-    {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        UpdateTable();
 
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        UpdateTable();
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle3Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
-        Angle3Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
-        UpdateTable();
+
+
+        _blueLineStart = _robotController.transform.position;
+        _blueLineEnd = _robotController.transform.position - _robotController.transform.right * x1 - _robotController.transform.forward * y1 + _robotController.transform.up * z1;
+        _blueLine.SetPosition(0, _blueLineStart);
+        _blueLine.SetPosition(1, _blueLineEnd - Vector3.Normalize(_blueLineEnd - _blueLineStart) * 2f);
+        _blueLineHead.transform.SetPositionAndRotation(_blueLineEnd, Quaternion.LookRotation(_blueLineEnd - _blueLineStart));
+
+        _greenLineStart = _robotController.transform.position - _robotController.transform.right * x1 - _robotController.transform.forward * y1 + _robotController.transform.up * z1;
+        _greenLineEnd = _jointTransformList[1].position - _jointTransformList[1].right * x2 - _jointTransformList[1].forward * y2 - _jointTransformList[1].up * z2;
+        _greenLine.SetPosition(0, _greenLineStart);
+        _greenLine.SetPosition(1, _greenLineEnd - Vector3.Normalize(_greenLineEnd - _greenLineStart) * 2f);
+        _greenLineHead.transform.SetPositionAndRotation(_greenLineEnd, Quaternion.LookRotation(_greenLineEnd - _greenLineStart));
+
+
+        _redLineStart = _robotController.transform.position;
+        _redLineEnd = _jointTransformList[1].position - _jointTransformList[1].right * x2 - _jointTransformList[1].forward * y2 - _jointTransformList[1].up * z2;
+        _redLine.SetPosition(0, _redLineStart);
+        _redLine.SetPosition(1, _redLineEnd - Vector3.Normalize(_redLineEnd - _redLineStart) * 2f);
+        _redLineHead.transform.SetPositionAndRotation(_redLineEnd, Quaternion.LookRotation(_redLineEnd - _redLineStart));
     }
 
     public void SetX1(string value)
@@ -120,5 +142,9 @@ public class HomogeneousTransformation1 : MonoBehaviour
     {
         float.TryParse(value, out z2);
         UpdateTable();
+    }
+    public void SetJointAngles(int index)
+    {
+        _robotController.MoveJointsTo(_JointSetList[index]);
     }
 }

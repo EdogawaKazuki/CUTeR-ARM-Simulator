@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SFB;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +16,9 @@ public class EditorController : MonoBehaviour
     private bool _isWebGL = false;
 #endif
 
-    [SerializeField]
     private SceneManager _sceneManager;
     [SerializeField]
     private HandleController _handleController;
-    [SerializeField]
     private SceneObjectAttrPanelController _sceneObjectAttrPanelController;
     [SerializeField]
     private RobotController _robotController;
@@ -54,9 +53,15 @@ public class EditorController : MonoBehaviour
     void Start()
     {
         _objectFolder = Application.dataPath + "/Resources/objects";
+        _sceneObjectAttrPanelController = _BuilderCanvas.transform.Find("AttributePanel").GetComponent<SceneObjectAttrPanelController>();
         SetCanvasByIndex(_intialCanvasIndex);
+        ResetCamera();
     }
 
+    private void OnEnable()
+    {
+        _sceneManager = GetComponent<SceneManager>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -64,7 +69,8 @@ public class EditorController : MonoBehaviour
     }
     public void AddObjByDict(Dictionary<string, object> objDict)
     {
-
+        if (_sceneManager.GetPlayingScene() != null)
+            return;
         GameObject newObj;
         //Debug.Log(objDict["filename"].ToString());
         if ((SceneObjectController.Type)int.Parse(objDict["type"].ToString()) == SceneObjectController.Type.obj)
@@ -84,16 +90,21 @@ public class EditorController : MonoBehaviour
     }
     public GameObject AddObjByPath(string path)
     {
-
+        if (_sceneManager.GetPlayingScene() != null)
+            return null;
         GameObject newObj = new GameObject();
         newObj.transform.parent = _sceneManager.GetSceneContainer();
         newObj.transform.localPosition = new Vector3(0, 5, -20);
         newObj.AddComponent<SceneObjectController>().SetSceneObjectTrajectoryController(newObj.AddComponent<SceneObjectTrajectoryController>());
         newObj.GetComponent<SceneObjectController>().ID = _objectCounter;
+        newObj.GetComponent<SceneObjectController>().filename = Path.GetFileName(path);
+        newObj.GetComponent<SceneObjectController>().type = SceneObjectController.Type.obj;
         _objectCounter++;
 
         Transform newPart = new OBJLoader().Load(_objectFolder + "/" + path + ".obj").transform;
-        for (int i = 0; i < newPart.transform.childCount; i++)
+        Debug.Log(newPart.transform.childCount);
+        int totalObj = newPart.transform.childCount;
+        for (int i = 0; i < totalObj; i++)
         {
             newPart.transform.GetChild(0).gameObject.AddComponent<SceneObjectPart>().SetParent(newObj.transform);
             Debug.Log(newPart.transform.GetChild(0).gameObject.GetComponent<SceneObjectPart>().GetParent());
@@ -113,12 +124,14 @@ public class EditorController : MonoBehaviour
     }
     public GameObject AddPrimitiveObj(SceneObjectController.Type type)
     {
-
+        if (_sceneManager.GetPlayingScene() != null)
+            return null;
         GameObject newObj = new GameObject();
         newObj.transform.parent = _sceneManager.GetSceneContainer();
         newObj.transform.localPosition = new Vector3(0, 5, -20);
         newObj.AddComponent<SceneObjectController>().SetSceneObjectTrajectoryController(newObj.AddComponent<SceneObjectTrajectoryController>());
         newObj.GetComponent<SceneObjectController>().ID = _objectCounter;
+        newObj.GetComponent<SceneObjectController>().type = type;
         _objectCounter++;
 
         Transform newPart;
@@ -143,9 +156,10 @@ public class EditorController : MonoBehaviour
         newPart.SetParent(newObj.transform);
         newPart.localPosition = new Vector3(0, 0, 0);
         newPart.localRotation = Quaternion.identity;
-        newPart.localScale = Vector3.one * 5;
+        newPart.localScale = Vector3.one;
         newPart.gameObject.AddComponent<SceneObjectPart>().SetParent(newObj.transform);
         newPart.gameObject.layer = LayerMask.NameToLayer("Scene");
+        newObj.transform.localScale = Vector3.one * 5;
         return newObj;
     }
     public void AddObjBySelect()
@@ -158,8 +172,6 @@ public class EditorController : MonoBehaviour
         tmp = tmp[tmp.Length - 1].Split('.');
         AddObjByPath(tmp[0]);
     }
-
-
     public void SelectObj(Transform obj)
     {
         _selectedObject = obj;
@@ -181,7 +193,10 @@ public class EditorController : MonoBehaviour
     public void StartTraj()
     {
         _robotController.GetTrajController().StartTraj();
-        Debug.Log(_sceneManager.GetPlayingScene() != null);
+        //Debug.Log(_sceneManager.GetPlayingScene() != null);
+    }
+    public void StartObjectTraj()
+    {
         if (_sceneManager.GetPlayingScene() != null)
         {
             for (int i = 0; i < _sceneManager.GetPlayingScene().childCount; i++)
@@ -229,10 +244,15 @@ public class EditorController : MonoBehaviour
                 break;
         }
     }
+    public Transform GetBuilderCanvas()
+    {
+        return _BuilderCanvas.transform;
+    }
     public void SetARMode(bool value)
     {
         if (value)
         {
+            _imageTarget.gameObject.SetActive(true);
             _robotController.transform.SetParent(_imageTarget);
             _robotController.transform.localEulerAngles = new Vector3(0, 180, 0);
             _robotController.transform.localPosition = new Vector3(0, -4.301f, 11.9f);
@@ -258,6 +278,7 @@ public class EditorController : MonoBehaviour
         }
         else
         {
+            _imageTarget.gameObject.SetActive(false);
             _sceneManager.GetSceneContainer().SetParent(transform.parent);
             _sceneManager.GetSceneContainer().localPosition = Vector3.zero;
             _sceneManager.GetSceneContainer().localEulerAngles = Vector3.zero;
@@ -346,5 +367,18 @@ public class EditorController : MonoBehaviour
     public void ExitApplication()
     {
         Application.Quit();
+    }
+    public void ResetCamera()
+    {
+        Camera.main.transform.position = new Vector3(40f, 45f, -12f);
+        Camera.main.transform.LookAt(new Vector3(0, 0, 10));
+    }
+    public Camera GetARCamera()
+    {
+        return _arCamera;
+    }
+    public Camera GetMainCamera()
+    {
+        return _mainCamera;
     }
 }

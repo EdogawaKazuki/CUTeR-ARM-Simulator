@@ -29,16 +29,23 @@ public class RobotJoint : MonoBehaviour
     private float offsetY;
     [SerializeField]
     private float offsetZ;
+    private GameObject _jointSign;
     [SerializeField]
-    private GameObject _sign;
-    [SerializeField]
-    private Text _line1;
-    [SerializeField]
-    private Text _line2;
+    private List<GameObject> _linkSign;
+    private Text _title;
+    private Text _value;
     #endregion
     #region Methods
+    private void OnEnable()
+    {
+        _jointSign = transform.Find("Canvas/Panel")?.gameObject ;
+        _title = transform.Find("Canvas/Panel/Title")?.GetComponent<Text>();
+        _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<Text>();
+        SetJointSignActivate(false);
+    }
     public float GetAngle() { return _angle; }
-    public void SetAngle(float angle) { 
+    public void SetAngle(float angle) {
+        //Debug.Log(angle);
         _angle = angle;
         switch (_rotateAxis)
         {
@@ -50,13 +57,19 @@ public class RobotJoint : MonoBehaviour
     }
     public void SetSignText(string line1, string line2)
     {
-        _line1.text = line1;
-        _line2.text = line2;
+        _title.text = line1;
+        _value.text = line2;
     }
-    public void SetSignActivate(bool value)
+    public void SetJointSignActivate(bool value)
     {
-        if(_sign != null)
-            _sign.SetActive(value);
+        if (_jointSign != null)
+            _jointSign.SetActive(value);
+    }
+    public void SetLinkSignActivate(bool value)
+    {
+        if (_linkSign.Count != 0)
+            foreach (var link in _linkSign)
+                link.SetActive(value);
     }
     #endregion
 }

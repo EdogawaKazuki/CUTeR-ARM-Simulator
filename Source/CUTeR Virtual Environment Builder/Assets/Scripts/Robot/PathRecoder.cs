@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PathRecoder : MonoBehaviour
-{   [SerializeField]
+{   
     LineRenderer HeadLine;
-    [SerializeField]
     LineRenderer PathLine;
-    [SerializeField]
     Transform Base;
     Transform LastJoint;
-    [SerializeField]
     Transform PointHead;
-    [SerializeField]
     RobotJointController robotJointController;
-    [SerializeField]
     RobotController RobotController;
     int pathPointCount = 0;
     bool isRecording = false;
     // Start is called before the first frame update
     void Start()
     {
-        HeadLine.SetPosition(0, new Vector3(0, 0, 0));
     }
-
+    private void OnEnable()
+    {
+        HeadLine = transform.Find("HeadLine").GetComponent<LineRenderer>();
+        PathLine = transform.Find("PathLine").GetComponent<LineRenderer>();
+        PointHead = transform.Find("PointHead");
+        RobotController = GetComponent<RobotController>();
+        robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
+        HeadLine.SetPosition(0, new Vector3(0, 0, 0));
+        Base = robotJointController.GetJointTransformByIndex(0);
+    }
     // Update is called once per frame
     void FixedUpdate()
     {

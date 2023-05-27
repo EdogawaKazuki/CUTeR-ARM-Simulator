@@ -96,8 +96,8 @@ public class DrawGraph : MonoBehaviour {
         RectTransform graphContainer = transform.Find(name + "/Table").GetComponent<RectTransform>();
         float graphHeight = graphContainer.rect.size.y;
         float graphWidth = graphContainer.rect.size.x;
-        Debug.Log(graphHeight);
-        Debug.Log(graphWidth);
+        //Debug.Log(graphHeight);
+        //Debug.Log(graphWidth);
         float yMax = valueList.Max();
         float yMin = valueList.Min();
         float deltaY = yMax - yMin;

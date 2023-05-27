@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Singularity : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     Text[] matrix1Text;
@@ -30,12 +29,14 @@ public class Singularity : MonoBehaviour
     List<float> avglinearVelocityX;
     List<float> avglinearVelocityY;
     List<float> avglinearVelocityZ;
+    List<List<float>> _JointSetList = new List<List<float>> { new List<float> { 0, 8.297f, -8.297f }, new List<float> { 0, 165, -133.062f } };
 
     //int thisFeedback = 0;
     //int NTH_FEEDBACK_TO_DISPLAY = 3;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         LastJointAngle = new List<float>();
         avgAngularVelocity1 = new List<float>();
         avgAngularVelocity2 = new List<float>();
@@ -58,22 +59,20 @@ public class Singularity : MonoBehaviour
         {
             matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
+        //UpdateTable();
+    }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
+    private void UpdateTable()
+    {
         Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    private void UpdateTable()
-    {
         float A1 = RobotController.A1;  //length properties of the teaching robot arm (in cm)
         float A2 = RobotController.A2; //length properties of the teaching robot arm (in cm)
         float L1 = RobotController.L1; //length properties of the teaching robot arm (in cm)
@@ -170,7 +169,7 @@ public class Singularity : MonoBehaviour
         matrix2Text[0].text = det.ToString("F1");
         if (Mathf.Abs(det)> 1500)
         {
-            matrix2Text[0].color = Color.green;
+            matrix2Text[0].color = new Color(0, 0.5f, 0);
         }
         else if (Mathf.Abs(det) < 500)
         {
@@ -182,33 +181,13 @@ public class Singularity : MonoBehaviour
         }
     }
 
-    public void SetBaseAngle(float value)
-    {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        UpdateTable();
-
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
     public void SetPose1()
     {
-        _robotController.SetJointAngles(new List<float> { 0, 8.297f, -8.297f });
+
+        _robotController.MoveJointsTo(_JointSetList[0]);
     }
     public void SetPose2()
     {
-        _robotController.SetJointAngles(new List<float> { 0, 165, -133.062f });
+        _robotController.MoveJointsTo(_JointSetList[1]);
     }
 }

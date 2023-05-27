@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PWMCommand : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -20,12 +19,16 @@ public class PWMCommand : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        List<int> vs = _robotController.GetReadPWM();
+        for (int i = 0; i < vs.Count; i++)
+        {
+            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", vs[i].ToString());
+        }
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
-        _robotController.GetJoystickController().HideHandleText();
-        _trajController = _robotController.GetTrajController();
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         for (int i = 0; i < 3; i++)
         {
             //Debug.Log("Input/Line" + (i + 1) + "/Value");
@@ -46,13 +49,15 @@ public class PWMCommand : MonoBehaviour
         }
         for (int i = 0; i < 3; i++)
         {
-            PWMInputfield[i].text = _robotController.GetSendPWM()[i].ToString();
+            PWMInputfield[i].text = _robotController.GetCmdPWM()[i].ToString();
         }
+        _robotController.PauseSendCmdToRobot();
+        _robotController.SetJointSignActivate(true);
     }
     private void OnDisable()
     {
-
-        _robotController.GetJoystickController().ShowHandleText();
+        _robotController.StartSendCmdToRobot();
+        _robotController.SetJointSignActivate(false);
     }
     public void SetJointPWM(int index, string value)
     {

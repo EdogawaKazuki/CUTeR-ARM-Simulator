@@ -72,12 +72,27 @@ public class RobotJointController : MonoBehaviour
         _joints[index].transform.Find("Mask").gameObject.SetActive(false);
         _joints[index].transform.Find("Part").gameObject.SetActive(true);
     }
-    public void SetSignActivate(bool value)
+    public void SetJointSignActivate(bool value)
     {
-        foreach(var joint in _joints)
+        foreach (var joint in _joints)
         {
-            joint.SetSignActivate(value);
+            joint.SetJointSignActivate(value);
         }
+    }
+    public void SetLinkSignActivate(bool value)
+    {
+        foreach (var joint in _joints)
+        {
+            joint.SetLinkSignActivate(value);
+        }
+    }
+    public void SetJointSignActivate(int index, bool value)
+    {
+        _joints[index].SetJointSignActivate(value);
+    }
+    public void SetLinkSignActivate(int index, bool value)
+    {
+        _joints[index].SetLinkSignActivate(value);
     }
     #endregion
 }

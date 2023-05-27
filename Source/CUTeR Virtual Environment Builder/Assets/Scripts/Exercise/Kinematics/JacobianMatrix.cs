@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class JacobianMatrix : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     Text[] matrix1Text;
@@ -34,8 +33,9 @@ public class JacobianMatrix : MonoBehaviour
     int thisFeedback = 0;
     int NTH_FEEDBACK_TO_DISPLAY = 3;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         LastJointAngle = new List<float>();
         for (int i = 0; i < 3; i++)
         {
@@ -52,21 +52,18 @@ public class JacobianMatrix : MonoBehaviour
         {
             matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
+    }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
+    private void UpdateTable() {
         Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-    }
-    private void FixedUpdate()
-    {
         float A1 = RobotController.A1;  //length properties of the teaching robot arm (in cm)
         float A2 = RobotController.A2; //length properties of the teaching robot arm (in cm)
         float L1 = RobotController.L1; //length properties of the teaching robot arm (in cm)
@@ -198,32 +195,14 @@ public class JacobianMatrix : MonoBehaviour
             matrix1Text[8].color = Color.black;
         }
 
-        matrix2Text[0].text = angularVelocity1_d.ToString("F2") + "��/s";
-        matrix2Text[1].text = angularVelocity2_d.ToString("F2") + "��/s";
-        matrix2Text[2].text = angularVelocity3_d.ToString("F2") + "��/s";
-        matrix2Text[3].text = linearVelocityX.ToString("F2") + "cm/s";
-        matrix2Text[4].text = linearVelocityY.ToString("F2") + "cm/s";
-        matrix2Text[5].text = linearVelocityZ.ToString("F2") + "cm/s";
+        matrix2Text[3].text = angularVelocity1_d.ToString("F2") + "°/s";
+        matrix2Text[4].text = angularVelocity2_d.ToString("F2") + "°/s";
+        matrix2Text[5].text = angularVelocity3_d.ToString("F2") + "°/s";
+        matrix2Text[0].text = linearVelocityX.ToString("F2") + "cm/s";
+        matrix2Text[1].text = linearVelocityY.ToString("F2") + "cm/s";
+        matrix2Text[2].text = linearVelocityZ.ToString("F2") + "cm/s";
     }
 
-    public void SetBaseAngle(float value)
-    {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-    }
     class MovingAverage
     {
         LinkedList<float> queue;

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class MultipleCubicSpline : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -25,8 +24,9 @@ public class MultipleCubicSpline : MonoBehaviour
     void Start()
     {
     }
-    private void OnEnable()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
         a0t = transform.Find("Input/Line5/a0").GetComponent<Text>();
@@ -147,34 +147,34 @@ public class MultipleCubicSpline : MonoBehaviour
         b2t.text = b2.ToString("F2");
         b3t.text = b3.ToString("F2");
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 20 * t1 + 1; i++)
+        for (int i = 0; i < 50 * t1 + 1; i++)
         {
-            float _t = i / 20f;
+            float _t = i / 50f;
             //Debug.Log(_t);
             float angle = a0 + a1 * _t + a2 * _t * _t + a3 * _t * _t * _t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float>{angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2)});
+            _trajController.PushTrajPoints(new List<float>{angle, 90, -90 });
 
             AngularVelocityList.Add(a1 + 2 * a2 * _t + 3 * a3 * _t * _t);
 
             AngularAccelerationList.Add(2 * a2 + 6 * a3 * _t);
             LinearJointAngleList.Add((theta1 - theta0) / (t1 - t0) * (_t - t0) + theta0);
         }
-        for (int i = (int)t1 * 20; i < 20 * tEnd + 1; i++)
+        for (int i = (int)t1 * 50; i < 50 * tEnd + 1; i++)
         {
-            float _t = i / 20f;
+            float _t = i / 50f;
             //Debug.Log(_t);
             float angle = b0 + b1 * _t + b2 * _t * _t + b3 * _t * _t * _t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, _robotController.GetJointAngle(1), _robotController.GetJointAngle(2) });
+            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
 
             AngularVelocityList.Add(b1 + 2 * b2 * _t + 3 * b3 * _t * _t);
             LinearJointAngleList.Add((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);
-            Debug.Log((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);
+            //Debug.Log((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);
 
             AngularAccelerationList.Add(2 * b2 + 6 * b3 * _t);
         }
-        _trajController.SetStatus("Ready to play", new Color32(255, 255, 255, 78));
+        _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         drawer.ClearGraph("JointAngle");
         drawer.ShowGraph(JointAngleList, "JointAngle");
         drawer.PlotPoints("JointAngle", LinearJointAngleList, new Color32(0, 255, 0, 255));

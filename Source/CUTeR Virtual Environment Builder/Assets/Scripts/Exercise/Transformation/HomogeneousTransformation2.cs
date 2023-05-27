@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HomogeneousTransformation2 : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     Text[] matrix1Text;
@@ -21,11 +20,12 @@ public class HomogeneousTransformation2 : MonoBehaviour
     float Angle2Cos;
     float Angle23Sin;
     float Angle23Cos;
+    List<List<float>> _JointSetList = new List<List<float>> { new List<float> { -60, 60, -120 }};
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        _robotController.SetJointAngles(new List<float> { 0, 0, 0 });
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         matrix1Text = new Text[16];
         for (int i = 0; i < 16; i++)
         {
@@ -41,12 +41,14 @@ public class HomogeneousTransformation2 : MonoBehaviour
         {
             matrix3Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
         }
-        BaseSlider = GameObject.Find("Canvas/Joystick/Panel/Joint0").GetComponent<Slider>();
-        BaseSlider.onValueChanged.AddListener(SetBaseAngle);
-        Joint0Slider = GameObject.Find("Canvas/Joystick/Panel/Joint1").GetComponent<Slider>();
-        Joint0Slider.onValueChanged.AddListener(SetJoint0Angle);
-        Joint1Slider = GameObject.Find("Canvas/Joystick/Panel/Joint2").GetComponent<Slider>();
-        Joint1Slider.onValueChanged.AddListener(SetJoint1Angle);
+
+    }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
+    public void UpdateTable()
+    {
         Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
         Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
@@ -55,11 +57,7 @@ public class HomogeneousTransformation2 : MonoBehaviour
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
 
-    }
-    public void UpdateTable()
-    {
         matrix1Text[0].text = (Angle1Cos + 0.00001f).ToString("F3");
         matrix1Text[1].text = (-Angle1Sin + 0.00001f).ToString("F3");
         matrix1Text[2].text = "0";
@@ -131,5 +129,9 @@ public class HomogeneousTransformation2 : MonoBehaviour
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         UpdateTable();
+    }
+    public void SetJointAngles(int index)
+    {
+        _robotController.MoveJointsTo(_JointSetList[index]);
     }
 }

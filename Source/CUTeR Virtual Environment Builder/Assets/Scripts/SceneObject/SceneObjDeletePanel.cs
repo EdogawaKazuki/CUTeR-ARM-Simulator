@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class SceneObjDeletePanel : MonoBehaviour
 {
-    [SerializeField]
     private EditorController _editorController;
     [SerializeField]
     private Button _deleteButton;
@@ -14,6 +13,7 @@ public class SceneObjDeletePanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _editorController = GameObject.Find("EditorAdmin").GetComponent<EditorController>();
         _cancelButton.onClick.AddListener(() => { gameObject.SetActive(false); });
         gameObject.SetActive(false);
     }

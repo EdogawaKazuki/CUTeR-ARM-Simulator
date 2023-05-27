@@ -20,10 +20,11 @@ public class Barrel : EndEffector
     }
     private void OnEnable()
     {
-        m_Barrel.SetParent(GameObject.Find("Robot/RobotArm").transform);
+        if(_robotController != null)
+            m_Barrel.SetParent(_robotController.transform);
         m_Barrel.gameObject.SetActive(true);
         GetComponent<ConfigurableJoint>().connectedBody = m_Barrel.GetComponent<Rigidbody>();
-        GetComponent<ConfigurableJoint>().connectedAnchor = new Vector3(0,3,0);
+        GetComponent<ConfigurableJoint>().connectedAnchor = new Vector3(0,10,0);
     }
     private void OnDisable()
     {

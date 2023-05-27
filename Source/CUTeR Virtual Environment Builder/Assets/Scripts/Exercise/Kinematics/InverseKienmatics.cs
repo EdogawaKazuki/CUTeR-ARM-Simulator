@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class InverseKienmatics : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     Text[] matrix1Text;
 
@@ -16,11 +15,13 @@ public class InverseKienmatics : MonoBehaviour
     float[] angle3_deg;
     Button button1;
     Button button2;
-
+    Color black = new Color(0, 0, 0);
+    Color red = new Color(0.8f, 0, 0);
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         matrix1Text = new Text[6];
         for (int i = 0; i < 6; i++)
         {
@@ -30,24 +31,30 @@ public class InverseKienmatics : MonoBehaviour
         button2 = transform.Find("Input/Line4/Select2").GetComponent<Button>();
         //UpdateTable();
     }
+    private void FixedUpdate()
+    {
+        UpdateTable();
+    }
     public void UpdateTable()
     {
+        button1.interactable = true;
+        button2.interactable = true;
         /////////////calculate angle 1/////////////
         float angle1_rad = -Mathf.Atan2(x, y);
         angle1 = Mathf.Rad2Deg * angle1_rad;
-        matrix1Text[0].text = (angle1 + 0.00001f).ToString("F1") + "��";
-        matrix1Text[3].text = (angle1 + 0.00001f).ToString("F1") + "��";
+        matrix1Text[0].text = (angle1 + 0.00001f).ToString("F1") + "°";
+        matrix1Text[3].text = (angle1 + 0.00001f).ToString("F1") + "°";
         if (angle1 > _robotController.GetJointAngleMax(0)|| angle1 < _robotController.GetJointAngleMin(0))
         {
-            matrix1Text[0].color = new Color(1, 0, 0);
-            matrix1Text[3].color = new Color(1, 0, 0);
+            matrix1Text[0].color = red;
+            matrix1Text[3].color = red;
             button1.interactable = false;
             button2.interactable = false;
         }
         else
         {
-            matrix1Text[0].color = new Color(0, 1, 0, 0.8f);
-            matrix1Text[3].color = new Color(0, 1, 0, 0.8f);
+            matrix1Text[0].color = black;
+            matrix1Text[3].color = black;
         }
 
         //////////make variables for ease of calculation//////////
@@ -81,36 +88,36 @@ public class InverseKienmatics : MonoBehaviour
                 angle3_deg[n] = Mathf.Rad2Deg * angle3_rad[n];
                 if (n == 0)
                 {
-                    matrix1Text[2].text = angle3_deg[0].ToString("F1") + "��";
+                    matrix1Text[2].text = angle3_deg[0].ToString("F1") + "°";
 
                     if (angle3_deg[0] > _robotController.GetJointAngleMax(2) || angle3_deg[0] < _robotController.GetJointAngleMin(2))
                     {
-                        matrix1Text[2].color = new Color(1, 0, 0);
+                        matrix1Text[2].color = red;
                         button1.interactable = false;
                     }
                     else
                     {
-                        matrix1Text[2].color = new Color(0, 1, 0, 0.8f);
+                        matrix1Text[2].color = black;
                     }
                 }
                 else if (n == 1)
                 {
-                    matrix1Text[5].text = angle3_deg[1].ToString("F1") + "��";
+                    matrix1Text[5].text = angle3_deg[1].ToString("F1") + "°";
 
                     if (angle3_deg[1] > _robotController.GetJointAngleMax(2) || angle3_deg[1] < _robotController.GetJointAngleMin(2))
                     {
-                        matrix1Text[5].color = new Color(1, 0, 0);
+                        matrix1Text[5].color = red;
                         button2.interactable = false;
                     }
                     else
                     {
-                        matrix1Text[5].color = new Color(0, 1, 0, 0.8f);
+                        matrix1Text[5].color = black;
                     }
                 }
                 n++;
             }
         }
-        Debug.Log("n:" + n);
+        //Debug.Log("n:" + n);
         if (n == 0)
         { //no solution
             matrix1Text[1].text = "---";
@@ -134,30 +141,30 @@ public class InverseKienmatics : MonoBehaviour
             angle2_deg[i] = Mathf.Rad2Deg * angle2_rad[i];
             if (i == 0)
             {
-                matrix1Text[1].text = angle2_deg[0].ToString("F1") + "��";
+                matrix1Text[1].text = angle2_deg[0].ToString("F1") + "°";
 
                 if (angle2_deg[0] > _robotController.GetJointAngleMax(1) || angle2_deg[0] < _robotController.GetJointAngleMin(1))
                 {
-                    matrix1Text[1].color = new Color(1, 0, 0);
+                    matrix1Text[1].color = red;
                     button1.interactable = false;
                 }
                 else
                 {
-                    matrix1Text[1].color = new Color(0, 1, 0, 0.8f);
+                    matrix1Text[1].color = black;
                 }
             }
             else if(i == 1)
             {
-                matrix1Text[4].text = angle2_deg[1].ToString("F1") + "��";
+                matrix1Text[4].text = angle2_deg[1].ToString("F1") + "°";
 
                 if (angle2_deg[1] > _robotController.GetJointAngleMax(1) || angle2_deg[1] < _robotController.GetJointAngleMin(1))
                 {
-                    matrix1Text[4].color = new Color(1, 0, 0);
+                    matrix1Text[4].color = red;
                     button2.interactable = false;
                 }
                 else
                 {
-                    matrix1Text[4].color = new Color(0, 1, 0, 0.8f);
+                    matrix1Text[4].color = black;
                 }
             }
         }
@@ -179,14 +186,9 @@ public class InverseKienmatics : MonoBehaviour
         float.TryParse(value, out z);
         UpdateTable();
     }
-    public void Select1()
+    
+    public void SetJointAngles(int index)
     {
-        _robotController.SetJointAngles(new List<float> { angle1, angle2_deg[0], angle3_deg[0] });
-
-    }
-    public void Select2()
-    {
-        _robotController.SetJointAngles(new List<float> { angle1, angle2_deg[1], angle3_deg[1] });
-
+        _robotController.MoveJointsTo(new List<float> { angle1, angle2_deg[index], angle3_deg[index] });
     }
 }

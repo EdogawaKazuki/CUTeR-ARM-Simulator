@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class FeedbackCalibration : MonoBehaviour
 {
-    [SerializeField]
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
@@ -18,6 +17,14 @@ public class FeedbackCalibration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+    private void FixedUpdate()
+    {
+        UpdateTrajectory();
+    }
+    void OnEnable()
+    {
+        _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _trajController = _robotController.GetTrajController();
         drawer = GetComponent<DrawGraph>();
         for (int i = 0; i < 3; i++)
@@ -28,13 +35,6 @@ public class FeedbackCalibration : MonoBehaviour
             offsetIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<InputField>());
             scaleIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<InputField>());
         }
-    }
-    private void FixedUpdate()
-    {
-        UpdateTrajectory();
-    }
-    private void OnEnable()
-    {
         _robotController.GetJoystickController().HideHandleText();
     }
     private void OnDisable()
@@ -90,7 +90,7 @@ public class FeedbackCalibration : MonoBehaviour
     }
     public void SetCaliData()
     {
-        _robotController.SetCaliData(offsetList, scaleList);
+        _robotController.SetFeedbackCaliData(offsetList, scaleList);
     }
     public void Clear()
     {
