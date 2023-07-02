@@ -22,7 +22,6 @@ public class Singularity : MonoBehaviour
     float angularVelocity1_d;
     float angularVelocity2_d;
     float angularVelocity3_d;
-    List<float> LastJointAngle;
     List<float> avgAngularVelocity1;
     List<float> avgAngularVelocity2;
     List<float> avgAngularVelocity3;
@@ -37,18 +36,12 @@ public class Singularity : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
-        LastJointAngle = new List<float>();
         avgAngularVelocity1 = new List<float>();
         avgAngularVelocity2 = new List<float>();
         avgAngularVelocity3 = new List<float>();
         avglinearVelocityX = new List<float>();
         avglinearVelocityY = new List<float>();
         avglinearVelocityZ = new List<float>();
-        for (int i = 0; i < 3; i++)
-        {
-            LastJointAngle.Add(0);
-            _robotController.SetJointAngle(i, 0);
-        }
         matrix1Text = new Text[9];
         for (int i = 0; i < 9; i++)
         {

@@ -33,6 +33,8 @@ public class RobotController : MonoBehaviour
     static public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
     static public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
     private List<int> _pwmList = new List<int>() { 0, 0, 0, 0, 0, 0 };
+
+    public List<float> CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
@@ -41,6 +43,7 @@ public class RobotController : MonoBehaviour
     }
     void OnEnable()
     {
+        CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
         switch (_robotIndex)
         {
             case RobotIndex.green:
@@ -74,12 +77,13 @@ public class RobotController : MonoBehaviour
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         //Debug.Log("set joints");
         SetRobotDoF(3);
-        SetJointAngles(new List<float> { 0, 180, -140, 0, 0, 0 });
+        SetCmdJointAngles(new List<float> { 0, 180, -140, 0, 0, 0 });
     }
     // Update is called once per frame
     void Update()
     {
-        _pathRecoder.AddPoint(_robotJointController.GetJointTransformByIndex(_currentDoF).position);
+        if(_pathRecoder.isRecording)
+            _pathRecoder.AddPoint(_robotJointController.GetJointTransformByIndex(_currentDoF).position);
 
     }
     #endregion
@@ -113,13 +117,16 @@ public class RobotController : MonoBehaviour
         //LockRobotArm();
         if (!CheckCollision(index, angle))
         {
+            // set robot model
             _robotJointController.SetJointAngle(index, angle);
-            _joystickController.SetAngleSliderValue(index, angle);
+            // set joystick value
+            //_joystickController.SetAngleSliderValue(index, angle);
+            // set storage value
             _pwmList[index] = (int)(GetJointAngle(index) * _scale[index] + _offset[index]);
         }
         else
         {
-            _joystickController.SetAngleSliderValue(index, GetJointAngle(index));
+            //_joystickController.SetAngleSliderValue(index, GetJointAngle(index));
         }
     }
     public void MoveJointsTo(List<float> angleList)
@@ -158,19 +165,34 @@ public class RobotController : MonoBehaviour
     {
         _robotJointController.SetLinkSignActivate(index, value);
     }
-    public void SetJointAngles(List<float> angles)
+    public void SetModelJointAngles(List<float> angles)
     {
         //LockRobotArm();
         _pathRecoder.AddPoint(_robotJointController.GetJointTransformByIndex(_currentDoF).position);
         for (int i = 0; i < angles.Count; i++)
         {
-            _joystickController.SetAngleSliderValue(i, angles[i]);
+            //_joystickController.SetAngleSliderValue(i, angles[i]);
         }
         for(int i = 0; i < _pwmList.Count; i++)
         {
             _pwmList[i] = (int)(GetJointAngle(i) * _scale[i] + _offset[i]);
         }
         _robotJointController.SetJointAngles(angles);
+    }
+    public List<float> GetCmdJointAngles()
+    {
+        return CmdJointAngles;
+    }
+    public void SetCmdJointAngles(List<float> angles)
+    {
+        CmdJointAngles = angles;
+    }
+    public void SetCmdJointAngle(int index, float angle)
+    {
+        //Debug.Log(CmdJointAngles.Count);
+        //Debug.Log(index);
+        _joystickController.SetAngleSliderValue(index, angle);
+        CmdJointAngles[index] = angle;
     }
     public float GetJointAngle(int index)
     {
@@ -257,9 +279,9 @@ public class RobotController : MonoBehaviour
     public void HideJointLink(int index) { _robotJointController.HideJointLink(index); }
     public void ShowJointLink(int index) { _robotJointController.ShowJointLink(index); }
     public void UnlockRobotArm() { _robotClient.Unlock(); }
-    public void LockRobotArm() { _robotClient.Lock(); }
+    public void LockRobotArm() { SetCmdJointAngles(_robotJointController.GetJointAngles()); _robotClient.Lock(); }
     public void SetRobotArmConnect(bool value) { _robotClient.SetConnect(value); }
-    public void SetRobotArmLock(bool value) { if (value) _robotClient.Lock(); else _robotClient.Unlock(); }
+    public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  if (value) _robotClient.Lock(); else _robotClient.Unlock(); }
     public void SetRobotArmFilter(int index) { _robotClient.SetFilter(index); }
     public void SetRobotArmFilterWindow(int windowSie) { _robotClient.SetAverageWindowSize(windowSie); }
     public void SetJointSignActivate(bool value) { _robotJointController.SetJointSignActivate(value); }

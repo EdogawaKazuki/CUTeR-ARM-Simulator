@@ -26,7 +26,6 @@ public class ForwardKinematics : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
-        _robotController.SetJointAngles(new List<float>{ 0,0,0});
         matrix1Text = new Text[16];
         for (int i = 0; i < 16; i++)
         {

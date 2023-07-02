@@ -31,6 +31,10 @@ public class EditorController : MonoBehaviour
     [SerializeField]
     private Camera _arCamera;
     [SerializeField]
+    private Transform _mainCameraContainer;
+    [SerializeField]
+    private Transform _arCameraContainer;
+    [SerializeField]
     private GameObject _groundPlane;
     [SerializeField]
     private Transform _imageTarget;
@@ -252,6 +256,7 @@ public class EditorController : MonoBehaviour
     {
         if (value)
         {
+            /*
             _imageTarget.gameObject.SetActive(true);
             _robotController.transform.SetParent(_imageTarget);
             _robotController.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -268,16 +273,19 @@ public class EditorController : MonoBehaviour
                 _sceneManager.GetPlayingScene().localEulerAngles = Vector3.zero;
                 _sceneManager.GetSceneContainer().localScale = _robotController.transform.localScale * 0.01f;
             }
-            _groundPlane.SetActive(false);
-            _mainCamera.gameObject.SetActive(false);
-            _arCamera.gameObject.SetActive(true);
+            
             _robotController.HideJointLink(0);
             _robotController.HideJointLink(1);
             _robotController.HideJointLink(2);
+            */
+            _groundPlane.SetActive(false);
+            _mainCameraContainer.gameObject.SetActive(false);
+            _arCameraContainer.gameObject.SetActive(true);
             //_imageTarget.gameObject.SetActive(true);
         }
         else
         {
+            /*
             _imageTarget.gameObject.SetActive(false);
             _sceneManager.GetSceneContainer().SetParent(transform.parent);
             _sceneManager.GetSceneContainer().localPosition = Vector3.zero;
@@ -294,15 +302,16 @@ public class EditorController : MonoBehaviour
             _robotController.transform.localEulerAngles = Vector3.zero;
             _robotController.transform.localPosition = Vector3.zero;
             _robotController.transform.localScale = new Vector3(100, 100, 100);
-            _groundPlane.SetActive(true);
-            _mainCamera.gameObject.SetActive(true);
-            _arCamera.gameObject.SetActive(false);
             _robotController.ShowJointLink(0);
             _robotController.ShowJointLink(1);
             _robotController.ShowJointLink(2);
-            //_imageTarget.gameObject.SetActive(false);
             ShowRobot();
             ShowScene();
+            */
+            _groundPlane.SetActive(true);
+            _mainCameraContainer.gameObject.SetActive(true);
+            _arCameraContainer.gameObject.SetActive(false);
+            //_imageTarget.gameObject.SetActive(false);
         }
     }
     public void ShowRobot()

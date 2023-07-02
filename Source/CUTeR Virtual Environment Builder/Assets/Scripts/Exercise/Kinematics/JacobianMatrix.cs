@@ -39,8 +39,8 @@ public class JacobianMatrix : MonoBehaviour
         LastJointAngle = new List<float>();
         for (int i = 0; i < 3; i++)
         {
-            LastJointAngle.Add(0);
-            _robotController.SetJointAngle(i, 0);
+            LastJointAngle.Add(_robotController.GetJointAngle(i));
+            //_robotController.SetJointAngle(i, 0);
         }
         matrix1Text = new Text[9];
         for (int i = 0; i < 9; i++)

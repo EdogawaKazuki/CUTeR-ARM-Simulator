@@ -77,7 +77,7 @@ public class RobotControllerUI : MonoBehaviour
                 _jointAngleSliders.Add(child.GetComponent<Slider>());
                 _jointAngleSLiderValueTexts.Add(child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>());
                 _jointAngleSLiderValueTexts[i].text = _jointAngleSliders[i].value.ToString("F0");
-                child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetJointAngle(child.name[child.name.Length - 1] - '0', value));
+                child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[child.name.Length - 1] - '0', value));
             }
             else if (child.name == "Fire")
             {

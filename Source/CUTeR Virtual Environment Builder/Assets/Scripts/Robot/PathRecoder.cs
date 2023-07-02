@@ -6,13 +6,13 @@ public class PathRecoder : MonoBehaviour
 {   
     LineRenderer HeadLine;
     LineRenderer PathLine;
-    Transform Base;
-    Transform LastJoint;
+    //Transform Base;
+    //Transform LastJoint;
     Transform PointHead;
     RobotJointController robotJointController;
     RobotController RobotController;
     int pathPointCount = 0;
-    bool isRecording = false;
+    public bool isRecording = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +25,7 @@ public class PathRecoder : MonoBehaviour
         RobotController = GetComponent<RobotController>();
         robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         HeadLine.SetPosition(0, new Vector3(0, 0, 0));
-        Base = robotJointController.GetJointTransformByIndex(0);
+        //Base = robotJointController.GetJointTransformByIndex(0);
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -52,10 +52,6 @@ public class PathRecoder : MonoBehaviour
         {
             ClearRecording();
         }
-    }
-    public void setRobotDoF(int value)
-    {
-
     }
     public void SetRecording(bool value)
     {

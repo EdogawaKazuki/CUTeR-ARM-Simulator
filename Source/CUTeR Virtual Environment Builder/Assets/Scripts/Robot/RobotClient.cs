@@ -26,7 +26,7 @@ public class RobotClient : MonoBehaviour
 
 	private List<int> _feedbackPwmList = new List<int>() { 0, 0, 0 };
 	private List<int> _cmdPwmList = new List<int>() { 0, 0, 0 };
-	private List<float> _angleList = new List<float>() { 0, 0, 0 };
+	private List<float> _angleListRead = new List<float>() { 0, 0, 0 };
 
 	private bool _connected = false;
 	private bool _unlocked = true;
@@ -35,7 +35,7 @@ public class RobotClient : MonoBehaviour
 	private Thread _clientThread;
 	private Thread _receiveThread;
 	List<int> robotJointPWM;
-	List<float> robotJointAngle;
+	List<float> robotJointAngleCmd;
 	byte[] sendData;
 	byte[] recvData = new byte[2*3 + 4*3 + 2*3];
 	byte[] byteArray;
@@ -52,6 +52,7 @@ public class RobotClient : MonoBehaviour
 	float[] sum = { 0, 0, 0 };
 	List<Queue<float>> tail;
 	int filterIndex = 0;
+	int frameIndex = 0;
 
 	#endregion
 
@@ -75,14 +76,15 @@ public class RobotClient : MonoBehaviour
 		//_robotPortIF = robotSettingTransform.Find("RobotServer/RobotPort/InputField").GetComponent<InputField>();
 		_sliderText = robotSettingTransform.Find("Filter/SliderText").GetComponent<Text>();
 		_filterParamSlider = robotSettingTransform.Find("Filter/Slider").GetComponent<Slider>();
-
+		//Time.fixedDeltaTime = 0.05f;
 	}
     private void FixedUpdate()
 	{
 		if (_connected)
 		{
 			robotJointPWM = _robotController.GetSendPWM();
-			robotJointAngle = _robotController.GetJointAngles();
+			//robotJointAngle = _robotController.GetJointAngles();
+			robotJointAngleCmd = _robotController.GetCmdJointAngles();
 			//SendMsg("post," + String.Join(",", robotJointAngles) + ",end");
 
 			try
@@ -90,22 +92,28 @@ public class RobotClient : MonoBehaviour
 				//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
 
-				if (_unlocked || !SendCmd)
+				//if (_unlocked || !SendCmd)
 				{
+					_robotController.SetModelJointAngles(_angleListRead);
+					/*
 					for (int i = 0; i < 3; i++)
 					{
 						_robotController.GetJoystickController().SetAngleSliderValue(i, _angleList[i]);
 					}
+					*/
                 }
-                else if(SendCmd)
+                //else if(SendCmd)
 				{
 					if (_isESP32)
 					{
+
+						frameIndex = 0;
 						byteArray = new byte[sizeof(float) * 3 + 1];
 						byteArray[0] = 2;
-						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngle[0]), 0, byteArray, 1, 4);
-						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngle[1]), 0, byteArray, 5, 4);
-						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngle[2]), 0, byteArray, 9, 4);
+						Debug.Log(robotJointAngleCmd[0]);
+						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
+						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
+						Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
 						//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
 						ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 					}
@@ -165,14 +173,15 @@ public class RobotClient : MonoBehaviour
 				_receiveThread.Start();
 				//sendData = Encoding.ASCII.GetBytes("connect");
 				//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
-				byteArray = new byte[2];
-				byteArray[0] = 0;
-				byteArray[1] = 1;
-				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+				//byteArray = new byte[2];
+				//byteArray[0] = 0;
+				//byteArray[1] = 1;
+				//ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 			}
 			catch (Exception ex)
 			{
 				_debugText.text =  ex.ToString() + "\n" + _debugText.text;
+				print(ex);
 			}
 			//Connect();
 		}
@@ -197,7 +206,7 @@ public class RobotClient : MonoBehaviour
 
 			try
 			{
-                if (_unlocked)
+                //if (_unlocked)
 				{
 					recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
 					//Debug.Log(BitConverter.ToInt16(recvData, 4));
@@ -292,7 +301,7 @@ public class RobotClient : MonoBehaviour
 				{
 					sum[i] += tmp;
 					tail[i].Enqueue(tmp);
-					_angleList[i] = sum[i] / count;
+					_angleListRead[i] = sum[i] / count;
 					//Debug.Log(tail[i].Count);
 				}
                 else
@@ -301,16 +310,16 @@ public class RobotClient : MonoBehaviour
 					tail[i].Enqueue(tmp);
 					sum[i] -= tail[i].Dequeue();
 					//Debug.Log(tail[i].Count);
-					_angleList[i] = sum[i] / windowSize;
+					_angleListRead[i] = sum[i] / windowSize;
 				}
             }
             else if(filterIndex == 0 || filterIndex == 2)
 			{
-				_angleList[i] = tmp;
+				_angleListRead[i] = tmp;
 			}
 			//Debug.Log(BitConverter.ToInt16(byteArray, 3 * 2 + i * 4));
 		}
-        //Debug.Log(" " + _angleList[0] + " " + _angleList[1] + " " + _angleList[2] + " ");
+        //Debug.Log(" " + _angleListRead[0] + " " + _angleListRead[1] + " " + _angleListRead[2] + " ");
         if (SendCmd)
 		{
 			for (int i = 0; i < 3; i++)
@@ -334,7 +343,7 @@ public class RobotClient : MonoBehaviour
 				}
 				for (int i = 3; i < 6; i++)
 				{
-					_angleList[i - 3] = float.Parse(vs[i]);
+					_angleListRead[i - 3] = float.Parse(vs[i]);
 				}
             }
             else
@@ -345,7 +354,7 @@ public class RobotClient : MonoBehaviour
 				}
 				for (int i = 4; i < 7; i++)
 				{
-					_angleList[i - 4] = float.Parse(vs[i]);
+					_angleListRead[i - 4] = float.Parse(vs[i]);
 				}
 			}
 		}

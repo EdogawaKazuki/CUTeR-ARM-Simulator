@@ -24,6 +24,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     private Text _trajStatusText;
     private Image _trajStatusBackground;
     private string _trajText = "";
+    public List<float> angleList = new List<float>() { 0, 0, 0, 0, 0, 0};
 
     public enum State
     {
@@ -125,8 +126,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         for (int i = 0; i < trajList.Count; i++)
         {
             if (trajList[i][_currentTrajIndex] != 1000)
-                _robotController.SetJointAngle(i, trajList[i][_currentTrajIndex]);
+                //_robotController.SetJointAngle(i, trajList[i][_currentTrajIndex]);
+                angleList[i] = trajList[i][_currentTrajIndex];
+
         }
+        //_robotController.SetModelJointAngles(angleList);
+        _robotController.SetCmdJointAngles(angleList);
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
         if (direction == Direction.forward)

@@ -25,7 +25,6 @@ public class DHRepresentation : MonoBehaviour
     private void OnEnable()
     {
         _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
-        _robotController.SetJointAngles(new List<float> { 0, 0, 0 });
         matrix1Text = new Text[12];
         for (int i = 0; i < 12; i++)
         {
