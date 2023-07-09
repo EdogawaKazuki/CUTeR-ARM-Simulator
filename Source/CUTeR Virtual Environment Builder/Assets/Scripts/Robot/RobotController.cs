@@ -186,6 +186,10 @@ public class RobotController : MonoBehaviour
     public void SetCmdJointAngles(List<float> angles)
     {
         CmdJointAngles = angles;
+        if (!_robotClient.IsConnected())
+        {
+            SetModelJointAngles(angles);
+        }
     }
     public void SetCmdJointAngle(int index, float angle)
     {

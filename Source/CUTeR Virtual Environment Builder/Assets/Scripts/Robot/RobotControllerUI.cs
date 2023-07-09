@@ -38,6 +38,7 @@ public class RobotControllerUI : MonoBehaviour
     {
         _jointAngleSliders[index].value = value;
         _jointAngleSLiderValueTexts[index].text = value.ToString("F0");
+        _robotController.SetJointAngle(index, value);
     }
     public float GetJointAngleMax(int index)
     {
