@@ -20,7 +20,7 @@ public class RobotController : MonoBehaviour
     [SerializeField]
     private RobotIndex _robotIndex;
     [SerializeField]
-    private bool _enableCollisionChecker = false;
+    private bool _enableCollisionChecker = true;
     enum RobotIndex
     {
         green,
@@ -35,6 +35,7 @@ public class RobotController : MonoBehaviour
     private List<int> _pwmList = new List<int>() { 0, 0, 0, 0, 0, 0 };
 
     public List<float> CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
+    public bool isUserInteracting;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
@@ -127,6 +128,7 @@ public class RobotController : MonoBehaviour
         else
         {
             //_joystickController.SetAngleSliderValue(index, GetJointAngle(index));
+            Debug.Log("???");
         }
     }
     public void MoveJointsTo(List<float> angleList)
@@ -178,6 +180,7 @@ public class RobotController : MonoBehaviour
             _pwmList[i] = (int)(GetJointAngle(i) * _scale[i] + _offset[i]);
         }
         _robotJointController.SetJointAngles(angles);
+        
     }
     public List<float> GetCmdJointAngles()
     {
@@ -190,12 +193,17 @@ public class RobotController : MonoBehaviour
         {
             SetModelJointAngles(angles);
         }
+        else
+        {
+            for (int i = 0; i < _pwmList.Count; i++)
+                _joystickController.SetAngleSliderValue(i, angles[i], isUserInteracting);
+        }
     }
-    public void SetCmdJointAngle(int index, float angle)
+    public void SetCmdJointAngle(int index, float angle, bool isUserInteracting)
     {
         //Debug.Log(CmdJointAngles.Count);
         //Debug.Log(index);
-        _joystickController.SetAngleSliderValue(index, angle);
+        _joystickController.SetAngleSliderValue(index, angle, isUserInteracting);
         CmdJointAngles[index] = angle;
     }
     public float GetJointAngle(int index)

@@ -15,7 +15,14 @@ public class ImageTracker : MonoBehaviour
     public Transform ArucoIndicator;
     private WebCamTexture webcamTexture = null;
     private Texture2D renderedTexture = null;
-    
+    private Vector3 CameraPosOffset = Vector3.zero;
+    private Vector3 CameraRotOffset = Vector3.zero;
+    public bool AdjARPos = false;
+
+    public Dropdown webcamDropdown;
+
+    private List<string> webcamOptions = new List<string>();
+
     Mat cameraMatrix = new Mat(3, 3, MatType.CV_64FC1, new double[] { 710.6095021898424, 0.0, 316.60453569562026, 0.0, 710.7115564393268, 255.1462556783168, 0.0, 0.0, 1.0 });
     Mat distCoeffs = new Mat(1, 5, MatType.CV_64FC1, new double[] { 0.05282949016850485, 0.4931362059400071, -0.0001368901900445027, 0.002526697725007028, -0.9633706183460452 });
     Vector3 cameraPosition;
@@ -23,25 +30,50 @@ public class ImageTracker : MonoBehaviour
     //public Text webcamName;
     private void Start()
     {
-        WebCamDevice device = WebCamTexture.devices[1];
-        //webcamName.text = device.name;
-        webcamTexture = new WebCamTexture(device.name);
-        if (webcamTexture != null)
+        WebCamDevice[] devices = WebCamTexture.devices;
+        foreach (WebCamDevice device in devices)
         {
-            webcamTexture.Play();
+            webcamOptions.Add(device.name);
         }
-        else
-        {
-            Debug.Log("no device");
-        }
-        renderedTexture = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.BGRA32, false);
 
+        // Update the dropdown options
+        webcamDropdown.ClearOptions();
+        webcamDropdown.AddOptions(webcamOptions);
+        webcamDropdown.onValueChanged.AddListener(SelectWebCam);
     }
     private void Update()
     {
         if (webcamTexture != null && webcamTexture.didUpdateThisFrame)
         {
             processFrame(webcamTexture);
+        }
+        if (AdjARPos)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CameraPosOffset += new Vector3(0, 0, 0.1f);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                CameraPosOffset += new Vector3(0, 0, -0.1f);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                CameraPosOffset += new Vector3(0, 0.1f, 0);
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                CameraPosOffset += new Vector3(0, -0.1f, 0);
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                CameraPosOffset += new Vector3(0.1f, 0, 0);
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                CameraPosOffset += new Vector3(-0.1f, 0, 0);
+            }
+            UpdateRobotPosition();
         }
     }
     private void OnDestroy()
@@ -55,10 +87,27 @@ public class ImageTracker : MonoBehaviour
             webcamTexture = null;
         }
     }
+    public void SelectWebCam(int index)
+    {
+
+        WebCamDevice device = WebCamTexture.devices[index];
+        //webcamName.text = device.name;
+        webcamTexture = new WebCamTexture(device.name);
+        if (webcamTexture != null)
+        {
+            webcamTexture.Play();
+        }
+        else
+        {
+            Debug.Log("no device");
+        }
+        renderedTexture = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.BGRA32, false);
+    }
+    public void SetARPos(bool value) { AdjARPos = value; }
     public void UpdateRobotPosition()
     {
 
-        ARCamera.transform.localPosition = cameraPosition;
+        ARCamera.transform.localPosition = cameraPosition + CameraPosOffset;
         CameraContainer.transform.localRotation = cameraRotation;
         CameraContainer.transform.Rotate(new Vector3(-90, 0, 0), Space.World);
     }

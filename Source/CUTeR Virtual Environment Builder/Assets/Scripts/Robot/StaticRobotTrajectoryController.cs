@@ -79,7 +79,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     {
         if(_currentState == State.preplaying || _currentState == State.prelooping)
         {
-            if(_currentTrajIndex < _prepareTrajList[0].Count)
+            if (_currentTrajIndex < _prepareTrajList[0].Count)
                 ReadTraj(_prepareTrajList, Direction.forward);
             else
             {

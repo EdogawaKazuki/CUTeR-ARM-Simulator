@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,21 +42,24 @@ public class PathRecoder : MonoBehaviour
     {
         try
         {
-            if (isRecording)
+            if (isRecording && Vector3.Distance(point, PathLine.GetPosition(PathLine.positionCount - 1)) > 0.1)
             {
                 PathLine.positionCount = pathPointCount + 1;
                 PathLine.SetPosition(pathPointCount, point);
                 pathPointCount++;
             }
         }
-        catch
+        catch(Exception e)
         {
+            Debug.LogError(e.Message);
             ClearRecording();
         }
     }
     public void SetRecording(bool value)
     {
         isRecording = value;
+
+        PathLine.gameObject.SetActive(value);
     }
     public void ClearRecording()
     {

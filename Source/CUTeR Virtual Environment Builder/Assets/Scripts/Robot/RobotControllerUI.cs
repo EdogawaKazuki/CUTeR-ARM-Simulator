@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RobotControllerUI : MonoBehaviour
@@ -12,6 +13,7 @@ public class RobotControllerUI : MonoBehaviour
     private List<Text> _jointAngleSLiderValueTexts = new List<Text>();
     private Slider _forceSlider;
     private Button _fireButton;
+    public bool isUserInteracting;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
@@ -34,7 +36,7 @@ public class RobotControllerUI : MonoBehaviour
     }
     #endregion
     #region Methods
-    public void SetAngleSliderValue(int index, float value)
+    public void SetAngleSliderValue(int index, float value, bool isUserInteracting)
     {
         _jointAngleSliders[index].value = value;
         _jointAngleSLiderValueTexts[index].text = value.ToString("F0");
@@ -78,7 +80,16 @@ public class RobotControllerUI : MonoBehaviour
                 _jointAngleSliders.Add(child.GetComponent<Slider>());
                 _jointAngleSLiderValueTexts.Add(child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>());
                 _jointAngleSLiderValueTexts[i].text = _jointAngleSliders[i].value.ToString("F0");
-                child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[child.name.Length - 1] - '0', value));
+                child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[child.name.Length - 1] - '0', value, isUserInteracting));
+                EventTrigger eventTrigger = child.gameObject.AddComponent<EventTrigger>();
+                EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
+                pointerDownEntry.eventID = EventTriggerType.PointerDown;
+                pointerDownEntry.callback.AddListener(OnPointerDown);
+                eventTrigger.triggers.Add(pointerDownEntry);
+                EventTrigger.Entry pointerUpEntry = new EventTrigger.Entry();
+                pointerUpEntry.eventID = EventTriggerType.PointerUp;
+                pointerUpEntry.callback.AddListener(OnPointerUp);
+                eventTrigger.triggers.Add(pointerUpEntry);
             }
             else if (child.name == "Fire")
             {
@@ -92,6 +103,17 @@ public class RobotControllerUI : MonoBehaviour
             }
         }
 
+    }
+    public void OnPointerDown(BaseEventData eventData)
+    {
+        // The user starts interacting with the slider (clicks on it)
+        isUserInteracting = true;
+    }
+
+    public void OnPointerUp(BaseEventData eventData)
+    {
+        // The user stops interacting with the slider (releases the click)
+        isUserInteracting = false;
     }
     public void EnableForce(bool value)
     {
