@@ -773,11 +773,15 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e5017bb324ed39a4f8633fca0cb932e5, type: 2}
     - target: {fileID: 681858933697334528, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
       propertyPath: signalingSettings.m_iceServers.Array.data[0].m_username
-      value: hello
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 681858933697334528, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
       propertyPath: signalingSettings.m_iceServers.Array.data[0].m_credential
-      value: world
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 681858933697334528, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
+      propertyPath: signalingSettings.m_iceServers.Array.data[0].m_urls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 681858933697334528, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
       propertyPath: signalingSettings.m_iceServers.Array.data[0].m_urls.Array.data[0]
@@ -873,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 681858933697334530, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6e851aba836c044ab6953a64406b1cb, type: 3}
