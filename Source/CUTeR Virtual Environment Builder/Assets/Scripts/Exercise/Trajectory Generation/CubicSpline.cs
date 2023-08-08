@@ -42,7 +42,7 @@ public class CubicSpline : MonoBehaviour
             JointAngleList.Add(angle);
             _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
 
-            AngularVelocityList.Add(a1 + 2 * a2 * t + 3 * a3 * _t * _t);
+            AngularVelocityList.Add(a1 + 2 * a2 * _t + 3 * a3 * _t * _t);
 
             AngularAccelerationList.Add(2 * a2 + 6 * a3 * _t);
         }

@@ -55,7 +55,7 @@ public class DrawGraph : MonoBehaviour {
         {
             GameObject newText = new GameObject("x_label" + i);
             Text myText = newText.AddComponent<Text>();
-            myText.text = ((valueList.Count - 1) / 20f / 6 * i).ToString("F1");
+            myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
             Font ArialFont = (Font)Resources.Load("ARIAL");
             myText.font = ArialFont;
             myText.material = ArialFont.material;

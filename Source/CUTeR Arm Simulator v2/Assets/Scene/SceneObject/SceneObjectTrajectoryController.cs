@@ -68,11 +68,7 @@ public class SceneObjectTrajectoryController : MonoBehaviour
             if (paths.Length > 0) OnFileUpload(new Uri(paths[0]).AbsoluteUri);
     }
 
-    private void OnFileUpload(string url)
-    {
-        StartCoroutine(OutputRoutine(url));
-    }
-
+    private void OnFileUpload(string url) { StartCoroutine(OutputRoutine(url)); }
     // get trajectory file
     private IEnumerator OutputRoutine(string url)
     {
