@@ -13,7 +13,7 @@
 /[Rr]esources/objects/
 /[Aa]ssets/[Rr]esources/[Ss]cenes/
 /[Aa]ssets/[Rr]esources/[Oo]bjects/
-
+/[Pp]ackages/*.tgz
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
