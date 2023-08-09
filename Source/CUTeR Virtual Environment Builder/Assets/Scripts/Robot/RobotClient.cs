@@ -94,13 +94,16 @@ public class RobotClient : MonoBehaviour
 
 				//if (_unlocked || !SendCmd)
 				{
-					_robotController.SetModelJointAngles(_angleListRead);
-					/*
-					for (int i = 0; i < 3; i++)
+					if (_unlocked)
 					{
-						_robotController.GetJoystickController().SetAngleSliderValue(i, _angleList[i]);
+						//_robotController.SetModelJointAngles(_angleListRead);
+						for (int i = 0; i < 3; i++)
+						{
+							_robotController.GetJoystickController().SetAngleSliderValue(i, _angleListRead[i], false);
+						}
 					}
-					*/
+					
+					
                 }
                 //else if(SendCmd)
 				{
