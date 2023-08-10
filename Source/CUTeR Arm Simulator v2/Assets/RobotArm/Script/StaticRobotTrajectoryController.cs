@@ -68,10 +68,14 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _openTrajectoryButton = TrajCtrlBtnGroup.Find("upload").GetComponent<Button>();
         _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<Text>();
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
-
+        TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(true));
+        TrajCtrlBtnGroup.Find("loop").GetComponent<Button>().onClick.AddListener(() => LoopTraj());
+        TrajCtrlBtnGroup.Find("stop").GetComponent<Button>().onClick.AddListener(() => StopTraj());
         SetStatus(State.init);
-        if (_openTrajectoryButton != null)
+        if (_openTrajectoryButton != null){
+
             _openTrajectoryButton.onClick.AddListener(UploadTraj);
+        }
 
 
     }
@@ -135,6 +139,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         }
         //_robotController.SetModelJointAngles(angleList);
         _robotController.SetCmdJointAngles(angleList);
+        _robotController.SetTransparentCmdJointAngles(angleList);
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
         if (direction == Direction.forward)
