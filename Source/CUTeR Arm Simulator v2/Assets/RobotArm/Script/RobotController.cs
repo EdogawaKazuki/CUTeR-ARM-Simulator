@@ -200,20 +200,8 @@ public class RobotController : MonoBehaviour
     }
     public void SetCmdJointAngle(int index, float angle)
     {
-        // _joystickController.SetAngleSliderValue(index, angle);
         CmdJointAngles[index] = angle;
-        
-        if (!CheckCollision(index, angle))
-        {
-            // set robot model
-            _robotJointController.SetJointAngle(index, angle);
-            // set joystick value
-            // _joystickController.SetAngleSliderValue(index, angle);
-        }
-        else
-        {
-            //_joystickController.SetAngleSliderValue(index, GetJointAngle(index));
-        }
+        _robotJointController.SetJointAngle(index, angle);
     }
     public void SetTransparentCmdJointAngles(List<float> angles) { _transparentRobotJointController.SetJointAngles(angles); }
     public void SetTransparentCmdJointAngle(int index, float angle) { if(_robotControllerUI._sliderStatus == 0) _transparentRobotJointController.SetJointAngle(index, angle); }
