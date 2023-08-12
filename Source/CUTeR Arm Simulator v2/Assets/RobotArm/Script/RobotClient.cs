@@ -73,16 +73,20 @@ public class RobotClient : MonoBehaviour
     {
 		// Get hooks
         _robotController = GetComponent<RobotController>();
-		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText").GetComponent<Text>();
+		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText")?.GetComponent<Text>();
 		Transform robotSettingTransform = _robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window/Robot");
 		_robotIPIF = robotSettingTransform.Find("RobotServer/RobotIP/InputField")?.GetComponent<InputField>();
 		_robotPortIF = robotSettingTransform.Find("RobotServer/RobotPort/InputField")?.GetComponent<InputField>();
 		_filterDropdown = robotSettingTransform.Find("RobotServer/Filter/Dropdown")?.GetComponent<Dropdown>();
 
+
 		// Set up UIs
 		_robotIPIF.onValueChanged.AddListener((value) =>{ SetRobotIP(value); });
 		_robotPortIF.onValueChanged.AddListener((value) => { SetRobotPort(value); });
 		_filterDropdown.onValueChanged.AddListener((value) => { SetFilter(value); });
+		
+		_robotIPIF.text = PlayerPrefs.GetString("_robotIP", "localhost");
+		_robotPortIF.text = PlayerPrefs.GetInt("_robotPort", 1234).ToString();
 		//Time.fixedDeltaTime = 0.05f;
 	}
     private void FixedUpdate()
@@ -91,6 +95,7 @@ public class RobotClient : MonoBehaviour
 	}
     private void OnApplicationQuit()
 	{
+		SetConnect(false);
 		if(_receiveThread != null)
 			_receiveThread.Abort();
 		if(_clientThread != null)
@@ -168,20 +173,21 @@ public class RobotClient : MonoBehaviour
 		{
             try
             {
-
+				Debug.Log("Connecting to " + _robotIP + ":" + _robotPort);
 				ServerEndPoint = new IPEndPoint(IPAddress.Parse(_robotIP), _robotPort);
-				ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-				ClientSocket.SendTimeout = 1000;
-				ClientSocket.ReceiveTimeout = 1000;
-				_receiveThread = new Thread(new ThreadStart(ClientThread));
+                ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
+                {
+                    SendTimeout = 1000,
+                    ReceiveTimeout = 1000
+                };
+                _receiveThread = new Thread(new ThreadStart(ClientThread));
 				_connected = true;
 				_receiveThread.Start();
-				//sendData = Encoding.ASCII.GetBytes("connect");
-				//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
-				//byteArray = new byte[2];
-				//byteArray[0] = 0;
-				//byteArray[1] = 1;
-				//ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+
+				byteArray = new byte[2];
+				byteArray[0] = 0;
+				byteArray[1] = 1;
+				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 			}
 			catch (Exception ex)
 			{
@@ -194,8 +200,6 @@ public class RobotClient : MonoBehaviour
 		{
 			_receiveThread.Abort();
 			_connected = false;
-			//sendData = Encoding.ASCII.GetBytes("disconnect");
-			//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
 			byteArray = new byte[2];
 			byteArray[0] = 0;
 			byteArray[1] = 0;
@@ -221,20 +225,17 @@ public class RobotClient : MonoBehaviour
 		{
 			//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
-			//if (_unlocked || !SendCmd)
+			// if (_unlocked || !SendCmd)
 			{
 				if (_unlocked)
 				{
-					//_robotController.SetModelJointAngles(_angleListRead);
-					for (int i = 0; i < 3; i++)
-					{
-						_robotController.GetJoystickController().SetAngleSliderValue(i, _angleListRead[i]);
-					}
+					_robotController.SetCmdJointAngles(_angleListRead);
+					_robotController.SetTransparentCmdJointAngles(_angleListRead);
 				}
 				
 				
 			}
-			//else if(SendCmd)
+			// else if(SendCmd)
 			{
 				if (ESP32)
 				{
@@ -242,7 +243,7 @@ public class RobotClient : MonoBehaviour
 					frameIndex = 0;
 					byteArray = new byte[sizeof(float) * 3 + 1];
 					byteArray[0] = 2;
-					Debug.Log(robotJointAngleCmd[0]);
+					// Debug.Log(robotJointAngleCmd[0]);
 					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
 					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
 					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
@@ -274,7 +275,7 @@ public class RobotClient : MonoBehaviour
                 //if (_unlocked)
 				{
 					recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
-					//Debug.Log(BitConverter.ToInt16(recvData, 4));
+					// Debug.Log(BitConverter.ToInt16(recvData, 4));
 					ParsePWMByte(recvData);
 					//ParsePWM(Encoding.ASCII.GetString(recvData));
 				}

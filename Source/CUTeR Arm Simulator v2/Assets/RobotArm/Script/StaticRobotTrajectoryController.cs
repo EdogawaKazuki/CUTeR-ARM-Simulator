@@ -139,7 +139,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         }
         //_robotController.SetModelJointAngles(angleList);
         _robotController.SetCmdJointAngles(angleList);
-        _robotController.SetTransparentCmdJointAngles(angleList);
+        if(_currentState != State.prelooping && _currentState != State.preplaying)
+            _robotController.SetTransparentCmdJointAngles(angleList);
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
         if (direction == Direction.forward)
@@ -226,6 +227,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 }
             }
             SetStatus(State.ready);
+            List<float> tmpList = new();
+            for(int i = 0; i < _robotController.GetRobotDoF(); i++)
+            {
+                tmpList.Add(_trajList[i][0]);
+            }
+            _robotController.SetTransparentCmdJointAngles(tmpList);
         }
         catch (Exception e)
         {

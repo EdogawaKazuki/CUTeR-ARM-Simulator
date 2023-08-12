@@ -11,6 +11,7 @@ public class RobotController : MonoBehaviour
     private RobotJointController _transparentRobotJointController;
     private EndEffectorController _endEffectorController;
     private RobotControllerUI _joystickController;
+    private RobotClient _robotClient;
     private PathRecoder _pathRecoder;
     private GameObject _robotCanvas;
     private List<float> _offset;
@@ -74,7 +75,7 @@ public class RobotController : MonoBehaviour
         _robotCanvas = transform.Find("RobotCanvas").gameObject;
         //_editorController = transform.Find("/EditorAdmin").GetComponent<EditorController>();
         _joystickController = GetComponent<RobotControllerUI>();
-        //_robotClient = GetComponent<RobotClient>();
+        _robotClient = GetComponent<RobotClient>();
         _pathRecoder = GetComponent<PathRecoder>();
         _staticRobotTrajectoryController = GetComponent<StaticRobotTrajectoryController>();
         _endEffectorController = transform.Find("EndEffectors").GetComponent<EndEffectorController>();
@@ -127,20 +128,18 @@ public class RobotController : MonoBehaviour
 
 
     // Real Robot Arm Command
-    //public List<int> GetReadPWM(){ return _robotClient.GetFeedbackPWM(); }
-    //public List<int> GetCmdPWM() { return _robotClient.GetCmdPWM(); }
-    //public void SetFeedbackCaliData(List<float> offset, List<float> scale){_robotClient.SetFeedBackCaliData(offset, scale);}
-    //public void SetCmdCaliData(List<float> offset, List<float> scale){_robotClient.SetCmdCaliData(offset, scale);}
-    //public void UnlockRobotArm() { _robotClient.Unlock(); }
-    //public void LockRobotArm() { SetCmdJointAngles(_robotJointController.GetJointAngles()); _robotClient.Lock(); }
-    //public void SetRobotArmConnect(bool value) { _robotClient.SetConnect(value); }
-    //public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  if (value) _robotClient.Lock(); else _robotClient.Unlock(); }
+    public List<int> GetReadPWM(){ return _robotClient.GetFeedbackPWM(); }
+    public List<int> GetCmdPWM() { return _robotClient.GetCmdPWM(); }
+    public void SetFeedbackCaliData(List<float> offset, List<float> scale){_robotClient.SetFeedBackCaliData(offset, scale);}
+    public void SetCmdCaliData(List<float> offset, List<float> scale){_robotClient.SetCmdCaliData(offset, scale);}
+    public void SetRobotArmConnect(bool value) { _robotClient.SetConnect(value); }
+    public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  if (value) _robotClient.Lock(); else _robotClient.Unlock(); }
     //public void SetRobotArmFilter(int index) { _robotClient.SetFilter(index); }
     //public void SetRobotArmFilterWindow(int windowSie) { _robotClient.SetAverageWindowSize(windowSie); }
     
     // Robot Client Setting
-    //public void PauseSendCmdToRobot(){_robotClient.SendCmd = false;}
-    //public void StartSendCmdToRobot(){_robotClient.SendCmd = true;}
+    public void PauseSendCmdToRobot(){_robotClient.SendCmd = false;}
+    public void StartSendCmdToRobot(){_robotClient.SendCmd = true;}
 
     // AR Content Setting
     public void Show3DWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/3d").gameObject.SetActive(value);}
@@ -178,6 +177,7 @@ public class RobotController : MonoBehaviour
     public List<float> GetJointAngles() { return _robotJointController.GetJointAngles(); }
     public List<float> GetCmdJointAngles() { return CmdJointAngles; }
     public List<int> GetSendPWM() { return _pwmList; }
+    public List<Transform> GetJointsTransform() { return _robotJointController.GetJointsTransform(); }
 
     // Set Joint Status
     public void SetJointPWMs(List<int> pwm)
@@ -194,9 +194,9 @@ public class RobotController : MonoBehaviour
     }
     public void SetCmdJointAngles(List<float> angles)
     {
-        _joystickController.SetAngleSliderValues(angles);
+        _joystickController.SetAngleSliderValues(angles.GetRange(0, _currentDoF));
         CmdJointAngles = angles;
-        _robotJointController.SetJointAngles(angles);
+        _robotJointController.SetJointAngles(angles.GetRange(0, _currentDoF));
     }
     public void SetCmdJointAngle(int index, float angle)
     {
@@ -239,6 +239,8 @@ public class RobotController : MonoBehaviour
 
     // Get Robot parameters
     public int GetRobotDoF() { return _currentDoF; }
+    public int GetJointAngleMax(int index) { return _robotJointController.GetJointAngleMax(index); }
+    public int GetJointAngleMin(int index) { return _robotJointController.GetJointAngleMin(index); }
 
     // Set Robot Parameters
     public void SetRobotDoF(int dof)

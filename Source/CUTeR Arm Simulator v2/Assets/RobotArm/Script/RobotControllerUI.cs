@@ -13,6 +13,7 @@ public class RobotControllerUI : MonoBehaviour
     private List<Text> _jointAngleSLiderValueTexts = new();
     private Slider _forceSlider;
     private Button _fireButton;
+    private bool isUserInterect = false;
     public float _lastSliderValue = 0;
     public int _sliderStatus = 0;
     #endregion
@@ -32,6 +33,9 @@ public class RobotControllerUI : MonoBehaviour
     // Set joystick slider value
     public void SetAngleSliderValue(int index, float value)
     {
+        if(!isUserInterect){
+            return;
+        }
         // Debug.Log(value);
         if(_sliderStatus != 0){
             if(_sliderStatus == 1 && value > _lastSliderValue){
@@ -65,17 +69,9 @@ public class RobotControllerUI : MonoBehaviour
     {
         for(int i = 0; i < values.Count; i++)
         {
-            SetAngleSliderValue(i, values[i]);
+            _jointAngleSliders[i].value = values[i];
+            _jointAngleSLiderValueTexts[i].text = values[i].ToString("F0");
         }
-    }
-    // get joystick slider range
-    public float GetJointAngleMax(int index)
-    {
-        return _jointAngleSliders[index].maxValue;
-    }
-    public float GetJointAngleMin(int index)
-    {
-        return _jointAngleSliders[index].minValue;
     }
     // Show or hide joystick handle text
     public void HideHandleText()
@@ -95,6 +91,7 @@ public class RobotControllerUI : MonoBehaviour
     // Setup panels
     public void SetupJoystickPanel(Transform panel)
     {
+        // Debug.Log(_robotController.GetJointAngleMax(0));
         _joyStickPanel = panel.Find("Slider");
         _jointAngleSliders.Clear();
         _jointAngleSLiderValueTexts.Clear();
@@ -104,6 +101,9 @@ public class RobotControllerUI : MonoBehaviour
             if (child.name.Contains("Joint"))
             {
                 _jointAngleSliders.Add(child.GetComponent<Slider>());
+                _jointAngleSliders[i].maxValue = _robotController.GetJointAngleMax(i);
+                _jointAngleSliders[i].minValue = _robotController.GetJointAngleMin(i);
+                _jointAngleSliders[i].value = _robotController.GetJointAngle(i);
                 _jointAngleSLiderValueTexts.Add(child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>());
                 _jointAngleSLiderValueTexts[i].text = _jointAngleSliders[i].value.ToString("F0");
                 // child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[^1] - '0', value));
@@ -132,6 +132,7 @@ public class RobotControllerUI : MonoBehaviour
     UnityEngine.Events.UnityAction<float> fn; // pointer for move transparent robot listener
     public void OnPointerDown(BaseEventData eventData)
     {
+        isUserInterect = true;
         _lastSliderValue = eventData.selectedObject.GetComponent<Slider>().value;
         Debug.Log(_lastSliderValue);
         // add move transparent robot listenre  
@@ -140,6 +141,7 @@ public class RobotControllerUI : MonoBehaviour
     }
     public void OnPointerUp(BaseEventData eventData)
     {
+        isUserInterect = false;
         // remove move transparent robot listenre  
         eventData.selectedObject.GetComponent<Slider>().onValueChanged.RemoveListener(fn);// Move "real robot" to transparent robot position
         _robotController.MoveJointTo(eventData.selectedObject.name[^1] - '0', eventData.selectedObject.GetComponent<Slider>().value);
@@ -163,9 +165,9 @@ public class RobotControllerUI : MonoBehaviour
     {
         panel.Find("Robot/RobotType/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotDoF(value));
         panel.Find("Robot/EndEffector/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetEndEffector(value));
-        //panel.Find("Robot/RobotServer/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
-        //panel.Find("Robot/RobotServer/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
-        //panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
+        panel.Find("Robot/RobotServer/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
+        panel.Find("Robot/RobotServer/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
+        // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
         //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
     }
     #endregion

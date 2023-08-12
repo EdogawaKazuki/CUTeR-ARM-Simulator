@@ -14,6 +14,9 @@ public class RobotJointController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+    void OnEnable(){
+        
         Transform nextJoint = transform.Find("Joint" + (_jointNumber + 1));
         while (true)
         {
@@ -29,8 +32,8 @@ public class RobotJointController : MonoBehaviour
             }
         }
         SetJointAngles(new List<float>() { 0, 180, -140, 0, 0, 0 });
+        Debug.Log("Joint number: " + _jointNumber);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -38,6 +41,8 @@ public class RobotJointController : MonoBehaviour
     }
     #endregion
     #region Methods
+    public int GetJointAngleMax(int index) { return _joints[index].MaxAngle; }
+    public int GetJointAngleMin(int index) { return _joints[index].MinAngle; }
     public List<float> GetJointAngles()
     {
         List<float> result = new List<float>();

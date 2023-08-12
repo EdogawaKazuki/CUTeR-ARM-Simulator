@@ -32,6 +32,10 @@ public class RobotJoint : MonoBehaviour
     private GameObject _jointSign;
     [SerializeField]
     private List<GameObject> _linkSign;
+    [SerializeField]
+    public int MaxAngle;
+    [SerializeField]
+    public int MinAngle;
     private Text _title;
     private Text _value;
     private Transform _frame;
