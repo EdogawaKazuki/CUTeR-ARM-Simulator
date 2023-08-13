@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class RobotControllerUI : MonoBehaviour
@@ -10,7 +11,7 @@ public class RobotControllerUI : MonoBehaviour
     private Transform _joyStickPanel;
     private RobotController _robotController;
     private List<Slider> _jointAngleSliders = new();
-    private List<Text> _jointAngleSLiderValueTexts = new();
+    private List<TMP_Text> _jointAngleSLiderValueTexts = new();
     private Slider _forceSlider;
     private Button _fireButton;
     private bool isUserInterect = false;
@@ -104,7 +105,7 @@ public class RobotControllerUI : MonoBehaviour
                 _jointAngleSliders[i].maxValue = _robotController.GetJointAngleMax(i);
                 _jointAngleSliders[i].minValue = _robotController.GetJointAngleMin(i);
                 _jointAngleSliders[i].value = _robotController.GetJointAngle(i);
-                _jointAngleSLiderValueTexts.Add(child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>());
+                _jointAngleSLiderValueTexts.Add(child.Find("Handle Slide Area/Handle/Value").GetComponent<TMP_Text>());
                 _jointAngleSLiderValueTexts[i].text = _jointAngleSliders[i].value.ToString("F0");
                 // child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[^1] - '0', value));
                 child.GetComponent<Slider>().onValueChanged.AddListener((value) => SetAngleSliderValue(child.name[^1] - '0', value));
@@ -163,8 +164,32 @@ public class RobotControllerUI : MonoBehaviour
     
     public void SetupSettingPanel(Transform panel)
     {
-        panel.Find("Robot/RobotType/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotDoF(value));
-        panel.Find("Robot/EndEffector/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetEndEffector(value));
+        // Setup Robot DoF Dropdown
+        TMP_Dropdown tmp_Dropdown =  panel.Find("Robot/RobotType/Dropdown").gameObject.GetComponent<TMP_Dropdown>();
+        tmp_Dropdown.ClearOptions();
+        TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData { text = "Select Robot DoF" };
+        tmp_Dropdown.options.Add(newData);
+        for(int i = 0; i < 6; i++){
+            newData = new TMP_Dropdown.OptionData { text = (i + 1).ToString() };
+            tmp_Dropdown.options.Add(newData);
+        }
+        tmp_Dropdown.value = 3;
+        tmp_Dropdown.onValueChanged.AddListener((value) => { if(value!= 0) _robotController.SetRobotDoF(value); });
+
+        // Setup Robot Endeffector Dropdown
+        
+        tmp_Dropdown =  panel.Find("Robot/EndEffector/Dropdown").gameObject.GetComponent<TMP_Dropdown>();
+        tmp_Dropdown.ClearOptions();
+        newData = new TMP_Dropdown.OptionData { text = "Select Endeffector" };
+        tmp_Dropdown.options.Add(newData);
+        foreach(string name in _robotController.GetEndEffectorNameList()){
+            newData = new TMP_Dropdown.OptionData { text = name };
+            tmp_Dropdown.options.Add(newData);
+        }
+        tmp_Dropdown.value = 1;
+        tmp_Dropdown.onValueChanged.AddListener((value) => { if(value!= 0) _robotController.SetEndEffector(value - 1); });
+
+        // Setup Robot Connection
         panel.Find("Robot/RobotServer/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
         panel.Find("Robot/RobotServer/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));

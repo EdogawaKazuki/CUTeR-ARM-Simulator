@@ -225,7 +225,7 @@ public class RobotController : MonoBehaviour
     public void SetEndEffector(int index)
     {
         _endEffectorController.SetEndEffector(index);
-        Debug.Log(index);
+        // Debug.Log(index);
         if(index == 3)
         {
             _joystickController.EnableForce(true);
@@ -241,6 +241,7 @@ public class RobotController : MonoBehaviour
     public int GetRobotDoF() { return _currentDoF; }
     public int GetJointAngleMax(int index) { return _robotJointController.GetJointAngleMax(index); }
     public int GetJointAngleMin(int index) { return _robotJointController.GetJointAngleMin(index); }
+    public List<string> GetEndEffectorNameList(){  return _endEffectorController.GetEndEffectorList(); }
 
     // Set Robot Parameters
     public void SetRobotDoF(int dof)

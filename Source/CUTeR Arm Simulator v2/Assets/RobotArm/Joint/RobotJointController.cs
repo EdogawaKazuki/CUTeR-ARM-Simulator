@@ -80,13 +80,13 @@ public class RobotJointController : MonoBehaviour
     }
     public void HideJointLink(int index)
     {
-        _joints[index].transform.Find("Mask").gameObject.SetActive(true);
-        _joints[index].transform.Find("Part").gameObject.SetActive(false);
+        _joints[index].transform.Find("Mask")?.gameObject.SetActive(true);
+        _joints[index].transform.Find("Part")?.gameObject.SetActive(false);
     }
     public void ShowJointLink(int index)
     {
-        _joints[index].transform.Find("Mask").gameObject.SetActive(false);
-        _joints[index].transform.Find("Part").gameObject.SetActive(true);
+        _joints[index].transform.Find("Mask")?.gameObject.SetActive(false);
+        _joints[index].transform.Find("Part")?.gameObject.SetActive(true);
     }
     public void SetJointSignActivate(bool value)
     {

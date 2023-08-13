@@ -6,16 +6,17 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RobotClient : MonoBehaviour
 {
     #region Variables
 	// Hooks
     private RobotController _robotController;
-	private InputField _robotIPIF;
-	private InputField _robotPortIF;
+	private TMP_InputField _robotIPIF;
+	private TMP_InputField _robotPortIF;
 	private Text _debugText;
-	private Dropdown _filterDropdown;
+	private TMP_Dropdown _filterDropdown;
 
 	// Client Variables
 	[SerializeField]
@@ -75,9 +76,9 @@ public class RobotClient : MonoBehaviour
         _robotController = GetComponent<RobotController>();
 		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText")?.GetComponent<Text>();
 		Transform robotSettingTransform = _robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window/Robot");
-		_robotIPIF = robotSettingTransform.Find("RobotServer/RobotIP/InputField")?.GetComponent<InputField>();
-		_robotPortIF = robotSettingTransform.Find("RobotServer/RobotPort/InputField")?.GetComponent<InputField>();
-		_filterDropdown = robotSettingTransform.Find("RobotServer/Filter/Dropdown")?.GetComponent<Dropdown>();
+		_robotIPIF = robotSettingTransform.Find("RobotServer/RobotIP/InputField (TMP)")?.GetComponent<TMP_InputField>();
+		_robotPortIF = robotSettingTransform.Find("RobotServer/RobotPort/InputField (TMP)")?.GetComponent<TMP_InputField>();
+		_filterDropdown = robotSettingTransform.Find("RobotServer/Filter/Dropdown")?.GetComponent<TMP_Dropdown>();
 
 
 		// Set up UIs

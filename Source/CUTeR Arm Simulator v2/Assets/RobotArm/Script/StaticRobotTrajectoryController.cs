@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
 
 public class StaticRobotTrajectoryController : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     #region Variables
     private RobotController _robotController;
     private Button _openTrajectoryButton;
-    private Text _trajStatusText;
+    private TMP_Text _trajStatusText;
     private Image _trajStatusBackground;
     private string _trajText = "";
     public List<float> angleList = new List<float>() { 0, 0, 0, 0, 0, 0};
@@ -66,7 +67,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _robotController = GetComponent<RobotController>();
         Transform TrajCtrlBtnGroup = _robotController.GetRobotCanvas().transform.Find("TrajCtrlBtnGroup");
         _openTrajectoryButton = TrajCtrlBtnGroup.Find("upload").GetComponent<Button>();
-        _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<Text>();
+        _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<TMP_Text>();
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
         TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(true));
         TrajCtrlBtnGroup.Find("loop").GetComponent<Button>().onClick.AddListener(() => LoopTraj());

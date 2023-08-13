@@ -14,7 +14,7 @@ public class EndEffectorController : MonoBehaviour
     private List<string> _endEffectorNames = new List<string>();
     #endregion
     #region MonoBehaviour
-    private void Start()
+    private void OnEnable()
     {
         for(int i = 0; i < transform.childCount; i++)
         {
