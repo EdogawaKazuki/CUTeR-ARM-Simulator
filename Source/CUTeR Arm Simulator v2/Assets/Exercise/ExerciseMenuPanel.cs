@@ -13,22 +13,25 @@ public class ExerciseMenuPanel : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        // Debug.Log("Enable");
         Transform exercisePanel = transform.Find("../ExercisePanel");
         Transform container = transform.Find("Scroll View/Viewport/Content");
         Transform groupTemplate = container.Find("Group");
         Transform itemTemplate = container.Find("Group/Item");
+        if(groupTemplate == null) return;
         for (int i = 0; i < exercisePanel.childCount; i++)
         {
+            if(!exercisePanel.GetChild(i).gameObject.activeSelf) continue;
             string GroupName = exercisePanel.GetChild(i).name;
             Transform newGroup = Instantiate(groupTemplate).transform;
             newGroup.name = GroupName;
             newGroup.SetParent(container);
             newGroup.transform.localScale = Vector3.one;
-            newGroup.GetComponent<RectTransform>().sizeDelta = new Vector2(newGroup.GetComponent<RectTransform>().rect.width, 125 * exercisePanel.GetChild(i).childCount + 120);
             newGroup.Find("Title/Text").GetComponent<TMP_Text>().text = GroupName;
             newGroup.GetComponent<ExpandMenu>().SetupExpand();
             for(int j = 0; j < exercisePanel.GetChild(i).childCount; j++)
             {
+                // if(!exercisePanel.GetChild(i).GetChild(j).gameObject.activeSelf) continue;
                 string ItemName = exercisePanel.GetChild(i).GetChild(j).name;
                 Transform newItem = Instantiate(itemTemplate);
                 newItem.name = ItemName;
@@ -41,6 +44,7 @@ public class ExerciseMenuPanel : MonoBehaviour
                     gameObject.SetActive(false);
                 });
             }
+            newGroup.GetComponent<RectTransform>().sizeDelta = new Vector2(newGroup.GetComponent<RectTransform>().rect.width, 125 * (newGroup.childCount - 1) - 5);
             Destroy(newGroup.Find("Item").gameObject);
         }
         Destroy(container.Find("Group").gameObject);
@@ -48,6 +52,11 @@ public class ExerciseMenuPanel : MonoBehaviour
             gameObject.SetActive(value); 
             exercisePanel.gameObject.SetActive(false);
         });
+        transform.Find("Top Bar/Button").GetComponent<Button>().onClick.AddListener(() => {
+            if(exercisePanel.GetComponent<ExercisePanel>()._currentSelectedPanel == null)
+                transform.Find("../Menu").GetComponent<Toggle>().isOn = false;
+        });
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

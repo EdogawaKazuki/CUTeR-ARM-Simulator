@@ -18,6 +18,7 @@ public class JointCanvas : MonoBehaviour
     {
         //_arCamera = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetARCamera();
         //_mainCamera = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetMainCamera();
+        _mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -28,16 +29,16 @@ public class JointCanvas : MonoBehaviour
         if (_move)
         {
             if (_mainCamera.isActiveAndEnabled)
-                transform.position = transform.parent.position - _mainCamera.transform.forward * 8f;
+                transform.position = transform.parent.position - _mainCamera.transform.forward * .08f;
             else if (_arCamera.isActiveAndEnabled)
-                transform.position = transform.parent.position - _arCamera.transform.forward * 8f;
+                transform.position = transform.parent.position - _arCamera.transform.forward * .08f;
         }
         else
         {
             if (_mainCamera.isActiveAndEnabled)
-                transform.position = transform.parent.position - _mainCamera.transform.forward * 1f;
+                transform.position = transform.parent.position - _mainCamera.transform.forward * .01f;
             else if (_arCamera.isActiveAndEnabled)
-                transform.position = transform.parent.position - _arCamera.transform.forward * 1f;
+                transform.position = transform.parent.position - _arCamera.transform.forward * .01f;
         }
     }
 }

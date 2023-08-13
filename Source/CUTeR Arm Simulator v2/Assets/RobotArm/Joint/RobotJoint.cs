@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RobotJoint : MonoBehaviour
 {
@@ -36,16 +37,16 @@ public class RobotJoint : MonoBehaviour
     public int MaxAngle;
     [SerializeField]
     public int MinAngle;
-    private Text _title;
-    private Text _value;
+    private TMP_Text _title;
+    private TMP_Text _value;
     private Transform _frame;
     #endregion
     #region Methods
     private void OnEnable()
     {
-        _jointSign = transform.Find("Canvas/Panel")?.gameObject ;
-        _title = transform.Find("Canvas/Panel/Title")?.GetComponent<Text>();
-        _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<Text>();
+        _jointSign = transform.Find("Canvas")?.gameObject ;
+        _title = transform.Find("Canvas/Panel/Title")?.GetComponent<TMP_Text>();
+        _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<TMP_Text>();
         _frame = transform.Find("frame_visual");
         SetJointSignActivate(false);
     }
