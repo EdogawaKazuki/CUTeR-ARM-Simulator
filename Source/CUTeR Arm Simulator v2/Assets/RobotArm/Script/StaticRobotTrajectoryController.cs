@@ -366,7 +366,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     private List<float> GenerateCubicTraj(float start, float end, float time)
     {
-        float tStart = 0;
         float tMid = time / 2.0f;
         float tEnd = time;
 

@@ -159,14 +159,14 @@ public class RobotClient : MonoBehaviour
         _robotIP = value;
 		PlayerPrefs.SetString("_robotIP", _robotIP);
 		PlayerPrefs.Save();
-		Debug.Log(value);
+		// Debug.Log(value);
 	}
     public void SetRobotPort(string value)
     {
         _robotPort = int.Parse(value);
 		PlayerPrefs.SetInt("_robotPort", _robotPort);
 		PlayerPrefs.Save();
-		Debug.Log(value);
+		// Debug.Log(value);
 	}
     public void SetConnect(bool value)
     {
