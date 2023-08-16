@@ -34,7 +34,7 @@ public class FeedbackCalibration : MonoBehaviour
             offsetIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<TMP_InputField>());
             offsetIFList[i].onValueChanged.AddListener((value) => SetOffset(x, value));
             scaleIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<TMP_InputField>());
-            scaleIFList[i].onValueChanged.AddListener((value) => SetOffset(x, value));
+            scaleIFList[i].onValueChanged.AddListener((value) => SetScale(x, value));
         }
         _robotController.GetJoystickController().HideHandleText();
         Debug.Log("enable");

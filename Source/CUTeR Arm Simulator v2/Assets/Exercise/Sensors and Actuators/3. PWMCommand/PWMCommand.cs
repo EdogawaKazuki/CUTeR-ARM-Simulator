@@ -20,15 +20,16 @@ public class PWMCommand : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        List<int> vs = _robotController.GetReadPWM();
-        for (int i = 0; i < vs.Count; i++)
-        {
-            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", vs[i].ToString());
-        }
+        // List<int> vs = _robotController.GetReadPWM();
+        // for (int i = 0; i < vs.Count; i++)
+        // {
+        //     _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", vs[i].ToString());
+        // }
     }
 
     void OnEnable()
     {
+        // _robotController.MoveJointsTo(new List<float>() { 0, 0, 0 });
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         for (int i = 0; i < 3; i++)
         {
@@ -50,12 +51,12 @@ public class PWMCommand : MonoBehaviour
             PWMInputfield[i].text = _robotController.GetCmdPWM()[i].ToString();
         }
         _robotController.PauseSendCmdToRobot();
-        _robotController.SetJointSignActivate(true);
+        // _robotController.SetJointSignActivate(true);
     }
     private void OnDisable()
     {
         _robotController.StartSendCmdToRobot();
-        _robotController.SetJointSignActivate(false);
+        // _robotController.SetJointSignActivate(false);
     }
     public void SetJointPWM(int index, string value)
     {

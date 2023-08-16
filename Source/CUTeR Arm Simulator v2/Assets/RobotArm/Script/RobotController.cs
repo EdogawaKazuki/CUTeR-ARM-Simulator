@@ -54,8 +54,8 @@ public class RobotController : MonoBehaviour
 
         // init variable lists
         CmdJointAngles = new List<float>(new float[MAX_ROBOT_DOF]);
-        _offset = new List<float>(new float[MAX_ROBOT_DOF]);
-        _scale = new List<float>(new float[MAX_ROBOT_DOF]);
+        _offset = new List<float> { 1500, 2300, 2200 };
+        _scale = new List<float>{ 10, -10, 10 };
         _pwmList = new List<int>(new int[MAX_ROBOT_DOF]);
 
         // read the offset and scale from the player prefs
@@ -189,8 +189,9 @@ public class RobotController : MonoBehaviour
     }
     public void SetJointPWM(int index, int pwm)
     {
-        //_robotClient.SendPWMCmd(index, pwm);
-        //SetJointAngle(index, (pwm - _offset[index]) / _scale[index]);
+        _robotClient.SendPWMCmd(index, pwm);
+        SetCmdJointAngle(index, (pwm - _offset[index]) / _scale[index]);
+        SetTransparentCmdJointAngle(index, (pwm - _offset[index]) / _scale[index]);
     }
     public void SetCmdJointAngles(List<float> angles)
     {

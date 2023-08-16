@@ -226,7 +226,7 @@ public class RobotClient : MonoBehaviour
 		{
 			//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
-			// if (_unlocked || !SendCmd)
+			if (_unlocked || !SendCmd)
 			{
 				if (_unlocked)
 				{
@@ -236,7 +236,7 @@ public class RobotClient : MonoBehaviour
 				
 				
 			}
-			// else if(SendCmd)
+			else if(SendCmd)
 			{
 				if (ESP32)
 				{
@@ -273,7 +273,7 @@ public class RobotClient : MonoBehaviour
 
 			try
 			{
-                //if (_unlocked)
+                if (_unlocked)
 				{
 					recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
 					// Debug.Log(BitConverter.ToInt16(recvData, 4));

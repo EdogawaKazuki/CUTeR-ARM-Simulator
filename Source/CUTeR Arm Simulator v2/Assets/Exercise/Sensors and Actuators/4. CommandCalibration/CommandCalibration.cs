@@ -23,7 +23,7 @@ public class CommandCalibration : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             //Debug.Log("Input/Line" + (i + 1) + "/Value");
-            thetaInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/�c").GetComponent<InputField>();
+            thetaInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Theta").GetComponent<InputField>();
             offsetInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<InputField>();
             scaleInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<InputField>();
             PWMTextList[i] = transform.Find("Input/Line" + (i + 2) + "/PWM").GetComponent<Text>();
