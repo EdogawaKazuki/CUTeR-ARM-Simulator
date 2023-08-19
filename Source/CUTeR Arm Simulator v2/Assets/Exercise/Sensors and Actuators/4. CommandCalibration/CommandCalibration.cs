@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CommandCalibration : MonoBehaviour
 {
     RobotController _robotController;
-    private List<Text> PWMTextList = new List<Text>() { null, null, null };
-    private List<InputField> thetaInputfield = new List<InputField>() { null, null, null };
-    private List<InputField> offsetInputfield = new List<InputField>() { null, null, null };
-    private List<InputField> scaleInputfield = new List<InputField>() { null, null, null };
+    private List<TMP_Text> PWMTextList = new List<TMP_Text>() { null, null, null };
+    private List<TMP_InputField> thetaInputfield = new List<TMP_InputField>() { null, null, null };
+    private List<TMP_InputField> offsetInputfield = new List<TMP_InputField>() { null, null, null };
+    private List<TMP_InputField> scaleInputfield = new List<TMP_InputField>() { null, null, null };
     private List<float> angleList = new List<float> { 0, 0, 0 };
     private List<float> offsetList = new List<float> { 0, 0, 0 };
     private List<float> scaleList = new List<float> { 0, 0, 0 };
@@ -23,19 +24,19 @@ public class CommandCalibration : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             //Debug.Log("Input/Line" + (i + 1) + "/Value");
-            thetaInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Theta").GetComponent<InputField>();
-            offsetInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<InputField>();
-            scaleInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<InputField>();
-            PWMTextList[i] = transform.Find("Input/Line" + (i + 2) + "/PWM").GetComponent<Text>();
+            thetaInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Theta").GetComponent<TMP_InputField>();
+            offsetInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<TMP_InputField>();
+            scaleInputfield[i] = transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<TMP_InputField>();
+            PWMTextList[i] = transform.Find("Input/Line" + (i + 2) + "/PWM").GetComponent<TMP_Text>();
         }
         for (int i = 0; i < 3; i++)
         {
             int index = i;
-            thetaInputfield[i].onValueChanged.RemoveAllListeners();
+            // thetaInputfield[i].onValueChanged.RemoveAllListeners();
             thetaInputfield[i].onValueChanged.AddListener((value) => { SetTheta(index, value); });
-            scaleInputfield[i].onValueChanged.RemoveAllListeners();
+            // scaleInputfield[i].onValueChanged.RemoveAllListeners();
             scaleInputfield[i].onValueChanged.AddListener((value) => { SetScale(index, value); });
-            offsetInputfield[i].onValueChanged.RemoveAllListeners();
+            // offsetInputfield[i].onValueChanged.RemoveAllListeners();
             offsetInputfield[i].onValueChanged.AddListener((value) => { SetOffset(index, value); });
         }
         _robotController.PauseSendCmdToRobot();
@@ -78,7 +79,7 @@ public class CommandCalibration : MonoBehaviour
 
     public void Clear()
     {
-        foreach (var ele in transform.GetComponentsInChildren<InputField>())
+        foreach (var ele in transform.GetComponentsInChildren<TMP_InputField>())
         {
             ele.text = "";
         }

@@ -16,10 +16,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DrawGraph : MonoBehaviour {
 
-    [SerializeField] private Sprite circleSprite;
+    private TMP_Text TMPobject;
     private GameObject CreateCircle(Vector2 anchoredPosition, RectTransform graphContainer)
     {
         //GameObject gameObject = new GameObject("circle", typeof(Image));
@@ -36,6 +37,7 @@ public class DrawGraph : MonoBehaviour {
     public void DrawGrid(string name, List<float> valueList)
     {
         RectTransform graphContainer = transform.Find(name + "/Table").GetComponent<RectTransform>();
+        TMPobject = graphContainer.transform.Find("Text").GetComponent<TMP_Text>();
         float graphHeight = graphContainer.rect.size.y;
         float graphWidth = graphContainer.rect.size.x;
         float yMax = valueList.Max();
@@ -53,35 +55,41 @@ public class DrawGraph : MonoBehaviour {
         float xSize = graphWidth / (valueList.Count - 1);
         for (int i = 0; i < 7; i++)
         {
-            GameObject newText = new GameObject("x_label" + i);
-            Text myText = newText.AddComponent<Text>();
+            GameObject newText = Instantiate(TMPobject.gameObject, TMPobject.transform.parent);
+            newText.SetActive(true);
+            newText.name = "x_label" + i;
+            TMP_Text myText = newText.GetComponent<TMP_Text>();
+            myText.enabled = true;
             myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
-            Font ArialFont = (Font)Resources.Load("ARIAL");
-            myText.font = ArialFont;
-            myText.material = ArialFont.material;
+            // Font ArialFont = (Font)Resources.Load("ARIAL");
+            // myText.font = ArialFont;
+            // myText.material = ArialFont.material;
             myText.color = new Color(0, 0, 0, 1);
             myText.fontSize = 14;
-            myText.alignment = TextAnchor.UpperCenter;
+            // myText.alignment = TextAnchor.UpperCenter;
             newText.transform.SetParent(graphContainer.transform);
             newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
-            newText.transform.localPosition = new Vector3((valueList.Count - 1) / 6f * xSize * i - graphWidth / 2, -graphHeight / 2 - graphHeight / 6 / 2, 0);
+            newText.transform.localPosition = new Vector3((valueList.Count - 1) / 6f * xSize * i - graphWidth / 2, - graphHeight / 2 - 14, 0);
             newText.transform.localScale = Vector3.one;
             CreateDotConnection(graphContainer, new Vector2(graphWidth / 6f * i, 0), new Vector2(graphWidth / 6f * i, graphHeight), new Color(0, 0, 0, 0.5f), 1f);
         }
         for (int i = 0; i < 7; i++)
         {
-            GameObject newText = new GameObject("y_label" + i);
-            Text myText = newText.AddComponent<Text>();
+            GameObject newText = Instantiate(TMPobject.gameObject, TMPobject.transform.parent);
+            newText.SetActive(true);
+            newText.name = "y_label" + i;
+            TMP_Text myText = newText.GetComponent<TMP_Text>();
+            myText.enabled = true;
             myText.text = (deltaY / 6f * i + yMin).ToString("F1");
-            Font ArialFont = (Font)Resources.Load("ARIAL");
-            myText.font = ArialFont;
-            myText.material = ArialFont.material;
+            // Font ArialFont = (Font)Resources.Load("ARIAL");
+            // myText.font = ArialFont;
+            // myText.material = ArialFont.material;
             myText.color = new Color(0, 0, 0, 1);
             myText.fontSize = 14;
-            myText.alignment = TextAnchor.MiddleRight;
+            // myText.alignment = TextAnchor.MiddleRight;
             newText.transform.SetParent(graphContainer.transform);
             newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
-            newText.transform.localPosition = new Vector3(-graphWidth / 2 - graphWidth / 6 / 2, graphHeight / 6f * i - graphHeight / 2, 0);
+            newText.transform.localPosition = new Vector3(-graphWidth / 2 - 20, graphHeight / 6f * i - graphHeight / 2, 0);
             newText.transform.localScale = Vector3.one;
             CreateDotConnection(graphContainer, new Vector2(0, graphHeight / 6f * i), new Vector2(graphWidth, graphHeight / 6f * i), new Color(0, 0, 0, 0.5f), 1f);
         }
@@ -131,6 +139,7 @@ public class DrawGraph : MonoBehaviour {
         RectTransform graphContainer = transform.Find(name + "/Table").GetComponent<RectTransform>();
         foreach (Transform child in graphContainer.transform)
         {
+            if(child.name != "Text" && child.name != "BG")
             Destroy(child.gameObject);
         }
     }
