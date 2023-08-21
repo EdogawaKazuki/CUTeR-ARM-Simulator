@@ -101,7 +101,7 @@ public class RobotControllerUI : MonoBehaviour
             {
                 _forceSlider = child.GetComponent<Slider>();
                 _forceText = child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
-                _forceSlider.onValueChanged.AddListener({_robotController.SetForce; _forceText.text = _forceSlider.value.ToString("F0"); });
+                _forceSlider.onValueChanged.AddListener((value) => {_robotController.SetForce(value); _forceText.text = value.ToString("F0"); });
             }
         }
 
