@@ -12,6 +12,7 @@ public class RobotControllerUI : MonoBehaviour
     private List<Slider> _jointAngleSliders = new List<Slider>();
     private List<Text> _jointAngleSLiderValueTexts = new List<Text>();
     private Slider _forceSlider;
+    private Text _forceText;
     private Button _fireButton;
     public bool isUserInteracting;
     #endregion
@@ -99,7 +100,8 @@ public class RobotControllerUI : MonoBehaviour
             else if (child.name == "Force")
             {
                 _forceSlider = child.GetComponent<Slider>();
-                _forceSlider.onValueChanged.AddListener(_robotController.SetForce);
+                _forceText = child.Find("Handle Slide Area/Handle/Value").GetComponent<Text>();
+                _forceSlider.onValueChanged.AddListener({_robotController.SetForce; _forceText.text = _forceSlider.value.ToString("F0"); });
             }
         }
 
