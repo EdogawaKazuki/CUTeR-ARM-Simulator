@@ -17,12 +17,14 @@ public class Launcher : EndEffector
         // create a bullet
         GameObject Bullet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Bullet.transform.position = transform.position;
+        Rigidbody rigidboty = Bullet.AddComponent<Rigidbody>();
+        rigidboty.velocity = transform.up * _force;
         Bullet.transform.SetParent(_robotController.GetEditorController().GetSceneManager().GetPlayingScene());
         // enable physical property
-        Rigidbody rigidboty = Bullet.AddComponent<Rigidbody>();
+        // rigidboty.useGravity
         // rigidboty.useGravity = false;
         // give force
-        rigidboty.AddForce(transform.up * _force * 50);
+        // rigidboty.AddForce(transform.up * _force * 50);
     }
     #endregion
 }
