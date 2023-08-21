@@ -3,6 +3,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MultipleCubicSpline : MonoBehaviour
 {
@@ -18,8 +19,14 @@ public class MultipleCubicSpline : MonoBehaviour
     int Mode = 0;
     float a0, a1, a2, a3 = 0;
     float b0, b1, b2, b3 = 0;
-    Text a0t, a1t, a2t, a3t;
-    Text b0t, b1t, b2t, b3t;
+    TMP_Text a0t, a1t, a2t, a3t;
+    TMP_Text b0t, b1t, b2t, b3t;
+    TMP_InputField t1Input;
+    TMP_InputField tEndInput;
+    TMP_InputField theta0Input;
+    TMP_InputField theta1Input;
+    TMP_InputField thetaEndInput;
+    TMP_Dropdown modeDropdown;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,14 +36,40 @@ public class MultipleCubicSpline : MonoBehaviour
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
-        a0t = transform.Find("Input/Line5/a0").GetComponent<Text>();
-        a1t = transform.Find("Input/Line5/a1").GetComponent<Text>();
-        a2t = transform.Find("Input/Line5/a2").GetComponent<Text>();
-        a3t = transform.Find("Input/Line5/a3").GetComponent<Text>();
-        b0t = transform.Find("Input/Line6/b0").GetComponent<Text>();
-        b1t = transform.Find("Input/Line6/b1").GetComponent<Text>();
-        b2t = transform.Find("Input/Line6/b2").GetComponent<Text>();
-        b3t = transform.Find("Input/Line6/b3").GetComponent<Text>();
+
+        t1Input = transform.Find("Input/Line2/TI").GetComponent<TMP_InputField>();
+        tEndInput = transform.Find("Input/Line2/TE").GetComponent<TMP_InputField>();
+
+        t1Input.onValueChanged.AddListener(SetTimeInter);
+        tEndInput.onValueChanged.AddListener(SetTimeEnd);
+
+        theta0Input = transform.Find("Input/Line3/AS").GetComponent<TMP_InputField>();
+        theta1Input = transform.Find("Input/Line3/AI").GetComponent<TMP_InputField>();
+        thetaEndInput = transform.Find("Input/Line3/AE").GetComponent<TMP_InputField>();
+
+        theta0Input.onValueChanged.AddListener(SetAngleStart);
+        theta1Input.onValueChanged.AddListener(SetAngleInter);
+        thetaEndInput.onValueChanged.AddListener(SetAngleEnd);
+
+        modeDropdown = transform.Find("Input/Line4/Dropdown").GetComponent<TMP_Dropdown>();
+        modeDropdown.onValueChanged.AddListener(SetMode);
+        modeDropdown.ClearOptions();
+        modeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Equal Vel and Accel" });
+        modeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Zero Vel" });
+        modeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Average Vel" });
+        modeDropdown.value = 0;
+
+        a0t = transform.Find("Input/Line5/a0").GetComponent<TMP_Text>();
+        a1t = transform.Find("Input/Line5/a1").GetComponent<TMP_Text>();
+        a2t = transform.Find("Input/Line5/a2").GetComponent<TMP_Text>();
+        a3t = transform.Find("Input/Line5/a3").GetComponent<TMP_Text>();
+       
+        b0t = transform.Find("Input/Line6/b0").GetComponent<TMP_Text>();
+        b1t = transform.Find("Input/Line6/b1").GetComponent<TMP_Text>();
+        b2t = transform.Find("Input/Line6/b2").GetComponent<TMP_Text>();
+        b3t = transform.Find("Input/Line6/b3").GetComponent<TMP_Text>();
+
+
     }
 
     void UpdateTrajectory()

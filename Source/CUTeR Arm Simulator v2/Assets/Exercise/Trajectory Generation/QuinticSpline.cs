@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class QuinticSpline : MonoBehaviour
 {
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
     DrawGraph drawer;
+    TMP_InputField a0Input;
+    TMP_InputField a1Input;
+    TMP_InputField a2Input;
+    TMP_InputField a3Input;
+    TMP_InputField a4Input;
+    TMP_InputField a5Input;
+    TMP_InputField tInput;
     float a0 = 0;
     float a1 = 0;
     float a2 = 0;
@@ -24,6 +32,20 @@ public class QuinticSpline : MonoBehaviour
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
+        a0Input = transform.Find("Input/Line1/a0").GetComponent<TMP_InputField>();
+        a0Input.onValueChanged.AddListener(SetA0);
+        a1Input = transform.Find("Input/Line1/a1").GetComponent<TMP_InputField>();
+        a1Input.onValueChanged.AddListener(SetA1);
+        a2Input = transform.Find("Input/Line1/a2").GetComponent<TMP_InputField>();
+        a2Input.onValueChanged.AddListener(SetA2);
+        a3Input = transform.Find("Input/Line2/a3").GetComponent<TMP_InputField>();
+        a3Input.onValueChanged.AddListener(SetA3);
+        a4Input = transform.Find("Input/Line2/a4").GetComponent<TMP_InputField>();
+        a4Input.onValueChanged.AddListener(SetA4);
+        a5Input = transform.Find("Input/Line2/a5").GetComponent<TMP_InputField>();
+        a5Input.onValueChanged.AddListener(SetA5);
+        tInput = transform.Find("Input/Line3/T").GetComponent<TMP_InputField>();
+        tInput.onValueChanged.AddListener(SetT);
     }
 
     void UpdateTrajectory()

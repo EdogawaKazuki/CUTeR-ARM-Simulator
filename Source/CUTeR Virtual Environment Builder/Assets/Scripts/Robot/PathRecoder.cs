@@ -59,7 +59,7 @@ public class PathRecoder : MonoBehaviour
     {
         isRecording = value;
 
-        PathLine.gameObject.SetActive(value);
+        // PathLine.gameObject.SetActive(value);
     }
     public void ClearRecording()
     {

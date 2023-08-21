@@ -13,7 +13,7 @@ public class RobotClient : MonoBehaviour
     private RobotController _robotController;
 	private InputField _robotIPIF;
 	private InputField _robotPortIF;
-	Text _debugText;
+	public Text _debugText;
 	private Text _sliderText;
 	private Slider _filterParamSlider;
 
@@ -92,7 +92,7 @@ public class RobotClient : MonoBehaviour
 				//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
 
-				//if (_unlocked || !SendCmd)
+				if (_unlocked || !SendCmd)
 				{
 					if (_unlocked)
 					{
@@ -105,7 +105,7 @@ public class RobotClient : MonoBehaviour
 					
 					
                 }
-                //else if(SendCmd)
+                else if(SendCmd)
 				{
 					if (_isESP32)
 					{
@@ -209,7 +209,7 @@ public class RobotClient : MonoBehaviour
 
 			try
 			{
-                //if (_unlocked)
+                if (_unlocked)
 				{
 					recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
 					//Debug.Log(BitConverter.ToInt16(recvData, 4));

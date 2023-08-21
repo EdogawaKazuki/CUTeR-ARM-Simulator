@@ -36,6 +36,7 @@ public class RobotController : MonoBehaviour
 
     public List<float> CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
     public bool isUserInteracting;
+    public Text DebugText;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
@@ -72,6 +73,7 @@ public class RobotController : MonoBehaviour
         _editorController = transform.Find("/EditorAdmin").GetComponent<EditorController>();
         _joystickController = GetComponent<RobotControllerUI>();
         _robotClient = GetComponent<RobotClient>();
+        DebugText = _robotClient._debugText;
         _pathRecoder = GetComponent<PathRecoder>();
         _staticRobotTrajectoryController = GetComponent<StaticRobotTrajectoryController>();
         _endEffectorController = transform.Find("FunctionalTools").GetComponent<EndEffectorController>();
@@ -189,7 +191,7 @@ public class RobotController : MonoBehaviour
     public void SetCmdJointAngles(List<float> angles)
     {
         CmdJointAngles = angles;
-        if (!_robotClient.IsConnected())
+        if (!_robotClient.IsConnected() && false)
         {
             SetModelJointAngles(angles);
         }

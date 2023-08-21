@@ -142,8 +142,14 @@ public class StaticRobotTrajectoryController : MonoBehaviour
 
     private void OnClick()
     {
+        try{
+
             var paths = StandaloneFileBrowser.OpenFilePanel("Open Trajectory", "", "txt", false);
             if(paths.Length > 0) OnFileUpload(new Uri(paths[0]).AbsoluteUri);
+        }
+        catch(Exception e){
+            _robotController.DebugText.text = e.ToString() + "\n" + _robotController.DebugText.text;
+        }
     }
 
     private void OnFileUpload(string url)
