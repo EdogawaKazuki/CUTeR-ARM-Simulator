@@ -20,8 +20,9 @@ public class Launcher : EndEffector
         Bullet.transform.SetParent(_robotController.GetEditorController().GetSceneManager().GetPlayingScene());
         // enable physical property
         Rigidbody rigidboty = Bullet.AddComponent<Rigidbody>();
+        // rigidboty.useGravity = false;
         // give force
-        rigidboty.AddForce(transform.up * _force * 100);
+        rigidboty.AddForce(transform.up * _force * 50);
     }
     #endregion
 }
