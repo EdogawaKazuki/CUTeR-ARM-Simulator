@@ -7,13 +7,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.editorcoroutines": {
-      "version": "1.0.0",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
@@ -48,22 +41,10 @@
     },
     "com.unity.inputsystem": {
       "version": "1.5.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.renderstreaming": {
-      "version": "3.1.0-exp.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.webrtc": "3.0.0-pre.6",
-        "com.unity.inputsystem": "1.5.1",
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.screencapture": "1.0.0"
+        "com.unity.modules.uielements": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -116,17 +97,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.webrtc": {
-      "version": "3.0.0-pre.6",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.modules.audio": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.xr.arcore": {
       "version": "4.1.13",
