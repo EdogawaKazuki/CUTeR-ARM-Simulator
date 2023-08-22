@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/6DoF_Main_AR.unity
     guid: fe676b5c787910c4aabaeb4be5fbc191
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/6DoF_Main_New.unity
     guid: 95f8c501782559c4f87b5a16790aaa08
   - enabled: 0
@@ -32,8 +32,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/6DoF_Main_New_Nreal.unity
     guid: 9ead8336b850ae144a04c8b8d853afff
+  - enabled: 1
+    path: Assets/Scenes/6DoF_Main_New _WebGL.unity
+    guid: a4d3db0eb8fe4d34ca5d8ecede824099
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3fdc5062230fc6a4e9ffb6a3f84f265a, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 66c4de59a0e47a940b7163e62d96e795, type: 2}
-    com.unity.renderstreaming.settings: {fileID: 11400000, guid: 039337c008e9a5c44a60f957eae3e450, type: 2}
+    com.unity.renderstreaming.settings: {fileID: 11400000, guid: eaaad242393318e4f85c45e69c8837f0, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 4fa7b4cdcff2d7541acbbc84c27e3c3c, type: 2}
