@@ -60,7 +60,6 @@ public class EditorController : MonoBehaviour
         _sceneObjectAttrPanelController = _BuilderCanvas.transform.Find("AttributePanel").GetComponent<SceneObjectAttrPanelController>();
         SetCanvasByIndex(_intialCanvasIndex);
         ResetCamera();
-        Physics.gravity = new Vector3(0, -100.0F, 0);
     }
 
     private void OnEnable()
