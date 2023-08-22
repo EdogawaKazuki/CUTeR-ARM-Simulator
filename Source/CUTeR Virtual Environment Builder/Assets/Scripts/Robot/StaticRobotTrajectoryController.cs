@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
@@ -24,7 +23,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     private Button _openTrajectoryButton;
     private Text _trajStatusText;
     private Image _trajStatusBackground;
-    private Transform _trajUploadPanel;
     private string _trajText = "";
     public List<float> angleList = new List<float>() { 0, 0, 0, 0, 0, 0};
 
@@ -70,17 +68,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _openTrajectoryButton = TrajCtrlBtnGroup.Find("upload").GetComponent<Button>();
         _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<Text>();
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
-        _trajUploadPanel = _robotController.GetRobotCanvas().transform.Find("TrajectoryPanel");
-        _trajUploadPanel.Find("Window/Trajectory/Button").GetComponent<Button>().onClick.AddListener(()=>{
-            ProcessTraj(_trajUploadPanel.Find("Window/Trajectory/InputBox").GetComponent<TMP_InputField>().text); 
-            _trajUploadPanel.gameObject.SetActive(false);
-            });
-
 
         SetStatus(State.init);
         if (_openTrajectoryButton != null)
-            // _openTrajectoryButton.onClick.AddListener(OnClick);
-            _openTrajectoryButton.onClick.AddListener(() => { _trajUploadPanel.gameObject.SetActive(true); });
+            _openTrajectoryButton.onClick.AddListener(OnClick);
 
 
     }
