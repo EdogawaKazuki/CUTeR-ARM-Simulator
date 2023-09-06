@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DHRepresentation : MonoBehaviour
 {
     RobotController _robotController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -25,15 +23,15 @@ public class DHRepresentation : MonoBehaviour
     private void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[12];
+        matrix1Text = new TMP_Text[12];
         for (int i = 0; i < 12; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[16];
+        matrix2Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line4/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
     }
     private void OnDisable()
@@ -86,8 +84,8 @@ public class DHRepresentation : MonoBehaviour
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         matrix1Text[3].text = _robotController.GetJointAngle(0).ToString("F2") + "°";
-        matrix1Text[7].text = "-8.30°+" + _robotController.GetJointAngle(1).ToString("F2") + "°";
-        matrix1Text[11].text = "8.30°+" + _robotController.GetJointAngle(1).ToString("F2") + "°";
+        matrix1Text[7].text = "-8.30°\n+" + _robotController.GetJointAngle(1).ToString("F2") + "°";
+        matrix1Text[11].text = "8.30°\n+" + _robotController.GetJointAngle(1).ToString("F2") + "°";
 
         matrix2Text[0].text = (Angle1Cos * Angle23Cos + 0.00001f).ToString("F3");
         matrix2Text[1].text = (-Angle1Cos * Angle23Sin + 0.00001f).ToString("F3");
