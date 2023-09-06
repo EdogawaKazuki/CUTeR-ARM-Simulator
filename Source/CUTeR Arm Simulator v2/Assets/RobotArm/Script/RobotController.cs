@@ -274,5 +274,48 @@ public class RobotController : MonoBehaviour
     //public StaticRobotTrajectoryController GetTrajController() { return _staticRobotTrajectoryController; }
     //public EditorController GetEditorController() { return _editorController; }
     
+    public float[] CartesianToAngle(float x, float y, float z)
+    {
+        x = -x;
+        y = -y;
+        float[] angles = new float[3];
+        float L23 = Mathf.Sqrt(L1 * L1 + A2 * A2);
+        float alpha = Mathf.Atan(A2 / L1);
+        if (x == 0)
+        {
+            angles[0] = Mathf.PI / 2;
+        }
+        else
+        {
+            if (x > 0)
+            {
+                angles[0] = Mathf.Atan(-y / x);
+            }
+            else
+            {
+                angles[0] = Mathf.PI - Mathf.Atan(y / x);
+            }
+        }
+        float A = -y * Mathf.Sin(angles[0]) + x * Mathf.Cos(angles[0]);
+        float B = z - A1;
+        float tmp = (A * A + B * B - (L23 * L23 + L2 * L2)) / (2 * L23 * L2);
+        if (tmp < -1)
+            tmp = -0.999999f;
+        if (tmp > 1)
+            tmp = 0.99999f;
+        angles[2] = -Mathf.Acos(tmp);
+        if ((A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])) > 0)
+            angles[1] = Mathf.Atan((B * (L23 + L2 * Mathf.Cos(angles[2])) - A * L2 * Mathf.Sin(angles[2])) /
+                                   (A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])));
+        else
+            angles[1] = Mathf.PI - Mathf.Atan((B * (L23 + L2 * Mathf.Cos(angles[2])) - A * L2 * Mathf.Sin(angles[2])) /
+                                   -(A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])));
+
+        angles[0] = angles[0] / Mathf.PI * 180 - 90;
+        angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
+        angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
+        return angles;
+    }
+
     #endregion
 }

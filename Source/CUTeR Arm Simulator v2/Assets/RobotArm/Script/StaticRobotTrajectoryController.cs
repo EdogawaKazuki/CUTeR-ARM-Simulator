@@ -142,6 +142,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _robotController.SetCmdJointAngles(angleList);
         if(_currentState != State.prelooping && _currentState != State.preplaying)
             _robotController.SetTransparentCmdJointAngles(angleList);
+        if(_currentState == State.prelooping || _currentState == State.preplaying)
+            _robotController.SetTransparentCmdJointAngles(new(){_trajList[0][0], _trajList[1][0], _trajList[2][0]});
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
         if (direction == Direction.forward)
@@ -364,7 +366,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _trajLength = _trajList[0].Count;
         SetStatus(State.ready);
     }
-    private List<float> GenerateCubicTraj(float start, float end, float time)
+    public List<float> GenerateCubicTraj(float start, float end, float time)
     {
         float tMid = time / 2.0f;
         float tEnd = time;
