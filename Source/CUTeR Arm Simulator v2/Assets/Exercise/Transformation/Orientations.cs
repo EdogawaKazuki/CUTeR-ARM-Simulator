@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Orientations : MonoBehaviour
 {
     RobotController _robotController;
-    StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -24,16 +21,18 @@ public class Orientations : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[9];
+        matrix1Text = new TMP_Text[9];
         for (int i = 0; i < 9; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[4];
-        for (int i = 0; i < 4; i++)
+        matrix2Text = new TMP_Text[4];
+        for (int i = 0; i < 3; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line4/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
+        matrix2Text[3] = transform.Find("Input/Line4/4").GetComponent<TMP_Text>();
+        transform.Find("Input/Line5/Set").GetComponent<Button>().onClick.AddListener(() => SetJointAngles(new() { 90, 90, 0 }));
     }
     private void FixedUpdate()
     {
@@ -69,7 +68,7 @@ public class Orientations : MonoBehaviour
         matrix2Text[0].text = axisAngle[1].ToString("F2");
         matrix2Text[1].text = axisAngle[2].ToString("F2");
         matrix2Text[2].text = axisAngle[3].ToString("F2");
-        matrix2Text[3].text = (axisAngle[0] * Mathf.Rad2Deg).ToString("F2") + "��";
+        matrix2Text[3].text = (axisAngle[0] * Mathf.Rad2Deg).ToString("F2") + "°";
     }
 
     private float[] toAxisAngle(float[][] m)
@@ -160,9 +159,8 @@ public class Orientations : MonoBehaviour
         z = (m[1][0] - m[0][1]) / s;
         return new float[] { angle, x, y, z };
     }
-    public void SetJointAngles(int index)
+    public void SetJointAngles(List<float> joints)
     {
-        _robotController.MoveJointsTo(_JointSetList[index]);
+        _robotController.MoveJointsTo(joints);
     }
-
 }

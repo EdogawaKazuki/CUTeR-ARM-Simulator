@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LinearJointSpaceTrajectory : MonoBehaviour
 {
@@ -15,6 +16,14 @@ public class LinearJointSpaceTrajectory : MonoBehaviour
     float c0 = 0;
     float c1 = 0;
     float t = 0;
+
+    TMP_InputField a0Input;
+    TMP_InputField a1Input;
+    TMP_InputField b0Input;
+    TMP_InputField b1Input;
+    TMP_InputField c0Input;
+    TMP_InputField c1Input;
+    TMP_InputField tInput;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +33,27 @@ public class LinearJointSpaceTrajectory : MonoBehaviour
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
+        a0Input = transform.Find("Input/Line1/a0").GetComponent<TMP_InputField>();
+        a1Input = transform.Find("Input/Line1/a1").GetComponent<TMP_InputField>();
+
+        b0Input = transform.Find("Input/Line2/b0").GetComponent<TMP_InputField>();
+        b1Input = transform.Find("Input/Line2/b1").GetComponent<TMP_InputField>();
+
+        c0Input = transform.Find("Input/Line3/c0").GetComponent<TMP_InputField>();
+        c1Input = transform.Find("Input/Line3/c1").GetComponent<TMP_InputField>();
+
+        tInput = transform.Find("Input/Line4/T").GetComponent<TMP_InputField>();
+
+        a0Input.onValueChanged.AddListener((value) => { SetA0(value); });
+        a1Input.onValueChanged.AddListener((value) => { SetA1(value); });
+
+        b0Input.onValueChanged.AddListener((value) => { SetB0(value); });
+        b1Input.onValueChanged.AddListener((value) => { SetB1(value); });
+
+        c0Input.onValueChanged.AddListener((value) => { SetC0(value); });
+        c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
+
+        tInput.onValueChanged.AddListener((value) => { SetT(value); });
     }
 
     void UpdateTrajectory()

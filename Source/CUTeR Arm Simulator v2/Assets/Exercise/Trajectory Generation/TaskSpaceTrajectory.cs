@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TaskSpaceTrajectory : MonoBehaviour
 {
@@ -20,18 +21,77 @@ public class TaskSpaceTrajectory : MonoBehaviour
     float c1 = 0;
     float c2 = 0;
     float c3 = 0;
-    float t = 0;
+    float total_time = 0;
+
+    TMP_InputField a0Input;
+    TMP_InputField a1Input;
+    TMP_InputField a2Input;
+    TMP_InputField a3Input;
+    TMP_InputField b0Input;
+    TMP_InputField b1Input;
+    TMP_InputField b2Input;
+    TMP_InputField b3Input;
+    TMP_InputField c0Input;
+    TMP_InputField c1Input;
+    TMP_InputField c2Input;
+    TMP_InputField c3Input;
+    TMP_InputField tInput;
+    TMP_Dropdown jointDropdown;
+
     int showTable = 0;
     // Start is called before the first frame update
     void Start()
     {
     }
-
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
+
+        jointDropdown = transform.Find("Input/Line0/Dropdown").GetComponent<TMP_Dropdown>();
+
+        a0Input = transform.Find("Input/Line1/a0").GetComponent<TMP_InputField>();
+        a1Input = transform.Find("Input/Line1/a1").GetComponent<TMP_InputField>();
+        a2Input = transform.Find("Input/Line1/a2").GetComponent<TMP_InputField>();
+        a3Input = transform.Find("Input/Line1/a3").GetComponent<TMP_InputField>();
+
+        b0Input = transform.Find("Input/Line2/b0").GetComponent<TMP_InputField>();
+        b1Input = transform.Find("Input/Line2/b1").GetComponent<TMP_InputField>();
+        b2Input = transform.Find("Input/Line2/b2").GetComponent<TMP_InputField>();
+        b3Input = transform.Find("Input/Line2/b3").GetComponent<TMP_InputField>();
+
+        c0Input = transform.Find("Input/Line3/c0").GetComponent<TMP_InputField>();
+        c1Input = transform.Find("Input/Line3/c1").GetComponent<TMP_InputField>();
+        c2Input = transform.Find("Input/Line3/c2").GetComponent<TMP_InputField>();
+        c3Input = transform.Find("Input/Line3/c3").GetComponent<TMP_InputField>();
+
+        tInput = transform.Find("Input/Line4/T").GetComponent<TMP_InputField>();
+
+        jointDropdown.ClearOptions();
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "x" });
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "y" });
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "z" });
+        jointDropdown.onValueChanged.AddListener((value) => { SetTable(value); });
+
+        a0Input.onValueChanged.AddListener((value) => { SetA0(value); });
+        a1Input.onValueChanged.AddListener((value) => { SetA1(value); });
+        a2Input.onValueChanged.AddListener((value) => { SetA2(value); });
+        a3Input.onValueChanged.AddListener((value) => { SetA3(value); });
+
+        b0Input.onValueChanged.AddListener((value) => { SetB0(value); });
+        b1Input.onValueChanged.AddListener((value) => { SetB1(value); });
+        b2Input.onValueChanged.AddListener((value) => { SetB2(value); });
+        b3Input.onValueChanged.AddListener((value) => { SetB3(value); });
+
+        c0Input.onValueChanged.AddListener((value) => { SetC0(value); });
+        c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
+        c2Input.onValueChanged.AddListener((value) => { SetC2(value); });
+        c3Input.onValueChanged.AddListener((value) => { SetC3(value); });
+
+        tInput.onValueChanged.AddListener((value) => { SetT(value); });
+
+        
     }
     void UpdateTrajectory()
     {
@@ -45,12 +105,12 @@ public class TaskSpaceTrajectory : MonoBehaviour
         List<float> AngularVelocityListZ = new List<float>();
         List<float> AngularAccelerationListZ = new List<float>();
 
-        if (t == 0)
+        if (total_time == 0)
             return;
 
-        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + b0 + "," + b1 + "," + b2 + "," + b3 + "," + c0 + "," + c1 + "," + c2 + "," + c3 + "," + t);
+        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + b0 + "," + b1 + "," + b2 + "," + b3 + "," + c0 + "," + c1 + "," + c2 + "," + c3 + "," + total_time);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 50 * t + 1; i++)
+        for (int i = 0; i < 50 * total_time + 1; i++)
         {
             float t = i / 50f;
             float x = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
@@ -68,7 +128,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
             AngularVelocityListZ.Add(c1 + 2 * c2 * t + 3 * c3 * t * t);
             AngularAccelerationListZ.Add(2 * c2 + 6 * c3 * t);
 
-            float[] angles = CartesianToAngle(x, y, z);
+            float[] angles = _robotController.CartesianToAngle(x, y, z);
             //Debug.Log(angles[0] + "," + angles[1] + "," + angles[2]);
             _trajController.PushTrajPoints(new List<float> { angles[0], angles[1], angles[2] });
 
@@ -171,55 +231,8 @@ public class TaskSpaceTrajectory : MonoBehaviour
     }
     public void SetT(string value)
     {
-        float.TryParse(value, out t);
+        float.TryParse(value, out total_time);
         UpdateTrajectory();
-    }
-
-    float[] CartesianToAngle(float x, float y, float z)
-    {
-        x = -x;
-        y = -y;
-        float[] angles = new float[3];
-        float l1 = 10.18f;
-        float l2 = 19.41f;
-        float l3 = 2.91f;
-        float l23 = Mathf.Sqrt(l2 * l2 + l3 * l3);
-        float l4 = 20.2f;
-        float alpha = Mathf.Atan(l3 / l2);
-        if (x == 0)
-        {
-            angles[0] = Mathf.PI / 2;
-        }
-        else
-        {
-            if (x > 0)
-            {
-                angles[0] = Mathf.Atan(-y / x);
-            }
-            else
-            {
-                angles[0] = Mathf.PI - Mathf.Atan(y / x);
-            }
-        }
-        float A = -y * Mathf.Sin(angles[0]) + x * Mathf.Cos(angles[0]);
-        float B = z - l1;
-        float tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
-        if (tmp < -1)
-            tmp = -0.999999f;
-        if (tmp > 1)
-            tmp = 0.99999f;
-        angles[2] = -Mathf.Acos(tmp);
-        if ((A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])) > 0)
-            angles[1] = Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
-                                   (A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
-        else
-            angles[1] = Mathf.PI - Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
-                                   -(A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
-
-        angles[0] = angles[0] / Mathf.PI * 180 - 90;
-        angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
-        angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
-        return angles;
     }
     public void Clear()
     {

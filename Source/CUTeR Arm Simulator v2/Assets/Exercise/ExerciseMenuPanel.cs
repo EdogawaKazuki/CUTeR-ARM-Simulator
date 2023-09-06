@@ -48,15 +48,16 @@ public class ExerciseMenuPanel : MonoBehaviour
             Destroy(newGroup.Find("Item").gameObject);
         }
         Destroy(container.Find("Group").gameObject);
-        transform.Find("../Menu").GetComponent<Toggle>().onValueChanged.AddListener((value) => {
-            gameObject.SetActive(value); 
-            exercisePanel.gameObject.SetActive(false);
-        });
+        // transform.Find("../Menu").GetComponent<Toggle>().onValueChanged.AddListener((value) => {
+        //     gameObject.SetActive(value); 
+        //     exercisePanel.gameObject.SetActive(false);
+        // });
         transform.Find("Top Bar/Button").GetComponent<Button>().onClick.AddListener(() => {
             if(exercisePanel.GetComponent<ExercisePanel>()._currentSelectedPanel == null)
                 transform.Find("../Menu").GetComponent<Toggle>().isOn = false;
         });
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
+        transform.Find("Scroll View").GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
     }
 
     // Update is called once per frame

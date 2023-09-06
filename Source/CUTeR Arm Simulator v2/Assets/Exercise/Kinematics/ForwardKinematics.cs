@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ForwardKinematics : MonoBehaviour
 {
     RobotController _robotController;
-    StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Text[] matrix3Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
+    TMP_Text[] matrix3Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -26,21 +23,22 @@ public class ForwardKinematics : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[16];
+        matrix1Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[3];
+        matrix2Text = new TMP_Text[3];
         for (int i = 0; i < 3; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line4/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix3Text = new Text[4];
-        for (int i = 0; i < 4; i++)
+        matrix3Text = new TMP_Text[4];
+        for (int i = 0; i < 3; i++)
         {
-            matrix3Text[i] = transform.Find("Input/Line6/" + (i + 1)).GetComponent<Text>();
+            matrix3Text[i] = transform.Find("Input/Line6/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
+            matrix3Text[3] = transform.Find("Input/Line6/4").GetComponent<TMP_Text>();
 
         UpdateTable();
     }
@@ -87,7 +85,7 @@ public class ForwardKinematics : MonoBehaviour
         matrix3Text[0].text = axisAngle[1].ToString("F2");
         matrix3Text[1].text = axisAngle[2].ToString("F2");
         matrix3Text[2].text = axisAngle[3].ToString("F2");
-        matrix3Text[3].text = (axisAngle[0] * Mathf.Rad2Deg).ToString("F2") + "��";
+        matrix3Text[3].text = (axisAngle[0] * Mathf.Rad2Deg).ToString("F2") + "°";
     }
 
     private float[] toAxisAngle(float[][] m)

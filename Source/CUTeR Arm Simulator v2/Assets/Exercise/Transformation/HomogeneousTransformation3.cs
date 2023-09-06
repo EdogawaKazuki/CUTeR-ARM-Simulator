@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HomogeneousTransformation3 : MonoBehaviour
 {
     RobotController _robotController;
     StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Text[] matrix3Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -26,16 +23,17 @@ public class HomogeneousTransformation3 : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[16];
+        matrix1Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[3];
+        matrix2Text = new TMP_Text[3];
         for (int i = 0; i < 3; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line6/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line6/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
+        transform.Find("Input/Line7/Set1").GetComponent<Button>().onClick.AddListener(() => SetJointAngles(new() { -60, 60, -120 }));
 
     }
     private void FixedUpdate()
@@ -60,7 +58,7 @@ public class HomogeneousTransformation3 : MonoBehaviour
         matrix1Text[0].text = "cos(" +a1.ToString("F0") + "°)";
         matrix1Text[1].text = "-sin(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + ": " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
         matrix1Text[2].text = "sin(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
-        matrix1Text[3].text = "-19.2sin(" + a1.ToString("F2") + "°)cos(" + a2.ToString("F0") + "°" + ")\n- 2.8sin(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°)";
+        matrix1Text[3].text = "-19.2sin(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + ")\n- 2.8sin(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°)";
         matrix1Text[4].text = "sin(" + a1.ToString("F0") + "°)";
         matrix1Text[5].text = "cos(" + a1.ToString("F0") + "°)cos(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
         matrix1Text[6].text = "-cos(" + a1.ToString("F0") + "°)sin(" + a2.ToString("F0") + "°" + (a3 > 0 ? " + " : " - ") + Mathf.Abs(a3).ToString("F0") + "°)";
@@ -79,8 +77,8 @@ public class HomogeneousTransformation3 : MonoBehaviour
         matrix2Text[2].text = (Angle23Sin * 21 + (19.2 * Angle2Sin - 2.8 * Angle2Cos) + 10.001).ToString("F2") + " cm";
 
     }
-    public void SetJointAngles(int index)
+    public void SetJointAngles(List<float> joints)
     {
-        _robotController.MoveJointsTo(_JointSetList[index]);
+        _robotController.MoveJointsTo(joints);
     }
 }

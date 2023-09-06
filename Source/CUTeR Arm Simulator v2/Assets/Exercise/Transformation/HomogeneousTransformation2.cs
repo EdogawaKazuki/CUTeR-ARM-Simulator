@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HomogeneousTransformation2 : MonoBehaviour
 {
     RobotController _robotController;
-    StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Text[] matrix3Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
+    TMP_Text[] matrix3Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -26,22 +23,22 @@ public class HomogeneousTransformation2 : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[16];
+        matrix1Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[16];
+        matrix2Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line3/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line3/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix3Text = new Text[16];
+        matrix3Text = new TMP_Text[16];
         for (int i = 0; i < 16; i++)
         {
-            matrix3Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix3Text[i] = transform.Find("Input/Line4/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-
+        transform.Find("Input/Line5/Set1").GetComponent<Button>().onClick.AddListener(() => SetJointAngles(new(){ -60, 60, -120 }));
     }
     private void FixedUpdate()
     {
@@ -110,28 +107,9 @@ public class HomogeneousTransformation2 : MonoBehaviour
         matrix3Text[15].text = "1";
 
     }
-    public void SetBaseAngle(float value)
+
+    public void SetJointAngles(List<float> joints)
     {
-        Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
-        UpdateTable();
-    }
-    public void SetJoint0Angle(float value)
-    {
-        Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void SetJoint1Angle(float value)
-    {
-        Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        UpdateTable();
-    }
-    public void SetJointAngles(int index)
-    {
-        _robotController.MoveJointsTo(_JointSetList[index]);
+        _robotController.MoveJointsTo(joints);
     }
 }

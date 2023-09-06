@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CubicJointSpaceTrajectory : MonoBehaviour
 {
@@ -20,7 +21,23 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
     float c1 = 0;
     float c2 = 0;
     float c3 = 0;
-    float t = 0;
+    float total_time = 0;
+
+    TMP_InputField a0Input;
+    TMP_InputField a1Input;
+    TMP_InputField a2Input;
+    TMP_InputField a3Input;
+    TMP_InputField b0Input;
+    TMP_InputField b1Input;
+    TMP_InputField b2Input;
+    TMP_InputField b3Input;
+    TMP_InputField c0Input;
+    TMP_InputField c1Input;
+    TMP_InputField c2Input;
+    TMP_InputField c3Input;
+    TMP_InputField tInput;
+    TMP_Dropdown jointDropdown;
+
     int showTable = 0;
     // Start is called before the first frame update
     void Start()
@@ -31,6 +48,50 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
+
+        jointDropdown = transform.Find("Input/Line0/Dropdown").GetComponent<TMP_Dropdown>();
+
+        a0Input = transform.Find("Input/Line1/a0").GetComponent<TMP_InputField>();
+        a1Input = transform.Find("Input/Line1/a1").GetComponent<TMP_InputField>();
+        a2Input = transform.Find("Input/Line1/a2").GetComponent<TMP_InputField>();
+        a3Input = transform.Find("Input/Line1/a3").GetComponent<TMP_InputField>();
+
+        b0Input = transform.Find("Input/Line2/b0").GetComponent<TMP_InputField>();
+        b1Input = transform.Find("Input/Line2/b1").GetComponent<TMP_InputField>();
+        b2Input = transform.Find("Input/Line2/b2").GetComponent<TMP_InputField>();
+        b3Input = transform.Find("Input/Line2/b3").GetComponent<TMP_InputField>();
+
+        c0Input = transform.Find("Input/Line3/c0").GetComponent<TMP_InputField>();
+        c1Input = transform.Find("Input/Line3/c1").GetComponent<TMP_InputField>();
+        c2Input = transform.Find("Input/Line3/c2").GetComponent<TMP_InputField>();
+        c3Input = transform.Find("Input/Line3/c3").GetComponent<TMP_InputField>();
+
+        tInput = transform.Find("Input/Line4/T").GetComponent<TMP_InputField>();
+
+        jointDropdown.ClearOptions();
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "1" });
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "2" });
+        jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "3" });
+        jointDropdown.onValueChanged.AddListener((value) => { SetTable(value); });
+
+        a0Input.onValueChanged.AddListener((value) => { SetA0(value); });
+        a1Input.onValueChanged.AddListener((value) => { SetA1(value); });
+        a2Input.onValueChanged.AddListener((value) => { SetA2(value); });
+        a3Input.onValueChanged.AddListener((value) => { SetA3(value); });
+
+        b0Input.onValueChanged.AddListener((value) => { SetB0(value); });
+        b1Input.onValueChanged.AddListener((value) => { SetB1(value); });
+        b2Input.onValueChanged.AddListener((value) => { SetB2(value); });
+        b3Input.onValueChanged.AddListener((value) => { SetB3(value); });
+
+        c0Input.onValueChanged.AddListener((value) => { SetC0(value); });
+        c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
+        c2Input.onValueChanged.AddListener((value) => { SetC2(value); });
+        c3Input.onValueChanged.AddListener((value) => { SetC3(value); });
+
+        tInput.onValueChanged.AddListener((value) => { SetT(value); });
+
+        
     }
 
     void UpdateTrajectory()
@@ -45,12 +106,12 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
         List<float> AngularVelocityList3 = new List<float>();
         List<float> AngularAccelerationList3 = new List<float>();
 
-        if (t == 0)
+        if (total_time == 0)
             return;
 
-        Debug.Log("" + a0 + "," + a1 + "," + b0 + "," + b1 + "," + c0 + "," + c1 + "," + t);
+        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + c0 + "," + c1 + "," + total_time);
         _trajController.ResetTraj(3);
-        for (int i = 0; i < 50 * t + 1; i++)
+        for (int i = 0; i < 50 * total_time + 1; i++)
         {
             float t = i / 50f;
             float angle0 = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
@@ -169,7 +230,7 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
     }
     public void SetT(string value)
     {
-        float.TryParse(value, out t);
+        float.TryParse(value, out total_time);
         UpdateTrajectory();
     }
     public void Clear()

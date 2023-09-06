@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TwoDRotation : MonoBehaviour
 {
@@ -19,24 +20,30 @@ public class TwoDRotation : MonoBehaviour
     [SerializeField]
     Transform _redLineHead;
     List<Transform> _jointTransformList;
-    Text matrix1aText;
-    Text matrix1bText;
-    Text matrix1cText;
-    Text matrix1dText;
+    TMP_Text matrix1aText;
+    TMP_Text matrix1bText;
+    TMP_Text matrix1cText;
+    TMP_Text matrix1dText;
+
+    Button JointSetBtn1;
+    Button JointSetBtn2;
     float Angle1Sin;
     float Angle1Cos;
     Vector3 _redLineStart;
     Vector3 _redLineEnd;
-    List<List<float>> _JointSetList = new List<List<float>> { new List<float> { 30, 180, -140 }, new List<float> { -60, 180, -140 } };
     // Start is called before the first frame update
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _jointTransformList = _robotController.GetJointsTransform();
-        matrix1aText = transform.Find("Input/Line2/a").GetComponent<Text>();
-        matrix1bText = transform.Find("Input/Line2/b").GetComponent<Text>();
-        matrix1cText = transform.Find("Input/Line2/c").GetComponent<Text>();
-        matrix1dText = transform.Find("Input/Line2/d").GetComponent<Text>();
+        matrix1aText = transform.Find("Input/Line2/Values/a").GetComponent<TMP_Text>();
+        matrix1bText = transform.Find("Input/Line2/Values/b").GetComponent<TMP_Text>();
+        matrix1cText = transform.Find("Input/Line2/Values/c").GetComponent<TMP_Text>();
+        matrix1dText = transform.Find("Input/Line2/Values/d").GetComponent<TMP_Text>();
+        JointSetBtn1 = transform.Find("Input/Line3/Set1").GetComponent<Button>();
+        JointSetBtn2 = transform.Find("Input/Line4/Set2").GetComponent<Button>();
+        JointSetBtn1.onClick.AddListener(() => SetJointAngles(new(){ 30, 180, -140 }));
+        JointSetBtn2.onClick.AddListener(() => SetJointAngles(new(){ -60, 180, -140 }));
         UpdateTable();
     }
     private void FixedUpdate()
@@ -59,8 +66,8 @@ public class TwoDRotation : MonoBehaviour
         _redLineHead.transform.SetPositionAndRotation(_redLineEnd, Quaternion.LookRotation(_redLineEnd - _redLineStart));
     }
 
-    public void SetJointAngles(int index)
+    public void SetJointAngles(List<float> joints)
     {
-        _robotController.MoveJointsTo(_JointSetList[index]);
+        _robotController.MoveJointsTo(joints);
     }
 }

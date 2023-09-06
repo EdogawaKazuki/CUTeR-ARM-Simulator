@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ParabolicBlend : MonoBehaviour
 {
@@ -19,6 +20,17 @@ public class ParabolicBlend : MonoBehaviour
     float c2 = 0;
     float tb = 0;
     float tf = 0;
+    TMP_InputField a0Input;
+    TMP_InputField a1Input;
+    TMP_InputField a2Input;
+    TMP_InputField b0Input;
+    TMP_InputField b1Input;
+    TMP_InputField c0Input;
+    TMP_InputField c1Input;
+    TMP_InputField c2Input;
+    TMP_InputField tbInput;
+    TMP_InputField tfInput;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +40,32 @@ public class ParabolicBlend : MonoBehaviour
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
+
+        a0Input = transform.Find("Input/Equation/Line1/a0").GetComponent<TMP_InputField>();
+        a1Input = transform.Find("Input/Equation/Line1/a1").GetComponent<TMP_InputField>();
+        a2Input = transform.Find("Input/Equation/Line1/a2").GetComponent<TMP_InputField>();
+        tbInput = transform.Find("Input/Condition/Line1/tb(s)").GetComponent<TMP_InputField>();
+
+        b0Input = transform.Find("Input/Equation/Line2/b0").GetComponent<TMP_InputField>();
+        b1Input = transform.Find("Input/Equation/Line2/b1").GetComponent<TMP_InputField>();
+
+        c0Input = transform.Find("Input/Equation/Line3/c0").GetComponent<TMP_InputField>();
+        c1Input = transform.Find("Input/Equation/Line3/c1").GetComponent<TMP_InputField>();
+        c2Input = transform.Find("Input/Equation/Line3/c2").GetComponent<TMP_InputField>();
+        tfInput = transform.Find("Input/Condition/Line3/tf(s)").GetComponent<TMP_InputField>();
+
+        a0Input.onValueChanged.AddListener((value) => { SetA0(value); });
+        a1Input.onValueChanged.AddListener((value) => { SetA1(value); });
+        a2Input.onValueChanged.AddListener((value) => { SetA2(value); });
+        tbInput.onValueChanged.AddListener((value) => { SetTB(value); });
+
+        b0Input.onValueChanged.AddListener((value) => { SetB0(value); });
+        b1Input.onValueChanged.AddListener((value) => { SetB1(value); });
+
+        c0Input.onValueChanged.AddListener((value) => { SetC0(value); });
+        c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
+        c2Input.onValueChanged.AddListener((value) => { SetC2(value); });
+        tfInput.onValueChanged.AddListener((value) => { SetTF(value); });
     }
 
     void UpdateTrajectory()
