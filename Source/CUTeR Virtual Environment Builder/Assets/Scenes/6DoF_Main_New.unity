@@ -3142,6 +3142,18 @@ PrefabInstance:
       propertyPath: RobotController
       value: 
       objectReference: {fileID: 2683502436747925132}
+    - target: {fileID: 3474831724646185274, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474831725240907474, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474831726130657129, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3829843254846598898, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
