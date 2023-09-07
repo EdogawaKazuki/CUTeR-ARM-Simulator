@@ -38,7 +38,6 @@ public class RobotClient : MonoBehaviour
 	int count = 0;
 	float tmp;
 	float[] sum = { 0, 0, 0 };
-	int frameIndex = 0;
 	enum FilterType
 	{
 		NoFilter,
@@ -240,8 +239,6 @@ public class RobotClient : MonoBehaviour
 			{
 				if (ESP32)
 				{
-
-					frameIndex = 0;
 					byteArray = new byte[sizeof(float) * 3 + 1];
 					byteArray[0] = 2;
 					// Debug.Log(robotJointAngleCmd[0]);

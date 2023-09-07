@@ -14,8 +14,6 @@ public class PWMFeedback : MonoBehaviour
     [SerializeField]
     private int _queueSize = 300;
     [SerializeField]
-    private int _pwmCount = 0;
-    [SerializeField]
     private Text SliderText;
     [SerializeField]
     Transform _circle;

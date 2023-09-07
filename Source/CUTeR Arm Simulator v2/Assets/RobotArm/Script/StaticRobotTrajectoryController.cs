@@ -13,12 +13,6 @@ using TMPro;
 
 public class StaticRobotTrajectoryController : MonoBehaviour
 {
-#if UNITY_WEBGL
-    private bool _isWebGL=true;
-#else 
-    private bool _isWebGL = false;
-#endif
-
     #region Variables
     private RobotController _robotController;
     private Button _openTrajectoryButton;
