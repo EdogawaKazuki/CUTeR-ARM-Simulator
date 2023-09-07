@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InverseKienmatics : MonoBehaviour
 {
     RobotController _robotController;
-    Text[] matrix1Text;
+    TMP_Text[] matrix1Text;
 
     float x = 0, y = 0, z = 0;
 
@@ -22,13 +23,22 @@ public class InverseKienmatics : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        matrix1Text = new Text[6];
-        for (int i = 0; i < 6; i++)
+        matrix1Text = new TMP_Text[6];
+        for (int i = 0; i < 3; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line3/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line3/Values1/" + (i + 1)).GetComponent<TMP_Text>();
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            matrix1Text[i + 3] = transform.Find("Input/Line3/Values2/" + (i + 1)).GetComponent<TMP_Text>();
         }
         button1 = transform.Find("Input/Line4/Select1").GetComponent<Button>();
         button2 = transform.Find("Input/Line4/Select2").GetComponent<Button>();
+        button1.onClick.AddListener(() => SetJointAngles(0));
+        button2.onClick.AddListener(() => SetJointAngles(1));
+        transform.Find("Input/Line1/setx/xInput").GetComponent<TMP_InputField>().onValueChanged.AddListener(SetX);
+        transform.Find("Input/Line1/sety/yInput").GetComponent<TMP_InputField>().onValueChanged.AddListener(SetY);
+        transform.Find("Input/Line1/setz/zInput").GetComponent<TMP_InputField>().onValueChanged.AddListener(SetZ);
         //UpdateTable();
     }
     private void FixedUpdate()

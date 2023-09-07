@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class JacobianMatrix : MonoBehaviour
 {
     RobotController _robotController;
-    StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -42,15 +39,19 @@ public class JacobianMatrix : MonoBehaviour
             LastJointAngle.Add(_robotController.GetJointAngle(i));
             //_robotController.SetJointAngle(i, 0);
         }
-        matrix1Text = new Text[9];
+        matrix1Text = new TMP_Text[9];
         for (int i = 0; i < 9; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[6];
-        for (int i = 0; i < 6; i++)
+        matrix2Text = new TMP_Text[6];
+        for (int i = 0; i < 3; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line4/Values1/" + (i + 1)).GetComponent<TMP_Text>();
+        }
+        for (int i = 3; i < 6; i++)
+        {
+            matrix2Text[i] = transform.Find("Input/Line4/Values2/" + (i - 2)).GetComponent<TMP_Text>();
         }
     }
     private void FixedUpdate()

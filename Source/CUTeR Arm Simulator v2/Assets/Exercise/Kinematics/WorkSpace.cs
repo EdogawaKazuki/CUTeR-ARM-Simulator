@@ -10,6 +10,9 @@ public class WorkSpace : MonoBehaviour
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
         _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
+        transform.Find("Input/Line2/VerticalPlane").GetComponent<UnityEngine.UI.Button>().onClick.AddListener(VerticalPlane);
+        transform.Find("Input/Line2/ThreeBaseAngle").GetComponent<UnityEngine.UI.Button>().onClick.AddListener(ThreeBaseAngle);
+        transform.Find("Input/Line2/ThreeBaseAngle").GetComponent<UnityEngine.UI.Button>().onClick.AddListener(ThreeBaseAngle);
     }
     public void VerticalPlane()
     {

@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Singularity : MonoBehaviour
 {
     RobotController _robotController;
-    StaticRobotTrajectoryController _trajController;
-    Text[] matrix1Text;
-    Text[] matrix2Text;
-    Slider BaseSlider;
-    Slider Joint0Slider;
-    Slider Joint1Slider;
+    TMP_Text[] matrix1Text;
+    TMP_Text[] matrix2Text;
 
     float Angle1Sin;
     float Angle1Cos;
@@ -19,15 +16,6 @@ public class Singularity : MonoBehaviour
     float Angle2Cos;
     float Angle23Sin;
     float Angle23Cos;
-    float angularVelocity1_d;
-    float angularVelocity2_d;
-    float angularVelocity3_d;
-    List<float> avgAngularVelocity1;
-    List<float> avgAngularVelocity2;
-    List<float> avgAngularVelocity3;
-    List<float> avglinearVelocityX;
-    List<float> avglinearVelocityY;
-    List<float> avglinearVelocityZ;
     List<List<float>> _JointSetList = new List<List<float>> { new List<float> { 0, 8.297f, -8.297f }, new List<float> { 0, 165, -133.062f } };
 
     //int thisFeedback = 0;
@@ -36,22 +24,18 @@ public class Singularity : MonoBehaviour
     void OnEnable()
     {
         _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        avgAngularVelocity1 = new List<float>();
-        avgAngularVelocity2 = new List<float>();
-        avgAngularVelocity3 = new List<float>();
-        avglinearVelocityX = new List<float>();
-        avglinearVelocityY = new List<float>();
-        avglinearVelocityZ = new List<float>();
-        matrix1Text = new Text[9];
+        matrix1Text = new TMP_Text[9];
         for (int i = 0; i < 9; i++)
         {
-            matrix1Text[i] = transform.Find("Input/Line2/" + (i + 1)).GetComponent<Text>();
+            matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        matrix2Text = new Text[1];
+        matrix2Text = new TMP_Text[1];
         for (int i = 0; i < 1; i++)
         {
-            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<Text>();
+            matrix2Text[i] = transform.Find("Input/Line4/" + (i + 1)).GetComponent<TMP_Text>();
         }
+        transform.Find("Input/Line5/Pose1").GetComponent<Button>().onClick.AddListener(() => SetPose1());
+        transform.Find("Input/Line5/Pose2").GetComponent<Button>().onClick.AddListener(() => SetPose2());
         //UpdateTable();
     }
     private void FixedUpdate()
