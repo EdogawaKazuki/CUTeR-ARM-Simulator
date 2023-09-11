@@ -136,8 +136,14 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _robotController.SetCmdJointAngles(angleList);
         if(_currentState != State.prelooping && _currentState != State.preplaying)
             _robotController.SetTransparentCmdJointAngles(angleList);
-        if(_currentState == State.prelooping || _currentState == State.preplaying)
-            _robotController.SetTransparentCmdJointAngles(new(){_trajList[0][0], _trajList[1][0], _trajList[2][0]});
+        if(_currentState == State.prelooping || _currentState == State.preplaying){
+            List<float> tmpList = new();
+            for(int i = 0; i < _robotController.GetRobotDoF(); i++)
+            {
+                tmpList.Add(_trajList[i][0]);
+            }
+            _robotController.SetTransparentCmdJointAngles(tmpList);
+        }
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
         if (direction == Direction.forward)
@@ -262,6 +268,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 break;
             case State.finished:
                 SetStatus("Finished", new Color32(255, 255, 255, 78));
+                _robotController.HideTransparentModel();
                 break;
             case State.stopped:
                 if (_trajLength > 0)
@@ -416,10 +423,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             {
                 max_distance = distance;
             }
-            Debug.Log("distance: " + distance);
+            // Debug.Log("distance: " + distance);
         }
         float time = max_distance / 30;
-        Debug.Log("prepare time: " + time);
+        // Debug.Log("prepare time: " + time);
         if (time < 0.1f)
         {
             return null;

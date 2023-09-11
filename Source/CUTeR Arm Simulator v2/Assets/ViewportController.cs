@@ -27,9 +27,6 @@ public class ViewportController : MonoBehaviour
         if (CheckGuiRaycastObjects()) return;
         if (Input.GetMouseButton(1) || Input.GetMouseButton(2) || _mouseZ != 0) { MoveCamera(); return; }
     }
-    private void ClearSelect()
-    {
-    }
     private void MoveCamera()
     {
         if (Input.GetMouseButton(1))

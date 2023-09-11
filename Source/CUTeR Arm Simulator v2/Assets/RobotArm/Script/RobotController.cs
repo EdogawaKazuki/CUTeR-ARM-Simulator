@@ -34,11 +34,10 @@ public class RobotController : MonoBehaviour
         red,
     }
     private int _currentDoF = 6;
-   
-    static public float A1 = 10;  //length properties of the teaching robot arm (in cm)
-    static public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
-    static public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
-    static public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
+    public float A1 = 10;  //length properties of the teaching robot arm (in cm)
+    public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
+    public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
+    public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
 
     private List<int> _pwmList;
 
@@ -81,7 +80,6 @@ public class RobotController : MonoBehaviour
         _endEffectorController = transform.Find("EndEffectors").GetComponent<EndEffectorController>();
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         _transparentRobotJointController = transform.Find("Joints Transparent").GetComponent<RobotJointController>();
-
         
         HeadLine = transform.Find("VisiualContent/HeadLine").GetComponent<LineRenderer>();
         PointHead = transform.Find("VisiualContent/PointHead");
@@ -93,6 +91,7 @@ public class RobotController : MonoBehaviour
         ARCtrlGroup.Find("3DToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => Show3DWorkSpace(value));
         ARCtrlGroup.Find("VertToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowVertWorkSpace(value));
         ARCtrlGroup.Find("HorzToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowHorizWorkSpace(value));
+        HideTransparentModel();
     }
     void FixedUpdate(){
         
@@ -204,8 +203,22 @@ public class RobotController : MonoBehaviour
         CmdJointAngles[index] = angle;
         _robotJointController.SetJointAngle(index, angle);
     }
-    public void SetTransparentCmdJointAngles(List<float> angles) { _transparentRobotJointController.SetJointAngles(angles); }
-    public void SetTransparentCmdJointAngle(int index, float angle) { if(_robotControllerUI._sliderStatus == 0) _transparentRobotJointController.SetJointAngle(index, angle); }
+    public void HideTransparentModel() { 
+        for(int i = 0; i < _currentDoF; i++)
+        _transparentRobotJointController.HideJointLink(i); 
+    }
+    public void ShowTransparentModel() { 
+        for(int i = 0; i < _currentDoF; i++)
+        _transparentRobotJointController.ShowJointLink(i); 
+    }
+    public void SetTransparentCmdJointAngles(List<float> angles) { 
+        ShowTransparentModel();
+        _transparentRobotJointController.SetJointAngles(angles); 
+        }
+    public void SetTransparentCmdJointAngle(int index, float angle) { 
+        ShowTransparentModel();
+        if(_robotControllerUI._sliderStatus == 0) _transparentRobotJointController.SetJointAngle(index, angle); 
+    }
     public void MoveJointsTo(List<float> angleList)
     {
         _staticRobotTrajectoryController.ResetTraj(_currentDoF);
@@ -259,10 +272,26 @@ public class RobotController : MonoBehaviour
                 jointTransforms[i].gameObject.SetActive(false);
             }
         }
+        SetTransparentRobotDoF(dof);
         _endEffectorController.transform.SetParent(_robotJointController.GetJointTransform(dof - 1));
         _endEffectorController.transform.localPosition = _robotJointController.GetJointTransform(dof).localPosition;
         _endEffectorController.transform.localEulerAngles = Vector3.zero;
         _currentDoF = dof;
+    }    
+    public void SetTransparentRobotDoF(int dof)
+    {
+        List<Transform> jointTransforms = _transparentRobotJointController.GetJointsTransform();
+        for (int i = 0; i < jointTransforms.Count; i++)
+        {
+            if(i < dof)
+            {
+                jointTransforms[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                jointTransforms[i].gameObject.SetActive(false);
+            }
+        }
     }    
     public void SetForce(float force) { _endEffectorController.SetForce(force); }
 

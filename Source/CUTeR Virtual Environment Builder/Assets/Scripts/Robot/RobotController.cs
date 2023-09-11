@@ -30,7 +30,7 @@ public class RobotController : MonoBehaviour
    
     static public float A1 = 10;  //length properties of the teaching robot arm (in cm)
     static public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
-    static public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
+    static public float L1 = 19.4f; //length properties of the teaching robot arm (in cm)
     static public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
     private List<int> _pwmList = new List<int>() { 0, 0, 0, 0, 0, 0 };
 
