@@ -27,11 +27,12 @@ public class ExpandMenu : MonoBehaviour
         transform.Find("Title").GetComponent<Toggle>().onValueChanged.AddListener((value) => ExpandOption(value));
         RectTransform = GetComponent<RectTransform>();
         ContainerRT = transform.parent.GetComponent<RectTransform>();
-        width = RectTransform.rect.width;
-        height = RectTransform.rect.height;
-        Debug.Log(height);
-        containerWidth = ContainerRT.rect.width;
+        width = RectTransform.sizeDelta.x;
+        height = RectTransform.sizeDelta.y;
+        containerWidth = ContainerRT.sizeDelta.x;
+        Debug.Log(containerWidth);
         ExpandOption(initStatus);
+        ContainerRT.sizeDelta = new Vector2(containerWidth, ContainerRT.sizeDelta.y + 1 * height / transform.childCount + 5);
     }
     public void ExpandOption(bool value)
     {
