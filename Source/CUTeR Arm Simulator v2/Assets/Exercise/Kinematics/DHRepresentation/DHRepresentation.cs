@@ -90,15 +90,15 @@ public class DHRepresentation : MonoBehaviour
         matrix2Text[0].text = (Angle1Cos * Angle23Cos + 0.00001f).ToString("F3");
         matrix2Text[1].text = (-Angle1Cos * Angle23Sin + 0.00001f).ToString("F3");
         matrix2Text[2].text = (Angle1Sin + 0.00001f).ToString("F3");
-        matrix2Text[3].text = (RobotController.A1 * Angle1Cos * Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 0.00001f).ToString("F3");
+        matrix2Text[3].text = (_robotController.A1 * Angle1Cos * Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 0.00001f).ToString("F3");
         matrix2Text[4].text = (Angle1Sin * Angle23Cos + 0.00001f).ToString("F3");
         matrix2Text[5].text = (-Angle1Sin * Angle23Sin + 0.00001f).ToString("F3");
         matrix2Text[6].text = (-Angle1Cos + 0.00001f).ToString("F3");
-        matrix2Text[7].text = (RobotController.L1 * Angle1Sin * Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 0.00001f).ToString("F3");
+        matrix2Text[7].text = (_robotController.L1 * Angle1Sin * Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 0.00001f).ToString("F3");
         matrix2Text[8].text = (Angle23Sin + 0.00001f).ToString("F3");
         matrix2Text[9].text = (Angle23Cos + 0.00001f).ToString("F3");
         matrix2Text[10].text = "0";
-        matrix2Text[11].text = (RobotController.L1 * Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 10.00001f).ToString("F3");
+        matrix2Text[11].text = (_robotController.L1 * Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f)) + 10.00001f).ToString("F3");
 
     }
     public void ToggleDHFrames(bool value)

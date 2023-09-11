@@ -50,10 +50,10 @@ public class Singularity : MonoBehaviour
         Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
         Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
         Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) + _robotController.GetJointAngle(2)));
-        float A1 = RobotController.A1;  //length properties of the teaching robot arm (in cm)
-        float A2 = RobotController.A2; //length properties of the teaching robot arm (in cm)
-        float L1 = RobotController.L1; //length properties of the teaching robot arm (in cm)
-        float L2 = RobotController.L2;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
+        float A1 = _robotController.A1;  //length properties of the teaching robot arm (in cm)
+        float A2 = _robotController.A2; //length properties of the teaching robot arm (in cm)
+        float L1 = _robotController.L1; //length properties of the teaching robot arm (in cm)
+        float L2 = _robotController.L2;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
 
         float[][] J = new float[3][];
         J[0] = new float[] { -Angle1Cos * (A2 * Angle2Sin + L1 * Angle2Cos + L2 * Angle23Cos), -Angle1Sin * (A2 * Angle2Cos - L1 * Angle2Sin + L2 * Angle23Sin), Angle1Sin * (L2 * Angle23Sin) };
