@@ -11,7 +11,6 @@ public class Barrel : EndEffector
     private void Start()
     {
         //m_Barrel.SetParent(GameObject.Find("Robot").transform);
-        Physics.gravity = new Vector3(0, -1000.0F, 0);
     }
     private void Update()
     {
@@ -20,6 +19,7 @@ public class Barrel : EndEffector
     }
     private void OnEnable()
     {
+        Physics.gravity = new Vector3(0, -100, 0);
         if(_robotController != null)
             m_Barrel.SetParent(_robotController.transform);
         m_Barrel.gameObject.SetActive(true);
