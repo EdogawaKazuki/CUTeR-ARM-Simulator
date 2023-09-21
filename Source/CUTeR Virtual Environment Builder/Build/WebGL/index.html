@@ -18,14 +18,10 @@
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
-        <!-- <div id="unity-webgl-logo"></div> -->
+        <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">CUTeR Virtual Environment Builder</div>
       </div>
-      <div style="font-family: Arial">Upload Trajectory File:
-        <input type="file" id="fileInput">
-      <button onclick="uploadTraj() ">Upload</button>
-    </div>
     </div>
     <script>
       var container = document.querySelector("#unity-container");
@@ -34,7 +30,7 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
-      var unityInstanceHook = null;
+
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -101,25 +97,11 @@
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
           };
-          unityInstanceHook = unityInstance;
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
-      
-      // for upload file
-      const fileInput = document.getElementById("fileInput");
-      function uploadTraj() {
-        var file = document.getElementById("fileInput").files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var text = reader.result;
-          unityInstanceHook.SendMessage('RobotArm', 'ProcessTraj', text);
-          console.log(text);
-        }
-        reader.readAsText(file);
-      }
     </script>
   </body>
 </html>
