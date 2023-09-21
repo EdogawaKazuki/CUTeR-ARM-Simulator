@@ -26,6 +26,8 @@ public class RobotController : MonoBehaviour
     private int INIT_ROBOT_DOF = 3;
     [SerializeField]
     private bool _enableCollisionChecker = true;
+    [SerializeField]
+    public bool _enableTransparentRobot = false;
 
 
     enum RobotIndex
@@ -69,6 +71,7 @@ public class RobotController : MonoBehaviour
     }
     void OnEnable()
     {
+        
         // asign hooks
         _robotControllerUI = GetComponent<RobotControllerUI>();
         _robotCanvas = transform.Find("RobotCanvas").gameObject;
@@ -212,10 +215,12 @@ public class RobotController : MonoBehaviour
         _transparentRobotJointController.ShowJointLink(i); 
     }
     public void SetTransparentCmdJointAngles(List<float> angles) { 
+        if(!_enableTransparentRobot) return;
         ShowTransparentModel();
         _transparentRobotJointController.SetJointAngles(angles); 
         }
     public void SetTransparentCmdJointAngle(int index, float angle) { 
+        if(!_enableTransparentRobot) return;
         ShowTransparentModel();
         if(_robotControllerUI._sliderStatus == 0) _transparentRobotJointController.SetJointAngle(index, angle); 
     }
@@ -240,13 +245,22 @@ public class RobotController : MonoBehaviour
     {
         _endEffectorController.SetEndEffector(index);
         // Debug.Log(index);
-        if(index == 3)
+        if(_endEffectorController.GetEndEffectorList()[index] == "Launcher")
         {
             _joystickController.EnableForce(true);
         }
         else
         {
             _joystickController.EnableForce(false);
+        }
+
+        if(_endEffectorController.GetEndEffectorList()[index] == "Launcher" || _endEffectorController.GetEndEffectorList()[index] == "Gripper")
+        {
+            _joystickController.EnableFire(true);
+        }
+        else
+        {
+            _joystickController.EnableFire(false);
         }
     }
     public void Fire(){ _endEffectorController.Fire(); }
@@ -272,7 +286,9 @@ public class RobotController : MonoBehaviour
                 jointTransforms[i].gameObject.SetActive(false);
             }
         }
+
         SetTransparentRobotDoF(dof);
+        _robotControllerUI.SetRobotDoF(dof);
         _endEffectorController.transform.SetParent(_robotJointController.GetJointTransform(dof - 1));
         _endEffectorController.transform.localPosition = _robotJointController.GetJointTransform(dof).localPosition;
         _endEffectorController.transform.localEulerAngles = Vector3.zero;
