@@ -18,7 +18,7 @@ public class Launcher : EndEffector
         GameObject Bullet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Bullet.transform.position = transform.position;
         Bullet.transform.localScale = Vector3.one * 0.03f;
-        Bullet.transform.SetParent(GameObject.Find("PlayingScene").transform);
+        Bullet.transform.SetParent(transform);
         // enable physical property
         Rigidbody rigidboty = Bullet.AddComponent<Rigidbody>();
         // give force

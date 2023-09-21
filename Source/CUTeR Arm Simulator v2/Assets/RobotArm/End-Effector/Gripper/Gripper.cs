@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grabber : EndEffector
+public class Gripper : EndEffector
 {
     #region Variables
 
@@ -25,9 +25,9 @@ public class Grabber : EndEffector
 
 
     // states
-    // released: the grabber is open, ready to grab
+    // released: the Gripper is open, ready to grab
     // grabbing: playing the grab animation 
-    // grabbed: the grabber is closed, ready to release
+    // grabbed: the Gripper is closed, ready to release
     // releasing: playing the release animation
     enum State
     {
@@ -84,7 +84,7 @@ public class Grabber : EndEffector
                 return;
 
         }
-        //Debug.Log("released: " + Released + " grabber: " + Grabbed + " releasing: " + Releasing + " grabbing: " + Grabbing);
+        //Debug.Log("released: " + Released + " Gripper: " + Grabbed + " releasing: " + Releasing + " grabbing: " + Grabbing);
     }
 
     // object enter the grabbing point
@@ -144,7 +144,7 @@ public class Grabber : EndEffector
     public override void Init()
     {
         base.Init();
-        _name = "Grabber";
+        _name = "Gripper";
         _force = 0;
     }
     public override void Fire()
@@ -183,7 +183,7 @@ public class Grabber : EndEffector
             }
 
              Debug.Log(targetObject.name);
-            // Make the object static to the grabber
+            // Make the object static to the Gripper
             if(targetObject.GetComponent<SceneObjectTrajectoryController>())
                 targetObject.GetComponent<SceneObjectTrajectoryController>().StartTraj();
             // disable the physical property
