@@ -131,7 +131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2096027496817331984
 Transform:
   m_ObjectHideFlags: 0
@@ -747,7 +747,7 @@ GameObject:
   - component: {fileID: 6841493585120810679}
   - component: {fileID: 6841493585120810672}
   m_Layer: 0
-  m_Name: Detect Cube
+  m_Name: DetectCube
   m_TagString: Robot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

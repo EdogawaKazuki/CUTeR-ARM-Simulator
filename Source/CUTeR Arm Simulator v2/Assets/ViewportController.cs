@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -56,5 +57,10 @@ public class ViewportController : MonoBehaviour
         EventSystem.current.RaycastAll(eventData, list);
         //Debug.Log(list.Count);
         return list.Count > 0;
+    }
+    public void SetText(string text)
+    {
+        EventSystem.current.currentSelectedGameObject.GetComponent<TMP_InputField>().text = text;
+        Debug.Log("Unity Received:" + text);
     }
 }
