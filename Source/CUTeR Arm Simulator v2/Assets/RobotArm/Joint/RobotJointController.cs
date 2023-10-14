@@ -119,6 +119,7 @@ public class RobotJointController : MonoBehaviour
         _joints[index].ShowFrame(value);
     }
     public void ShowJointsFrame(bool value){
+        transform.Find("frame_visual")?.gameObject.SetActive(value);
         foreach (var joint in _joints)
         {
             joint.ShowFrame(value);

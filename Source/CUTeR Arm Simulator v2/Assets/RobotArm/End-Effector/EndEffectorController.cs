@@ -18,6 +18,7 @@ public class EndEffectorController : MonoBehaviour
     {
         for(int i = 0; i < transform.childCount; i++)
         {
+            if(transform.GetChild(i).GetComponent<EndEffector>() == null) continue;
             _endEffectors.Add(transform.GetChild(i).GetComponent<EndEffector>());
             _endEffectors[i].Init();
             _endEffectorNames.Add(_endEffectors[i].GetEndEffectorName());

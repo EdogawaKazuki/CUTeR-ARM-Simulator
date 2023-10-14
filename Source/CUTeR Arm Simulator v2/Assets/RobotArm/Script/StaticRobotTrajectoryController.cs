@@ -197,34 +197,104 @@ public class StaticRobotTrajectoryController : MonoBehaviour
 
             string[] trajsTextArray = trajText.Split(';');
 
-            if (trajsTextArray.Length < 2 || !trajsTextArray[0].Equals("angle"))
+            if (trajsTextArray.Length < 2)
             {
                 SetStatus(State.loadFailed);
                 return;
             }
-            for (int i = 1; i < trajsTextArray.Length - 1; i++)
-            {
-                //Debug.Log(trajsTextArray[i]);
-                string[] tmp = trajsTextArray[i].Split(',');
-                if (_trajLength != 0 && _trajLength != tmp.Length)
+            if(trajsTextArray[0].Equals("task_space")){
+                
+                List<List<float>> task_traj_list = new();
+                for (int i = 1; i < trajsTextArray.Length - 1; i++)
                 {
-                    //Debug.Log(_trajLength + ", " + tmp.Length + ", " + i);
+                    //Debug.Log(trajsTextArray[i]);
+                    string[] tmp = trajsTextArray[i].Split(',');
+                    if (_trajLength != 0 && _trajLength != tmp.Length)
+                    {
+                        //Debug.Log(_trajLength + ", " + tmp.Length + ", " + i);
+                        SetStatus(State.loadFailed);
+                        return;
+                    }
+                    else
+                    {
+                        task_traj_list.Add(new List<float>());
+                        _trajList.Add(new List<float>());
+                        _trajLength = tmp.Length;
+                        foreach (var point in tmp)
+                        {
+                            if (point.Equals("fire"))
+                            {
+                                task_traj_list[i - 1].Add(1000);
+                            }
+                            else
+                            {
+                                task_traj_list[i - 1].Add(float.Parse(point));
+                            }
+                        }
+                    }
+                }
+                if(task_traj_list.Count == 3){
+                    for(int i = 0; i < task_traj_list[0].Count; i++){
+                        if(task_traj_list[0][i].Equals("fire")){
+                            
+                            for(int j = 0; j < 3; j++){
+                                _trajList[j].Add(1000);
+                            }
+                            continue;
+                        }
+                        List<float> angles = new();
+                        // Get joint angles from task space 3DoF
+                        angles = task_space_2_joint_space(task_traj_list[0][i], task_traj_list[1][i], task_traj_list[2][i]);
+                        print(angles[0] + ", " + angles[1] + ", " + angles[2]);
+                        for(int j = 0; j < 3; j++){
+                            _trajList[j].Add(angles[j]);
+                        }
+                    }
+                }else if (task_traj_list.Count == 6){
+                    for(int i = 0; i < task_traj_list[0].Count; i++){
+                        if(task_traj_list[0][i].Equals("fire")){
+                            
+                            for(int j = 0; j < 3; j++){
+                                _trajList[j].Add(1000);
+                            }
+                            continue;
+                        }
+                        List<float> angles = new();
+                        // Get joint angles from task space 3DoF
+                        
+                        for(int j = 0; j < 6; j++){
+                            _trajList[j].Add(angles[j]);
+                        }
+                    }
+                }else{
                     SetStatus(State.loadFailed);
                     return;
                 }
-                else
+            }else{
+                for (int i = 1; i < trajsTextArray.Length - 1; i++)
                 {
-                    _trajList.Add(new List<float>());
-                    _trajLength = tmp.Length;
-                    foreach (var point in tmp)
+                    //Debug.Log(trajsTextArray[i]);
+                    string[] tmp = trajsTextArray[i].Split(',');
+                    if (_trajLength != 0 && _trajLength != tmp.Length)
                     {
-                        if (point.Equals("fire"))
+                        //Debug.Log(_trajLength + ", " + tmp.Length + ", " + i);
+                        SetStatus(State.loadFailed);
+                        return;
+                    }
+                    else
+                    {
+                        _trajList.Add(new List<float>());
+                        _trajLength = tmp.Length;
+                        foreach (var point in tmp)
                         {
-                            _trajList[i - 1].Add(1000);
-                        }
-                        else
-                        {
-                            _trajList[i - 1].Add(float.Parse(point));
+                            if (point.Equals("fire"))
+                            {
+                                _trajList[i - 1].Add(1000);
+                            }
+                            else
+                            {
+                                _trajList[i - 1].Add(float.Parse(point));
+                            }
                         }
                     }
                 }
@@ -243,6 +313,46 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             SetStatus(State.loadFailed);
         }
     }
+    private List<float> task_space_2_joint_space(double x, double y, double z){
+
+        y = -y;
+        List<float> angles = new List<float> { 0, 0, 0};
+        double l23 = Mathf.Sqrt(_robotController.L1 * _robotController.L1 + _robotController.A2 * _robotController.A2);
+        double alpha = Mathf.Sqrt(_robotController.A2/_robotController.L1);
+
+        if(x == 0)
+            angles[0] = Mathf.PI / 2;
+        else{
+            if (x > 0)
+                angles[0] = Mathf.Atan((float)(-y/x));
+            else
+                angles[0] = Mathf.PI - Mathf.Atan((float)(-y/x));
+            
+        }
+
+        double A = -y * Mathf.Sin((float)angles[0]) + x * Mathf.Cos((float)angles[0]);
+
+        double B = z - _robotController.A1;
+        double l4 = _robotController.L2;
+        double tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
+        if (tmp < -1)
+            tmp = -0.999999;
+        if (tmp > 1)
+            tmp = 0.99999;
+        angles[2] = -Mathf.Cos((float)tmp);
+        if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
+            angles[1] = Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+                                (A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
+        else
+            angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+                                            -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
+
+        angles[0] = angles[0] / Mathf.PI * 180 - 90;
+        angles[1] = (float)(angles[1] + alpha) / Mathf.PI * 180;
+        angles[2] = (float)(angles[2] - alpha) / Mathf.PI * 180;
+        return angles;
+    }
+
     public string GetTrajString()
     {
         return _trajText;

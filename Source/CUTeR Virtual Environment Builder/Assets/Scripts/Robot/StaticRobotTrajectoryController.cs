@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 using MathNet.Numerics.LinearAlgebra.Double;
 using SFB;
 using System;
@@ -32,11 +34,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         stopped,
         playing,
         pause,
-        looping,
+        looPIng,
         ready,
         loadFailed,
         finished,
-        prelooping,
+        prelooPIng,
         preplaying,
 
     }
@@ -77,7 +79,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(_currentState == State.preplaying || _currentState == State.prelooping)
+        if(_currentState == State.preplaying || _currentState == State.prelooPIng)
         {
             if (_currentTrajIndex < _prepareTrajList[0].Count)
                 ReadTraj(_prepareTrajList, Direction.forward);
@@ -86,11 +88,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 _currentTrajIndex = 0;
                 if (_currentState == State.preplaying)
                     SetStatus(State.playing);
-                if(_currentState == State.prelooping)
-                    SetStatus(State.looping);
+                if(_currentState == State.prelooPIng)
+                    SetStatus(State.looPIng);
             }
         }
-        if (_currentState == State.looping)
+        if (_currentState == State.looPIng)
         {
             if (_currentTrajIndex < 0)
             {
@@ -166,7 +168,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         {
             case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError:
-                Debug.LogError("DataProcessingError: " + request.error);
+                Debug.LogError("DataProcesSingError: " + request.error);
                 break;
             case UnityWebRequest.Result.ProtocolError:
                 Debug.LogError("ProtocolError: " + request.error);
@@ -261,16 +263,16 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 if (_trajLength > 0)
                     SetStatus("Stopped", new Color32(255, 255, 255, 78));
                 break;
-            case State.looping:
+            case State.looPIng:
                 if (_trajLength > 0)
-                    SetStatus("Looping", new Color32(100, 255, 100, 160));
+                    SetStatus("LooPIng", new Color32(100, 255, 100, 160));
                 break;
             case State.playing:
                 if (_trajLength > 0)
                     SetStatus("Playing", new Color32(100, 255, 100, 160));
                 _robotController.GetEditorController().StartObjectTraj();
                 break;
-            case State.prelooping:
+            case State.prelooPIng:
                 if (_trajLength > 0)
                     SetStatus("Preparing Robot", new Color32(255, 255, 100, 160));
                 break;
@@ -292,8 +294,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), new List<float>() { _trajList[0][0], _trajList[1][0], _trajList[2][0] });
 
         if(_prepareTrajList != null)
-            SetStatus(State.prelooping);
-        else SetStatus(State.looping);
+            SetStatus(State.prelooPIng);
+        else SetStatus(State.looPIng);
     }
     public void StartTraj(bool prepare=true)
     {
@@ -423,6 +425,45 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         }
         Debug.Log(result.Count);
         return result;
+    }
+    private List<double> task_space_2_joint_space(double x, double y, double z){
+
+        y = -y;
+        List<double> angles = new List<double> { 0, 0, 0};
+        double l23 = Mathf.Sqrt(RobotController.L1 * RobotController.L1 + RobotController.A2 * RobotController.A2);
+        double alpha = Mathf.Sqrt(RobotController.A2/RobotController.L1);
+
+        if(x == 0)
+            angles[0] = Mathf.PI / 2;
+        else{
+            if (x > 0)
+                angles[0] = Mathf.Atan((float)(-y/x));
+            else
+                angles[0] = Mathf.PI - Mathf.Atan((float)(-y/x));
+            
+        }
+
+        double A = -y * Mathf.Sin((float)angles[0]) + x * Mathf.Cos((float)angles[0]);
+
+        double B = z - RobotController.A1;
+        double l4 = RobotController.L2;
+        double tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
+        if (tmp < -1)
+            tmp = -0.999999;
+        if (tmp > 1)
+            tmp = 0.99999;
+        angles[2] = -Mathf.Cos((float)tmp);
+        if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
+            angles[1] = Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+                                (A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
+        else
+            angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+                                            -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
+
+        angles[0] = angles[0] / Mathf.PI * 180 - 90;
+        angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
+        angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
+        return angles;
     }
 #endregion
 }
