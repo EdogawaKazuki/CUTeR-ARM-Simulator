@@ -313,41 +313,33 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             SetStatus(State.loadFailed);
         }
     }
-    private List<float> task_space_2_joint_space(double x, double y, double z){
+    private List<float> task_space_2_joint_space(float x, float y, float z){
+        float l1 = _robotController.A1;
+        float l2 = _robotController.L1;
+        float l3 = _robotController.A2;
+        float l4 = _robotController.L2;
+        List<float> angles = new List<float> {0, 0, 0};
+        float l23 = Mathf.Sqrt(l2 * l2 + l3 * l3);
+        float alpha = Mathf.Atan(l3/l2);
+        angles[0] = Mathf.Atan(-x/y);
 
-        y = -y;
-        List<float> angles = new List<float> { 0, 0, 0};
-        double l23 = Mathf.Sqrt(_robotController.L1 * _robotController.L1 + _robotController.A2 * _robotController.A2);
-        double alpha = Mathf.Sqrt(_robotController.A2/_robotController.L1);
+        float A = -x * Mathf.Sin(angles[0]) + y * Mathf.Cos(angles[0]);
+        float B = z - l1;
+        float tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
 
-        if(x == 0)
-            angles[0] = Mathf.PI / 2;
-        else{
-            if (x > 0)
-                angles[0] = Mathf.Atan((float)(-y/x));
-            else
-                angles[0] = Mathf.PI - Mathf.Atan((float)(-y/x));
-            
-        }
+        // if (tmp < -1)
+        //     tmp = -0.999999;
+        // if (tmp > 1)
+        //     tmp = 0.99999;
+        angles[2] = -Mathf.Acos(tmp);
+        // if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
+        angles[1] = Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
+                            (A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
+        // else
+        //     angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+        //                                     -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
 
-        double A = -y * Mathf.Sin((float)angles[0]) + x * Mathf.Cos((float)angles[0]);
-
-        double B = z - _robotController.A1;
-        double l4 = _robotController.L2;
-        double tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
-        if (tmp < -1)
-            tmp = -0.999999;
-        if (tmp > 1)
-            tmp = 0.99999;
-        angles[2] = -Mathf.Cos((float)tmp);
-        if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
-            angles[1] = Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
-                                (A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
-        else
-            angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
-                                            -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
-
-        angles[0] = angles[0] / Mathf.PI * 180 - 90;
+        angles[0] = angles[0] / Mathf.PI * 180;
         angles[1] = (float)(angles[1] + alpha) / Mathf.PI * 180;
         angles[2] = (float)(angles[2] - alpha) / Mathf.PI * 180;
         return angles;

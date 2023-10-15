@@ -36,9 +36,9 @@ public class RobotController : MonoBehaviour
         red,
     }
     private int _currentDoF = 6;
-    public float A1 = 10;  //length properties of the teaching robot arm (in cm)
+    public float A1 = 10.8f;  //length properties of the teaching robot arm (in cm)
     public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
-    public float L1 = 19.2f; //length properties of the teaching robot arm (in cm)
+    public float L1 = 19.4f; //length properties of the teaching robot arm (in cm)
     public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
 
     private List<int> _pwmList;
