@@ -327,17 +327,17 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         float B = z - l1;
         float tmp = (A * A + B * B - (l23 * l23 + l4 * l4)) / (2 * l23 * l4);
 
-        // if (tmp < -1)
-        //     tmp = -0.999999;
-        // if (tmp > 1)
-        //     tmp = 0.99999;
+        if (tmp < -1)
+            tmp = -0.999999f;
+        if (tmp > 1)
+            tmp = 0.99999f;
         angles[2] = -Mathf.Acos(tmp);
-        // if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
-        angles[1] = Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
-                            (A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
-        // else
-        //     angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
-        //                                     -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
+        if ((A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2])) > 0)
+            angles[1] = Mathf.Atan((B * (l23 + l4 * Mathf.Cos(angles[2])) - A * l4 * Mathf.Sin(angles[2])) /
+                                (A * (l23 + l4 * Mathf.Cos(angles[2])) + B * l4 * Mathf.Sin(angles[2])));
+        else
+            angles[1] = Mathf.PI - Mathf.Atan((float)((B * (l23 + l4 * Mathf.Cos((float)angles[2])) - A * l4 * Mathf.Sin((float)angles[2])) /
+                                            -(A * (l23 + l4 * Mathf.Cos((float)angles[2])) + B * l4 * Mathf.Sin((float)angles[2]))));
 
         angles[0] = angles[0] / Mathf.PI * 180;
         angles[1] = (float)(angles[1] + alpha) / Mathf.PI * 180;
