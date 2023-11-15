@@ -202,10 +202,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 SetStatus(State.loadFailed);
                 return;
             }
-            if(trajsTextArray[0].Equals("task_space")){
+            if(trajsTextArray[0].Equals("task_space") || trajsTextArray[0].Equals("task space")){
                 
                 List<List<float>> task_traj_list = new();
-                for (int i = 1; i < trajsTextArray.Length - 1; i++)
+                for (int i = 1; i < 4; i++)
                 {
                     //Debug.Log(trajsTextArray[i]);
                     string[] tmp = trajsTextArray[i].Split(',');
@@ -233,7 +233,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                         }
                     }
                 }
-                if(task_traj_list.Count == 3){
+                if(task_traj_list.Count == 3 || task_traj_list.Count == 6){
                     for(int i = 0; i < task_traj_list[0].Count; i++){
                         if(task_traj_list[0][i].Equals("fire")){
                             
@@ -247,22 +247,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                         angles = task_space_2_joint_space(task_traj_list[0][i], task_traj_list[1][i], task_traj_list[2][i]);
                         print(angles[0] + ", " + angles[1] + ", " + angles[2]);
                         for(int j = 0; j < 3; j++){
-                            _trajList[j].Add(angles[j]);
-                        }
-                    }
-                }else if (task_traj_list.Count == 6){
-                    for(int i = 0; i < task_traj_list[0].Count; i++){
-                        if(task_traj_list[0][i].Equals("fire")){
-                            
-                            for(int j = 0; j < 3; j++){
-                                _trajList[j].Add(1000);
-                            }
-                            continue;
-                        }
-                        List<float> angles = new();
-                        // Get joint angles from task space 3DoF
-                        
-                        for(int j = 0; j < 6; j++){
                             _trajList[j].Add(angles[j]);
                         }
                     }
@@ -419,7 +403,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             {
                 _currentTrajIndex = 0;
                 List<float> tmp = new();
-                for(int i = 0; i < _trajList.Count; i++) tmp.Add(_trajList[i][0]); 
+                for(int i = 0; i < _trajList.Count; i++) {
+                    Debug.Log(_trajList[i].Count); 
+                    tmp.Add(_trajList[i][0]); 
+                }
                 _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), tmp);
                 // Debug.Log(_robotController.GetJointAngles()[0] + ", " +  _robotController.GetJointAngles()[1] + ", " + _robotController.GetJointAngles()[2]);
                 if (_prepareTrajList != null && prepare)
