@@ -84,7 +84,7 @@ joint_2_list = []
 def generate_trajectory():
 
     # prepare step
-    move_to([20, 20, 20], [0, 20, 40], 1)
+    move_to([0, 20, 20], [0, 20, 40], 1)
     move_to([0, 20, 40], [-20, 20, 20], 1)
 
     return [joint_0_list, joint_1_list, joint_2_list]
