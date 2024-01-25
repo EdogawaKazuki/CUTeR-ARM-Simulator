@@ -261,6 +261,14 @@ public class RobotController : MonoBehaviour
         _endEffectorController.transform.localPosition = _robotJointController.GetJointTransformByIndex(dof).localPosition;
         _endEffectorController.transform.localEulerAngles = Vector3.zero;
         _currentDoF = dof;
+        for(int i = 0; i < dof; i++){
+            _joystickController.GetJoyStickPanel().Find("Joint" + i).gameObject.SetActive(true);
+        }
+        for (int i = dof; i < 6; i++)
+        {
+            _joystickController.GetJoyStickPanel().Find("Joint" + i).gameObject.SetActive(false);
+        }
+        _joystickController.GetJoyStickPanel().GetComponent<RectTransform>().sizeDelta = new Vector2(240, 100 + 25 * dof);
     }
     public int GetRobotDoF() { return _currentDoF; }
     public StaticRobotTrajectoryController GetTrajController() { return _staticRobotTrajectoryController; }

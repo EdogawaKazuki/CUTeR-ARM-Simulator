@@ -37,6 +37,10 @@ public class RobotControllerUI : MonoBehaviour
     }
     #endregion
     #region Methods
+    public Transform GetJoyStickPanel()
+    {
+        return _joyStickPanel;
+    }
     public void SetAngleSliderValue(int index, float value, bool isUserInteracting)
     {
         _jointAngleSliders[index].value = value;
