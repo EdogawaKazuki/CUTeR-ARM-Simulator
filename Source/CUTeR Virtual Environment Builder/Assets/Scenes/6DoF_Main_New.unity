@@ -1749,6 +1749,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a684e6ac1226ee4f9cee17c2f2b8821, type: 3}
+--- !u!1 &825056778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8416169763359294850, guid: de295025d8a1bc94b8dd92c72e1659e6, type: 3}
+  m_PrefabInstance: {fileID: 1322152002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &833371632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,7 +2912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8416169763359294850, guid: de295025d8a1bc94b8dd92c72e1659e6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de295025d8a1bc94b8dd92c72e1659e6, type: 3}
@@ -3234,6 +3239,14 @@ PrefabInstance:
     - target: {fileID: 3829843254846598898, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetCanvasByIndex
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829843254928763482, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 825056778}
+    - target: {fileID: 3829843254928763482, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 3829843255042283507, guid: 592822855e9ce8e4bbf2e2d7c2872d9a, type: 3}
       propertyPath: m_Pivot.x

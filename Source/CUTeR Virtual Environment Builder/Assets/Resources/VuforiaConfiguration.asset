@@ -24,7 +24,7 @@ MonoBehaviour:
     shareRecordingsInITunes: 0
     logLevel: 0
     version: 10.13.3
-    eulaAcceptedVersions: '{"Values":["0.0","10.2","9.4","9.7","9.8","8.1","7.5","7.1","7.2","7.7","8.0","8.3","9.1","9.3","9.6","10.1","10.3","8.5","10.6","10.7","10.13"]}'
+    eulaAcceptedVersions: '{"Values":["0.0","10.2","9.4","9.7","9.8","8.1","7.5","7.1","7.2","7.7","8.0","8.3","9.1","9.3","9.6","10.1","10.3","8.5","10.6","10.7","10.13","10.19"]}'
   database:
     disableModelExtraction: 0
   shaders:
@@ -33,7 +33,7 @@ MonoBehaviour:
     unlitTransparentShader: {fileID: 10750, guid: 0000000000000000f000000000000000, type: 0}
   videoBackground:
     numDivisions: 2
-    videoBackgroundShader: {fileID: 4800000, guid: f40623b353e2f1943b1b3ba42975db7a, type: 3}
+    videoBackgroundShader: {fileID: 4800000, guid: 144dfca22ac584ade9e538e24a5ddded, type: 3}
     unlitShader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
     videoBackgroundEnabled: 1
   deviceTracker:
@@ -42,7 +42,7 @@ MonoBehaviour:
     autoImportArcore: 1
     thirdPartyARCoreClientDetected: 1
   playmode:
-    mSequencePath: 
+    mRecordingPath: 
     playModeType: 0
   webcam:
     renderTextureLayer: 30
