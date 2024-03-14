@@ -14,6 +14,7 @@
 /[Aa]ssets/[Rr]esources/[Ss]cenes/
 /[Aa]ssets/[Rr]esources/[Oo]bjects/
 /.vscode/
+/[Pp]ackages/com.ptc.vuforia.engine-10.21.3.tgz
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
