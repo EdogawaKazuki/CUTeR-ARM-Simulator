@@ -83,8 +83,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             else if (_trajLength > 1)
             {
                 _currentTrajIndex = 0;
-                if (_currentState == State.preplaying)
+                if (_currentState == State.preplaying){
                     SetStatus(State.playing);
+                    GameObject.Find("VirtualScene").GetComponent<SceneManager>()?.StartObjectTrajectory();
+                }
                 if(_currentState == State.prelooping)
                     SetStatus(State.looping);
             }else{

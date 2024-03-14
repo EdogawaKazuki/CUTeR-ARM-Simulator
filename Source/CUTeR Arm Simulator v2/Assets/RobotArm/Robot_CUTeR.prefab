@@ -19931,7 +19931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotateAxis: 0
-  _rotateDirection: 0
+  _rotateDirection: 2
   offsetX: 0
   offsetY: 0
   offsetZ: 0

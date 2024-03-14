@@ -129,5 +129,7 @@ public class SceneObjectController : MonoBehaviour
         return bounds;
     }
     public void SetSceneObjectTrajectoryController(SceneObjectTrajectoryController sceneObjectTrajectoryController) { _trajectoryController = sceneObjectTrajectoryController; }
+    public void StartTraj() { _trajectoryController.StartTraj(); }
+    public void StopTraj() { _trajectoryController.StopTraj(); }
     #endregion
 }

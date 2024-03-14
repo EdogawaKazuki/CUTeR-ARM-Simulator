@@ -210,12 +210,15 @@ public class RobotClient : MonoBehaviour
 		}
         else
 		{
-			_receiveThread.Abort();
+			if (_receiveThread != null)
+				_receiveThread.Abort();
+			if(ClientSocket != null){
+				byteArray = new byte[2];
+				byteArray[0] = 0;
+				byteArray[1] = 0;
+				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+			}
 			_connected = false;
-			byteArray = new byte[2];
-			byteArray[0] = 0;
-			byteArray[1] = 0;
-			ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 			//Disconnect();
 		}
     }

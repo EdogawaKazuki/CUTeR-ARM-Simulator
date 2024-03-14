@@ -118,36 +118,6 @@ public class SceneManager : MonoBehaviour
         // _debugText.text = path + "\n" + _debugText.text;
         LoadScene(File.ReadAllText(path));
     }
-    public void SaveScene()
-    {
-        string sceneString = GetSceneJsonString();
-        // Save to file
-        Debug.Log("saving to json " + _sceneFolder + "/" + sceneName + ".json");
-        File.WriteAllText(_sceneFolder + "/" + sceneName + ".json", sceneString);
-        //Debug.Log("saving to png " + _sceneFolder + "/" + _name + ".png");
-        ScreenCapture.CaptureScreenshot(_sceneFolder + "/" + sceneName + ".png");
-        //ObjectManager.InformationText.text = "Scene: " + _name + ". IP: " + ObjectManager.ipAddress + " Server " + ObjectManager.serverStatus;
-    }
-    public string GetSceneJsonString()
-    {
-        Dictionary<string, object> jsonDict = new Dictionary<string, object>
-        {
-            { "name", sceneName },
-            { "description", description },
-            { "date", DateTime.Now },
-            { "robotTraj", _robotTrajectoryController.GetTrajString() }
-        };
-        Debug.Log(jsonDict["robotTraj"]);
-
-        List<Dictionary<string, object>> objList = new List<Dictionary<string, object>>();
-        for (int i = 0; i < _sceneContainer.childCount; i++)
-        {
-            objList.Add(_sceneContainer.GetChild(i).GetComponent<SceneObjectController>().GetPropDict());
-        }
-        jsonDict.Add("objectInfo", objList);
-
-        return JsonConvert.SerializeObject(jsonDict);
-    }
     
     public void StartScene(bool value)
     {
@@ -233,18 +203,66 @@ public class SceneManager : MonoBehaviour
     }
     public void StopScene()
     {
+        if (_playingScene == null)
+            return;
         Destroy(_playingScene.gameObject);
         _playingScene = null;
         _sceneContainer.gameObject.SetActive(true);
-
         _sceneStatusText.text = "Ready";
         _sceneStatusBackground.color = new Color32(255, 255, 255, 255);
         _robotTrajectoryController.gameObject.GetComponent<RobotController>().ResetEndEffector();
         _robotTrajectoryController.StopTraj();
+        transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().onValueChanged.RemoveAllListeners();
+        transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().isOn = false;
+        transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => StartScene(value));
         Time.timeScale = 1;
     }
-    public void SetName(string name) { this.sceneName = name; }
-    
+    public void StartObjectTrajectory()
+    {
+        for (int i = 0; i < _playingScene.childCount; i++)
+        {
+            _playingScene.GetChild(i).GetComponent<SceneObjectController>().StartTraj();
+        }
+    }
+    public void StopObjectTrajectory()
+    {
+        for (int i = 0; i < _playingScene.childCount; i++)
+        {
+            _playingScene.GetChild(i).GetComponent<SceneObjectController>().StopTraj();
+        }
+    }
+
+    public void SaveScene()
+    {
+        string sceneString = GetSceneJsonString();
+        // Save to file
+        Debug.Log("saving to json " + _sceneFolder + "/" + sceneName + ".json");
+        File.WriteAllText(_sceneFolder + "/" + sceneName + ".json", sceneString);
+        //Debug.Log("saving to png " + _sceneFolder + "/" + _name + ".png");
+        ScreenCapture.CaptureScreenshot(_sceneFolder + "/" + sceneName + ".png");
+        //ObjectManager.InformationText.text = "Scene: " + _name + ". IP: " + ObjectManager.ipAddress + " Server " + ObjectManager.serverStatus;
+    }
+    public string GetSceneJsonString()
+    {
+        Dictionary<string, object> jsonDict = new Dictionary<string, object>
+        {
+            { "name", sceneName },
+            { "description", description },
+            { "date", DateTime.Now },
+            { "robotTraj", _robotTrajectoryController.GetTrajString() }
+        };
+        Debug.Log(jsonDict["robotTraj"]);
+
+        List<Dictionary<string, object>> objList = new List<Dictionary<string, object>>();
+        for (int i = 0; i < _sceneContainer.childCount; i++)
+        {
+            objList.Add(_sceneContainer.GetChild(i).GetComponent<SceneObjectController>().GetPropDict());
+        }
+        jsonDict.Add("objectInfo", objList);
+
+        return JsonConvert.SerializeObject(jsonDict);
+    }
+    public void SetName(string name) { this.sceneName = name; } 
     public void SetDescription(string description) { this.description = description; }
     
     public void AddObjByDict(Dictionary<string, object> objDict)
