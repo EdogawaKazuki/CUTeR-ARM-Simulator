@@ -125,5 +125,18 @@ public class RobotJointController : MonoBehaviour
             joint.ShowFrame(value);
         }
     }
+    
+    public void SetMask(bool value){
+        if(value){
+            for(int i = 0; i < _joints.Count; i++){
+                HideJointLink(i);
+            }
+        }else{
+            for(int i = 0; i < _joints.Count; i++){
+                ShowJointLink(i);
+            }
+        }
+    }
+    
     #endregion
 }

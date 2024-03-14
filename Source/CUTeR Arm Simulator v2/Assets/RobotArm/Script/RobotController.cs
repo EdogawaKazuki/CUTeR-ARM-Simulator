@@ -236,7 +236,7 @@ public class RobotController : MonoBehaviour
         angleList[index] = value;
         MoveJointsTo(angleList);
     }
-    
+    public void SetMask(bool value) { _robotJointController.SetMask(value); }
 
     // Endeffector Command
     public void ResetEndEffector() { _endEffectorController.ResetEndEffector(); }

@@ -45,6 +45,7 @@ public class ARController : MonoBehaviour
             */
             _robot.transform.position = new Vector3(0, -0.05f, 0.12f);
             _robot.transform.eulerAngles = new Vector3(0, 180, 0);
+            _robot.GetComponent<RobotController>().SetMask(true);
             _groundPlane.SetActive(false);
             _mainCameraContainer.gameObject.SetActive(false);
             _arCameraContainer.gameObject.SetActive(true);
@@ -77,6 +78,7 @@ public class ARController : MonoBehaviour
             */
             _robot.transform.position = new Vector3(0, 0, 0);
             _robot.transform.eulerAngles = new Vector3(0, 0, 0);
+            _robot.GetComponent<RobotController>().SetMask(false);
             _groundPlane.SetActive(true);
             _mainCameraContainer.gameObject.SetActive(true);
             _arCameraContainer.gameObject.SetActive(false);

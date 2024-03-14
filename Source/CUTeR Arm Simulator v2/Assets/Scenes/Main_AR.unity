@@ -430,7 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f6af4a203d71b74fb0409bc3561657e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7793e898c1e59b9469a0541b3722f106, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1031,7 +1031,7 @@ GameObject:
   - component: {fileID: 605520190}
   - component: {fileID: 605520189}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: AR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1053,9 +1053,9 @@ RectTransform:
   - {fileID: 283370615}
   m_Father: {fileID: 2041239059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 390, y: -512}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -15, y: 15}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &605520189
@@ -1316,7 +1316,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &748405730
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1334,8 +1334,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -25.429688, y: 29.667969}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -10, y: 10}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748405731
 MonoBehaviour:
@@ -3770,6 +3770,10 @@ PrefabInstance:
     - target: {fileID: 8311385122103585159, guid: 6f692733b38df5b4ebde67d74ac700fe, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8615651037225477893, guid: 6f692733b38df5b4ebde67d74ac700fe, type: 3}
+      propertyPath: _enableTransparentRobot
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8719624176000172628, guid: 6f692733b38df5b4ebde67d74ac700fe, type: 3}
       propertyPath: m_AnchorMax.x
