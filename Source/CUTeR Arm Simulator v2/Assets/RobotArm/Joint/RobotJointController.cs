@@ -128,11 +128,11 @@ public class RobotJointController : MonoBehaviour
     
     public void SetMask(bool value){
         if(value){
-            for(int i = 0; i < _joints.Count; i++){
+            for(int i = 0; i < _joints.Count-4; i++){
                 HideJointLink(i);
             }
         }else{
-            for(int i = 0; i < _joints.Count; i++){
+            for(int i = 0; i < _joints.Count-4; i++){
                 ShowJointLink(i);
             }
         }

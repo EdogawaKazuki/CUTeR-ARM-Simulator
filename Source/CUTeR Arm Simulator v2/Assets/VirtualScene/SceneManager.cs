@@ -139,9 +139,10 @@ public class SceneManager : MonoBehaviour
         else
         {
             _playingScene = Instantiate(_sceneContainer).transform;
+            _playingScene.name = "PlayingScene";
             _playingScene.SetParent(_sceneContainer.parent);
-            _playingScene.localPosition = transform.position;
-            _playingScene.localEulerAngles = _sceneContainer.localEulerAngles;
+            _playingScene.localPosition = new Vector3(0, 0, 0);
+            _playingScene.localEulerAngles = new Vector3(0, 0, 0);
             Debug.Log(_playingScene.transform.childCount);
             for (int i = 0; i < _playingScene.transform.childCount; i++)
             {

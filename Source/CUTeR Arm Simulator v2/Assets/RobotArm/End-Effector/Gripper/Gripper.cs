@@ -7,9 +7,9 @@ public class Gripper : EndEffector
     #region Variables
 
     // Dictionary of all objects in the grabbing point(cube)
-    private Dictionary<Transform, int> colliderDict = new Dictionary<Transform, int>();
+    public Dictionary<Transform, int> colliderDict = new Dictionary<Transform, int>();
     // counter of number of objects that in grabbing point.
-    private int _colliderCounter;
+    public int _colliderCounter;
 
     private Color colorOff = new Color(0.2f, 0.2f, 0.2f, 0.5f);
     private Color colorOn = new Color(0.2f, 1f, 0.2f, 0.5f);
@@ -84,61 +84,16 @@ public class Gripper : EndEffector
                 return;
 
         }
+        
+        if (_colliderCounter == 0)
+        {
+            _material.color = colorOff;
+        }else{
+            _material.color = colorOn;
+        }
         //Debug.Log("released: " + Released + " Gripper: " + Grabbed + " releasing: " + Releasing + " grabbing: " + Grabbing);
     }
 
-    // object enter the grabbing point
-    void OnTriggerEnter(Collider collider)
-    {
-        //Debug.Log(collider.name);
-        //Debug.Log(collider.gameObject.layer + "," + LayerMask.NameToLayer("Scene"));
-
-        // Check whether the object is scene object.
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
-        {
-            // get the parent object of the object. Object imported from files may be made up by not only one part.
-            Debug.Log(collider.transform.name);
-            Debug.Log(collider.transform.GetComponent<SceneObjectPart>().GetParent());
-            Transform obj = collider.transform.GetComponent<SceneObjectPart>().GetParent();
-            
-            // increase the counter that belongs to the entered object
-            if (colliderDict.ContainsKey(obj))
-            {
-                colliderDict[obj]++;
-            }
-            else
-            {
-                colliderDict.Add(obj, 1);
-            }
-            
-            // increase the colliedr counter
-            _colliderCounter++;
-            _material.color = colorOn;
-        }
-    }
-    // object exit the grabbing point
-    void OnTriggerExit(Collider collider)
-    {
-        // Check whether the object is scene object.
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
-        {
-            // get the parent object of the object. Object imported from files may be made up by not only one part.
-            Transform obj = collider.transform.GetComponent<SceneObjectPart>().GetParent();
-            
-            // decrease the counter that belongs to the entered object
-            if (colliderDict.ContainsKey(obj))
-            {
-                colliderDict[obj]--;
-            }
-            
-            // decrease the colliedr counter
-            _colliderCounter--;
-            if (_colliderCounter == 0)
-            {
-                _material.color = colorOff;
-            }
-        }
-    }
     #endregion
     #region EndEffector Methods
     public override void Init()
@@ -208,7 +163,7 @@ public class Gripper : EndEffector
         if (targetObject)
         {
             // set the parent back to the scene
-            targetObject.transform.SetParent(GameObject.Find("PlayingScene").transform);
+            targetObject.transform.SetParent(GameObject.Find("VirtualScene/PlayingScene").transform);
             // enable the physical property
             Rigidbody rigidbody = targetObject.GetComponent<Rigidbody>();
             if (rigidbody)
