@@ -17,6 +17,7 @@ public class RobotClient : MonoBehaviour
 	private TMP_InputField _robotPortIF;
 	private Text _debugText;
 	private TMP_Dropdown _filterDropdown;
+	private Transform _robotSettingTransform;
 
 	// Client Variables
 	[SerializeField]
@@ -74,19 +75,28 @@ public class RobotClient : MonoBehaviour
 		// Get hooks
         _robotController = GetComponent<RobotController>();
 		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText")?.GetComponent<Text>();
-		Transform robotSettingTransform = _robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window/Robot");
-		_robotIPIF = robotSettingTransform.Find("RobotServer/RobotIP/InputField (TMP)")?.GetComponent<TMP_InputField>();
-		_robotPortIF = robotSettingTransform.Find("RobotServer/RobotPort/InputField (TMP)")?.GetComponent<TMP_InputField>();
-		_filterDropdown = robotSettingTransform.Find("RobotServer/Filter/Dropdown")?.GetComponent<TMP_Dropdown>();
+		_robotSettingTransform = _robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window/Robot");
+		_robotIPIF = _robotSettingTransform.Find("RobotServer/RobotIP/InputField (TMP)")?.GetComponent<TMP_InputField>();
+		_robotPortIF = _robotSettingTransform.Find("RobotServer/RobotPort/InputField (TMP)")?.GetComponent<TMP_InputField>();
+		_filterDropdown = _robotSettingTransform.Find("RobotServer/Filter/Dropdown")?.GetComponent<TMP_Dropdown>();
 
 
 		// Set up UIs
 		_robotIPIF.onValueChanged.AddListener((value) =>{ SetRobotIP(value); });
 		_robotPortIF.onValueChanged.AddListener((value) => { SetRobotPort(value); });
+
+		_filterDropdown.ClearOptions();
+		_filterDropdown.AddOptions(new List<string> { "No Filter", "Moving Average", "First Order Kalmen"});
 		_filterDropdown.onValueChanged.AddListener((value) => { SetFilter(value); });
 		
-		_robotIPIF.text = PlayerPrefs.GetString("_robotIP", "localhost");
+		
+		_robotIPIF.text = PlayerPrefs.GetString("_robotIP", "192.168.4.1");
 		_robotPortIF.text = PlayerPrefs.GetInt("_robotPort", 1234).ToString();
+
+        _robotSettingTransform.Find("RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => SetConnect(value));
+        _robotSettingTransform.Find("RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => SetConnect(value));
+		_robotSettingTransform.Find("RobotServer/LED/Slider")?.GetComponent<Slider>().onValueChanged.AddListener((value) => { SetLED(value); });
+		_robotSettingTransform.Find("RobotServer/MovingAverage/Slider")?.GetComponent<Slider>().onValueChanged.AddListener((value) => { SetAverageWindowSize(value); });
 		//Time.fixedDeltaTime = 0.05f;
 	}
     private void FixedUpdate()
@@ -169,7 +179,7 @@ public class RobotClient : MonoBehaviour
 	}
     public void SetConnect(bool value)
     {
-		if(_receiveThread == null) return;
+		// if(_receiveThread == null) return;
         if (value)
 		{
             try
@@ -189,6 +199,7 @@ public class RobotClient : MonoBehaviour
 				byteArray[0] = 0;
 				byteArray[1] = 1;
 				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+				SetFilter(filterIndex);
 			}
 			catch (Exception ex)
 			{
@@ -292,6 +303,7 @@ public class RobotClient : MonoBehaviour
 					byteArray[1] = 1;
 					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 				}
+				// _debugText.text = e.ToString() + "\n" + _debugText.text;
 				Debug.Log(e);
 			}
 		}
@@ -416,24 +428,31 @@ public class RobotClient : MonoBehaviour
 
 	public void SetFilter(int value)
     {
-		
+		_robotSettingTransform.Find("RobotServer/MovingAverage/Slider")?.gameObject.SetActive(false);
 		filterIndex = value;
 		byteArray = new byte[2];
 		byteArray[0] = 6;
-		if (filterIndex == 0)
+		if(filterIndex == 0)
         {
+			// No filter
 			byteArray[1] = 0;
-
 		}
 		if(filterIndex == 1)
         {
+			// Moving Average
 			byteArray[1] = 0;
+			_robotSettingTransform.Find("RobotServer/MovingAverage/Slider")?.gameObject.SetActive(true);
 		}
 		if(filterIndex == 2)
-		{
+        {
+			// first order Kalmen
 			byteArray[1] = 1;
 		}
-		byteArray[0] = 6;
+		if(filterIndex == 3)
+		{
+			// second order Kalmen
+			byteArray[1] = 2;
+		}
 		if (_connected) ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 	}
 	public void SetAverageWindowSize(float value)
@@ -447,13 +466,6 @@ public class RobotClient : MonoBehaviour
 				sum[i] = 0;
 				_filterQueue[i].Clear();
 			}
-		}
-		if(filterIndex == 2)
-		{
-			byteArray = new byte[2];
-			byteArray[0] = 6;
-			byteArray[1] = (byte)value;
-			if (_connected) ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 		}
 	}
 	
@@ -483,6 +495,12 @@ public class RobotClient : MonoBehaviour
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[1]), 0, byteArray, 17, 4);
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[2]), 0, byteArray, 21, 4);
 		//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+	}
+	public void SetLED(float brightness){
+		byteArray = new byte[sizeof(float) + 1];
+		byteArray[0] = 7;
+		Buffer.BlockCopy(BitConverter.GetBytes(brightness/2), 0, byteArray, 1, 4);
 		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 	}
 	#endregion

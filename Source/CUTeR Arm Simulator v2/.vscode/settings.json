@@ -52,5 +52,6 @@
         "temp/":true,
         "Temp/":true
     },
-    "dotnet.defaultSolution": "CUTeR Arm Simulator v2.sln"
+    "dotnet.defaultSolution": "CUTeR Arm Simulator v2.sln",
+    "dotnet.preferCSharpExtension": true
 }

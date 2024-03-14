@@ -11,6 +11,11 @@ public class ViewportController : MonoBehaviour
     private float _mouseX = 0;
     private float _mouseY = 0;
     private float _mouseZ = 0;
+
+    // get mouse position
+    private Touch touch0;
+    private Touch touch1;
+    private float _initTouchDistance = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,14 +24,16 @@ public class ViewportController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (CheckGuiRaycastObjects()) return;
+        if (Input.touchCount > 0){
+            MoveCameraTouch ();
             return;
+        }
         // get mouse position
         _mouseX = Input.GetAxis("Mouse X");
         _mouseY = Input.GetAxis("Mouse Y");
         _mouseZ = Input.GetAxis("Mouse ScrollWheel");
-        if (CheckGuiRaycastObjects()) return;
-        if (Input.GetMouseButton(1) || Input.GetMouseButton(2) || _mouseZ != 0) { MoveCamera(); return; }
+        MoveCamera();
     }
     private void MoveCamera()
     {
@@ -44,13 +51,39 @@ public class ViewportController : MonoBehaviour
             Camera.main.transform.position += Camera.main.transform.forward * _mouseZ;
         }
     }
+    private void MoveCameraTouch()
+    {
+        if(Input.touchCount == 1)
+        {
+            touch0 = Input.GetTouch(0);
+            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), Vector3.up, touch0.deltaPosition.x * 0.1f);
+            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), -Camera.main.transform.right, touch0.deltaPosition.y * 0.05f);
+        }
+        if (Input.touchCount == 2)
+        {
+            touch0 = Input.GetTouch(0);
+            touch1 = Input.GetTouch(1);
+            //Camera.main.transform.position += (touch0.deltaPosition.x * 0.1f * -Camera.main.transform.right - touch0.deltaPosition.y * 0.1f * Camera.main.transform.up);
+            if (touch1.phase == TouchPhase.Began)
+            {
+                _initTouchDistance = Vector3.Distance(touch0.position, touch1.position);
+            }
+            else
+            {
+                Camera.main.transform.position += Camera.main.transform.forward * (Vector3.Distance(touch0.position, touch1.position) - _initTouchDistance) * 0.01f;
+            }
+            _initTouchDistance = Vector3.Distance(touch0.position, touch1.position);
+        }
+    }
     bool CheckGuiRaycastObjects()
     {
         // PointerEventData eventData = new PointerEventData(Main.Instance.eventSystem);
 
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.pressPosition = Input.mousePosition;
-        eventData.position = Input.mousePosition;
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            pressPosition = Input.mousePosition,
+            position = Input.mousePosition
+        };
 
         List<RaycastResult> list = new List<RaycastResult>();
         // Main.Instance.graphicRaycaster.Raycast(eventData, list);

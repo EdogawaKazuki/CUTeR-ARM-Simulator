@@ -14,6 +14,7 @@ public class RobotControllerUI : MonoBehaviour
     private List<Slider> _jointAngleSliders = new();
     private List<TMP_Text> _jointAngleSLiderValueTexts = new();
     private Slider _forceSlider;
+    private TMP_Text _forceSliderValueText;
     private Button _fireButton;
     private bool isUserInterect = false;
     public float _lastSliderValue = 0;
@@ -128,7 +129,11 @@ public class RobotControllerUI : MonoBehaviour
             else if (child.name == "Force")
             {
                 _forceSlider = child.Find("Slider").GetComponent<Slider>();
-                _forceSlider.onValueChanged.AddListener(_robotController.SetForce);
+                _forceSliderValueText = child.Find("Slider/Handle Slide Area/Handle/Value").GetComponent<TMP_Text>();
+                _forceSlider.onValueChanged.AddListener((value) =>{
+                        _forceSliderValueText.text = value.ToString("F0");
+                        _robotController.SetForce(value);
+                    });
             }
         }
 
@@ -176,6 +181,7 @@ public class RobotControllerUI : MonoBehaviour
     public void EnableForce(bool value)
     {
         _joyStickPanel.Find("Force").gameObject.SetActive(value);
+        _forceSlider.value = 50;
         UpdateJoysticPanelkHeight();
         // _joyStickPanel.getcom
     }
@@ -215,8 +221,8 @@ public class RobotControllerUI : MonoBehaviour
         tmp_Dropdown.onValueChanged.AddListener((value) => { if(value!= 0) _robotController.SetEndEffector(value - 1); });
 
         // Setup Robot Connection
-        panel.Find("Robot/RobotServer/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
-        panel.Find("Robot/RobotServer/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
+        // panel.Find("Robot/RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
+        // panel.Find("Robot/RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
         //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
     }
