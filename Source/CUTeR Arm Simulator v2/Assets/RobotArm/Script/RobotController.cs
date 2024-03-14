@@ -315,7 +315,7 @@ public class RobotController : MonoBehaviour
     public RobotJointController GetRobotJointController() { return _robotJointController; }
     public RobotControllerUI GetJoystickController() { return _joystickController; }
     public PathRecoder GetPathRecoder() { return _pathRecoder; }
-    //public StaticRobotTrajectoryController GetTrajController() { return _staticRobotTrajectoryController; }
+    public StaticRobotTrajectoryController GetTrajController() { return _staticRobotTrajectoryController; }
     //public EditorController GetEditorController() { return _editorController; }
     
     public float[] CartesianToAngle(float x, float y, float z)
