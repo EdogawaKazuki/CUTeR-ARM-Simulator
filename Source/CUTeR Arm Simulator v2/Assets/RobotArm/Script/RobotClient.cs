@@ -94,7 +94,7 @@ public class RobotClient : MonoBehaviour
 		_robotPortIF.text = PlayerPrefs.GetInt("_robotPort", 1234).ToString();
 
         _robotSettingTransform.Find("RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => SetConnect(value));
-        _robotSettingTransform.Find("RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => SetConnect(value));
+        _robotSettingTransform.Find("RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => Lock(value));
 		_robotSettingTransform.Find("RobotServer/LED/Slider")?.GetComponent<Slider>().onValueChanged.AddListener((value) => { SetLED(value); });
 		_robotSettingTransform.Find("RobotServer/MovingAverage/Slider")?.GetComponent<Slider>().onValueChanged.AddListener((value) => { SetAverageWindowSize(value); });
 		//Time.fixedDeltaTime = 0.05f;
@@ -395,24 +395,25 @@ public class RobotClient : MonoBehaviour
     }
 	
 	// Set Robot Status
-	public void Unlock() { 
-		_unlocked = true;
-		//sendData = Encoding.ASCII.GetBytes("unlock,true,end");
-		//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
-		byteArray = new byte[2];
-		byteArray[0] = 1;
-		byteArray[1] = 0;
-		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
-	}
-	public void Lock()
+	public void Lock(bool value)
     {
-		_unlocked = false;
-		//sendData = Encoding.ASCII.GetBytes("unlock,false,end");
-		//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
-		byteArray = new byte[2];
-		byteArray[0] = 1;
-		byteArray[1] = 1;
-		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+		if(value){
+			_unlocked = false;
+			//sendData = Encoding.ASCII.GetBytes("unlock,false,end");
+			//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+			byteArray = new byte[2];
+			byteArray[0] = 1;
+			byteArray[1] = 1;
+			ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+		}else{
+			_unlocked = true;
+			//sendData = Encoding.ASCII.GetBytes("unlock,true,end");
+			//ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
+			byteArray = new byte[2];
+			byteArray[0] = 1;
+			byteArray[1] = 0;
+			ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+		}
 	}
 	public void SendPWMCmd(int index, int pwm)
 	{

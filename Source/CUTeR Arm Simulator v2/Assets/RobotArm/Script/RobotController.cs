@@ -134,8 +134,7 @@ public class RobotController : MonoBehaviour
     public List<int> GetCmdPWM() { return _robotClient.GetCmdPWM(); }
     public void SetFeedbackCaliData(List<float> offset, List<float> scale){_robotClient.SetFeedBackCaliData(offset, scale);}
     public void SetCmdCaliData(List<float> offset, List<float> scale){_robotClient.SetCmdCaliData(offset, scale);}
-    public void SetRobotArmConnect(bool value) { _robotClient.SetConnect(value); }
-    public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  if (value) _robotClient.Lock(); else _robotClient.Unlock(); }
+    public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  _robotClient.Lock(value); }
     //public void SetRobotArmFilter(int index) { _robotClient.SetFilter(index); }
     //public void SetRobotArmFilterWindow(int windowSie) { _robotClient.SetAverageWindowSize(windowSie); }
     

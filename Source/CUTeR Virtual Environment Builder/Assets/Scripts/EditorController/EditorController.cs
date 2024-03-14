@@ -332,8 +332,6 @@ public class EditorController : MonoBehaviour
         // Disable canvas':
         foreach (var component in canvasComponents)
             component.enabled = true;
-
-
     }
     public void ShowScene()
     {

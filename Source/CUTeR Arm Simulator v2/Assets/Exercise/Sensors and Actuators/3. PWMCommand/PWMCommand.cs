@@ -51,6 +51,7 @@ public class PWMCommand : MonoBehaviour
             PWMInputfield[i].text = _robotController.GetCmdPWM()[i].ToString();
         }
         _robotController.PauseSendCmdToRobot();
+        transform.Find("Input/Line4/Dropdown").GetComponent<TMP_Dropdown>().onValueChanged.AddListener((value) => { SetStep(value); });
         // _robotController.SetJointSignActivate(true);
     }
     private void OnDisable()
@@ -65,7 +66,7 @@ public class PWMCommand : MonoBehaviour
     public void SetStep(int value)
     {
         scale = 5;
-        for(int i = 0; i < value; i++)
+        for(int i = 0; i < value-1; i++)
             scale = scale * 10;
     }
     public void SetPWMByClick(int index, int sign)

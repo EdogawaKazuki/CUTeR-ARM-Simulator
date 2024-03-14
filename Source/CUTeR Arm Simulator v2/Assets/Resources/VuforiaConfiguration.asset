@@ -19,7 +19,7 @@ MonoBehaviour:
     cameraFocusModeSetting: 2
     cameraDeviceModeSetting: -1
     maxSimultaneousImageTargets: 1
-    virtualSceneScaleFactor: 1
+    virtualSceneScaleFactor: 0.01
     modelTargetRecoWhileExtendedTracked: 1
     shareRecordingsInITunes: 0
     logLevel: 0
