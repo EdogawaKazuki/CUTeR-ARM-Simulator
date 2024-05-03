@@ -40,6 +40,7 @@ public class RobotJoint : MonoBehaviour
     private TMP_Text _title;
     private TMP_Text _value;
     private Transform _frame;
+    private Transform _DHframe;
     #endregion
     #region Methods
     private void OnEnable()
@@ -48,6 +49,7 @@ public class RobotJoint : MonoBehaviour
         _title = transform.Find("Canvas/Panel/Title")?.GetComponent<TMP_Text>();
         _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<TMP_Text>();
         _frame = transform.Find("frame_visual");
+        _DHframe = transform.Find("DHFrame");
         SetJointSignActivate(false);
     }
     public float GetAngle() { return _angle; }
@@ -75,5 +77,6 @@ public class RobotJoint : MonoBehaviour
                 link.SetActive(value);
     }
     public void ShowFrame(bool value) { _frame?.gameObject.SetActive(value); }
+    public void ShowDHFrame(bool value) { _DHframe?.gameObject.SetActive(value); }
     #endregion
 }

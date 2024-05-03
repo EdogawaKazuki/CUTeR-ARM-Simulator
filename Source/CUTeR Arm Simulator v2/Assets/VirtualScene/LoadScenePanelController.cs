@@ -29,7 +29,12 @@ public class LoadScenePanelController : MonoBehaviour
     {
         //_debugText = transform.Find("../DebugText").GetComponent<Text>();
         _sceneListEle.gameObject.SetActive(false);
-        _sceneFolder = Application.dataPath + "/Resources/scenes";
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            _sceneFolder = Application.dataPath + "/Resources/scenes";
+        #elif UNITY_ANDROID
+            _sceneFolder = Application.persistentDataPath+ "/scenes";
+            Debug.Log(Application.persistentDataPath);
+        #endif
         if (_sceneList == null)
             _sceneList = new List<string>();
         ScanSceneFolder();

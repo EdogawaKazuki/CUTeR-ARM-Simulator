@@ -62,6 +62,7 @@ public class RobotClient : MonoBehaviour
 	private int recvLen = 0;
 	private byte[] sendData;
 	private byte[] recvData = new byte[2*3 + 4*3 + 2*3];
+	private byte[] infoData = new byte[4*12];
 	private byte[] byteArray;
 	public bool SendCmd = true;
 
@@ -101,7 +102,7 @@ public class RobotClient : MonoBehaviour
 	}
     private void FixedUpdate()
 	{
-		ReceiveFromClient();
+		SendToRobot();
 	}
     private void OnApplicationQuit()
 	{
@@ -199,6 +200,8 @@ public class RobotClient : MonoBehaviour
 				byteArray[0] = 0;
 				byteArray[1] = 1;
 				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+				recvLen = ClientSocket.ReceiveFrom(infoData, ref ServerEndPoint);
+				// Debug.Log(BitConverter.ToInt16(recvData, 4));
 				SetFilter(filterIndex);
 			}
 			catch (Exception ex)
@@ -229,7 +232,7 @@ public class RobotClient : MonoBehaviour
 	public List<int> GetCmdPWM() { return _cmdPwmList; }
 
 	// Client Functions
-	void ReceiveFromClient(){
+	void SendToRobot(){
 		if (!_connected) return;
 
 		robotJointPWM = _robotController.GetSendPWM();
@@ -247,8 +250,6 @@ public class RobotClient : MonoBehaviour
 					_robotController.SetCmdJointAngles(_angleListRead);
 					_robotController.SetTransparentCmdJointAngles(_angleListRead);
 				}
-				
-				
 			}
 			else if(SendCmd)
 			{
@@ -305,6 +306,7 @@ public class RobotClient : MonoBehaviour
 					byteArray[0] = 0;
 					byteArray[1] = 1;
 					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+					recvLen = ClientSocket.ReceiveFrom(infoData, ref ServerEndPoint);
 				}
 				// _debugText.text = e.ToString() + "\n" + _debugText.text;
 				Debug.Log(e);
@@ -486,6 +488,13 @@ public class RobotClient : MonoBehaviour
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[1]), 0, byteArray, 17, 4);
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[2]), 0, byteArray, 21, 4);
 		//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[0]), 0, infoData, 0, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[1]), 0, infoData, 4, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[2]), 0, infoData, 8, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[0]), 0, infoData, 12, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[1]), 0, infoData, 16, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[2]), 0, infoData, 20, 4);
+
 		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 	}
 	public void SetCmdCaliData(List<float> offset, List<float> scale)
@@ -499,7 +508,30 @@ public class RobotClient : MonoBehaviour
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[1]), 0, byteArray, 17, 4);
 		Buffer.BlockCopy(BitConverter.GetBytes(scale[2]), 0, byteArray, 21, 4);
 		//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[0]), 0, infoData, 24, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[1]), 0, infoData, 28, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(offset[2]), 0, infoData, 32, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[0]), 0, infoData, 36, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[1]), 0, infoData, 40, 4);
+		Buffer.BlockCopy(BitConverter.GetBytes(scale[2]), 0, infoData, 44, 4);
+		
 		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+	}
+	public List<float> GetFeedbackOffset()
+	{
+		return new List<float> { BitConverter.ToSingle(infoData, 0), BitConverter.ToSingle(infoData, 4), BitConverter.ToSingle(infoData, 8) };
+	}
+	public List<float> GetFeedbackScale()
+	{
+		return new List<float> { BitConverter.ToSingle(infoData, 12), BitConverter.ToSingle(infoData, 16), BitConverter.ToSingle(infoData, 20) };
+	}
+	public List<float> GetCmdOffset()
+	{
+		return new List<float> { BitConverter.ToSingle(infoData, 24), BitConverter.ToSingle(infoData, 28), BitConverter.ToSingle(infoData, 32) };
+	}
+	public List<float> GetCmdScale()
+	{
+		return new List<float> { BitConverter.ToSingle(infoData, 36), BitConverter.ToSingle(infoData, 40), BitConverter.ToSingle(infoData, 44) };
 	}
 	public void SetLED(float brightness){
 		byteArray = new byte[sizeof(float) + 1];

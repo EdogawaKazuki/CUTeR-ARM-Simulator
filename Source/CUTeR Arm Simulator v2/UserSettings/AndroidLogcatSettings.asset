@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "0123456789ABCDEF",
+    "m_SelectedDeviceId": "R52T70CH3BA",
     "m_SelectedPackage": {
-        "deviceId": "0123456789ABCDEF",
+        "deviceId": "R52T70CH3BA",
         "name": "com.GaladZHAO.CUTeRArmSimulator",
-        "processId": 25037,
+        "processId": 28212,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -42,6 +42,36 @@
             "deviceId": "0123456789ABCDEF",
             "name": "com.GaladZHAO.CUTeRArmSimulator",
             "processId": 25037,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.CUTeRArmSimulator",
+            "processId": 25552,
+            "exited": true
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.CUTeRArmSimulator",
+            "processId": 26166,
+            "exited": true
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.CUTeRArmSimulator",
+            "processId": 26773,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.CUTeRArmSimulator",
+            "processId": 27400,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.CUTeRArmSimulator",
+            "processId": 28212,
             "exited": false
         }
     ],

@@ -39,6 +39,14 @@ public class CommandCalibration : MonoBehaviour
             // offsetInputfield[i].onValueChanged.RemoveAllListeners();
             offsetInputfield[i].onValueChanged.AddListener((value) => { SetOffset(index, value); });
         }
+        List<float> offset = _robotController.GetCmdOffset();
+        List<float> scale = _robotController.GetCmdScale();
+        for (int i = 0; i < 3; i++)
+        {
+            offsetInputfield[i].text = offset[i].ToString("F4");
+            scaleInputfield[i].text = scale[i].ToString("F4");
+        }
+
         _robotController.PauseSendCmdToRobot();
     }
     private void OnDisable()
@@ -75,6 +83,7 @@ public class CommandCalibration : MonoBehaviour
     public void SetCaliData()
     {
         _robotController.SetCmdCaliData(offsetList, scaleList);
+        SetPWM();
     }
 
     public void Clear()

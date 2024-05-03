@@ -126,6 +126,16 @@ public class RobotJointController : MonoBehaviour
         }
     }
     
+    public void ShowJointDHFrame(int index, bool value){
+        _joints[index].ShowDHFrame(value);
+    }
+    public void ShowJointsDHFrame(bool value){
+        transform.Find("DHFrame")?.gameObject.SetActive(value);
+        foreach (var joint in _joints)
+        {
+            joint.ShowDHFrame(value);
+        }
+    }
     public void SetMask(bool value){
         if(value){
             for(int i = 0; i < _joints.Count-4; i++){

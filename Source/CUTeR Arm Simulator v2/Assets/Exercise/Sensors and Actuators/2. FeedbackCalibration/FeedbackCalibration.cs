@@ -37,6 +37,13 @@ public class FeedbackCalibration : MonoBehaviour
             scaleIFList[i].onValueChanged.AddListener((value) => SetScale(x, value));
         }
         _robotController.GetJoystickController().HideHandleText();
+        List<float> offset = _robotController.GetFeedbackOffset();
+        List<float> scale = _robotController.GetFeedbackScale();
+        for (int i = 0; i < 3; i++)
+        {
+            offsetIFList[i].text = offset[i].ToString("F4");
+            scaleIFList[i].text = scale[i].ToString("F4");
+        }
         Debug.Log("enable");
     }
     private void OnDisable()

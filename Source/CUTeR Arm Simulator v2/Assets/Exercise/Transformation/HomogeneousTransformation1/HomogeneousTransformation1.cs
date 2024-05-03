@@ -86,20 +86,20 @@ public class HomogeneousTransformation1 : MonoBehaviour
         Angle3Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
         Angle3Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
 
-        matrix1Text[0].text = (Angle1Cos).ToString("F3");
-        matrix1Text[1].text = (-Angle1Sin * Angle2Cos).ToString("F3");
-        matrix1Text[2].text = (Angle1Sin * Angle2Sin).ToString("F3");
-        matrix1Text[3].text = (Angle1Sin).ToString("F3");
-        matrix1Text[4].text = (Angle1Cos * Angle2Cos).ToString("F3");
-        matrix1Text[5].text = (-Angle1Cos * Angle2Sin).ToString("F3");
+        matrix1Text[0].text = (Angle1Cos).ToString("F2");
+        matrix1Text[1].text = (-Angle1Sin * Angle2Cos).ToString("F2");
+        matrix1Text[2].text = (Angle1Sin * Angle2Sin).ToString("F2");
+        matrix1Text[3].text = (Angle1Sin).ToString("F2");
+        matrix1Text[4].text = (Angle1Cos * Angle2Cos).ToString("F2");
+        matrix1Text[5].text = (-Angle1Cos * Angle2Sin).ToString("F2");
         matrix1Text[6].text = "0";
-        matrix1Text[7].text = (Angle2Sin).ToString("F3");
-        matrix1Text[8].text = (Angle2Cos).ToString("F3");
+        matrix1Text[7].text = (Angle2Sin).ToString("F2");
+        matrix1Text[8].text = (Angle2Cos).ToString("F2");
 
-        matrix2Text[0].text = (x2 * Angle1Cos + y2 * -Angle1Sin * Angle2Cos + z2 * Angle1Sin * Angle2Sin + x1).ToString();
+        matrix2Text[0].text = (x2 * Angle1Cos + y2 * -Angle1Sin * Angle2Cos + z2 * Angle1Sin * Angle2Sin + x1).ToString("F2");
         // Debug.Log((x2 +","+ Angle1Sin + "," + y2 +","+ Angle1Cos * Angle2Cos + "," + z2 + "," + Angle1Cos * Angle2Sin + "," + y1));
-        matrix2Text[1].text = (x2 * Angle1Sin + y2 * Angle1Cos * Angle2Cos + z2 * -Angle1Cos * Angle2Sin + y1).ToString();
-        matrix2Text[2].text = (x2 * 0 + y2 * Angle2Sin + z2 * Angle2Cos + z1).ToString();
+        matrix2Text[1].text = (x2 * Angle1Sin + y2 * Angle1Cos * Angle2Cos + z2 * -Angle1Cos * Angle2Sin + y1).ToString("F2");
+        matrix2Text[2].text = (x2 * 0 + y2 * Angle2Sin + z2 * Angle2Cos + z1).ToString("F2");
 
 
 

@@ -14,8 +14,8 @@ public class RobotController : MonoBehaviour
     private RobotClient _robotClient;
     private PathRecoder _pathRecoder;
     private GameObject _robotCanvas;
-    private List<float> _offset;
-    private List<float> _scale;
+    private List<float> _cmdOffset;
+    private List<float> _cmdScale;
     private StaticRobotTrajectoryController _staticRobotTrajectoryController;
 
     private LineRenderer HeadLine;
@@ -40,6 +40,8 @@ public class RobotController : MonoBehaviour
     public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
     public float L1 = 19.4f; //length properties of the teaching robot arm (in cm)
     public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
+    public float L2_6DoF = 25.01f;
+    public float L3_6DoF = 3.2f; //length properties of the teaching robot arm (in cm)
 
     private List<int> _pwmList;
 
@@ -55,19 +57,27 @@ public class RobotController : MonoBehaviour
 
         // init variable lists
         CmdJointAngles = new List<float>(new float[MAX_ROBOT_DOF]);
-        _offset = new List<float> { 1500, 2300, 2200 };
-        _scale = new List<float>{ 10, -10, 10 };
+        _cmdOffset = new List<float> { 1500, 2300, 2200 };
+        _cmdScale = new List<float>{ 10, -10, 10 };
         _pwmList = new List<int>(new int[MAX_ROBOT_DOF]);
 
         // read the offset and scale from the player prefs
-        for (int i = 0; i < _offset.Count; i++)
+        for (int i = 0; i < _cmdOffset.Count; i++)
         {
-            _offset[i] = PlayerPrefs.GetFloat("_offset" + i, _offset[i]);
-            _scale[i] = PlayerPrefs.GetFloat("_scale" + i, _scale[i]);
+            _cmdOffset[i] = PlayerPrefs.GetFloat("_offset" + i, _cmdOffset[i]);
+            _cmdScale[i] = PlayerPrefs.GetFloat("_scale" + i, _cmdScale[i]);
         }
 
         // set init robot dof
         SetRobotDoF(INIT_ROBOT_DOF);
+    }
+    void OnDisable()
+    {
+        for(int i = 0; i < _cmdOffset.Count; i++)
+        {
+            PlayerPrefs.SetFloat("_offset" + i, _cmdOffset[i]);
+            PlayerPrefs.SetFloat("_scale" + i, _cmdScale[i]);
+        }
     }
     void OnEnable()
     {
@@ -133,8 +143,13 @@ public class RobotController : MonoBehaviour
     public List<int> GetReadPWM(){ return _robotClient.GetFeedbackPWM(); }
     public List<int> GetCmdPWM() { return _robotClient.GetCmdPWM(); }
     public void SetFeedbackCaliData(List<float> offset, List<float> scale){_robotClient.SetFeedBackCaliData(offset, scale);}
-    public void SetCmdCaliData(List<float> offset, List<float> scale){_robotClient.SetCmdCaliData(offset, scale);}
+    public void SetCmdCaliData(List<float> offset, List<float> scale){_robotClient.SetCmdCaliData(offset, scale); _cmdOffset = offset; _cmdScale = scale;}
     public void SetRobotArmLock(bool value) { SetCmdJointAngles(_robotJointController.GetJointAngles());  _robotClient.Lock(value); }
+    public List<float> GetFeedbackOffset() { return _robotClient.GetFeedbackOffset(); }
+    public List<float> GetCmdOffset() { return _robotClient.GetCmdOffset(); }
+    public List<float> GetFeedbackScale() { return _robotClient.GetFeedbackScale(); }
+    public List<float> GetCmdScale() { return _robotClient.GetCmdScale(); }
+
     //public void SetRobotArmFilter(int index) { _robotClient.SetFilter(index); }
     //public void SetRobotArmFilterWindow(int windowSie) { _robotClient.SetAverageWindowSize(windowSie); }
     
@@ -191,8 +206,8 @@ public class RobotController : MonoBehaviour
     public void SetJointPWM(int index, int pwm)
     {
         _robotClient.SendPWMCmd(index, pwm);
-        SetCmdJointAngle(index, (pwm - _offset[index]) / _scale[index]);
-        SetTransparentCmdJointAngle(index, (pwm - _offset[index]) / _scale[index]);
+        SetCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
+        SetTransparentCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
     }
     public void SetCmdJointAngles(List<float> angles)
     {
@@ -237,6 +252,8 @@ public class RobotController : MonoBehaviour
         MoveJointsTo(angleList);
     }
     public void SetMask(bool value) { _robotJointController.SetMask(value); }
+    public void ShowJointDHFrame(int index, bool value) { _robotJointController.ShowJointDHFrame(index, value); }
+    public void ShowJointsDHFrame(bool value) { _robotJointController.ShowJointsDHFrame(value); }
 
     // Endeffector Command
     public void ResetEndEffector() { _endEffectorController.ResetEndEffector(); }

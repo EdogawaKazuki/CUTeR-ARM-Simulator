@@ -40,7 +40,7 @@ public class Gripper : EndEffector
     private State _currentState;
 
 
-    private float _speed = 0.1f;
+    private float _speed = 1f;
 
     #endregion
 
@@ -55,7 +55,7 @@ public class Gripper : EndEffector
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         switch (_currentState)
         {

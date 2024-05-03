@@ -37,8 +37,14 @@ public class SceneManager : MonoBehaviour
         Transform _sceneCtrlBtnGroup = transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup");
 
         _robotTrajectoryController = GameObject.Find("Robot").GetComponent<RobotController>().GetTrajController();
-        _sceneFolder = Application.dataPath + "/Resources/scenes";
-        _objectFolder = Application.dataPath + "/Resources/objects";
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            _sceneFolder = Application.dataPath + "/Resources/scenes";
+            _objectFolder = Application.dataPath + "/Resources/objects";
+        #elif UNITY_ANDROID
+            _sceneFolder = Application.persistentDataPath+ "/scenes";
+            _objectFolder = Application.persistentDataPath + "/objects";
+            // Debug.Log(Application.persistentDataPath);
+        #endif
         // _debugText = transform.Find("VirtualSceneCanvas/DebugText").GetComponent<TMP_Text>();
         
         // _sceneNameIF = _saveScenePanel.Find("Window/Name/InputField").GetComponent<InputField>();
@@ -143,6 +149,7 @@ public class SceneManager : MonoBehaviour
             _playingScene.SetParent(_sceneContainer.parent);
             _playingScene.localPosition = new Vector3(0, 0, 0);
             _playingScene.localEulerAngles = new Vector3(0, 0, 0);
+            _playingScene.localScale = new Vector3(0.01f, 0.01f, 0.01f);
             Debug.Log(_playingScene.transform.childCount);
             for (int i = 0; i < _playingScene.transform.childCount; i++)
             {
