@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: 3e37b7b4cff96314ea648288006eb60b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/WebGL.unity
     guid: 96677b66b9388444a87ec29e4166e311
   - enabled: 0
     path: Assets/Scenes/Main_AR.unity
     guid: 1823a60d2aa60804ab20a09ec157550b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main_Nreal.unity
     guid: 15d88007d2fa14244a57357b64113e7f
   - enabled: 0

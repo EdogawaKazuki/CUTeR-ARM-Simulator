@@ -40,6 +40,7 @@ public class ImageTracker : MonoBehaviour
         webcamDropdown.ClearOptions();
         webcamDropdown.AddOptions(webcamOptions);
         webcamDropdown.onValueChanged.AddListener(SelectWebCam);
+        SelectWebCam(0);
     }
     private void Update()
     {
@@ -136,23 +137,23 @@ public class ImageTracker : MonoBehaviour
         parameters.AdaptiveThreshWinSizeMax = 50;
         parameters.PolygonalApproxAccuracyRate = 0.05f;
 
-        //�w????�r��
+        //©w????¦r¨å
         /*
-         ��?�w?��???�r��n�O�ͦ�Aruco??�w?���r��ۦP
+         ¦¹?©w?ªº???¦r¨å­nÉO¥Í¦¨Aruco??©w?ªº¦r¨å¬Û¦P
          */
         Dictionary dictionary = CvAruco.GetPredefinedDictionary(PredefinedDictionaryName.Dict4X4_1000);
 
         /*
-         corners�G??�쪺??���V�q
-         points:�]�t����?���N??������??����?��imgpoint�C���ΥΤ_??�ت��C
+         corners¡G??¨ìªº??¨¤¦V¶q
+         points:¥]§t¨º¨Ç?³¡¥N??¦³¥¿ÚÌ??ªº¤è?ªºimgpoint¡C¦³¥Î¥Î¤_??¥Øªº¡C
          */
         Point2f[][] corners, points;
 
-        //??�쪺??��??�ŦV�q
+        //??¨ìªº??ªº??²Å¦V¶q
         int[] ids;
 
         /*
-         ?��?��??
+         ?¦æ?¤ù??
          */
         var rvec = new Mat();
         var tvec = new Mat();
