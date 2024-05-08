@@ -250,11 +250,13 @@ public class RobotController : MonoBehaviour
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
         MoveJointsTo(angleList);
+        if(_enableTransparentRobot)
+            HideTransparentModel();
     }
     public void SetMask(bool value) { _robotJointController.SetMask(value); }
     public void ShowJointDHFrame(int index, bool value) { _robotJointController.ShowJointDHFrame(index, value); }
     public void ShowJointsDHFrame(bool value) { _robotJointController.ShowJointsDHFrame(value); }
-
+    public void SetRobotVisible(bool value) { _robotJointController.SetJointsVisible(value); }
     // Endeffector Command
     public void ResetEndEffector() { _endEffectorController.ResetEndEffector(); }
     public void SetEndEffector(int index)

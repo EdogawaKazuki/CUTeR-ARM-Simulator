@@ -10,6 +10,8 @@
 namespace NRKernal.NRExamples
 {
     using UnityEngine;
+    using UnityEngine.UI;
+
 
     /// <summary> Uses 4 frame corner objects to visualize an TrackingImage. </summary>
     public class TrackingImageVisualizer : MonoBehaviour
@@ -36,6 +38,10 @@ namespace NRKernal.NRExamples
         /// <summary> The axis. </summary>
         public GameObject Joints;
         public GameObject JointsTransparent;
+        public GameObject Axis;
+        
+        Vector3 offset = new Vector3(0f,0.01f,-0.1f);
+        public Text text;
 
         /// <summary> Updates this object. </summary>
         public void Update()
@@ -46,6 +52,7 @@ namespace NRKernal.NRExamples
                 FrameLowerRight.SetActive(false);
                 FrameUpperLeft.SetActive(false);
                 FrameUpperRight.SetActive(false);
+                Axis.SetActive(false);
                 // Joints.SetActive(false);
                 // JointsTransparent.SetActive(false);
                 return;
@@ -59,7 +66,6 @@ namespace NRKernal.NRExamples
             FrameUpperRight.transform.localPosition = (halfWidth * Vector3.right) + (halfHeight * Vector3.forward);
 
             var center = Image.GetCenterPose();
-            Vector3 offset = new Vector3(0, -0.05f, -0.1188f);
             transform.position = center.position;
             transform.rotation = center.rotation;
             Joints.transform.position = center.position + offset;
@@ -68,11 +74,14 @@ namespace NRKernal.NRExamples
             JointsTransparent.transform.position = center.position + offset;
             JointsTransparent.transform.rotation = center.rotation;
             JointsTransparent.transform.RotateAround(center.position, center.up, 90);
-            FrameLowerLeft.SetActive(true);
-            FrameLowerRight.SetActive(true);
-            FrameUpperLeft.SetActive(true);
-            FrameUpperRight.SetActive(true);
+            // FrameLowerLeft.SetActive(true);
+            // FrameLowerRight.SetActive(true);
+            // FrameUpperLeft.SetActive(true);
+            // FrameUpperRight.SetActive(true);
+            // Axis.SetActive(true);
+            text.text = offset.ToString();
             
         }
     }
+
 }

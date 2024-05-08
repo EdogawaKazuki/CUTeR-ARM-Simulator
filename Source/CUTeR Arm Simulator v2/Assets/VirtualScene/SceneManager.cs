@@ -13,7 +13,7 @@ public class SceneManager : MonoBehaviour
 {
     [SerializeField]
     private Transform _sceneContainer;
-    private Text _sceneStatusText;
+    private TMP_Text _sceneStatusText;
     private Image _sceneStatusBackground;
     private InputField _sceneNameIF;
     private InputField _sceneDescriptionIF;
@@ -71,7 +71,7 @@ public class SceneManager : MonoBehaviour
     {
         robotCtrlBtnGroup.Find("PlayToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => StartScene(value));
         robotCtrlBtnGroup.Find("ResetButton").GetComponent<Button>().onClick.AddListener(() => StopScene());
-        _sceneStatusText = robotCtrlBtnGroup.Find("status/Text").GetComponent<Text>();
+        _sceneStatusText = robotCtrlBtnGroup.Find("status/Text").GetComponent<TMP_Text>();
         _sceneStatusBackground = robotCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
     }
     public Transform GetSceneContainer()
