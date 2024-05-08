@@ -220,6 +220,8 @@ public class RobotClient : MonoBehaviour
 				byteArray[0] = 0;
 				byteArray[1] = 0;
 				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+				ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 			}
 			_connected = false;
 			//Disconnect();

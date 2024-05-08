@@ -14,7 +14,7 @@ public class ExerciseMenuPanel : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        // Debug.Log("Enable");
+        Debug.Log("Enable");
         Transform exercisePanel = transform.Find("../ExercisePanel");
         Transform container = transform.Find("Scroll View/Viewport/Content");
         Transform groupTemplate = container.Find("Group");
@@ -28,7 +28,9 @@ public class ExerciseMenuPanel : MonoBehaviour
             newGroup.name = GroupName;
             newGroup.GetChild(0).GetComponent<Image>().color = colors[i];
             newGroup.SetParent(container);
+            newGroup.localPosition = new Vector3(0, -125 * i, 0);
             newGroup.transform.localScale = Vector3.one;
+            newGroup.transform.localRotation = Quaternion.identity;
             newGroup.Find("Title/Text").GetComponent<TMP_Text>().text = GroupName;
             for(int j = 0; j < exercisePanel.GetChild(i).childCount; j++)
             {
@@ -37,8 +39,11 @@ public class ExerciseMenuPanel : MonoBehaviour
                 Transform newItem = Instantiate(itemTemplate);
                 newItem.name = ItemName;
                 newItem.SetParent(newGroup);
+                newItem.localPosition = new Vector3(0, -125 * j, 0);
                 newItem.transform.localScale = Vector3.one;
+                newItem.transform.localRotation = Quaternion.identity;
                 newItem.Find("Text").GetComponent<TMP_Text>().text = ItemName;
+                Debug.Log(GroupName + "/" + ItemName);
                 newItem.GetComponent<Button>().onClick.AddListener(() => {
                     _exercisePanel.Select(GroupName + "/" + ItemName); 
                     exercisePanel.gameObject.SetActive(true); 

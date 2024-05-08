@@ -18,8 +18,8 @@ public class ExercisePanel : MonoBehaviour
     public void Select(string path)
     {
         Transform select = transform.Find(path);
-        // Debug.Log(path);
-        // Debug.Log(select);
+         Debug.Log(path);
+         Debug.Log(select);
         if (select != null)
         {
             if(_currentSelectedPanel)

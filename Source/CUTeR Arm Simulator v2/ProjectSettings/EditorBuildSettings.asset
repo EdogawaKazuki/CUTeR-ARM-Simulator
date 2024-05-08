@@ -11,7 +11,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/WebGL.unity
     guid: 96677b66b9388444a87ec29e4166e311
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main_AR.unity
     guid: 1823a60d2aa60804ab20a09ec157550b
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Scenes/Main_Nreal.unity
+    guid: 15d88007d2fa14244a57357b64113e7f
+  - enabled: 0
+    path: Assets/NRSDK/Demos/HelloMR.unity
+    guid: dd74f1c9685ef48499229d4957b58000
+  - enabled: 0
+    path: Assets/NRSDK/Demos/ImageTracking.unity
+    guid: cae4e384337e206419d07ea80c82ee12
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 6cf3e40be2bf2184db9b94364ebf769c, type: 2}
+    com.unity.renderstreaming.settings: {fileID: 11400000, guid: 51fd139a861b3d64cb2165bd7d72adf7, type: 2}
