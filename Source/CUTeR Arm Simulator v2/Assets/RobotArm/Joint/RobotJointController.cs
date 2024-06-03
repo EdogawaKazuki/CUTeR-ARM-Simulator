@@ -31,7 +31,7 @@ public class RobotJointController : MonoBehaviour
                 break;
             }
         }
-        SetJointAngles(new List<float>() { 0, 180, -140, 0, 0, 0 });
+        SetJointAngles(new List<float>() {0, 180, -140, 0, 0, 0 });
         // Debug.Log("Joint number: " + _jointNumber);
     }
     // Update is called once per frame

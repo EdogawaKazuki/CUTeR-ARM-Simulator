@@ -11,6 +11,7 @@ public class RobotControllerUI : MonoBehaviour
     #region Variables
     private Transform _joyStickPanel;
     private RobotController _robotController;
+    private RobotClient _robotClient;
     private List<Slider> _jointAngleSliders = new();
     private List<TMP_Text> _jointAngleSLiderValueTexts = new();
     private Slider _forceSlider;
@@ -24,6 +25,7 @@ public class RobotControllerUI : MonoBehaviour
     private void OnEnable()
     {
         _robotController = GetComponent<RobotController>();
+        _robotClient = GetComponent<RobotClient>();
         _joyStickPanel = _robotController.GetRobotCanvas().transform.Find("Joystick/Panel");
         SetupJoystickPanel(_joyStickPanel);
         SetupSettingPanel(_robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window"));
@@ -149,7 +151,9 @@ public class RobotControllerUI : MonoBehaviour
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(eventData.selectedObject.transform.parent.name[^1] - '0', value));
         else
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(eventData.selectedObject.transform.parent.name[^1] - '0', value));
-       
+        if(RobotClient.ROBOT_TYPE == 1){
+            _robotClient.isReceive = false;
+        }
     }
     public void OnPointerUp(BaseEventData eventData)
     {
@@ -160,6 +164,9 @@ public class RobotControllerUI : MonoBehaviour
         if(_robotController._enableTransparentRobot)
             _robotController.MoveJointTo(eventData.selectedObject.transform.parent.name[^1] - '0', eventData.selectedObject.GetComponent<Slider>().value);
         _sliderStatus = 0;
+        if(RobotClient.ROBOT_TYPE == 1){
+            _robotClient.isReceive = true;
+        }
     }
     public void UpdateJoysticPanelkHeight(){
         int count = 8;

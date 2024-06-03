@@ -7,6 +7,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Runtime.ConstrainedExecution;
 
 public class RobotClient : MonoBehaviour
 {
@@ -26,9 +27,9 @@ public class RobotClient : MonoBehaviour
 	private int _robotPort = 1234;
 
 	// Robot Variables
-	private List<int> _feedbackPwmList = new() { 0, 0, 0 };
-	private List<int> _cmdPwmList = new() { 0, 0, 0 };
-	private List<float> _angleListRead = new() { 0, 0, 0 };
+	private List<int> _feedbackPwmList = new() { 0, 0, 0, 0, 0, 0 };
+	private List<int> _cmdPwmList = new() { 0, 0, 0, 0, 0, 0};
+	private List<float> _angleListRead = new() { 0, 0, 0, 0, 0, 0 };
 	private bool _connected = false;
 	private Thread _receiveThread;
 	private bool _unlocked = true;
@@ -38,7 +39,7 @@ public class RobotClient : MonoBehaviour
 	// Filter
 	int count = 0;
 	float tmp;
-	float[] sum = { 0, 0, 0 };
+	float[] sum = { 0, 0, 0, 0, 0, 0};
 	enum FilterType
 	{
 		NoFilter,
@@ -61,10 +62,16 @@ public class RobotClient : MonoBehaviour
 	private List<float> robotJointAngleCmd;
 	private int recvLen = 0;
 	private byte[] sendData;
-	private byte[] recvData = new byte[2*3 + 4*3 + 2*3];
-	private byte[] infoData = new byte[4*12];
+	private byte[] recvData = new byte[2*6 + 4*6 + 2*6];
+	private byte[] infoData = new byte[4*3*6*2];
 	private byte[] byteArray;
 	public bool SendCmd = true;
+
+	// 0 for CUTeR; 1 for OpenManipulator Pro
+	public const int ROBOT_TYPE = 1;
+	private int ROBOT_DOF = 3;
+	public bool isReceive = true;
+	private float timer = 0;
 
 
 	#endregion
@@ -73,6 +80,13 @@ public class RobotClient : MonoBehaviour
 	private void Start(){}
     private void OnEnable()
     {
+		if(ROBOT_TYPE == 0)
+		{
+			ROBOT_DOF = 3;
+		}else if(ROBOT_TYPE == 1)
+		{
+			ROBOT_DOF = 6;
+		}
 		// Get hooks
         _robotController = GetComponent<RobotController>();
 		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText")?.GetComponent<Text>();
@@ -120,7 +134,7 @@ public class RobotClient : MonoBehaviour
     {
         x = -x;
         y = -y;
-        float[] angles = new float[3];
+        float[] angles = new float[ROBOT_DOF];
         float A1 = _robotController.A1; // 10.18f;
         float L1 = _robotController.L1; // 19.41f;
         float A2 = _robotController.A2; // 2.91f;
@@ -241,14 +255,15 @@ public class RobotClient : MonoBehaviour
 		robotJointAngleCmd = _robotController.GetCmdJointAngles();
 		//SendMsg("post," + String.Join(",", robotJointAngles) + ",end");
 
-		try
+		try // todo: make the logic more clear
 		{
 			//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
-			if (_unlocked || !SendCmd)
+			if (_unlocked || !SendCmd || (ROBOT_TYPE == 1 && isReceive))
 			{
-				if (_unlocked)
+				if (_unlocked || (ROBOT_TYPE == 1 && isReceive) )
 				{
+					// put here because only main thread can change the angle of the robot
 					_robotController.SetCmdJointAngles(_angleListRead);
 					_robotController.SetTransparentCmdJointAngles(_angleListRead);
 				}
@@ -257,21 +272,44 @@ public class RobotClient : MonoBehaviour
 			{
 				if (ESP32)
 				{
-					byteArray = new byte[sizeof(float) * 3 + 1];
-					byteArray[0] = 2;
-					// Debug.Log(robotJointAngleCmd[0]);
-					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
-					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
-					Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
-					//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
-					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+					if(ROBOT_TYPE == 0){
+						byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
+						byteArray[0] = 2;
+						// Debug.Log(robotJointAngleCmd[0]);
+						for(int i = 0; i < ROBOT_DOF; i++){
+							Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[i]), 0, byteArray, 1 + i * 4, 4);
+						}
+						// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
+						// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
+						// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
+						//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+						ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+						Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
+					}
+					else if(ROBOT_TYPE == 1){
+						// timer = timer + Time.fixedDeltaTime;
+						// if(timer > 0.02){
+						// 	byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
+						// 	byteArray[0] = 2;
+						// 	// Debug.Log(robotJointAngleCmd[0]);
+						// 	for(int i = 0; i < ROBOT_DOF; i++){
+						// 		Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[i]), 0, byteArray, 1 + i * 4, 4);
+						// 	}
+						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
+						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
+						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
+						// 	//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+						// 	ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+						// 	Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
+						// 	timer = 0;
+						// }
+					}
 				}
 				else
 				{
 					sendData = Encoding.ASCII.GetBytes("post," + robotJointPWM[0] + "," + robotJointPWM[1] + "," + robotJointPWM[2] + ",end");
 					ClientSocket.SendTo(sendData, sendData.Length, SocketFlags.None, ServerEndPoint);
 				}
-
 				//_debugText.text = "angle," + String.Join(",", _robotController.GetJointAngles()) + ",end" + "\n" + _debugText.text;
 			}
 		}
@@ -281,6 +319,20 @@ public class RobotClient : MonoBehaviour
 			_debugText.text = e.ToString() + "\n" + _debugText.text;
 		}
 	}
+	public void SendJointCmdDirect(List<float> joint_list){
+		byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
+		byteArray[0] = 2;
+		// Debug.Log(robotJointAngleCmd[0]);
+		for(int i = 0; i < ROBOT_DOF; i++){
+			Buffer.BlockCopy(BitConverter.GetBytes(joint_list[i]), 0, byteArray, 1 + i * 4, 4);
+		}
+		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
+		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
+		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
+		//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+		Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
+	}
 	void ClientThread()
 	{
 		while (true)
@@ -288,7 +340,7 @@ public class RobotClient : MonoBehaviour
 
 			try
 			{
-                if (_unlocked)
+                if (_unlocked || (ROBOT_TYPE == 1 && isReceive))
 				{
 					recvLen = ClientSocket.ReceiveFrom(recvData, ref ServerEndPoint);
 					// Debug.Log(BitConverter.ToInt16(recvData, 4));
@@ -318,19 +370,20 @@ public class RobotClient : MonoBehaviour
     }
 	private void ParsePWMByte(byte[] byteArray)
 	{
+		Debug.Log("Parsing");
 		if (filterIndex == 1 && count <= windowSize)
 		{
 			count++;
 		}
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < ROBOT_DOF; i++)
 		{
 			_feedbackPwmList[i] = BitConverter.ToInt16(byteArray, i * 2);
 			//Debug.Log(BitConverter.ToInt16(byteArray, i * 2));
 		}
 		//Debug.Log(_feedbackPwmList[0] + " " + _feedbackPwmList[1] + " " + _feedbackPwmList[2] + " ");
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < ROBOT_DOF; i++)
 		{
-			tmp = BitConverter.ToSingle(byteArray, 3 * 2 + i * 4);
+			tmp = BitConverter.ToSingle(byteArray, ROBOT_DOF * 2 + i * 4);
 			if (filterIndex == 1)
 			{
 				if (count <= windowSize)
@@ -353,15 +406,16 @@ public class RobotClient : MonoBehaviour
 			{
 				_angleListRead[i] = tmp;
 			}
-			//Debug.Log(BitConverter.ToInt16(byteArray, 3 * 2 + i * 4));
+			//Debug.Log(BitConverter.ToInt16(byteArray, ROBOT_DOF * 2 + i * 4));
 		}
-        //Debug.Log(" " + _angleListRead[0] + " " + _angleListRead[1] + " " + _angleListRead[2] + " ");
+        // Debug.Log(" " + _angleListRead[0] + " " + _angleListRead[1] + " " + _angleListRead[2] + " ");
+        // Debug.Log(" " + _angleListRead[3] + " " + _angleListRead[4] + " " + _angleListRead[5] + " ");
         if (SendCmd)
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < ROBOT_DOF; i++)
 			{
-				_cmdPwmList[i] = BitConverter.ToInt16(byteArray, 3 * 2 + 3 * 4 + i * 2);
-				//Debug.Log(BitConverter.ToInt16(byteArray, 3 * 2 + 3 * 4 + i * 2));
+				_cmdPwmList[i] = BitConverter.ToInt16(byteArray, ROBOT_DOF * 2 + ROBOT_DOF * 4 + i * 2);
+				//Debug.Log(BitConverter.ToInt16(byteArray, ROBOT_DOF * 2 + ROBOT_DOF * 4 + i * 2));
 			}
 			//Debug.Log(_cmdPwmList[0] + " " + _cmdPwmList[1] + " " + _cmdPwmList[2] + " ");
 		}
@@ -373,13 +427,13 @@ public class RobotClient : MonoBehaviour
 			string[] vs = str.Split(',');
             if (ESP32)
 			{
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < ROBOT_DOF; i++)
 				{
 					_feedbackPwmList[i - 0] = int.Parse(vs[i]);
 				}
-				for (int i = 3; i < 6; i++)
+				for (int i = ROBOT_DOF; i < 6; i++)
 				{
-					_angleListRead[i - 3] = float.Parse(vs[i]);
+					_angleListRead[i - ROBOT_DOF] = float.Parse(vs[i]);
 				}
             }
             else
@@ -425,8 +479,11 @@ public class RobotClient : MonoBehaviour
 	public void SendPWMCmd(int index, int pwm)
 	{
 		_cmdPwmList[index] = pwm;
-		byteArray = new byte[sizeof(float) * 3 + 1];
+		byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
 		byteArray[0] = 3;
+		for(int i = 0; i < ROBOT_DOF; i++){
+			Buffer.BlockCopy(BitConverter.GetBytes((float)_cmdPwmList[i]), 0, byteArray, 1 + i * 4, 4);
+		}
 		Buffer.BlockCopy(BitConverter.GetBytes((float)_cmdPwmList[0]), 0, byteArray, 1, 4);
 		Buffer.BlockCopy(BitConverter.GetBytes((float)_cmdPwmList[1]), 0, byteArray, 5, 4);
 		Buffer.BlockCopy(BitConverter.GetBytes((float)_cmdPwmList[2]), 0, byteArray, 9, 4);
@@ -469,7 +526,7 @@ public class RobotClient : MonoBehaviour
 		{
 			windowSize = (int)value;
 			count = 0;
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < ROBOT_DOF; i++)
 			{
 				sum[i] = 0;
 				_filterQueue[i].Clear();

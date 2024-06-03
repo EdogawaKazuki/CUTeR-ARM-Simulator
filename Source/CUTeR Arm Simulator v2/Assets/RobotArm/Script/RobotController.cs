@@ -232,7 +232,7 @@ public class RobotController : MonoBehaviour
         if(!_enableTransparentRobot) return;
         ShowTransparentModel();
         _transparentRobotJointController.SetJointAngles(angles); 
-        }
+    }
     public void SetTransparentCmdJointAngle(int index, float angle) { 
         if(!_enableTransparentRobot) return;
         ShowTransparentModel();
@@ -249,6 +249,10 @@ public class RobotController : MonoBehaviour
     {
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
+        if(RobotClient.ROBOT_TYPE == 1){
+            _robotClient.SendJointCmdDirect(angleList);
+            return;
+        }
         MoveJointsTo(angleList);
         if(_enableTransparentRobot)
             HideTransparentModel();
