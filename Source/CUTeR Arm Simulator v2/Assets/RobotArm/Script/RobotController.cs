@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -249,7 +250,7 @@ public class RobotController : MonoBehaviour
     {
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
-        if(RobotClient.ROBOT_TYPE == 1){
+        if(RobotClient.ROBOT_TYPE == 1 && _robotClient.IsConnected()){
             _robotClient.SendJointCmdDirect(angleList);
             return;
         }

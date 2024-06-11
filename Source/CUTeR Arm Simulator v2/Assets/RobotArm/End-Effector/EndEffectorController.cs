@@ -38,9 +38,9 @@ public class EndEffectorController : MonoBehaviour
             statusText.text = "";
             // Vector3 euler = quaternion2Euler(_currentEndEffector.transform.rotation, RotSeq.yxz);
             // euler = euler * Mathf.Rad2Deg;
-            // statusText.text = "Pos: " + "x: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.x + _robotArm.transform.position.x) * 100 + 
-            // " y: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.z + _robotArm.transform.position.z) * 100 + 
-            // " z: " + (_endEffectors[_currentEndEffectorIndex].transform.position.y - _robotArm.transform.position.y) * 100;   
+            statusText.text = "Pos: " + "x: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.x + _robotArm.transform.position.x) * 100 + 
+            " y: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.z + _robotArm.transform.position.z) * 100 + 
+            " z: " + (_endEffectors[_currentEndEffectorIndex].transform.position.y - _robotArm.transform.position.y) * 100;   
             // statusText.text += "\nEular: " + "x: " + euler.y + " y: " + (180 + euler.x) + " z: " + -(180 + euler.z);
         }
     }

@@ -8,7 +8,10 @@ public class RobotJointController : MonoBehaviour
     #region Variables
     [SerializeField]
     private List<RobotJoint> _joints = new List<RobotJoint>();
+    [SerializeField]
+    private List<float> _initialAngles = new List<float>();
     private int _jointNumber = 0;
+    
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
@@ -31,7 +34,8 @@ public class RobotJointController : MonoBehaviour
                 break;
             }
         }
-        SetJointAngles(new List<float>() {0, 180, -140, 0, 0, 0 });
+        SetJointAngles(_initialAngles);
+        ShowJointsFrame(false);
         // Debug.Log("Joint number: " + _jointNumber);
     }
     // Update is called once per frame
