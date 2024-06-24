@@ -1,20 +1,19 @@
 ﻿/****************************************************************************
- * Copyright 2019 Xreal Techonology Limited. All rights reserved.
- *
- * This file is part of NRSDK.
- *
- * https://www.xreal.com/
- *
- *****************************************************************************/
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
+*                                                                                                                                                          
+* This file is part of NRSDK.                                                                                                          
+*                                                                                                                                                           
+* https://www.nreal.ai/        
+* 
+*****************************************************************************/
 
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NRKernal.NRExamples
 {
     /// <summary> A controller for handling camera captures. </summary>
-    [HelpURL("https://developer.xreal.com/develop/unity/rgb-camera")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/rgb-camera")]
     public class CameraCaptureController : MonoBehaviour
     {
         /// <summary> The capture image. </summary>
@@ -27,9 +26,6 @@ namespace NRKernal.NRExamples
 
         void Start()
         {
-            if (!NRDevice.Subsystem.IsFeatureSupported(NRSupportedFeature.NR_FEATURE_RGB_CAMERA))
-                throw new Exception("RGBCamera is not supported on current glasses.");
-            
             RGBCamTexture = new NRRGBCamTexture();
             CaptureImage.texture = RGBCamTexture.GetTexture();
             RGBCamTexture.Play();
@@ -48,9 +44,6 @@ namespace NRKernal.NRExamples
         /// <summary> Plays this object. </summary>
         public void Play()
         {
-            if (!NRDevice.Subsystem.IsFeatureSupported(NRSupportedFeature.NR_FEATURE_RGB_CAMERA))
-                throw new Exception("RGBCamera is not supported on current glasses.");
-            
             if (RGBCamTexture == null)
             {
                 RGBCamTexture = new NRRGBCamTexture();
@@ -69,28 +62,11 @@ namespace NRKernal.NRExamples
             RGBCamTexture?.Pause();
         }
 
-        public void Resume()
-        {
-            RGBCamTexture?.Resume();
-        }
-
         /// <summary> Stops this object. </summary>
         public void Stop()
         {
             RGBCamTexture?.Stop();
             RGBCamTexture = null;
-        }
-
-        void OnApplicationPause(bool pause)
-        {
-            if (pause)
-            {
-                Pause();
-            }
-            else
-            {
-                Resume();
-            }
         }
 
         /// <summary> Executes the 'destroy' action. </summary>

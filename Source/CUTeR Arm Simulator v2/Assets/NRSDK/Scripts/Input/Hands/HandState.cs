@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -22,15 +22,11 @@ namespace NRKernal
 
     public enum HandGesture
     {
-        None = -1,
+        None = 0,
         OpenHand,
-        Grab,
-        Pinch,
         Point,
-        Victory,
-        Call,
-        System,
-        ThumbsUp,
+        Grab,
+        Victory
     }
 
     public enum HandJointID
@@ -70,18 +66,9 @@ namespace NRKernal
         public bool isTracked;
         public Pose pointerPose;
         public bool pointerPoseValid;
-        public UInt64 imageTimestamp;
-        public bool isPinching
-        {
-            get =>
-#if UNITY_EDITOR
-                Input.GetKey(KeyCode.Mouse0) ||
-#endif
-                currentGesture == HandGesture.Pinch;
-        }
-
+        public bool isPinching;
+        public float pinchStrength;
         public HandGesture currentGesture;
-        public float confidence;
         public readonly Dictionary<HandJointID, Pose> jointsPoseDict = new Dictionary<HandJointID, Pose>();
 
         public HandState(HandEnum handEnum)
@@ -96,6 +83,8 @@ namespace NRKernal
             isTracked = false;
             pointerPose = Pose.identity;
             pointerPoseValid = false;
+            isPinching = false;
+            pinchStrength = 0f;
             currentGesture = HandGesture.None;
             jointsPoseDict.Clear();
         }

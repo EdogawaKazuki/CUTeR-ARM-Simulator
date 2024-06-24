@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -45,8 +45,6 @@ namespace NRKernal.Record
         private void UpdateYUVFrame(NRRGBCamTextureYUV.YUVTextureFrame frame)
         {
             frameInfo.timeStamp = frame.timeStamp;
-            frameInfo.gain = frame.gain;
-            frameInfo.exposureTime = frame.exposureTime;
             frameInfo.textures[0] = frame.textureY;
             frameInfo.textures[1] = frame.textureU;
             frameInfo.textures[2] = frame.textureV;
@@ -59,8 +57,6 @@ namespace NRKernal.Record
         private void UpdateRGBFrame(CameraTextureFrame frame)
         {
             frameInfo.timeStamp = frame.timeStamp;
-            frameInfo.gain = frame.gain;
-            frameInfo.exposureTime = frame.exposureTime;
             frameInfo.textures[0] = frame.texture;
             OnUpdate?.Invoke(frameInfo);
             m_IsFrameReady = true;

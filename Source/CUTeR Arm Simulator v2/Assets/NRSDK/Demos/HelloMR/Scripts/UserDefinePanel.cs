@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -13,7 +13,7 @@ using UnityEngine;
 namespace NRKernal.NRExamples
 {
     /// <summary> Panel for editing the user define. </summary>
-    [HelpURL("https://developer.xreal.com/develop/unity/customize-phone-controller")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/customize-phone-controller")]
     public class UserDefinePanel : MonoBehaviour
     {
         /// <summary> The user define panel. </summary>
@@ -22,12 +22,12 @@ namespace NRKernal.NRExamples
         /// <summary> Starts this object. </summary>
         void Start()
         {
-            StartCoroutine(RegistUserDefinePanel());
+            StartCoroutine(RigistUserDefinePanel());
         }
 
         /// <summary> Rigist user define panel. </summary>
         /// <returns> An IEnumerator. </returns>
-        private IEnumerator RegistUserDefinePanel()
+        private IEnumerator RigistUserDefinePanel()
         {
             while (GameObject.FindObjectOfType<NRVirtualDisplayer>() == null)
             {

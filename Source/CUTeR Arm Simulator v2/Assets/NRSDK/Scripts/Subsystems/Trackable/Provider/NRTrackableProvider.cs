@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -18,6 +18,11 @@ namespace NRKernal
 
         public NRTrackableProvider()
         {
+            if (NRSessionManager.Instance.NativeAPI == null)
+            {
+                NRSessionManager.Instance.NativeAPI = new NativeInterface();
+            }
+
             m_NativeTrackable = NRSessionManager.Instance.NativeAPI.NativeTrackable;
         }
 
@@ -47,6 +52,11 @@ namespace NRKernal
         private NativePlane m_NativePlane;
         public NRTrackablePlaneProvider()
         {
+            if (NRSessionManager.Instance.NativeAPI == null)
+            {
+                NRSessionManager.Instance.NativeAPI = new NativeInterface();
+            }
+
             m_NativePlane = NRSessionManager.Instance.NativeAPI.NativePlane;
         }
 
@@ -81,6 +91,11 @@ namespace NRKernal
         private NativeTrackableImage m_NativeTrackableImage;
         public NRTrackableImageProvider()
         {
+            if (NRSessionManager.Instance.NativeAPI == null)
+            {
+                NRSessionManager.Instance.NativeAPI = new NativeInterface();
+            }
+
             m_NativeTrackableImage = NRSessionManager.Instance.NativeAPI.NativeTrackableImage;
         }
 

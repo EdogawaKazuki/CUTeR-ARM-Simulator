@@ -1,25 +1,22 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
 namespace NRKernal
 {
-    using System;
-
     /// <summary> A controller provider base. </summary>
     public abstract class ControllerProviderBase
     {
         /// <summary> The states. </summary>
         protected ControllerState[] states;
-
-        /// <summary> Gets or sets a value indicating whether the controller is running. </summary>
-        /// <value> True if running, false if not. </value>
-        public bool running { get; protected set; } = false;
+        /// <summary> Gets or sets a value indicating whether the inited. </summary>
+        /// <value> True if inited, false if not. </value>
+        public bool Inited { get; protected set; }
 
         /// <summary> Constructor. </summary>
         /// <param name="states"> The states.</param>
@@ -32,32 +29,17 @@ namespace NRKernal
         /// <value> The number of controllers. </value>
         public abstract int ControllerCount { get; }
 
-        /// <summary> Start the controller. </summary>
-        public virtual void Start()
-        {
-            running = true;
-        }
+        /// <summary> Executes the 'pause' action. </summary>
+        public abstract void OnPause();
 
-        /// <summary> Pause the controller. </summary>
-        public virtual void Pause()
-        {
-            running = false;
-        }
-
-        /// <summary> Resume the controller. </summary>
-        public virtual void Resume()
-        {
-            running = true;
-        }
+        /// <summary> Executes the 'resume' action. </summary>
+        public abstract void OnResume();
 
         /// <summary> Updates this object. </summary>
         public abstract void Update();
-    
-        /// <summary> Destroy the controller. </summary>
-        public virtual void Destroy()
-        {
-            running = false;
-        }
+
+        /// <summary> Executes the 'destroy' action. </summary>
+        public abstract void OnDestroy();
 
         /// <summary> Trigger haptic vibration. </summary>
         /// <param name="controllerIndex"> Zero-based index of the controller.</param>

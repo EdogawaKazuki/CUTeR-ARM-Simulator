@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -30,36 +30,51 @@ namespace NRKernal
 
         public override void Start()
         {
+            if (running)
+            {
+                return;
+            }
+
             base.Start();
             m_Provider.Start();
         }
 
         public override void Pause()
         {
+            if (!running)
+            {
+                return;
+            }
+
             base.Pause();
             m_Provider.Pause();
         }
 
         public override void Resume()
         {
+            if (running)
+            {
+                return;
+            }
+
             base.Resume();
             m_Provider.Resume();
         }
 
-        public override void Destroy()
+        public override void Stop()
         {
-            base.Destroy();
-            m_Provider.Destroy();
+            if (!running)
+            {
+                return;
+            }
+
+            base.Stop();
+            m_Provider.Stop();
         }
 
-        public bool GetFramePresentHeadPose(ref UnityEngine.Pose pose, ref LostTrackingReason lostReason, ref ulong timestamp)
+        public bool GetFramePresentHeadPose(ref UnityEngine.Pose pose, ref ulong timestamp)
         {
-            return m_Provider.GetFramePresentHeadPose(ref pose, ref lostReason, ref timestamp);
-        }
-
-        public bool GetFramePresentTimeByCount(uint count, ref ulong timeStamp)
-        {
-            return m_Provider.GetFramePresentTimeByCount(count, ref timeStamp);
+            return m_Provider.GetFramePresentHeadPose(ref pose, ref timestamp);
         }
 
         public bool GetHeadPose(ref UnityEngine.Pose pose, ulong timestamp)
@@ -72,14 +87,19 @@ namespace NRKernal
             return m_Provider.GetHMDTimeNanos();
         }
 
-        public bool InitTrackingType(TrackingType type)
+        public LostTrackingReason GetTrackingLostReason()
         {
-            return m_Provider.InitTrackingType(type);
+            return m_Provider.GetTrackingLostReason();
         }
 
-        public bool SwitchTrackingType(TrackingType type)
+        public bool InitTrackingMode(TrackingMode mode)
         {
-            return m_Provider.SwitchTrackingType(type);
+            return m_Provider.InitTrackingMode(mode);
+        }
+
+        public bool SwitchTrackingMode(TrackingMode mode)
+        {
+            return m_Provider.SwitchTrackingMode(mode);
         }
 
         public void Recenter()

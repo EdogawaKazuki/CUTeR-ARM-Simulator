@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -13,7 +13,7 @@ namespace NRKernal.NRExamples
     using UnityEngine;
 
     /// <summary> Controller for TrackingImage example. </summary>
-    [HelpURL("https://developer.xreal.com/develop/unity/image-tracking")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/image-tracking")]
     public class TrackingImageExampleController : MonoBehaviour
     {
         /// <summary> A prefab for visualizing an TrackingImage. </summary>
@@ -67,8 +67,8 @@ namespace NRKernal.NRExamples
                 }
 
                 FitToScanOverlay.SetActive(false);
-                DisableImageTracking();
-                break;
+                // DisableImageTracking();
+                // break;
             }
         }
 
@@ -84,9 +84,9 @@ namespace NRKernal.NRExamples
         /// <summary> Disables the image tracking. </summary>
         public void DisableImageTracking()
         {
-            var config = NRSessionManager.Instance.NRSessionBehaviour.SessionConfig;
-            config.ImageTrackingMode = TrackableImageFindingMode.DISABLE;
-            NRSessionManager.Instance.SetConfiguration(config);
+            // var config = NRSessionManager.Instance.NRSessionBehaviour.SessionConfig;
+            // config.ImageTrackingMode = TrackableImageFindingMode.DISABLE;
+            // NRSessionManager.Instance.SetConfiguration(config);
             FitToScanOverlay.SetActive(false);
         }
     }

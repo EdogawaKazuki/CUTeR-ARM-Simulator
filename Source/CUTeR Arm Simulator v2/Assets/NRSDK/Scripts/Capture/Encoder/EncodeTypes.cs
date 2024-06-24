@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -34,15 +34,6 @@ namespace NRKernal.Record
         /// <summary> Arrange virtual image and rgb camera image from left to right. </summary>
         [Obsolete]
         WidescreenBlend
-    }
-
-    /// <summary> Values that represent record type index. </summary>
-    public enum RecorderIndex
-    {
-        /// <summary> Recorder index of mic. </summary>
-        REC_MIC = 0,
-        /// <summary> Recorder index of application. </summary>
-        REC_APP = 1,
     }
 
     /// <summary> Callback, called when the capture task. </summary>
@@ -110,7 +101,7 @@ namespace NRKernal.Record
 
         public bool addMicphoneAudio { get; private set; }
 
-        public bool addInternalAudio { get; private set; }
+        public bool audioUseExternalData { get; private set; }
 
         public int audioSampleRate { get; private set; }
 
@@ -122,16 +113,16 @@ namespace NRKernal.Record
         public NativeEncodeConfig(CameraParameters cameraparam, string path = "")
         {
             this.width = cameraparam.blendMode == BlendMode.WidescreenBlend ? 2 * cameraparam.cameraResolutionWidth : cameraparam.cameraResolutionWidth;
-            this.height = cameraparam.captureSide == CaptureSide.Both ? (int)(0.5 * cameraparam.cameraResolutionHeight): cameraparam.cameraResolutionHeight;
+            this.height = cameraparam.cameraResolutionHeight;
             this.bitRate = NativeConstants.RECORD_VIDEO_BITRATE_DEFAULT;
             this.fps = cameraparam.frameRate;
             this.codecType = GetCodecTypeByPath(path);
             this.outPutPath = path;
             this.useStepTime = 0;
-            this.addMicphoneAudio = cameraparam.CaptureAudioMic;
-            this.addInternalAudio = cameraparam.CaptureAudioApplication;
+            this.addMicphoneAudio = cameraparam.audioState == NRVideoCapture.AudioState.MicAudio ? true : false;
+            this.audioUseExternalData = cameraparam.audioState == NRVideoCapture.AudioState.ApplicationAudio ? true : false;
             this.useAlpha = cameraparam.hologramOpacity < float.Epsilon;
-            this.useLinnerTexture = NRFrame.isLinearColorSpace;
+            this.useLinnerTexture = NRRenderer.isLinearColorSpace;
             this.audioBitRate = NativeConstants.RECORD_AUDIO_BITRATE_DEFAULT;
             this.audioSampleRate = NativeConstants.RECORD_AUDIO_SAMPLERATE_DEFAULT;
         }

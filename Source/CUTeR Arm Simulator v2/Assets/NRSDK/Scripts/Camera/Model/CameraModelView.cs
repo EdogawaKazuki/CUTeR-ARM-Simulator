@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -55,11 +55,11 @@ namespace NRKernal
             Stopped
         }
         /// <summary> The state. </summary>
-        protected State m_State = State.Stopped;
+        private State m_State = State.Stopped;
 
         /// <summary> Gets a value indicating whether the did update this frame. </summary>
         /// <value> True if did update this frame, false if not. </value>
-        public virtual bool DidUpdateThisFrame
+        public bool DidUpdateThisFrame
         {
             get
             {
@@ -115,7 +115,7 @@ namespace NRKernal
         }
 
         /// <summary> Plays this object. </summary>
-        public virtual void Play()
+        public void Play()
         {
             if (m_State == State.Playing)
             {
@@ -128,30 +128,18 @@ namespace NRKernal
         }
 
         /// <summary> Pauses this object. </summary>
-        public virtual void Pause()
+        public void Pause()
         {
             if (m_State == State.Paused || m_State == State.Stopped)
             {
                 return;
             }
-            m_NativeCameraProxy.Pause();
             NRKernalUpdater.OnUpdate -= UpdateTexture;
             m_State = State.Paused;
         }
 
-        /// <summary> Resume this object. </summary>
-        public virtual void Resume()
-        {
-            if (m_State == State.Paused)
-            {
-                m_NativeCameraProxy.Resume();
-                NRKernalUpdater.OnUpdate += UpdateTexture;
-                m_State = State.Playing;
-            }
-        }
-
         /// <summary> Updates the texture. </summary>
-        protected virtual void UpdateTexture()
+        private void UpdateTexture()
         {
             if (!DidUpdateThisFrame || !IsPlaying)
             {
@@ -169,7 +157,7 @@ namespace NRKernal
         }
 
         /// <summary> Stops this object. </summary>
-        public virtual void Stop()
+        public void Stop()
         {
             if (m_State == State.Stopped)
             {

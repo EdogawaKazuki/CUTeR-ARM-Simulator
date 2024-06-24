@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -35,6 +35,13 @@ namespace NRKernal
         [RuntimeInitializeOnLoadMethod]
         static void Initialize()
         {
+#if NRDEBUG
+            NRDebugger.logLevel = LogLevel.All;
+#elif !UNITY_EDITOR
+            NRDebugger.logLevel = Debug.isDebugBuild ? LogLevel.Debug : LogLevel.Info;
+#else
+            NRDebugger.logLevel = LogLevel.Warning;
+#endif
             if (m_Instance == null)
             {
                 m_Instance = CreateInstance();
@@ -50,7 +57,6 @@ namespace NRKernal
             return updateObj.AddComponent<NRKernalUpdater>();
         }
 
-        internal static event Action OnEnterUpdate;
         /// <summary> Event queue for all listeners interested in OnPreUpdate events. </summary>
         public static event Action OnPreUpdate;
         /// <summary> Event queue for all listeners interested in OnUpdate events. </summary>
@@ -58,28 +64,12 @@ namespace NRKernal
         /// <summary> Event queue for all listeners interested in OnPostUpdate events. </summary>
         public static event Action OnPostUpdate;
 
-#if DEBUG_PERFORMANCE
-        long lastFrame = 0;
-#endif
-
         /// <summary> Updates this object. </summary>
         private void Update()
         {
-#if DEBUG_PERFORMANCE
-            long curFrame = System.DateTime.Now.Ticks;
-            long duration = curFrame - lastFrame;
-#endif
-            OnEnterUpdate?.Invoke();
             OnPreUpdate?.Invoke();
             OnUpdate?.Invoke();
             OnPostUpdate?.Invoke();
-            
-#if DEBUG_PERFORMANCE
-            long curFrameEnd = System.DateTime.Now.Ticks;
-            long curFrameDur = curFrameEnd - curFrame;
-            NRDebugger.Info("[Performance] Main update: frameAll={0}Tick, frameUpdate={1}", duration, curFrameDur);
-            lastFrame = curFrame;
-#endif
         }
 
         private static bool m_IsDestroyed = false;

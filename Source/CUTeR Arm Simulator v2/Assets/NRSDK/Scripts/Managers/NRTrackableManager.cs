@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -39,6 +39,20 @@ namespace NRKernal
         {
             get
             {
+                if (m_TrackableSubsystem == null)
+                {
+                    string trackable_match = NRTrackableSubsystemDescriptor.Name;
+                    List<NRTrackableSubsystemDescriptor> trackableDes = new List<NRTrackableSubsystemDescriptor>();
+                    NRSubsystemManager.GetSubsystemDescriptors(trackableDes);
+                    foreach (var descripe in trackableDes)
+                    {
+                        if (descripe.id.Equals(trackable_match))
+                        {
+                            m_TrackableSubsystem = descripe.Create();
+                        }
+                    }
+                }
+
                 return m_TrackableSubsystem;
             }
         }
@@ -48,6 +62,20 @@ namespace NRKernal
         {
             get
             {
+                if (m_PlaneSubsystem == null)
+                {
+                    string trackable_match = NRPlaneSubsystemDescriptor.Name;
+                    List<NRPlaneSubsystemDescriptor> trackableDes = new List<NRPlaneSubsystemDescriptor>();
+                    NRSubsystemManager.GetSubsystemDescriptors(trackableDes);
+                    foreach (var descripe in trackableDes)
+                    {
+                        if (descripe.id.Equals(trackable_match))
+                        {
+                            m_PlaneSubsystem = descripe.Create();
+                        }
+                    }
+                }
+
                 return m_PlaneSubsystem;
             }
         }
@@ -57,18 +85,27 @@ namespace NRKernal
         {
             get
             {
+                if (m_TrackableImagesSubsystem == null)
+                {
+                    string trackable_match = NRTrackableImageSubsystemDescriptor.Name;
+                    List<NRTrackableImageSubsystemDescriptor> trackableDes = new List<NRTrackableImageSubsystemDescriptor>();
+                    NRSubsystemManager.GetSubsystemDescriptors(trackableDes);
+                    foreach (var descripe in trackableDes)
+                    {
+                        if (descripe.id.Equals(trackable_match))
+                        {
+                            m_TrackableImagesSubsystem = descripe.Create();
+                        }
+                    }
+                }
+
                 return m_TrackableImagesSubsystem;
             }
         }
 
         /// <summary> Constructor. </summary>
         /// <param name="nativeInterface"> The native interface.</param>
-        public NRTrackableManager()
-        {
-            m_TrackableSubsystem = NRFrame.CreateSubsystem<NRTrackableSubsystemDescriptor, NRTrackableSubsystem>(NRTrackableSubsystemDescriptor.Name);
-            m_PlaneSubsystem = NRFrame.CreateSubsystem<NRPlaneSubsystemDescriptor, NRPlaneSubsystem>(NRPlaneSubsystemDescriptor.Name);
-            m_TrackableImagesSubsystem = NRFrame.CreateSubsystem<NRTrackableImageSubsystemDescriptor, NRTrackableImageSubsystem>(NRTrackableImageSubsystemDescriptor.Name);
-        }
+        public NRTrackableManager() { }
 
         /// <summary> Creates a new NRTrackable. </summary>
         /// <param name="trackable_handle"> Handle of the trackable.</param>
@@ -230,15 +267,11 @@ namespace NRKernal
             TrackableImageSubsystem.Resume();
         }
 
-        public void Destroy()
+        public void Stop()
         {
-            TrackableSubsystem.Destroy();
-            PlaneSubsystem.Destroy();
-            TrackableImageSubsystem.Destroy();
-
-            NRFrame.DestroySubsystem<NRTrackableSubsystemDescriptor, NRTrackableSubsystem>(NRTrackableSubsystemDescriptor.Name);
-            NRFrame.DestroySubsystem<NRPlaneSubsystemDescriptor, NRPlaneSubsystem>(NRPlaneSubsystemDescriptor.Name);
-            NRFrame.DestroySubsystem<NRTrackableImageSubsystemDescriptor, NRTrackableImageSubsystem>(NRTrackableImageSubsystemDescriptor.Name);
+            TrackableSubsystem.Stop();
+            PlaneSubsystem.Stop();
+            TrackableImageSubsystem.Stop();
         }
     }
 }

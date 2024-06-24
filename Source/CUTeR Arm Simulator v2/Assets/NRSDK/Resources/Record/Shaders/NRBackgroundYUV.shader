@@ -9,7 +9,7 @@ Shader "NRSDK/NRBackgroundYUV"
 
 	SubShader
 	{
-		Tags { "Queue" = "Background-1" "RenderType" = "Opaque" }
+		Tags { "RenderType" = "Opaque" }
 		LOD 100
 
 		Pass

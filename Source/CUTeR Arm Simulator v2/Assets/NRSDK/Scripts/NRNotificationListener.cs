@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -17,15 +17,6 @@ namespace NRKernal
     /// <summary> A nr notification listener. </summary>
     public class NRNotificationListener : MonoBehaviour
     {
-        public enum NRNotificationType
-        {
-            Unknown = 0,
-            LowPower = 1,
-            SlamState = 2,
-            TemperatureLevel = 3,
-            OverShutDownTemperature = 4,
-            NativeError = 5,
-        }
         /// <summary> Values that represent levels. </summary>
         public enum Level
         {
@@ -40,12 +31,10 @@ namespace NRKernal
         public Level notifLevel = Level.All;
 
         /// <summary> Notification object base. </summary>
-        public class Notification : IDisposable
+        public class Notification
         {
             /// <summary> The notification listener. </summary>
             protected NRNotificationListener NotificationListener;
-
-            public virtual NRNotificationType NotificationType => NRNotificationType.Unknown;
 
             /// <summary> Constructor. </summary>
             /// <param name="listener"> The listener.</param>
@@ -63,8 +52,6 @@ namespace NRKernal
             {
                 NotificationListener.Dispath(this, level);
             }
-
-            public virtual void Dispose() { }
         }
 
         /// <summary> A low power notification. </summary>
@@ -82,8 +69,6 @@ namespace NRKernal
             }
             /// <summary> The current state. </summary>
             private PowerState currentState = PowerState.Full;
-
-            public override NRNotificationType NotificationType => NRNotificationType.LowPower;
 
             /// <summary> Constructor. </summary>
             /// <param name="listener"> The listener.</param>
@@ -147,22 +132,12 @@ namespace NRKernal
             /// <summary> The current state. </summary>
             private SlamState m_CurrentState = SlamState.None;
 
-            public override NRNotificationType NotificationType => NRNotificationType.SlamState;
-
             /// <summary> Constructor. </summary>
             /// <param name="listener"> The listener.</param>
             public SlamStateNotification(NRNotificationListener listener) : base(listener)
             {
                 NRHMDPoseTracker.OnHMDLostTracking += OnHMDLostTracking;
                 NRHMDPoseTracker.OnHMDPoseReady += OnHMDPoseReady;
-            }
-
-            public override void Dispose()
-            {
-                NRHMDPoseTracker.OnHMDLostTracking -= OnHMDLostTracking;
-                NRHMDPoseTracker.OnHMDPoseReady -= OnHMDPoseReady;
-
-                base.Dispose();
             }
 
             /// <summary> Executes the 'hmd pose ready' action. </summary>
@@ -184,12 +159,40 @@ namespace NRKernal
             }
         }
 
+        /// <summary> A temperature level notification. </summary>
+        public class TemperatureLevelNotification : Notification
+        {
+            /// <summary> The current state. </summary>
+            private GlassesTemperatureLevel currentState = GlassesTemperatureLevel.TEMPERATURE_LEVEL_NORMAL;
 
+            /// <summary> Constructor. </summary>
+            /// <param name="listener"> The listener.</param>
+            public TemperatureLevelNotification(NRNotificationListener listener) : base(listener)
+            {
+            }
+
+            /// <summary> Updates the state. </summary>
+            public override void UpdateState()
+            {
+                base.UpdateState();
+
+                var level = NRDevice.Subsystem.TemperatureLevel;
+                if (currentState != level)
+                {
+                    if (level != GlassesTemperatureLevel.TEMPERATURE_LEVEL_NORMAL)
+                    {
+                        this.Trigger(level == GlassesTemperatureLevel.TEMPERATURE_LEVEL_HOT
+                            ? Level.High : Level.Middle);
+                    }
+
+                    this.currentState = level;
+                }
+            }
+        }
 
         /// <summary> Native interface error. </summary>
         public class NativeErrorNotification : Notification
         {
-            public override NRNotificationType NotificationType => NRNotificationType.NativeError;
             public NRKernalError KernalError { get; private set; }
             /// <summary> Constructor. </summary>
             /// <param name="listener"> The listener.</param>
@@ -202,7 +205,7 @@ namespace NRKernal
             {
                 KernalError = exception;
 
-                // Trigger the notification window
+                // Trigger the notification window when the error is NRRGBCameraDeviceNotFindError
                 if (KernalError is NRRGBCameraDeviceNotFindError
                     || KernalError is NRPermissionDenyError
                     || KernalError is NRUnSupportedHandtrackingCalculationError)
@@ -248,7 +251,7 @@ namespace NRKernal
                     }
                     else
                     {
-                        return KernalError.GetErrorMsg();
+                        return KernalError.GetError();
                     }
                 }
             }
@@ -264,7 +267,11 @@ namespace NRKernal
         public bool EnableSlamStateTips;
         /// <summary> The slam state notification prefab. </summary>
         public NRNotificationWindow SlamStateNotificationPrefab;
-
+        /// <summary> True to enable, false to disable the high temporary tips. </summary>
+        [Header("Whether to open the over temperature prompt")]
+        public bool EnableHighTempTips;
+        /// <summary> The high temporary notification prefab. </summary>
+        public NRNotificationWindow HighTempNotificationPrefab;
         [Header("Whether to open the native interface error prompt")]
         public bool EnableNativeNotifyTips;
         public NRNotificationWindow NativeErrorNotificationPrefab;
@@ -292,10 +299,11 @@ namespace NRKernal
         private const float UpdateInterval = 1f;
         private float m_TimeLast = 0f;
 
-        protected virtual void Awake()
+        void Awake()
         {
             LowPowerNotificationPrefab.gameObject.SetActive(false);
             SlamStateNotificationPrefab.gameObject.SetActive(false);
+            HighTempNotificationPrefab.gameObject.SetActive(false);
             NativeErrorNotificationPrefab.gameObject.SetActive(false);
         }
 
@@ -305,15 +313,6 @@ namespace NRKernal
             RegistNotification();
         }
 
-        void OnDestroy()
-        {
-            foreach (var kv in NotificationDict)
-            {
-                kv.Key.Dispose();
-            }
-            NotificationDict.Clear();
-        }
-
         /// <summary> Regist notification. </summary>
         protected virtual void RegistNotification()
         {
@@ -321,6 +320,7 @@ namespace NRKernal
             {
                 if (EnableLowPowerTips) BindNotificationWindow(new LowPowerNotification(this), LowPowerNotificationPrefab);
                 if (EnableSlamStateTips) BindNotificationWindow(new SlamStateNotification(this), SlamStateNotificationPrefab);
+                if (EnableHighTempTips) BindNotificationWindow(new TemperatureLevelNotification(this), HighTempNotificationPrefab);
             }
 
             if (EnableNativeNotifyTips) BindNotificationWindow(new NativeErrorNotification(this), NativeErrorNotificationPrefab);
@@ -380,7 +380,7 @@ namespace NRKernal
                 if (NotificationQueue.Count != 0)
                 {
                     var msg = NotificationQueue.Dequeue();
-                    this.OperateNotificationMsg(msg);
+                    this.OprateNotificationMsg(msg);
                     m_LockTime = TipsLastTime[msg.level];
                 }
             }
@@ -405,9 +405,9 @@ namespace NRKernal
             }
         }
 
-        /// <summary> Operate notification message. </summary>
+        /// <summary> Oprate notification message. </summary>
         /// <param name="msg"> The message.</param>
-        protected virtual void OperateNotificationMsg(NotificationMsg msg)
+        protected virtual void OprateNotificationMsg(NotificationMsg msg)
         {
             NRNotificationWindow prefab = NotificationDict[msg.notification];
             Notification notification_obj = msg.notification;
@@ -431,17 +431,14 @@ namespace NRKernal
             if (prefab != null)
             {
                 NRDebugger.Info("[NRNotificationListener] Dispath:" + notification_obj.GetType().ToString());
-                NRNotificationWindow notification = Instantiate(prefab, transform);
+                NRNotificationWindow notification = Instantiate(prefab);
                 notification.gameObject.SetActive(true);
-
-                var localizationGenerator = NRSessionManager.Instance.NotificationMessageGenerator;
-                string content = localizationGenerator?.Invoke(notification_obj.NotificationType, notification_obj);
+                notification.transform.SetParent(transform);
 
                 if (notification_obj is NativeErrorNotification)
                 {
                     string title = ((NativeErrorNotification)notification_obj).ErrorTitle;
-                    if (string.IsNullOrEmpty(content))
-                        content = ((NativeErrorNotification)notification_obj).ErrorContent;
+                    string content = ((NativeErrorNotification)notification_obj).ErrorContent;
                     notification.SetLevle(notification_level)
                                 .SetDuration(duration)
                                 .SetTitle(title)
@@ -453,11 +450,8 @@ namespace NRKernal
                 {
                     notification.SetLevle(notification_level)
                                 .SetDuration(duration)
-                                .SetConfirmAction(onConfirm);
-
-                    if (!string.IsNullOrEmpty(content))
-                        notification.SetContent(content);
-                    notification.Build();
+                                .SetConfirmAction(onConfirm)
+                                .Build();
                 }
             }
         }

@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -31,49 +31,29 @@ namespace NRKernal
 
         /// <summary> Gets hmd time nanos. </summary>
         /// <param name="imageHandle"> Handle of the image.</param>
-        /// <param name="camera">      The camera.</param>
+        /// <param name="eye">         The eye.</param>
         /// <returns> The hmd time nanos. </returns>
-        public ulong GetHMDTimeNanos(ulong imageHandle, NativeDevice camera)
+        public ulong GetHMDTimeNanos(ulong imageHandle, int eye)
         {
             return 0;
         }
 
-        /// <summary> Get exposure time. </summary>
-        /// <param name="imageHandle"> Handle of the image. </param>
-        /// <param name="camera">      The camera. </param>
-        /// <returns> Exposure time of the image. </returns>
-        public UInt32 GetExposureTime(UInt64 imageHandle, NativeDevice camera)
-        {
-            UInt32 exposureTime = 0;
-            return exposureTime;
-        }
-
-        /// <summary> Get Gain. </summary>
-        /// <param name="imageHandle"> Handle of the image. </param>
-        /// <param name="camera">      The camera. </param>
-        /// <returns> Gain of the image. </returns>
-        public UInt32 GetGain(UInt64 imageHandle, NativeDevice camera)
-        {
-            UInt32 gain = 0;
-            return gain;
-        }
-
         /// <summary> Gets raw data. </summary>
         /// <param name="imageHandle"> Handle of the image.</param>
-        /// <param name="camera">      The camera.</param>
+        /// <param name="eye">         The eye.</param>
         /// <param name="ptr">         [in,out] The pointer.</param>
         /// <param name="size">        [in,out] The size.</param>
         /// <returns> True if it succeeds, false if it fails. </returns>
-        public bool GetRawData(ulong imageHandle, NativeDevice camera, ref IntPtr ptr, ref int size)
+        public bool GetRawData(ulong imageHandle, int eye, ref IntPtr ptr, ref int size)
         {
             return true;
         }
 
         /// <summary> Gets a resolution. </summary>
         /// <param name="imageHandle"> Handle of the image.</param>
-        /// <param name="camera">      The camera.</param>
+        /// <param name="eye">         The eye.</param>
         /// <returns> The resolution. </returns>
-        public NativeResolution GetResolution(ulong imageHandle, NativeDevice camera)
+        public NativeResolution GetResolution(ulong imageHandle, int eye)
         {
             return new NativeResolution(1280, 720);
         }
@@ -105,20 +85,6 @@ namespace NRKernal
         /// <summary> Starts a capture. </summary>
         /// <returns> True if it succeeds, false if it fails. </returns>
         public bool StartCapture()
-        {
-            return true;
-        }
-
-        /// <summary> Pause a capture. </summary>
-        /// <returns> True if it succeeds, false if it fails. </returns>
-        public bool PauseCapture()
-        {
-            return true;
-        }
-
-        /// <summary> Resume a capture. </summary>
-        /// <returns> True if it succeeds, false if it fails. </returns>
-        public bool ResumeCapture()
         {
             return true;
         }

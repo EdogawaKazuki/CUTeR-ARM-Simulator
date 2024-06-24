@@ -1,27 +1,23 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
 using UnityEngine;
-using System;
+
 namespace NRKernal
 {
     /// <summary> A single ton. </summary>
     /// <typeparam name="T"> Generic type parameter.</typeparam>
     public class SingleTon<T> where T : new()
     {
-        private static T instane = default(T);
-        public static void CreateInstance()
+        private class SingletonHoledr
         {
-            if(instane == null)
-            {
-                instane = new T();
-            }
+            public static readonly T instance = new T();
         }
 
         /// <summary> Gets the instance. </summary>
@@ -30,11 +26,7 @@ namespace NRKernal
         {
             get
             {
-                if(instane == null)
-                {
-                    CreateInstance();
-                }
-                return instane;
+                return SingletonHoledr.instance;
             }
         }
     }

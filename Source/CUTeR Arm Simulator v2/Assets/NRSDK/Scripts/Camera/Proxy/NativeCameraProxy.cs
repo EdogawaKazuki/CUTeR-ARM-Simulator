@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -37,9 +37,6 @@ namespace NRKernal
         protected int m_LastFrame = -1;
         /// <summary> True if is playing, false if not. </summary>
         protected bool m_IsPlaying = false;
-
-        /// <summary> True if paused, false if not</summary>
-        protected bool m_IsPaused = false;
         /// <summary> Gets a value indicating whether this object is camera playing. </summary>
         /// <value> True if this object is camera playing, false if not. </value>
         public bool IsCamPlaying
@@ -48,19 +45,6 @@ namespace NRKernal
             {
                 return m_IsPlaying;
             }
-        }
-
-        /// <summary> Interface of external frame consumer. </summary>
-        public interface IExternFrameConsumer
-        {
-            void UpdateFrame(NativeDevice device, FrameRawData frame);
-        }
-
-        protected IExternFrameConsumer m_ExternFrameConsumer;
-
-        public void RegisterFrameConsumer(IExternFrameConsumer consumer)
-        {
-            m_ExternFrameConsumer = consumer;
         }
 
         /// <summary> Queue of fixed sized. </summary>
@@ -161,7 +145,7 @@ namespace NRKernal
             {
                 return;
             }
-            NRDebugger.Info("[NativeCameraProxy] Initialize");
+            NRDebugger.Info("[CameraController] Initialize");
             if (FramePool == null)
             {
                 FramePool = new ObjectPool();
@@ -241,7 +225,7 @@ namespace NRKernal
             }
 
             m_IsImageFormatSet = CameraDataProvider.SetImageFormat(format);
-            NRDebugger.Info("[NativeCameraProxy] SetImageFormat : " + format.ToString());
+            NRDebugger.Info("[CameraController] SetImageFormat : " + format.ToString());
         }
 
         /// <summary> Start to play camera. </summary>
@@ -259,12 +243,12 @@ namespace NRKernal
 
             m_IsPlaying = true;
 
-            NRDebugger.Info("[NativeCameraProxy] StartCapture begin.");
+            NRDebugger.Info("[CameraController] StartCapture begin.");
             //System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
             //stopwatch.Start();
             CameraDataProvider.StartCapture();
-            NRDebugger.Info("[NativeCameraProxy] StartCapture end.");
-            //NRDebugger.Info("[NativeCameraProxy] Start to play, result:{0} cost:{1}ms", m_IsPlaying, stopwatch.ElapsedMilliseconds);
+            NRDebugger.Info("[CameraController] StartCapture end.");
+            //NRDebugger.Info("[CameraController] Start to play, result:{0} cost:{1}ms", m_IsPlaying, stopwatch.ElapsedMilliseconds);
         }
 
         /// <summary> Query if this object has frame. </summary>
@@ -315,33 +299,11 @@ namespace NRKernal
             if (result)
             {
                 m_CameraFrames.Enqueue(frame);
-                if (m_ExternFrameConsumer != null)
-                {
-                    m_ExternFrameConsumer.UpdateFrame(NativeDevice.RGB_CAMERA,  frame);
-                }
             }
             else
             {
                 FramePool.Put<FrameRawData>(frame);
             }
-        }
-
-        public void Pause()
-        {
-            if (!m_IsPlaying || m_IsPaused)
-                return;
-
-            m_IsPaused = true;
-            CameraDataProvider.PauseCapture();
-        }
-
-        public void Resume()
-        {
-            if (!m_IsPlaying || !m_IsPaused)
-                return;
-
-            m_IsPaused = false;
-            CameraDataProvider.ResumeCapture();
         }
 
         /// <summary> Stop the camera. </summary>
@@ -356,12 +318,12 @@ namespace NRKernal
             if (m_ActiveTextures.Count == 0)
             {
                 m_IsPlaying = false;
-                NRDebugger.Info("[NativeCameraProxy] StopCapture begin.");
+                NRDebugger.Info("[CameraController] StopCapture begin.");
                 //System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 //stopwatch.Start();
                 CameraDataProvider.StopCapture();
-                NRDebugger.Info("[NativeCameraProxy] StopCapture end.");
-                //NRDebugger.Info("[NativeCameraProxy] Stop rgbcamera, result:{0} cost:{1}ms", m_IsPlaying, stopwatch.ElapsedMilliseconds);
+                NRDebugger.Info("[CameraController] StopCapture end.");
+                //NRDebugger.Info("[CameraController] Stop rgbcamera, result:{0} cost:{1}ms", m_IsPlaying, stopwatch.ElapsedMilliseconds);
                 Release();
             }
         }
@@ -374,7 +336,7 @@ namespace NRKernal
                 return;
             }
 
-            NRDebugger.Info("[NativeCameraProxy] Release");
+            NRDebugger.Info("[CameraController] Start to Release");
             CameraDataProvider.Release();
             m_CameraFrames.Clear();
             m_CameraFrames = null;

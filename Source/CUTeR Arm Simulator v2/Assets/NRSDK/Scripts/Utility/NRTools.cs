@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -87,13 +87,6 @@ namespace NRKernal
         {
             TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToUInt64(ts.TotalMilliseconds);
-        }
-
-        /// <summary> Gets time stamp. </summary>
-        /// <returns> The time stamp. </returns>
-        public static ulong GetTimeStampNanos()
-        {
-            return GetTimeStamp() * 1000000;
         }
         #endregion
     }

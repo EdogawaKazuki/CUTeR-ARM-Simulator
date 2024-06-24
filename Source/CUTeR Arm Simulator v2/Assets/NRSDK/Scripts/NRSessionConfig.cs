@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -11,7 +11,6 @@ namespace NRKernal
 {
     using UnityEngine;
     using UnityEngine.Serialization;
-	using System.Collections.Generic;
 
     /// <summary> A configuration used to track the world. </summary>
     [CreateAssetMenu(fileName = "NRKernalSessionConfig", menuName = "NRSDK/SessionConfig", order = 1)]
@@ -35,20 +34,6 @@ namespace NRKernal
         /// <summary> Chooses whether notification will be used. </summary>
         [Tooltip("Chooses whether notification will be used.")]
         public bool EnableNotification = false;
-        
-        /// <summary> Chooses whether to kill process while receive OnGlassesDisconnectEvent for NOTIFY_TO_QUIT_APP reason. </summary>
-        [Tooltip("Chooses whether to force kill while receive OnGlassesDisconnectEvent for NOTIFY_TO_QUIT_APP reason.")]
-        public bool ForceKillWhileGlassesSwitchMode = true;
-        
-#if ENABLE_MONO_MODE
-        /// <summary> Chooses  whether to support to run in mono mode.")]. </summary>
-        [Tooltip("Chooses whether to support to run in mono mode.")]
-        public bool SupportMonoMode = false;
-#else
-        public bool SupportMonoMode { 
-            get { return false; }
-        }
-#endif
 
         /// <summary> An error prompt will pop up when the device fails to connect. </summary>
         [Tooltip("An error prompt will pop up when the device fails to connect.")]
@@ -59,30 +44,10 @@ namespace NRKernal
         public NRTrackingModeChangedTip TrackingModeChangeTipPrefab;
 
         /// <summary> It will be read automatically from PlayerdSetting. </summary>
-        [Tooltip("It will be read automatically from PlayerdSetting.")]
+        [Tooltip("It will be read automatically from PlayerdSetting. ")]
+        [HideInInspector]
         public bool UseMultiThread = false;
-        
-        /// <summary> The NRProjectConfig whick is global unique. All NRSessionConfig in project should refer to the same NRProjectConfig. </summary>
-        [SerializeField]
-        [Tooltip("Donot change this manually, it always refer to the NRProjectConfig whick is global unique.")]
-        NRProjectConfig ProjectConfig;
 
-        public NRProjectConfig GlobalProjectConfig
-        {
-            get
-            {
-                return ProjectConfig;
-            }
-        }
-
-        /// <summary> whether to support to run in multi-resume mode. </summary>
-        public bool SupportMultiResume
-        {
-            get
-            {
-                return ProjectConfig.supportMultiResume;
-            }
-        }
 
         /// <summary> ValueType check if two NRSessionConfig objects are equal. </summary>
         /// <param name="other"> .</param>
@@ -103,9 +68,6 @@ namespace NRKernal
                 return false;
             }
 
-            if (ProjectConfig != otherConfig.ProjectConfig)
-                return false;
-
             return true;
         }
 
@@ -120,39 +82,13 @@ namespace NRKernal
         /// <param name="other"> .</param>
         public void CopyFrom(NRSessionConfig other)
         {
-            PlaneFindingMode                = other.PlaneFindingMode;
-            ImageTrackingMode               = other.ImageTrackingMode;
-            TrackingImageDatabase           = other.TrackingImageDatabase;
-            GlassesErrorTipPrefab           = other.GlassesErrorTipPrefab;
-            TrackingModeChangeTipPrefab     = other.TrackingModeChangeTipPrefab;
-            EnableNotification              = other.EnableNotification;
-            ForceKillWhileGlassesSwitchMode = other.ForceKillWhileGlassesSwitchMode;
-#if ENABLE_MONO_MODE
-            SupportMonoMode                 = other.SupportMonoMode;
-#endif
-            ProjectConfig                   = other.ProjectConfig;
+            PlaneFindingMode = other.PlaneFindingMode;
+            ImageTrackingMode = other.ImageTrackingMode;
+            TrackingImageDatabase = other.TrackingImageDatabase;
+            GlassesErrorTipPrefab = other.GlassesErrorTipPrefab;
+            TrackingModeChangeTipPrefab = other.TrackingModeChangeTipPrefab;
+            UseMultiThread = other.UseMultiThread;
+            EnableNotification = other.EnableNotification;
         }
-
-        public bool IsTargetDevice(NRDeviceCategory device)
-        {
-            return ProjectConfig ? ProjectConfig.targetDevices.Contains(device) : false;
-        }
-
-        public string GetTargetDeviceTypesDesc()
-        {
-            return ProjectConfig ? ProjectConfig.GetTargetDeviceTypesDesc() : string.Empty;
-        }
-        
-#if UNITY_EDITOR
-        public void SetProjectConfig(NRProjectConfig projectConfig)
-        {
-            ProjectConfig = projectConfig;
-        }
-
-        public void SetUseMultiThread(bool useMultiThread)
-        {
-            UseMultiThread = useMultiThread;
-        }
-#endif
     }
 }

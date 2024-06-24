@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -12,12 +12,8 @@ namespace NRKernal.Record
     using System;
     using UnityEngine;
 
-    public interface IEncoderBase
-    {
-        
-    }
     /// <summary> Interface for encoder. </summary>
-    public interface IEncoder : IEncoderBase
+    public interface IEncoder
     {
         /// <summary> Configurations the given parameter. </summary>
         /// <param name="param"> The parameter.</param>

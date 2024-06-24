@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8ba17751ad4107a50fa1415017b6b1, type: 3}
   m_Name: CUTeR Arm Simulator
   m_EditorClassIdentifier: 
-  automaticStreaming: 1
+  automaticStreaming: 0
   signalingSettings:
     rid: 5545127583390105600
   references:

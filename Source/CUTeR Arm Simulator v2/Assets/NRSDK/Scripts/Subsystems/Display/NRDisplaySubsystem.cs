@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -17,61 +17,78 @@ namespace NRKernal
 
     public class NRDisplaySubsystem : IntegratedSubsystem<NRDisplaySubsystemDescriptor>
     {
-        internal static NativeDisplay NativeDisplay { get; private set; }
+        internal static NativeMultiDisplay NativeMultiDisplay { get; private set; }
 
         public NRDisplaySubsystem(NRDisplaySubsystemDescriptor descriptor) : base(descriptor)
         {
-            NativeDisplay = new NativeDisplay();
-            NRDebugger.Info("[NRDisplaySubsystem] Create");
+            NativeMultiDisplay = new NativeMultiDisplay();
 #if !UNITY_EDITOR
-            NativeDisplay.Create();
+            NativeMultiDisplay.Create();
 #endif
-            NRDebugger.Info("[NRDisplaySubsystem] Created");
         }
 
         public override void Start()
         {
+            if (running)
+            {
+                return;
+            }
+
             base.Start();
 
 #if !UNITY_EDITOR
-            NativeDisplay.Start();
+            NativeMultiDisplay.Start();
 #endif
         }
 
         public override void Pause()
         {
+            if (!running)
+            {
+                return;
+
+            }
+
             base.Pause();
 
 #if !UNITY_EDITOR
-            NativeDisplay.Pause();
+            NativeMultiDisplay.Pause();
 #endif
         }
 
         public override void Resume()
         {
+            if (running)
+            {
+                return;
+            }
+
             base.Resume();
 
 #if !UNITY_EDITOR
-            NativeDisplay.Resume();
+            NativeMultiDisplay.Resume();
 #endif
         }
 
-        public override void Destroy()
+        public override void Stop()
         {
-            base.Destroy();
+            if (!running)
+            {
+                return;
+            }
 
-            NRDebugger.Info("[NRDisplaySubsystem] Destroy");
+            base.Stop();
+
 #if !UNITY_EDITOR
-            NativeDisplay.Stop();
-            NativeDisplay.Destroy();
+            NativeMultiDisplay.Stop();
+            NativeMultiDisplay.Destroy();
 #endif
-            NRDebugger.Info("[NRDisplaySubsystem] Destroyed");
         }
 
         internal void ListenMainScrResolutionChanged(NRDisplayResolutionCallback callback)
         {
 #if !UNITY_EDITOR
-            NativeDisplay.ListenMainScrResolutionChanged(callback);
+            NativeMultiDisplay.ListenMainScrResolutionChanged(callback);
 #endif
         }
     }

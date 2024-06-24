@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -22,10 +22,6 @@ namespace NRKernal.NRExamples
         void Awake()
         {
             m_MeshRender = transform.GetComponent<MeshRenderer>();
-        }
-
-        void Start()
-        {
         }
 
         /// <summary> Updates this object. </summary>

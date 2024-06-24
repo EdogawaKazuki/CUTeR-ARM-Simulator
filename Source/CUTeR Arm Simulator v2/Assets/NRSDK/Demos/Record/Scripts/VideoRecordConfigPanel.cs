@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -43,7 +43,6 @@ namespace NRKernal.NRExamples
         List<string> _AudioStateOptions = new List<string>() {
             NRVideoCapture.AudioState.MicAudio.ToString(),
             NRVideoCapture.AudioState.ApplicationAudio.ToString(),
-            NRVideoCapture.AudioState.ApplicationAndMicAudio.ToString(),
             NRVideoCapture.AudioState.None.ToString()
         };
 

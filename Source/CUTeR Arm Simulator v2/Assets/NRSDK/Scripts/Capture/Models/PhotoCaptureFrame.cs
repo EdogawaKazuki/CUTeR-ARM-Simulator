@@ -1,9 +1,9 @@
-/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+﻿/****************************************************************************
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -65,15 +65,6 @@ namespace NRKernal.Record
         public IntPtr GetUnsafePointerToBuffer()
         {
             return IntPtr.Zero;
-        }
-
-        /// <summary>
-        /// texture data
-        /// </summary>
-        /// <returns></returns>
-        public byte[] TextureData
-        {
-            get { return data; }
         }
 
         /// <summary> Attempts to get camera to world matrix. </summary>

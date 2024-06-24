@@ -1,9 +1,9 @@
 /****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -132,15 +132,13 @@ namespace NRKernal
                 return;
             }
 
-            while (m_UpdateActionQueue.Count > 0)
+            lock (m_LockObject)
             {
-                Action action = null;
-                lock (m_LockObject)
+                while (m_UpdateActionQueue.Count > 0)
                 {
-                    action = m_UpdateActionQueue.Dequeue();
-                }
-                if(action != null)
+                    Action action = m_UpdateActionQueue.Dequeue();
                     action();
+                }
             }
         }
 

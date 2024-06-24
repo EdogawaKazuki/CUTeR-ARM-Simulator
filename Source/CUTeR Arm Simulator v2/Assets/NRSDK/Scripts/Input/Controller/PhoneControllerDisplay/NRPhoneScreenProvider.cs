@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -42,25 +42,6 @@ namespace NRKernal
         public float touch_x;
         public float touch_y;
 
-        public void Reset()
-        {
-            for (int i = 0; i < buttons.Length; i++)
-            {
-                buttons[i] = false;
-            }
-            touch_x = 0.0f;
-            touch_y = 0.0f;
-        }
-
-        public void Set(bool btnApp, bool btnTouch, bool btnHome, float touchX, float touchY)
-        {
-            buttons[0] = btnApp;
-            buttons[1] = btnTouch;
-            buttons[2] = btnHome;
-            touch_x = touchX;
-            touch_y = touchY;
-        }
-
         public SystemInputState TransformTo(SystemInputState unitystate)
         {
             if (unitystate == null)
@@ -70,8 +51,7 @@ namespace NRKernal
             unitystate.buttons[0] = this.buttons[1];
             unitystate.buttons[1] = this.buttons[0];
             unitystate.buttons[2] = this.buttons[2];
-            unitystate.touch.x = this.touch_x;
-            unitystate.touch.y = this.touch_y;
+            unitystate.touch = new Vector2(this.touch_x, this.touch_y);
             return unitystate;
         }
 
@@ -94,7 +74,6 @@ namespace NRKernal
     public interface ISystemButtonStateProvider
     {
         void BindReceiver(ISystemButtonStateReceiver receiver);
-        void Destroy();
     }
 
     public interface ISystemButtonStateReceiver
@@ -120,28 +99,12 @@ namespace NRKernal
             m_UnityActivity = cls_UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             m_AndroidSystemButtonDataProxy = CreateAndroidDataProxy();
             this.RegistFragment(m_UnityActivity, m_AndroidSystemButtonDataProxy);
-            NRKernalUpdater.OnPreUpdate -= OnPreUpdate;
-            NRKernalUpdater.OnPreUpdate += OnPreUpdate;
-        }
-
-        public virtual void Destroy() { }
-
-        public void Pause()
-        {
-            NRKernalUpdater.OnPreUpdate -= OnPreUpdate;
-        }
-
-        public void Resume()
-        {
-            NRKernalUpdater.OnPreUpdate += OnPreUpdate;
         }
 
         public void BindReceiver(ISystemButtonStateReceiver receiver)
         {
             this.m_Receiver = receiver;
         }
-
-        public virtual void OnPreUpdate() { }
 
         public virtual void RegistFragment(AndroidJavaObject unityActivity, ISystemButtonDataProxy proxy) { }
 

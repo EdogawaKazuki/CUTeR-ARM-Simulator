@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -20,8 +20,8 @@ namespace NRKernal
         CONTROLLER_TYPE_EDITOR = 1001,
         /// <summary> An enum constant representing the controller type unknown option. </summary>
         CONTROLLER_TYPE_UNKNOWN = -1,
-        /// <summary> An enum constant representing the controller type xreallight option. </summary>
-        CONTROLLER_TYPE_XREALLIGHT = 0,
+        /// <summary> An enum constant representing the controller type nreallight option. </summary>
+        CONTROLLER_TYPE_NREALLIGHT = 0,
         /// <summary> An enum constant representing the controller type phone option. </summary>
         CONTROLLER_TYPE_PHONE = 1,
         /// <summary> An enum constant representing the controller type hand option. </summary>
@@ -29,12 +29,11 @@ namespace NRKernal
     }
 
     /// <summary> Values that represent controller available features. </summary>
-    [Flags]
-    public enum ControllerAvailableFeature : ulong
+    public enum ControllerAvailableFeature
     {
-        /// <summary> The position is available. </summary>
+        /// <summary> The position is avaliable. </summary>
         CONTROLLER_AVAILABLE_FEATURE_POSITION = (1 << 0),
-        /// <summary> The rotation is available. </summary>
+        /// <summary> The rotation is avaliable. </summary>
         CONTROLLER_AVAILABLE_FEATURE_ROTATION = (1 << 1),
         /// <summary>
         /// An enum constant representing the controller available feature gyro option. </summary>
@@ -62,8 +61,6 @@ namespace NRKernal
     /// <summary> Values that represent controller buttons. </summary>
     public enum ControllerButton
     {
-        /// <summary> An enum constant representing the first option. </summary>
-        BEGIN = 1 << 0,
         /// <summary> An enum constant representing the trigger option. </summary>
         TRIGGER = 1 << 0,
         /// <summary> An enum constant representing the Application option. </summary>
@@ -73,9 +70,7 @@ namespace NRKernal
         /// <summary> An enum constant representing the grip option. </summary>
         GRIP = 1 << 3,
         /// <summary> An enum constant representing the touchpad button option. </summary>
-        TOUCHPAD_BUTTON = 1 << 4,
-        /// <summary> An enum constant representing the last option. </summary>
-        END = 1 << 4,
+        TOUCHPAD_BUTTON = 1 << 4
     }
 
     /// <summary> Values that represent controller connection states. </summary>
@@ -291,9 +286,8 @@ namespace NRKernal
         internal void CheckButtonEvents()
         {
             UpdateDeltaTouch();
-            for (int i = (int)ControllerButton.BEGIN; i <= (int)ControllerButton.END; i <<= 1)
+            foreach (ControllerButton button in Enum.GetValues(typeof(ControllerButton)))
             {
-                var button = (ControllerButton)i;
                 if (GetButtonDown(button))
                 {
                     if (m_LastDownTimeDict.ContainsKey(button))

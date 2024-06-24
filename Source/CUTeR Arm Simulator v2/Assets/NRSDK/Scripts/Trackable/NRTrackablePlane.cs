@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -13,7 +13,7 @@ namespace NRKernal
     using System.Collections.Generic;
     using UnityEngine;
 
-    /// <summary> A plane in the real world detected by NRInternal. </summary>
+    /// <summary> A plane in the real world detected by NRInternel. </summary>
     public class NRTrackablePlane : NRTrackable
     {
         internal NRPlaneSubsystem PlaneSubsystem

@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -55,8 +55,8 @@ namespace NRKernal
         {
             if (Trackable == null)
             {
-                NRDebugger.Error("NRAnchor components instantiated outside of NRInternal are not supported. " +
-                    "Please use a 'Create' method within NRInternal to instantiate anchors.");
+                NRDebugger.Error("NRAnchor components instantiated outside of NRInternel are not supported. " +
+                    "Please use a 'Create' method within NRInternel to instantiate anchors.");
                 return;
             }
 

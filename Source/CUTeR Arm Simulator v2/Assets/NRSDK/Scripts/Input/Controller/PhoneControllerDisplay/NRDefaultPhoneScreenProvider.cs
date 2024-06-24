@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -14,7 +14,6 @@ namespace NRKernal
 
     public class NRDefaultPhoneScreenProvider : NRPhoneScreenProviderBase
     {
-        SystemButtonState m_buttonState = new SystemButtonState();
         private static AndroidJavaObject m_VirtualDisplayFragment;
         public class AndroidSystemButtonDataProxy : AndroidJavaProxy, ISystemButtonDataProxy
         {
@@ -40,33 +39,6 @@ namespace NRKernal
             }
         }
 
-        public override void OnPreUpdate()
-        {
-            base.OnPreUpdate();
-            m_buttonState.Reset();
-
-            var data = m_VirtualDisplayFragment.Call<AndroidJavaObject>("GetSystemButtonState");
-            if (data != null)
-            {
-                bool btnApp = data.Call<bool>("GetButtonApp");
-                bool btnTouch = data.Call<bool>("GetButtonTouch");
-                bool btnHome = data.Call<bool>("GetButtonHome");
-                float touchX = data.Call<float>("GetTouchX");
-                float touchY = data.Call<float>("GetTouchY");
-                m_buttonState.Set(btnApp, btnTouch, btnHome, touchX, touchY);
-
-                OnSystemButtonDataChanged(m_buttonState);
-                
-                data.Dispose();
-            }
-        }
-
-        public override void Destroy()
-        {
-            NRDebugger.Info("[VirtualController] Destroy");
-            m_VirtualDisplayFragment.Call("destroy");
-        }
-
         public override void RegistFragment(AndroidJavaObject unityActivity, ISystemButtonDataProxy proxy)
         {
             NRDebugger.Info("[VirtualController] RegistFragment...");
@@ -84,8 +56,7 @@ namespace NRKernal
 
         public override ISystemButtonDataProxy CreateAndroidDataProxy()
         {
-            // return new AndroidSystemButtonDataProxy(this);
-            return null;
+            return new AndroidSystemButtonDataProxy(this);
         }
     }
 }

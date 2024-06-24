@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -34,9 +34,6 @@ namespace NRKernal
         /// <summary> Number of. </summary>
         private int m_Count;
 
-        /// <summary> Current time. </summary>
-        private static float m_CurrentTime;
-
         /// <summary> True once initialization is complete. </summary>
         private static bool m_Initialized;
 
@@ -45,7 +42,6 @@ namespace NRKernal
 
         /// <summary> The actions. </summary>
         private List<Action> m_Actions = new List<Action>();
-        private List<Action> m_RunningActions = new List<Action>();
 
         /// <summary> The delayed. </summary>
         private List<MainThreadDispather.DelayedQueueItem> m_Delayed = new List<MainThreadDispather.DelayedQueueItem>();
@@ -92,7 +88,6 @@ namespace NRKernal
                 UnityEngine.Object.DontDestroyOnLoad(MainThreadDispather.m_Current);
                 MainThreadDispather.m_Initialized = true;
                 MainThreadDispather.m_ThreadId = Thread.CurrentThread.ManagedThreadId;
-                MainThreadDispather.m_CurrentTime = Time.time;
             }
         }
 
@@ -121,7 +116,7 @@ namespace NRKernal
                 {
                     MainThreadDispather.Current.m_Delayed.Add(new MainThreadDispather.DelayedQueueItem
                     {
-                        time = m_CurrentTime + time,
+                        time = Time.time + time,
                         action = action
                     });
                 }
@@ -156,20 +151,17 @@ namespace NRKernal
         /// <summary> Updates this object. </summary>
         private void Update()
         {
-            MainThreadDispather.m_CurrentTime = Time.time;
-            if (m_Actions.Count > 0)
+            List<Action> actions = this.m_Actions;
+            if (actions.Count > 0)
             {
-                lock (m_Actions)
+                lock (actions)
                 {
-                    m_RunningActions.AddRange(m_Actions);
-                    m_Actions.Clear();
+                    for (int i = 0; i < this.m_Actions.Count; i++)
+                    {
+                        this.m_Actions[i]();
+                    }
+                    this.m_Actions.Clear();
                 }
-
-                for (int i = 0; i < m_RunningActions.Count; i++)
-                {
-                    m_RunningActions[i]();
-                }
-                m_RunningActions.Clear();
             }
 
             List<MainThreadDispather.DelayedQueueItem> delayed = this.m_Delayed;
@@ -180,20 +172,14 @@ namespace NRKernal
                     for (int j = 0; j < this.m_Delayed.Count; j++)
                     {
                         MainThreadDispather.DelayedQueueItem delayedQueueItem = this.m_Delayed[j];
-                        if (delayedQueueItem.time <= MainThreadDispather.m_CurrentTime)
+                        if (delayedQueueItem.time <= Time.time)
                         {
-                            m_RunningActions.Add(delayedQueueItem.action);
+                            delayedQueueItem.action();
                             this.m_Delayed.RemoveAt(j);
                             j--;
                         }
                     }
                 }
-
-                for (int i = 0; i < m_RunningActions.Count; i++)
-                {
-                    m_RunningActions[i]();
-                }
-                m_RunningActions.Clear();
             }
         }
     }

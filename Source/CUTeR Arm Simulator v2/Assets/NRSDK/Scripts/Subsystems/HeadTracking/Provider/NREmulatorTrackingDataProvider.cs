@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -15,7 +15,7 @@ namespace NRKernal
     public class NREmulatorTrackingDataProvider : ITrackingDataProvider
     {
         private NREmulatorHeadPose m_NREmulatorHeadPose;
-        private GameObject m_NREmulatorManager;
+
         public NREmulatorTrackingDataProvider() { }
 
         public void Start()
@@ -25,7 +25,7 @@ namespace NRKernal
                 if (!NREmulatorManager.Inited && !GameObject.Find("NREmulatorManager"))
                 {
                     NREmulatorManager.Inited = true;
-                    m_NREmulatorManager = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/NREmulatorManager"));
+                    GameObject.Instantiate(Resources.Load("Prefabs/NREmulatorManager"));
                 }
                 if (!GameObject.Find("NREmulatorHeadPos"))
                 {
@@ -40,29 +40,15 @@ namespace NRKernal
 
         public void Resume() { }
 
-        public void Destroy() 
-        {
-            if (m_NREmulatorHeadPose != null)
-            {
-                GameObject.Destroy(m_NREmulatorHeadPose.gameObject);
-                m_NREmulatorHeadPose = null;
-            }
-            if (m_NREmulatorManager != null)
-            {
-                GameObject.Destroy(m_NREmulatorManager);
-                m_NREmulatorManager = null;
-            }
-            NREmulatorManager.Inited = false;
-        }
+        public void Stop() { }
 
-        public bool GetFramePresentHeadPose(ref Pose pose, ref LostTrackingReason lostReason, ref ulong timestamp)
+        public bool GetFramePresentHeadPose(ref Pose pose, ref ulong timestamp)
         {
             if (m_NREmulatorHeadPose == null)
             {
                 return false;
             }
             pose = m_NREmulatorHeadPose.headPose;
-            lostReason = LostTrackingReason.NONE;
             timestamp = NRTools.GetTimeStamp();
             return true;
         }
@@ -77,24 +63,27 @@ namespace NRKernal
             return true;
         }
 
-        public bool InitTrackingType(TrackingType type)
+        public LostTrackingReason GetTrackingLostReason()
+        {
+            if (m_NREmulatorHeadPose == null)
+            {
+                return LostTrackingReason.INITIALIZING;
+            }
+            return LostTrackingReason.NONE;
+        }
+
+        public bool InitTrackingMode(TrackingMode mode)
         {
             return true;
         }
 
-        public bool SwitchTrackingType(TrackingType type)
+        public bool SwitchTrackingMode(TrackingMode mode)
         {
             return true;
         }
 
         public void Recenter() { }
 
-        public bool GetFramePresentTimeByCount(uint count, ref ulong timeStamp)
-        {
-            timeStamp = NRTools.GetTimeStamp();
-			return true;
-		}
-		
         public ulong GetHMDTimeNanos()
         {
             return 0;

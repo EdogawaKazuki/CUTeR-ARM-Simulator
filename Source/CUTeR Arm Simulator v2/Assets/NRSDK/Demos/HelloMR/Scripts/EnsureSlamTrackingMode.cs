@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -17,42 +17,34 @@ namespace NRKernal.NRExamples
     {
         /// <summary> Type of the tracking. </summary>
         [SerializeField]
-        private TrackingType m_TrackingType = TrackingType.Tracking6Dof;
+        private NRHMDPoseTracker.TrackingType m_TrackingType = NRHMDPoseTracker.TrackingType.Tracking6Dof;
 
         /// <summary> Starts this object. </summary>
         void Start()
         {
-            m_TrackingType = NRHMDPoseTracker.AdaptTrackingType(m_TrackingType);
-            StartCoroutine(EnsureTrackingType());
+            StartCoroutine(EnsureTrackingType(m_TrackingType));
         }
 
-        private IEnumerator EnsureTrackingType()
+        private IEnumerator EnsureTrackingType(NRHMDPoseTracker.TrackingType type)
         {
             WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
-            if (m_TrackingType == TrackingType.Tracking0Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
+            if (m_TrackingType == NRHMDPoseTracker.TrackingType.Tracking0Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
             {
-                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0Dof())
+                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0Dof(null))
                 {
                     yield return waitForEndOfFrame;
                 }
             }
-            else if (m_TrackingType == TrackingType.Tracking0DofStable && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
+            else if (m_TrackingType == NRHMDPoseTracker.TrackingType.Tracking3Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
             {
-                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0DofStable())
+                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo3Dof(null))
                 {
                     yield return waitForEndOfFrame;
                 }
             }
-            else if (m_TrackingType == TrackingType.Tracking3Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
+            else if (m_TrackingType == NRHMDPoseTracker.TrackingType.Tracking6Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
             {
-                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo3Dof())
-                {
-                    yield return waitForEndOfFrame;
-                }
-            }
-            else if (m_TrackingType == TrackingType.Tracking6Dof && NRSessionManager.Instance.NRHMDPoseTracker.TrackingMode != m_TrackingType)
-            {
-                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo6Dof())
+                while (!NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo6Dof(null))
                 {
                     yield return waitForEndOfFrame;
                 }

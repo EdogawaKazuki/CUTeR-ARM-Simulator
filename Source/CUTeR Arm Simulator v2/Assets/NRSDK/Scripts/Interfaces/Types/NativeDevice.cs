@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -29,30 +29,14 @@ namespace NRKernal
 
         /// <summary> 
         ///  The left grayscale camera.
-        ///  Only supported in the version of Enterprise.
+        ///  Only supported in the version of preview.
         /// </summary>
         LEFT_GRAYSCALE_CAMERA = 3,
 
         /// <summary> 
         ///  The right grayscale camera.
-        ///  Only supported in the version of Enterprise.
+        ///  Only supported in the version of preview.
         /// </summary>
         RIGHT_GRAYSCALE_CAMERA = 4,
-
-        /// <summary> 
-        ///  The magnetic of HMD.
-        ///  Only supported in the version of Enterprise.
-        /// </summary>
-        MAGENTICE = 5,
-
-        /// <summary> 
-        ///  The center of the displays.
-        /// </summary>
-        HEAD_CENTER = 6,
-
-        /// <summary> 
-        ///  The imu of HMD.
-        /// </summary>
-        IMU = 7,
     }
 }

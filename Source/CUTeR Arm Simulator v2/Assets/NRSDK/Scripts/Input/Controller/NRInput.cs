@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -44,8 +44,8 @@ namespace NRKernal
     {
         /// <summary> An enum constant representing the none option. </summary>
         None = 0,
-        /// <summary> An enum constant representing the xreal light option. </summary>
-        XrealLight = 1,
+        /// <summary> An enum constant representing the nreal light option. </summary>
+        NrealLight = 1,
         /// <summary> An enum constant representing the phone option. </summary>
         Phone = 2
     }
@@ -56,7 +56,7 @@ namespace NRKernal
     /// could be custom, then the controllerProvider iteself would define how to update the
     /// controller states, so that every frame NRInput could get the right states.There are max two
     /// states for one controllerProvider. </summary>
-    [HelpURL("https://xreal.gitbook.io/nrsdk/nrsdk-fundamentals/xreal-devices/controller")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/controller")]
     [ScriptOrder(NativeConstants.NRINPUT_ORDER)]
     public partial class NRInput : SingletonBehaviour<NRInput>
     {
@@ -143,16 +143,16 @@ namespace NRKernal
         /// <summary>
         /// Determine whether to show reticle visuals, could be get and set at runtime. </summary>
         /// <value> True if reticle visual active, false if not. </value>
-        public static bool ReticleVisualActive { get { return Instance.m_ReticleVisualActive && !NRMultiResumeMediator.isMultiResumeBackground; } set { Instance.m_ReticleVisualActive = value; } }
+        public static bool ReticleVisualActive { get { return Instance.m_ReticleVisualActive; } set { Instance.m_ReticleVisualActive = value; } }
 
         /// <summary> Determine whether to show laser visuals, could be get and set at runtime. </summary>
         /// <value> True if laser visual active, false if not. </value>
-        public static bool LaserVisualActive { get { return Instance.m_LaserVisualActive && !NRMultiResumeMediator.isMultiResumeBackground ; } set { Instance.m_LaserVisualActive = value; } }
+        public static bool LaserVisualActive { get { return Instance.m_LaserVisualActive; } set { Instance.m_LaserVisualActive = value; } }
 
         /// <summary>
         /// Determine whether to show controller visuals, could be get and set at runtime. </summary>
         /// <value> True if controller visual active, false if not. </value>
-        public static bool ControllerVisualActive { get { return Instance.m_ControllerVisualActive && !NRMultiResumeMediator.isMultiResumeBackground; } set { Instance.m_ControllerVisualActive = value; } }
+        public static bool ControllerVisualActive { get { return Instance.m_ControllerVisualActive; } set { Instance.m_ControllerVisualActive = value; } }
 
         /// <summary> Determine whether enable haptic vibration. </summary>
         /// <value> True if haptic vibration enabled, false if not. </value>
@@ -196,7 +196,7 @@ namespace NRKernal
         public static Transform CameraCenter { get { return Instance.GetCameraCenter(); } }
 
         /// <summary> The HandsManager which controls the hand-tracking. </summary>
-        public static NRHandsManager Hands = new NRHandsManager();
+        public static HandsManager Hands = new HandsManager();
 
         /// <summary> Starts this object. </summary>
         private void Start()
@@ -205,32 +205,13 @@ namespace NRKernal
             {
                 return;
             }
-
-            NRDebugger.Info("[NRInput] Start");
-
-            m_VisualManager = gameObject.AddComponent<ControllerVisualManager>();
-            m_VisualManager.Init(m_States);
-
-            SwitchControllerProvider(ControllerProviderFactory.controllerProviderType);
-
-#if UNITY_EDITOR
-            InitEmulator();
-            m_IsListeningToEditorValidateEvents = true;
-#endif
-            SetInputSourceSafely(m_InputSourceType);
-            NRSessionManager.Instance.NRHMDPoseTracker.OnModeChanged += (result) =>
-            {
-                if (result.success && m_InputSourceType == InputSourceEnum.Hands)
-                    SetInputSourceSafely(m_InputSourceType);
-            };
-
-            NRDebugger.Info("[NRInput] Started");
+            Init();
         }
 
         /// <summary> Executes the 'update' action. </summary>
         private void OnUpdate()
         {
-            if (m_ControllerProvider == null || NRMultiResumeMediator.isMultiResumeBackground)
+            if (m_ControllerProvider == null)
                 return;
             UpdateControllerProvider();
         }
@@ -238,7 +219,7 @@ namespace NRKernal
         /// <summary> Updates the controller provider. </summary>
         private void UpdateControllerProvider()
         {
-            if (m_ControllerProvider.running)
+            if (m_ControllerProvider.Inited)
             {
                 m_ControllerProvider.Update();
                 if (OnControllerStatesUpdated != null)
@@ -249,6 +230,17 @@ namespace NRKernal
                 CheckControllerRecentered();
                 CheckControllerButtonEvents();
             }
+            else
+            {
+                m_ControllerProvider.Update();
+#if !UNITY_EDITOR
+                if (m_ControllerProvider is NRControllerProvider)
+                {
+                    m_DomainHand = ((NRControllerProvider)m_ControllerProvider).GetHandednessType();
+                    NRDebugger.Info("[NRInput] Set default domain hand:" + m_DomainHand);
+                }
+#endif
+            }
         }
 
         /// <summary> Executes the 'enable' action. </summary>
@@ -258,10 +250,8 @@ namespace NRKernal
             {
                 return;
             }
-
-            NRDebugger.Info("[NRInput] OnEnable");
             NRKernalUpdater.OnPostUpdate += OnUpdate;
-            m_ControllerProvider?.Resume();
+            m_ControllerProvider?.OnResume();
         }
 
         /// <summary> Executes the 'disable' action. </summary>
@@ -271,10 +261,8 @@ namespace NRKernal
             {
                 return;
             }
-
-            NRDebugger.Info("[NRInput] OnDisable");
             NRKernalUpdater.OnPostUpdate -= OnUpdate;
-            m_ControllerProvider?.Pause();
+            m_ControllerProvider?.OnPause();
         }
 
 #if UNITY_EDITOR
@@ -308,13 +296,11 @@ namespace NRKernal
         /// <summary> Destroys this object. </summary>
         internal static void Destroy()
         {
-            if (m_ControllerProvider == null)
-                return;
-
-            NRDebugger.Info("[NRInput] Destroy");
-            m_ControllerProvider.Destroy();
-            m_ControllerProvider = null;
-            NRDebugger.Info("[NRInput] Destroyed");
+            if (m_ControllerProvider != null)
+            {
+                m_ControllerProvider.OnDestroy();
+                m_ControllerProvider = null;
+            }
         }
 
         /// <summary>
@@ -323,12 +309,10 @@ namespace NRKernal
         /// base.OnDestroy() to ensure the underlying static Instance reference is properly cleaned up. </summary>
         new void OnDestroy()
         {
-            NRDebugger.Info("[NRInput] OnDestroy");
             if (isDirty)
             {
                 return;
             }
-            NRKernalUpdater.OnPostUpdate -= OnUpdate;
             base.OnDestroy();
             Destroy();
         }
@@ -386,24 +370,37 @@ namespace NRKernal
         }
 
         /// <summary> Executes the 'application pause' action. </summary>
-        internal static void Pause()
+        /// <param name="paused"> True if paused.</param>
+        private void OnApplicationPause(bool paused)
         {
-            if (m_ControllerProvider == null)
+            if (m_ControllerProvider == null || !m_ControllerProvider.Inited)
                 return;
-
-            NRDebugger.Info("[NRInput] Pause");
-            m_ControllerProvider.Pause();
+            if (paused)
+            {
+                m_ControllerProvider.OnPause();
+            }
+            else
+            {
+                m_ControllerProvider.OnResume();
+                m_IgnoreRecenterCallback = true;
+                m_ControllerProvider.Recenter();
+            }
         }
 
-        internal static void Resume()
+        /// <summary> Initializes this object. </summary>
+        private void Init()
         {
-            if (m_ControllerProvider == null)
-                return;
+            NRDebugger.Info("[NRInput] Init");
+            NRDevice.Instance.Init();
+            m_VisualManager = gameObject.AddComponent<ControllerVisualManager>();
+            m_VisualManager.Init(m_States);
+            SwitchControllerProvider(ControllerProviderFactory.controllerProviderType);
 
-            NRDebugger.Info("[NRInput] Resume");
-            m_ControllerProvider.Resume();
-            m_IgnoreRecenterCallback = true;
-            m_ControllerProvider.Recenter();
+#if UNITY_EDITOR
+            InitEmulator();
+            m_IsListeningToEditorValidateEvents = true;
+#endif
+            SetInputSourceSafely(m_InputSourceType);
         }
 
 #if UNITY_EDITOR
@@ -483,15 +480,8 @@ namespace NRKernal
         /// Set the current input source with fallback
         /// </summary>
         /// <param name="inputSourceType"></param>
-        private void SetInputSourceSafely(InputSourceEnum inputSourceType)
+        private static void SetInputSourceSafely(InputSourceEnum inputSourceType)
         {
-            var adaptInputSourceType = AdaptInputSource(inputSourceType);
-            if (adaptInputSourceType != inputSourceType)
-            {
-                NRDebugger.Warning("[NRInput] AutoAdaptInputSource : {0} => {1}", inputSourceType, adaptInputSourceType);
-                inputSourceType = adaptInputSourceType;
-            }
-
             if (SetInputSource(inputSourceType))
             {
                 return;
@@ -501,56 +491,25 @@ namespace NRKernal
             SetInputSource(fallbackInputSourceType);
         }
 
-        /// <summary> Auto adaption for inputSource based on supported feature on current device. </summary>
-        /// <returns> Fallback inputSource. </returns>
-        private InputSourceEnum AdaptInputSource(InputSourceEnum inputSourceType)
-        {
-            if (inputSourceType == InputSourceEnum.Hands && !IsFeatureSupported(NRPerceptionFeature.NR_PERCEPTION_FEATURE_HAND_TRACKING))
-                return InputSourceEnum.Controller;
-
-            return inputSourceType;
-        }
-
-        private bool IsFeatureSupported(NRPerceptionFeature feature)
-        {
-#if UNITY_EDITOR
-            return true;
-#else
-            return (NRSessionManager.Instance.NativeAPI.NativePerception.GetSupportedFeatures() & feature) != 0;
-#endif
-        }
-
         /// <summary>
-        /// To switch the controller provider
+        /// To swith the controller provider
         /// </summary>
         /// <param name="providerType"></param>
         internal static void SwitchControllerProvider(Type providerType)
         {
             if (m_ControllerProvider != null && m_ControllerProvider.GetType() == providerType)
                 return;
-
-            NRDebugger.Info("[NRInput] SwitchControllerProvider: {0} -> {1}", m_ControllerProvider?.GetType(), providerType);
-            var nextControllerProvider = ControllerProviderFactory.GetControllerProvider(providerType);
-            if (nextControllerProvider == null)
-            {
-                nextControllerProvider = ControllerProviderFactory.CreateControllerProvider(providerType, m_States);
-                if (nextControllerProvider != null)
-                {
-                    nextControllerProvider.Start();
-                }
-            }
-
+            var nextControllerProvider = ControllerProviderFactory.GetOrCreateControllerProvider(providerType, m_States);
             if (nextControllerProvider == null)
                 return;
-
             if (m_ControllerProvider != null)
             {
-                m_ControllerProvider.Pause();
+                m_ControllerProvider.OnPause();
             }
             m_ControllerProvider = nextControllerProvider;
             if (m_ControllerProvider != null)
             {
-                m_ControllerProvider.Resume();
+                m_ControllerProvider.OnResume();
             }
         }
 
@@ -577,7 +536,7 @@ namespace NRKernal
             {
                 return false;
             }
-            inputSourceType = Instance.AdaptInputSource(inputSourceType);
+
             bool success = true;
             switch (inputSourceType)
             {

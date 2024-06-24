@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -156,14 +156,6 @@ namespace NRKernal
                         throw new System.IndexOutOfRangeException("Invalid matrix index!");
                 }
             }
-        }
-
-        /// <summary> Convert this object into a string representation. </summary>
-        /// <returns> A string that represents this object. </returns>
-        public override string ToString()
-        {
-            return string.Format("column0:{0}\ncolumn1:{1}\ncolumn2:{2}\n",
-                column0.ToString(), column1.ToString(), column2.ToString());
         }
     }
 }

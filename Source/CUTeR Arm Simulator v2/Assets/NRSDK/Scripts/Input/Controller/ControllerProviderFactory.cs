@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -26,15 +26,25 @@ namespace NRKernal
 #if UNITY_EDITOR
                 return typeof(EditorControllerProvider);
 #else
-                return typeof(NRControllerProvider);
+               return typeof(NRControllerProvider);
 #endif
             }
         }
 
-        /// <summary> Get controller provider. </summary>
+        /// <summary> Creates controller provider. </summary>
+        /// <param name="states"> The states.</param>
+        /// <returns> The new controller provider. </returns>
+        public static ControllerProviderBase CreateControllerProvider(ControllerState[] states)
+        {
+            ControllerProviderBase provider = GetOrCreateControllerProvider(controllerProviderType, states);
+            return provider;
+        }
+
+        /// <summary> Creates controller provider. </summary>
         /// <param name="providerType"> Type of the provider.</param>
-        /// <returns> The cached controller provider. </returns>
-        internal static ControllerProviderBase GetControllerProvider(Type providerType)
+        /// <param name="states">       The states.</param>
+        /// <returns> The new controller provider. </returns>
+        internal static ControllerProviderBase GetOrCreateControllerProvider(Type providerType, ControllerState[] states)
         {
             if (providerType != null)
             {
@@ -42,18 +52,6 @@ namespace NRKernal
                 {
                     return m_ControllerProviderDict[providerType];
                 }
-            }
-            return null;
-        }
-
-        /// <summary> Create controller provider. </summary>
-        /// <param name="providerType"> Type of the provider.</param>
-        /// <param name="states">       The states.</param>
-        /// <returns> The new controller provider. </returns>
-        internal static ControllerProviderBase CreateControllerProvider(Type providerType, ControllerState[] states)
-        {
-            if (providerType != null)
-            {
                 object parserObj = Activator.CreateInstance(providerType, new object[] { states });
                 if (parserObj is ControllerProviderBase)
                 {

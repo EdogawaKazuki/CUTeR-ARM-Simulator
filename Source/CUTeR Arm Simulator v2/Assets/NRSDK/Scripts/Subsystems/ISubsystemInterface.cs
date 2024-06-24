@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -27,9 +27,9 @@ namespace NRKernal
         void Resume();
 
         /// <summary>
-        /// Destroy this instance of a object.
+        /// Stops this instance of a object.
         /// </summary>
-        void Destroy();
+        void Stop();
     }
 
     public interface ISubsystem : ILifecycle
@@ -53,7 +53,5 @@ namespace NRKernal
         /// </summary>
         /// <returns>An instance of ISubsystem. </returns>
         ISubsystem Create();
-
-        void Destroy();
     }
 }

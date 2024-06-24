@@ -5,8 +5,8 @@
     /// <summary> The FPS counter. </summary>
     public class FPSCounter : MonoBehaviour
     {
-        /// <summary> The range of time, in seconds, to collect frames for fps calculation. </summary>
-        public float timeRange = 3;
+        /// <summary> The frame range. </summary>
+        public int frameRange = 60;
 
         /// <summary> Gets or sets the average FPS. </summary>
         /// <value> The average FPS. </value>
@@ -18,54 +18,65 @@
         /// <value> The lowest FPS. </value>
         public int LowestFPS { get; private set; }
 
-        int frameCounter = 0;
-        float lastTimeStamp = 0;
-        float maxFrameTime = 0;
-        float minFrameTime = 1000;
+        /// <summary> Buffer for FPS data. </summary>
+        int[] fpsBuffer;
+        /// <summary> Zero-based index of the FPS buffer. </summary>
+        int fpsBufferIndex;
 
         /// <summary> Updates this object. </summary>
         void Update()
         {
-            ProfileCurFrame();
-            CaculateFPS();
-        }
-
-        /// <summary> Profile current frame. </summary>
-        void ProfileCurFrame()
-        {
-            var curFrameTime = Time.unscaledDeltaTime;
-            if (curFrameTime > maxFrameTime)
-                maxFrameTime = curFrameTime;
-            if (curFrameTime < minFrameTime)
-                minFrameTime = curFrameTime;
-
-
-            frameCounter++;
-        }
-
-        /// <summary> Caculate the fps. </summary>
-        void CaculateFPS()
-        {
-            var curTime = Time.realtimeSinceStartup;
-            if (curTime - lastTimeStamp > timeRange && frameCounter > 0)
+            if (fpsBuffer == null || fpsBuffer.Length != frameRange)
             {
-                AverageFPS = (int)(frameCounter / (curTime - lastTimeStamp));
-                HighestFPS = (int)(1 / minFrameTime);
-                LowestFPS = (int)(1 / maxFrameTime);
-
-                lastTimeStamp = curTime;
-                // NRDebugger.Info("AverageFPS: {0}", AverageFPS);
-                Reset();
+                InitializeBuffer();
             }
-
+            UpdateBuffer();
+            CalculateFPS();
         }
 
-        /// <summary> Reset. </summary>
-        private void Reset()
+        /// <summary> Initializes the buffer. </summary>
+        void InitializeBuffer()
         {
-            frameCounter = 0;
-            maxFrameTime = 0;
-            minFrameTime = 1000;
+            if (frameRange <= 0)
+            {
+                frameRange = 1;
+            }
+            fpsBuffer = new int[frameRange];
+            fpsBufferIndex = 0;
+        }
+
+        /// <summary> Updates the buffer. </summary>
+        void UpdateBuffer()
+        {
+            fpsBuffer[fpsBufferIndex++] = (int)(1f / Time.unscaledDeltaTime);
+            if (fpsBufferIndex >= frameRange)
+            {
+                fpsBufferIndex = 0;
+            }
+        }
+
+        /// <summary> Calculates the FPS. </summary>
+        void CalculateFPS()
+        {
+            int sum = 0;
+            int highest = 0;
+            int lowest = int.MaxValue;
+            for (int i = 0; i < frameRange; i++)
+            {
+                int fps = fpsBuffer[i];
+                sum += fps;
+                if (fps > highest)
+                {
+                    highest = fps;
+                }
+                if (fps < lowest)
+                {
+                    lowest = fps;
+                }
+            }
+            AverageFPS = (int)((float)sum / frameRange);
+            HighestFPS = highest;
+            LowestFPS = lowest;
         }
     }
 }

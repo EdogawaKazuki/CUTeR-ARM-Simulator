@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -41,11 +41,6 @@ namespace NRKernal.Record
                 matrix_data = NRFrame.GetEyeProjectMatrix(out result, m_TargetCamera.nearClipPlane, m_TargetCamera.farClipPlane);
             }
 
-            if (m_DeviceType == NativeDevice.RGB_CAMERA && !NRKernal.NRDevice.Subsystem.IsFeatureSupported(NRSupportedFeature.NR_FEATURE_RGB_CAMERA))
-            {
-                NRDebugger.Warning("[NRCameraInitializer] Auto adaption for DevieType : {0} ==> {1}", m_DeviceType, NativeDevice.LEFT_DISPLAY);
-                m_DeviceType = NativeDevice.LEFT_DISPLAY;
-            }
             var eyeposFromHead = NRFrame.EyePoseFromHead;
             switch (m_DeviceType)
             {
@@ -62,13 +57,6 @@ namespace NRKernal.Record
                     transform.localPosition = eyeposFromHead.REyePose.position;
                     transform.localRotation = eyeposFromHead.REyePose.rotation;
                     NRDebugger.Info("[NRCameraInitializer] Right Camera pos:{0} rotation:{1}", transform.localPosition.ToString(), transform.localRotation.ToString());
-                    break;
-                case NativeDevice.HEAD_CENTER:
-                    m_TargetCamera.projectionMatrix = matrix_data.CEyeMatrix;
-                    NRDebugger.Info("[NRCameraInitializer] Center Camera Project Matrix :" + m_TargetCamera.projectionMatrix.ToString());
-                    transform.localPosition = eyeposFromHead.CEyePose.position;
-                    transform.localRotation = eyeposFromHead.CEyePose.rotation;
-                    NRDebugger.Info("[NRCameraInitializer] Center Camera pos:{0} rotation:{1}", transform.localPosition.ToString(), transform.localRotation.ToString());
                     break;
                 case NativeDevice.RGB_CAMERA:
                     m_TargetCamera.projectionMatrix = matrix_data.RGBEyeMatrix;

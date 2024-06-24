@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -13,32 +13,39 @@ namespace NRKernal.NRExamples
 {
     public class ChangeModeController : MonoBehaviour
     {
-        private void Start()
+        public void ChangeTo0Dof()
         {
-            NRSessionManager.Instance.NRHMDPoseTracker.OnModeChanged += (result) =>
+            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0Dof((result) =>
             {
-                NRDebugger.Info("[ChangeModeController] ChangeMode result:" + result.success);
-            };
+                NRDebugger.Info("[ChangeModeController] ChangeTo0Dof result:" + result.success);
+            });
+        }
+
+
+        public void ChangeTo3Dof()
+        {
+            var hmdPoseTracker = NRSessionManager.Instance.NRHMDPoseTracker;
+            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo3Dof((result) =>
+            {
+                NRDebugger.Info("[ChangeModeController] ChangeTo3Dof result:" + result.success);
+                if (result.success)
+                {
+                    hmdPoseTracker.CacheWorldMatrix();
+                }
+            });
         }
 
         public void ChangeTo6Dof()
         {
-            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo6Dof();
-        }
-
-        public void ChangeTo3Dof()
-        {
-            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo3Dof();
-        }
-
-        public void ChangeTo0Dof()
-        {
-            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0Dof();
-        }
-
-        public void ChangeTo0DofStable()
-        {
-            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo0DofStable();
+            var hmdPoseTracker = NRSessionManager.Instance.NRHMDPoseTracker;
+            NRSessionManager.Instance.NRHMDPoseTracker.ChangeTo6Dof((result) =>
+            {
+                NRDebugger.Info("[ChangeModeController] ChangeTo6Dof result:" + result.success);
+                if (result.success)
+                {
+                    hmdPoseTracker.CacheWorldMatrix();
+                }
+            });
         }
     }
 }

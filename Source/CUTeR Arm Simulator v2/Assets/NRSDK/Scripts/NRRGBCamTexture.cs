@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -21,9 +21,6 @@ namespace NRKernal
         public CameraTextureFrame CurrentFrame;
         /// <summary> The texture. </summary>
         private Texture2D m_Texture;
-        /// <summary> Information describing the raw. </summary>
-        private byte[] m_RawData;
-        public byte[] RawData { get { return m_RawData; } }
 
         /// <summary> Default constructor. </summary>
         public NRRGBCamTexture() : base(CameraImageFormat.RGB_888)
@@ -52,26 +49,17 @@ namespace NRKernal
         }
 
         /// <summary> Load raw texture data. </summary>
-        /// <param name="frame"> .</param>
-        protected override void OnRawDataUpdate(FrameRawData frame)
+        /// <param name="rgbRawDataFrame"> .</param>
+        protected override void OnRawDataUpdate(FrameRawData rgbRawDataFrame)
         {
             if (m_Texture == null)
             {
                 this.m_Texture = CreateTexture();
             }
-            int dataSize = frame.data.Length;
-            if (m_RawData == null || m_RawData.Length != dataSize)
-            {
-                m_RawData = new byte[dataSize];
-            }
-            Array.Copy(frame.data, 0, m_RawData, 0, dataSize);
-             
-            m_Texture.LoadRawTextureData(m_RawData);
+            m_Texture.LoadRawTextureData(rgbRawDataFrame.data);
             m_Texture.Apply();
 
-            CurrentFrame.timeStamp = frame.timeStamp;
-            CurrentFrame.gain = frame.gain;
-            CurrentFrame.exposureTime = frame.exposureTime;
+            CurrentFrame.timeStamp = rgbRawDataFrame.timeStamp;
             CurrentFrame.texture = m_Texture;
 
             OnUpdate?.Invoke(CurrentFrame);
@@ -82,7 +70,6 @@ namespace NRKernal
         {
             GameObject.Destroy(m_Texture);
             this.m_Texture = null;
-            m_RawData = null;
             this.CurrentFrame.texture = null;
         }
     }
