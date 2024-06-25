@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -115,7 +115,7 @@ namespace NRKernal.Record
                         m_EncodeTempTex = new Texture2D(
                             m_CameraParameters.cameraResolutionWidth,
                             m_CameraParameters.cameraResolutionHeight,
-                            TextureFormat.ARGB32,
+                            TextureFormat.RGB24,
                             false
                         );
                     }

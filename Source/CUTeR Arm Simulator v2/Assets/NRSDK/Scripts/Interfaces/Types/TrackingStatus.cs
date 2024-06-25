@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -27,5 +27,24 @@ namespace NRKernal
         /// STOPPED means that NRSDK has stopped tracking, and will never resume tracking. 
         /// </summary>
         Stopped = 2
+    }
+
+    /// <summary> Device Tracking Mode. </summary>
+    public enum TrackingMode
+    {
+        /// <summary>
+        /// 6Dof mode.
+        /// </summary>
+        MODE_6DOF = 0,
+
+        /// <summary>
+        /// 3Dof mode, only rotation.  
+        /// </summary>
+        MODE_3DOF = 1,
+
+        /// <summary>
+        /// 0Dof mode.  
+        /// </summary>
+        MODE_0DOF = 2,
     }
 }

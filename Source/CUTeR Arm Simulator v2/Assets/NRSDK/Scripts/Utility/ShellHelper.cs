@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -33,9 +33,7 @@ namespace NRKernal
 
                 var errorBuilder = new StringBuilder();
                 process.ErrorDataReceived += (sender, ef) => errorBuilder.AppendLine(ef.Data);
-                var outputBuilder = new StringBuilder();
-                process.OutputDataReceived += (sender, de) => outputBuilder.AppendLine(de.Data);
-       
+
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
@@ -44,7 +42,7 @@ namespace NRKernal
                 process.Close();
 
                 // Trims the output strings to make comparison easier.
-                output = outputBuilder.ToString().Trim();
+                output = existcode.ToString();
                 error = errorBuilder.ToString().Trim();
             }
         }

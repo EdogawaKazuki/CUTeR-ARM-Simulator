@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace NRKernal.NRExamples
 {
@@ -48,11 +50,6 @@ namespace NRKernal.NRExamples
         private void ShowRay()
         {
             NRInput.RaycastersActive = true;
-        }
-
-        private void OnDestroy()
-        {
-            StopHandTracking();
         }
     }
 }

@@ -1,4 +1,4 @@
-Shader "Xreal/Instanced-Colored"
+Shader "Nreal/Instanced-Colored"
 {
     Properties
     {

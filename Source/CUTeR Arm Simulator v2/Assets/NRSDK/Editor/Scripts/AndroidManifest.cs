@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited.All rights reserved.
+* Copyright 2019 Nreal Techonology Limited.All rights reserved.
 *
 * This file is part of NRSDK.
 *
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 *
 *****************************************************************************/
 
@@ -101,7 +101,15 @@ namespace NRKernal
             return SelectSingleNode("/manifest/application/activity[intent-filter/action/@android:name='android.intent.action.MAIN' and " +
                     "intent-filter/category/@android:name='android.intent.category.LAUNCHER']", nameSpaceManager);
         }
-        
+
+        /// <summary> Gets activity with information intent. </summary>
+        /// <returns> The activity with information intent. </returns>
+        internal XmlNode GetActivityWithInfoIntent()
+        {
+            return SelectSingleNode("/manifest/application/activity[intent-filter/action/@android:name='android.intent.action.MAIN' and " +
+                   "intent-filter/category/@android:name='android.intent.category.INFO']", nameSpaceManager);
+        }
+
         /// <summary> Sets external storage. </summary>
         /// <param name="flag"> True to flag.</param>
         internal void SetExternalStorage(bool flag)
@@ -169,8 +177,8 @@ namespace NRKernal
                 manifest.AppendChild(child);
                 XmlAttribute newAttribute = CreateAndroidAttribute("name", "android.permission.BLUETOOTH");
                 child.Attributes.Append(newAttribute);
-                // newAttribute = CreateAndroidAttribute("name", "android.permission.BLUETOOTH_ADMIN");
-                // child.Attributes.Append(newAttribute);
+                newAttribute = CreateAndroidAttribute("name", "android.permission.BLUETOOTH_ADMIN");
+                child.Attributes.Append(newAttribute);
             }
             //else
             //{
@@ -194,16 +202,15 @@ namespace NRKernal
         internal void SetSDKMetaData()
         {
             var activity = SelectSingleNode("/manifest/application");
-
-            // metadata for "nreal_sdk
-            var newMetaNRSDK = SelectSingleNode("/manifest/application/meta-data[@android:name='nreal_sdk' and " +
+            var rightmetaData = SelectSingleNode("/manifest/application/meta-data[@android:name='nreal_sdk' and " +
                     "@android:value='true']", nameSpaceManager);
-            var oldMetaNRSDK = SelectSingleNode("/manifest/application/meta-data[@android:name='nreal_sdk']", nameSpaceManager);
-            if (newMetaNRSDK == null)
+
+            var wrongmetaData = SelectSingleNode("/manifest/application/meta-data[@android:name='nreal_sdk']", nameSpaceManager);
+            if (rightmetaData == null)
             {
-                if (oldMetaNRSDK != null)
+                if (wrongmetaData != null)
                 {
-                    activity.RemoveChild(oldMetaNRSDK);
+                    activity.RemoveChild(wrongmetaData);
                 }
                 XmlElement child = CreateElement("meta-data");
                 activity.AppendChild(child);
@@ -213,84 +220,57 @@ namespace NRKernal
                 newAttribute = CreateAndroidAttribute("value", "true");
                 child.Attributes.Append(newAttribute);
             }
-
-            // metadata for "com.nreal.supportDevices"
-            string supportDevices = NRProjectConfigHelper.GetProjectConfig().GetTargetDeviceTypesDesc();
-            var newMetaDevices = SelectSingleNode("/manifest/application/meta-data[@android:name='com.nreal.supportDevices' and " +
-                    "@android:value='']", nameSpaceManager);
-            var oldMetaDevices = SelectSingleNode("/manifest/application/meta-data[@android:name='com.nreal.supportDevices']", nameSpaceManager);
-            if (oldMetaDevices != null)
-                activity.RemoveChild(oldMetaDevices);
-            if (newMetaDevices == null)
-            {
-                XmlElement child = CreateElement("meta-data");
-                activity.AppendChild(child);
-
-                XmlAttribute newAttribute = CreateAndroidAttribute("name", "com.nreal.supportDevices");
-                child.Attributes.Append(newAttribute);
-                newAttribute = CreateAndroidAttribute("value", supportDevices);
-                child.Attributes.Append(newAttribute);
-            }
+            //else
+            //{
+            //    NRDebugger.Info("Already has the sdk meta data.");
+            //}
         }
 
-        /// <summary> Refresh the action.main action:
-        /// while on multi-resume mode, the main and launcher intent is removed from unityPlayerActivity;
-        /// while on none multi-resume mode, the main and launcher intent is added to unityPlayerActivity. </summary>
-        internal void RefreshActivityMainAction(bool supportMultiResume)
+        /// <summary> Sets a pk displayed on launcher. </summary>
+        /// <param name="show"> True to show, false to hide.</param>
+        internal void SetAPKDisplayedOnLauncher(bool show)
         {
-            var activityNode = GetActivityWithLaunchIntent();
-            if (activityNode == null)
+            var activity = GetActivityWithLaunchIntent();
+            if (activity == null)
             {
-                activityNode = SelectSingleNode("/manifest/application/activity[@android:name='com.unity3d.player.UnityPlayerActivity']", nameSpaceManager);
+                activity = GetActivityWithInfoIntent();
             }
 
-            if (activityNode == null)
-                return;
-            
-            // Create or modify intent-filter
-            var intentFilterNode = activityNode.SelectSingleNode("intent-filter", nameSpaceManager);
-            if (supportMultiResume)
-            {
-                if (intentFilterNode == null)
-                    return;
+            var intentfilter = SelectSingleNode("/manifest/application/activity/intent-filter[action/@android:name='android.intent.action.MAIN']", nameSpaceManager);
+            var categoryInfo = SelectSingleNode("/manifest/application/activity/intent-filter/category[@android:name='android.intent.category.INFO']", nameSpaceManager);
+            var categoryLauncher = SelectSingleNode("/manifest/application/activity/intent-filter/category[@android:name='android.intent.category.LAUNCHER']", nameSpaceManager);
 
-                var actionMainNode = intentFilterNode.SelectSingleNode("action[@android:name='android.intent.action.MAIN']", nameSpaceManager);
-                if (actionMainNode != null)
-                    intentFilterNode.RemoveChild(actionMainNode);
-                
-                var launcherNode = intentFilterNode.SelectSingleNode("category[@android:name='android.intent.category.LAUNCHER']", nameSpaceManager);
-                if (launcherNode != null)
-                    intentFilterNode.RemoveChild(launcherNode);
-                if (!intentFilterNode.HasChildNodes)
-                    activityNode.RemoveChild(intentFilterNode);
+            if (show)
+            {
+                // Add launcher category
+                XmlElement newcategory = CreateElement("category");
+                XmlAttribute newAttribute = CreateAndroidAttribute("name", "android.intent.category.LAUNCHER");
+                newcategory.Attributes.Append(newAttribute);
+                if (categoryInfo != null)
+                {
+                    intentfilter.ReplaceChild(newcategory, categoryInfo);
+                }
+                else if (categoryLauncher == null)
+                {
+                    intentfilter.AppendChild(newcategory);
+                }
             }
             else
             {
-                if (intentFilterNode == null)
-                {
-                    // If intent-filter does not exist, create a new one
-                    intentFilterNode = CreateElement("intent-filter");
-                    activityNode.AppendChild(intentFilterNode);
-                }
+                // Add info category
+                XmlElement newcategory = CreateElement("category");
+                XmlAttribute newAttribute = CreateAndroidAttribute("name", "android.intent.category.INFO");
+                newcategory.Attributes.Append(newAttribute);
+                newAttribute = CreateAndroidAttribute("node", "replace", "tools");
+                newcategory.Attributes.Append(newAttribute);
 
-                var actionMainNode = intentFilterNode.SelectSingleNode("action[@android:name='android.intent.action.MAIN']", nameSpaceManager);
-                if (actionMainNode == null)
+                if (categoryLauncher != null)
                 {
-                    // If main action does not exist, create a new one
-                    XmlElement newAction = CreateElement("action");
-                    XmlAttribute newActionAttr = CreateAndroidAttribute("name", "android.intent.action.MAIN");
-                    newAction.Attributes.Append(newActionAttr);
-                    intentFilterNode.AppendChild(newAction);
+                    intentfilter.ReplaceChild(newcategory, categoryLauncher);
                 }
-                
-                var launcherNode = intentFilterNode.SelectSingleNode("category[@android:name='android.intent.category.LAUNCHER']", nameSpaceManager);
-                if (launcherNode == null)
+                else if (categoryInfo == null)
                 {
-                    // If luancher category does not exist, create a new one
-                    XmlElement newCategory = CreateElement("category");
-                    XmlAttribute newLauncherAttr = CreateAndroidAttribute("name", "android.intent.category.LAUNCHER");
-                    newCategory.Attributes.Append(newLauncherAttr);
-                    intentFilterNode.AppendChild(newCategory);
+                    intentfilter.AppendChild(newcategory);
                 }
             }
         }

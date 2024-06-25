@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -38,29 +38,5 @@ namespace NRKernal
         /// The value is positive. </summary>
         [MarshalAs(UnmanagedType.R4)]
         public float bottom_tan;
-
-        public NativeFov4f(float left, float right, float top, float bottom)
-        {
-            left_tan = left;
-            right_tan = right;
-            top_tan = top;
-            bottom_tan = bottom;
-        }
-
-        public float[] ToXRFloats()
-        {
-            return new float[] {
-                left_tan,
-                right_tan,
-                bottom_tan,
-                top_tan,
-            };
-        }
-
-        public override string ToString()
-        {
-            return string.Format("left_tan:{0}, right_tan:{1}, top_tan:{2}, bottom_tan:{3}",
-                left_tan, right_tan, top_tan, bottom_tan);
-        }
     }
 }

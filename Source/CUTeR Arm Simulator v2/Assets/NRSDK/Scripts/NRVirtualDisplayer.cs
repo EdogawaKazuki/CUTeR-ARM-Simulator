@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/         
+* https://www.nreal.ai/         
 * 
 *****************************************************************************/
 
@@ -22,7 +22,7 @@ namespace NRKernal
 #endif
 
     /// <summary> A nr virtual displayer. </summary>
-    [HelpURL("https://developer.xreal.com/develop/unity/customize-phone-controller")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/customize-phone-controller")]
     [ScriptOrder(NativeConstants.NRVIRTUALDISPLAY_ORDER)]
     public class NRVirtualDisplayer : SingletonBehaviour<NRVirtualDisplayer>, ISystemButtonStateReceiver
     {
@@ -31,7 +31,7 @@ namespace NRKernal
         /// </summary>
         public static event Action<Resolution> OnDisplayScreenChangedEvent;
         /// <summary> State of the system button. </summary>
-        [NonSerialized] public static SystemInputState SystemButtonState = new SystemInputState();
+        internal static SystemInputState SystemButtonState = new SystemInputState();
         /// <summary> The camera. </summary>
         [SerializeField] Camera m_UICamera;
         /// <summary> The virtual controller. </summary>
@@ -42,10 +42,13 @@ namespace NRKernal
         private Vector2 m_ScreenResolution;
         /// <summary> Not supported on runtime. </summary>
         private const float ScaleFactor = 1f;
+        /// <summary> The virtual display FPS. </summary>
+        public static int VirtualDisplayFPS = 24;
+        /// <summary> The current time. </summary>
+        private float m_CurrentTime;
 
         public enum DisplayMode
         {
-            None,
             Unity,
             AndroidNative
         }
@@ -75,31 +78,77 @@ namespace NRKernal
         {
             get
             {
+                if (m_Subsystem == null)
+                {
+                    string str_match = NRDisplaySubsystemDescriptor.Name;
+                    List<NRDisplaySubsystemDescriptor> descriptors = new List<NRDisplaySubsystemDescriptor>();
+                    NRSubsystemManager.GetSubsystemDescriptors(descriptors);
+                    foreach (var des in descriptors)
+                    {
+                        if (des.id.Equals(str_match))
+                        {
+                            m_Subsystem = des.Create();
+                        }
+                    }
+                }
+
                 return m_Subsystem;
             }
         }
         /// <summary> Event queue for all listeners interested in OnMultiDisplayInited events. </summary>
         public event Action OnMultiDisplayInitialized;
+        /// <summary> True to run in background. </summary>
+        public static bool RunInBackground = true;
         /// <summary> True if is initialize, false if not. </summary>
         private bool m_IsInitialized = false;
 
-        protected override void Awake() {
-            base.Awake();
-            if (isDirty) return;
-            
-            Debug.Log("[NRVirtualDisplayer] Awake");
-            NRSessionManager.Instance.VirtualDisplayer = this;
+        private void OnApplicationPause(bool pause)
+        {
+            if (!m_IsInitialized || isDirty)
+            {
+                return;
+            }
+
+            if (RunInBackground)
+            {
+                if (pause)
+                {
+                    this.Pause();
+                }
+                else
+                {
+                    this.Resume();
+                }
+            }
+            else
+            {
+                NRDevice.ForceKill();
+            }
         }
 
-        public void StartDisplay()
+        /// <summary> Starts this object. </summary>
+        void Start()
         {
-            if (m_IsInitialized) return;
             if (isDirty) return;
 
-            NRDebugger.Info("[NRVirtualDisplayer] Start.");
+            this.CreateDisplay();
+        }
 
-            // nrdisplay must be created after nrdevice.
-            m_Subsystem = NRFrame.CreateSubsystem<NRDisplaySubsystemDescriptor, NRDisplaySubsystem>(NRDisplaySubsystemDescriptor.Name);
+        private void CreateDisplay()
+        {
+            if (m_IsInitialized) return;
+
+            NRDebugger.Info("[NRVirtualDisplayer] Create display.");
+
+            try
+            {
+                NRDevice.Instance.Init();
+            }
+            catch (Exception e)
+            {
+                NRDebugger.Error("[NRVirtualDisplayer] NRDevice init error:" + e.ToString());
+                throw;
+            }
 
             Subsystem.ListenMainScrResolutionChanged(OnDisplayResolutionChanged);
             Subsystem.Start();
@@ -110,12 +159,12 @@ namespace NRKernal
                 var phoneScreenReplayceTool = FindObjectOfType<NRPhoneDisplayReplayceTool>();
                 if (phoneScreenReplayceTool == null)
                 {
-                    NRDebugger.Info("[NRVirtualDisplayer] Use default phone sceen provider.");
+                    NRDebugger.Info("[NRMultiDisplayManager] Use default phone sceen provider.");
                     this.BindVirtualDisplayProvider(new NRDefaultPhoneScreenProvider());
                 }
                 else
                 {
-                    NRDebugger.Info("[NRVirtualDisplayer] Use replayced phone sceen provider.");
+                    NRDebugger.Info("[NRMultiDisplayManager] Use replayced phone sceen provider.");
                     this.BindVirtualDisplayProvider(phoneScreenReplayceTool.CreatePhoneScreenProvider());
                 }
             }
@@ -128,33 +177,29 @@ namespace NRKernal
 #endif
 
             NRSessionManager.Instance.VirtualDisplayer = this;
-            NRDebugger.Info("[NRVirtualDisplayer] Started");
+            NRDebugger.Info("[NRVirtualDisplayer] Initialize");
             m_IsInitialized = true;
             OnMultiDisplayInitialized?.Invoke();
         }
 
-        public void Pause()
+        private void Pause()
         {
             if (!m_IsInitialized)
             {
                 return;
             }
 
-            NRDebugger.Info("[NRVirtualDisplayer] Pause");
-            Subsystem?.Pause();
-            NRDebugger.Info("[NRVirtualDisplayer] Paused");
+            Subsystem.Pause();
         }
 
-        public void Resume()
+        private void Resume()
         {
             if (!m_IsInitialized)
             {
                 return;
             }
 
-            NRDebugger.Info("[NRVirtualDisplayer] Resume");
-            Subsystem?.Resume();
-            NRDebugger.Info("[NRVirtualDisplayer] Resumed");
+            Subsystem.Resume();
         }
 
         private void Update()
@@ -169,24 +214,42 @@ namespace NRKernal
             }
 #endif
 
+            if (m_DisplayMode == DisplayMode.Unity)
+            {
+                if (Subsystem.running)
+                {
+                    m_CurrentTime += Time.deltaTime;
+                }
+
+                if (Subsystem.running && m_CurrentTime > (1f / VirtualDisplayFPS))
+                {
+                    m_CurrentTime = 0;
+                    m_UICamera?.Render();
+                }
+            }
         }
 
         /// <summary> Destories this object. </summary>
-        public void Destroy()
+        public void Stop()
         {
-            NRDebugger.Info("[NRVirtualDisplayer] Destroy");
-            Subsystem?.Destroy(); 
-            NRFrame.DestroySubsystem<NRDisplaySubsystemDescriptor, NRDisplaySubsystem>(NRDisplaySubsystemDescriptor.Name);
-            m_Subsystem = null;
-            
-            m_ISystemButtonStateProvider?.Destroy();
-            m_ISystemButtonStateProvider = null;
-            NRDebugger.Info("[NRVirtualDisplayer] Destroyed");
+            Subsystem.Stop();
 
 #if UNITY_EDITOR
             m_ControllerScreen?.Release();
             m_ControllerScreen = null;
 #endif
+        }
+
+        /// <summary>
+        /// Base OnDestroy method that destroys the Singleton's unique instance. Called by Unity when
+        /// destroying a MonoBehaviour. Scripts that extend Singleton should be sure to call
+        /// base.OnDestroy() to ensure the underlying static Instance reference is properly cleaned up. </summary>
+        new void OnDestroy()
+        {
+            if (isDirty) return;
+
+            base.OnDestroy();
+            this.Stop();
         }
 
         /// <summary> If m_VirtualController is null, use android native 
@@ -198,21 +261,7 @@ namespace NRKernal
                 return;
             }
 
-            bool targetOSX = false;
-#if UNITY_EDITOR
-            targetOSX = EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.StandaloneOSX;
-#endif
-            if (Application.platform == RuntimePlatform.OSXPlayer || targetOSX)
-            {
-                // No virtual controller on Mac
-                m_DisplayMode = DisplayMode.None;
-                m_ISystemButtonStateProvider = null;
-                if (m_VirtualController != null)
-                {
-                    m_VirtualController.gameObject.SetActive(false);
-                }
-            }
-            else if (provider != null && m_VirtualController == null && Application.platform == RuntimePlatform.Android)
+            if (provider != null && m_VirtualController == null && Application.platform == RuntimePlatform.Android)
             {
                 m_DisplayMode = DisplayMode.AndroidNative;
                 m_ISystemButtonStateProvider = provider;
@@ -233,71 +282,15 @@ namespace NRKernal
                 }
                 SetVirtualDisplayResolution();
                 InitEmulator();
-#endif
-            }
-
-            NRMultiResumeMediator.BroadcastControllerDisplayMode((int)m_DisplayMode);
-            m_ISystemButtonStateProvider?.BindReceiver(this);
-        }
-
-
-        public void ChangeUnityDisplayController(MultiScreenController virtualController, Camera uiCamera)
-        {
-            if (m_DisplayMode != DisplayMode.None)
-            {
-                m_DisplayMode = DisplayMode.Unity;
-                transform.position = Vector3.one * 99999f;
-                m_VirtualController?.gameObject.SetActive(false);
+#else
                 if (m_UICamera != null)
-                    m_UICamera.enabled = false;
-
-
-                virtualController?.gameObject.SetActive(true);
-                if(uiCamera != null)
-                    uiCamera.enabled = true;
-                m_UICamera = uiCamera;
-                m_VirtualController = virtualController;
-
-
-                NRDebugger.Info("[NRVirtualDisplayer] Change unity virtual controller");
-#if UNITY_EDITOR
-                var canvas = transform.GetComponentInChildren<Canvas>();
-                var scaler = canvas.transform.GetComponent<CanvasScaler>();
-                if (scaler != null)
                 {
-                    scaler.enabled = false;
+                    this.m_UICamera.enabled = false;
                 }
-                SetVirtualDisplayResolution();
-                InitEmulator();
 #endif
-
-                NRMultiResumeMediator.BroadcastControllerDisplayMode((int)m_DisplayMode);
-                m_ISystemButtonStateProvider?.BindReceiver(null);
-                m_ISystemButtonStateProvider = virtualController;
-                m_ISystemButtonStateProvider?.BindReceiver(this);
             }
 
-        }
-
-        public void ChangePhoneDisplayController(NRPhoneScreenProviderBase provider)
-        {
-#if !UNITY_EDITOR && UNITY_ANDROID
-            if (m_DisplayMode != DisplayMode.None)
-            {
-                m_DisplayMode = DisplayMode.AndroidNative;
-                m_VirtualController?.gameObject.SetActive(false);
-                if (m_UICamera != null)
-                    m_UICamera.enabled = false;
-
-                m_UICamera = null;
-                m_VirtualController = null;
-
-                NRMultiResumeMediator.BroadcastControllerDisplayMode((int)m_DisplayMode);
-                m_ISystemButtonStateProvider?.BindReceiver(null);
-                m_ISystemButtonStateProvider = provider;
-                m_ISystemButtonStateProvider?.BindReceiver(this);
-            }
-#endif
+            m_ISystemButtonStateProvider?.BindReceiver(this);
         }
 
         public void OnDataReceived(SystemButtonState state)
@@ -381,8 +374,6 @@ namespace NRKernal
         private float m_EmulatorRawImageHeight;
         /// <summary> The emulator phone raw image. </summary>
         private RawImage emulatorPhoneRawImage;
-        /// <summary> The emulator Virtual Controller. </summary>
-        private GameObject emulatorVirtualController;
 
         /// <summary> Gets emulator screen touch. </summary>
         /// <returns> The emulator screen touch. </returns>
@@ -394,9 +385,7 @@ namespace NRKernal
         /// <summary> Initializes the emulator. </summary>
         private void InitEmulator()
         {
-            if (emulatorVirtualController != null)
-                GameObject.Destroy(emulatorVirtualController);
-            emulatorVirtualController = new GameObject("NREmulatorVirtualController");
+            GameObject emulatorVirtualController = new GameObject("NREmulatorVirtualController");
             DontDestroyOnLoad(emulatorVirtualController);
             Canvas controllerCanvas = emulatorVirtualController.AddComponent<Canvas>();
             controllerCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -443,20 +432,5 @@ namespace NRKernal
         }
 #endif
         #endregion
-
-        protected override void OnDestroy()
-        {
-            if (isDirty) return;
-            NRDebugger.Info("[NRVirtualDisplayer] OnDestroy.");
-            base.OnDestroy();
-            Destroy();
-#if UNITY_EDITOR
-            if (emulatorVirtualController != null)
-            {
-                GameObject.Destroy(emulatorVirtualController);
-                emulatorVirtualController = null;
-            }
-#endif
-        }
     }
 }

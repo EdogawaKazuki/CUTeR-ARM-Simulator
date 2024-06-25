@@ -1,37 +1,27 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
 using NRKernal.Record;
 using System;
 using System.IO;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NRKernal.NRExamples
 {
-#if UNITY_ANDROID && !UNITY_EDITOR
-    using GalleryDataProvider = NativeGalleryDataProvider;
-#else
-    using GalleryDataProvider = MockGalleryDataProvider;
-#endif
     /// <summary> A video capture 2 local example. </summary>
-    [HelpURL("https://developer.xreal.com/develop/unity/video-capture")]
+    [HelpURL("https://developer.nreal.ai/develop/unity/video-capture")]
     public class VideoCapture2LocalExample : MonoBehaviour
     {
         [SerializeField] private Button m_PlayButton;
         [SerializeField] private NRPreviewer m_Previewer;
-        [SerializeField] private Slider m_SliderMic;
-        [SerializeField] private Text m_TextMic;
-        [SerializeField] private Slider m_SliderApp;
-        [SerializeField] private Text m_TextApp;
 
         public BlendMode blendMode = BlendMode.Blend;
         public ResolutionLevel resolutionLevel;
@@ -53,53 +43,13 @@ namespace NRKernal.NRExamples
             get
             {
                 string timeStamp = Time.time.ToString().Replace(".", "").Replace(":", "");
-                string filename = string.Format("Xreal_Record_{0}.mp4", timeStamp);
+                string filename = string.Format("Nreal_Record_{0}.mp4", timeStamp);
                 return Path.Combine(Application.persistentDataPath, filename);
             }
         }
 
-        GalleryDataProvider galleryDataTool;
-
         void Awake()
         {
-            if (m_SliderMic != null)
-            {
-                m_SliderMic.maxValue = 5.0f;
-                m_SliderMic.minValue = 0.1f;
-                m_SliderMic.value = 1;
-                m_SliderMic.onValueChanged.AddListener(OnSlideMicValueChange);
-            }
-
-            if (m_SliderApp != null)
-            {
-                m_SliderApp.maxValue = 5.0f;
-                m_SliderApp.minValue = 0.1f;
-                m_SliderApp.value = 1;
-                m_SliderApp.onValueChanged.AddListener(OnSlideAppValueChange);
-            }
-
-            RefreshUIState();
-        }
-
-        void OnSlideMicValueChange(float val)
-        {
-            if (m_VideoCapture != null)
-            {
-                VideoEncoder encoder = m_VideoCapture.GetContext().GetEncoder() as VideoEncoder;
-                if (encoder != null)
-                    encoder.AdjustVolume(RecorderIndex.REC_MIC, val);
-            }
-            RefreshUIState();
-        }
-
-        void OnSlideAppValueChange(float val)
-        {
-            if (m_VideoCapture != null)
-            {
-                VideoEncoder encoder = m_VideoCapture.GetContext().GetEncoder() as VideoEncoder;
-                if (encoder != null)
-                    encoder.AdjustVolume(RecorderIndex.REC_APP, val);
-            }
             RefreshUIState();
         }
 
@@ -145,11 +95,6 @@ namespace NRKernal.NRExamples
         {
             bool flag = m_VideoCapture == null || !m_VideoCapture.IsRecording;
             m_PlayButton.GetComponent<Image>().color = flag ? Color.red : Color.green;
-
-            if (m_TextMic != null && m_SliderMic != null)
-                m_TextMic.text = m_SliderMic.value.ToString();
-            if (m_TextApp != null && m_SliderApp != null)
-                m_TextApp.text = m_SliderApp.value.ToString();
         }
 
         /// <summary> Starts video capture. </summary>
@@ -167,14 +112,14 @@ namespace NRKernal.NRExamples
             cameraParameters.frameRate = cameraResolution.refreshRate;
             cameraParameters.cameraResolutionWidth = cameraResolution.width;
             cameraParameters.cameraResolutionHeight = cameraResolution.height;
-            cameraParameters.pixelFormat = CapturePixelFormat.PNG;
+            cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
             // Set the blend mode.
             cameraParameters.blendMode = blendMode;
             // Set audio state, audio record needs the permission of "android.permission.RECORD_AUDIO",
             // Add it to your "AndroidManifest.xml" file in "Assets/Plugin".
             cameraParameters.audioState = audioState;
 
-            m_VideoCapture.StartVideoModeAsync(cameraParameters, OnStartedVideoCaptureMode, true);
+            m_VideoCapture.StartVideoModeAsync(cameraParameters, OnStartedVideoCaptureMode);
         }
 
         private Resolution GetResolutionByLevel(ResolutionLevel level)
@@ -223,16 +168,7 @@ namespace NRKernal.NRExamples
             }
 
             NRDebugger.Info("Started Video Capture Mode!");
-            if (m_SliderMic != null && m_SliderApp != null)
-            {
-                float volumeMic = m_SliderMic.value;
-                float volumeApp = m_SliderApp.value;
-                m_VideoCapture.StartRecordingAsync(VideoSavePath, OnStartedRecordingVideo, volumeMic, volumeApp);
-            }
-            else
-            {
-                m_VideoCapture.StartRecordingAsync(VideoSavePath, OnStartedRecordingVideo);
-            }
+            m_VideoCapture.StartRecordingAsync(VideoSavePath, OnStartedRecordingVideo);
             // Set preview texture.
             m_Previewer.SetData(m_VideoCapture.PreviewTexture, true);
         }
@@ -279,12 +215,6 @@ namespace NRKernal.NRExamples
             NRDebugger.Info("Stopped Video Capture Mode!");
             RefreshUIState();
 
-            var encoder = m_VideoCapture.GetContext().GetEncoder() as VideoEncoder;
-            string path = encoder.EncodeConfig.outPutPath;
-            string filename = string.Format("Xreal_Shot_Video_{0}.mp4", NRTools.GetTimeStamp().ToString());
-            
-            StartCoroutine(DelayInsertVideoToGallery(path, filename, "Record"));
-
             // Release video capture resource.
             m_VideoCapture.Dispose();
             m_VideoCapture = null;
@@ -295,23 +225,6 @@ namespace NRKernal.NRExamples
             // Release video capture resource.
             m_VideoCapture?.Dispose();
             m_VideoCapture = null;
-        }
-
-        IEnumerator DelayInsertVideoToGallery(string originFilePath, string displayName, string folderName)
-        {
-            yield return new WaitForSeconds(0.1f);
-            InsertVideoToGallery(originFilePath, displayName, folderName);
-        }
-
-        public void InsertVideoToGallery(string originFilePath, string displayName, string folderName)
-        {
-            NRDebugger.Info("InsertVideoToGallery: {0}, {1} => {2}", displayName, originFilePath, folderName);
-            if (galleryDataTool == null)
-            {
-                galleryDataTool = new GalleryDataProvider();
-            }
-
-            galleryDataTool.InsertVideo(originFilePath, displayName, folderName);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -26,11 +26,6 @@ namespace NRKernal
         /// TRACKABLE_IMAGE means the trackable object is a tracking image.
         /// </summary>
         TRACKABLE_IMAGE = 2,
-
-        /// <summary>
-        /// TRACKABLE_ANCHOR means the trackable object is a spatial anchor.
-        /// </summary>
-        TRACKABLE_ANCHOR = 3,
     }
 
     /// <summary> Trackable image's finding mode. </summary>

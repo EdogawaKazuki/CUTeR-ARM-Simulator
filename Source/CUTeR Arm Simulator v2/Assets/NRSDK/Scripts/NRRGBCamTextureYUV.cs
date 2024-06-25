@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -22,10 +22,6 @@ namespace NRKernal
         {
             /// <summary> The time stamp. </summary>
             public UInt64 timeStamp;
-            /// <summary> The gain </summary>
-            public UInt32 gain;
-            /// <summary> The exposureTime </summary>
-            public UInt32 exposureTime;
             /// <summary> The texture y coordinate. </summary>
             public Texture2D textureY;
             /// <summary> The texture u. </summary>
@@ -101,8 +97,7 @@ namespace NRKernal
                 CreateTex();
             }
             m_FrameData.timeStamp = frame.timeStamp;
-            m_FrameData.gain = frame.gain;
-            m_FrameData.exposureTime = frame.exposureTime;
+
             Array.Copy(frame.data, 0, m_FrameData.YBuf, 0, m_FrameData.YBuf.Length);
             Array.Copy(frame.data, m_FrameData.YBuf.Length, m_FrameData.UBuf, 0, m_FrameData.UBuf.Length);
             Array.Copy(frame.data, m_FrameData.YBuf.Length + m_FrameData.UBuf.Length, m_FrameData.VBuf, 0, m_FrameData.VBuf.Length);

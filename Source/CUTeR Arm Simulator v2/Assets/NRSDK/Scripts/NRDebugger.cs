@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -75,7 +75,7 @@ namespace NRKernal
         private static ILogHelper m_LogHelper = new DefaultLogHelper();
 
         /// <summary> The log level. </summary>
-        private static LogLevel m_LogLevel = LogLevel.Info;
+        private static LogLevel m_LogLevel = LogLevel.Warning;
         /// <summary> Gets or sets the log level. </summary>
         /// <value> The log level. </value>
         public static LogLevel logLevel

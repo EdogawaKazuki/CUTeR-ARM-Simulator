@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -110,17 +110,6 @@ namespace NRKernal.Record
                 .Sequence(m_Blender);
 
             this.m_IsInitialized = true;
-        }
-
-        /// <summary> Auto adaption for BlendMode based on supported feature on current device. </summary>
-        /// <param name="blendMode"> source blendMode.</param>
-        /// <returns> Fallback blendMode. </returns>
-        public BlendMode AutoAdaptBlendMode(BlendMode blendMode)
-        {
-            if (!NRDevice.Subsystem.IsFeatureSupported(NRSupportedFeature.NR_FEATURE_RGB_CAMERA))
-                return BlendMode.VirtualOnly;
-                
-            return blendMode;
         }
 
         private FrameCaptureContext Sequence(IFrameConsumer consummer)
@@ -259,9 +248,8 @@ namespace NRKernal.Record
             stopwatch.Start();
             if (m_FrameProvider != null)
             {
-                m_FrameProvider.OnUpdate -= UpdateFrame;
+                m_FrameProvider.OnUpdate -= this.m_CaptureBehaviour.OnFrame;
                 m_FrameProvider?.Release();
-                m_FrameProvider = null;
             }
 
             m_Blender?.Dispose();

@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -46,18 +46,18 @@ namespace NRKernal.NRExamples
         /// <summary> Updates this object. </summary>
         public void Update()
         {
-            if (Image == null || Image.GetTrackingState() != TrackingState.Tracking)
-            {
-                FrameLowerLeft.SetActive(false);
-                FrameLowerRight.SetActive(false);
-                FrameUpperLeft.SetActive(false);
-                FrameUpperRight.SetActive(false);
-                Axis.SetActive(false);
-                // Joints.SetActive(false);
-                // JointsTransparent.SetActive(false);
-                return;
-            }
-
+            // if (Image == null || Image.GetTrackingState() != TrackingState.Tracking)
+            // {
+            //     FrameLowerLeft.SetActive(false);
+            //     FrameLowerRight.SetActive(false);
+            //     FrameUpperLeft.SetActive(false);
+            //     FrameUpperRight.SetActive(false);
+            //     Axis.SetActive(false);
+            //     // Joints.SetActive(false);
+            //     // JointsTransparent.SetActive(false);
+            //     return;
+            // }
+            text.text = Image.GetCenterPose().position.ToString();
             float halfWidth = Image.ExtentX / 2;
             float halfHeight = Image.ExtentZ / 2;
             FrameLowerLeft.transform.localPosition = (halfWidth * Vector3.left) + (halfHeight * Vector3.back);
@@ -79,7 +79,7 @@ namespace NRKernal.NRExamples
             // FrameUpperLeft.SetActive(true);
             // FrameUpperRight.SetActive(true);
             // Axis.SetActive(true);
-            text.text = offset.ToString();
+            // text.text = offset.ToString();
             
         }
     }

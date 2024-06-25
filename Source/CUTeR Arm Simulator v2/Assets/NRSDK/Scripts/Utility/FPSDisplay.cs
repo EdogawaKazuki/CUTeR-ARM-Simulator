@@ -37,15 +37,12 @@
         /// <summary> Updates this object. </summary>
         void Update()
         {
-            if (fpsCounter == null)
-                return;
-
-            if (highestFPSLabel != null)
-                highestFPSLabel.text = stringsFrom00To99[Mathf.Clamp(fpsCounter.HighestFPS, 0, 99)];
-            if (averageFPSLabel != null)
-                averageFPSLabel.text = stringsFrom00To99[Mathf.Clamp(fpsCounter.AverageFPS, 0, 99)];
-            if (lowestFPSLabel != null)
-                lowestFPSLabel.text = stringsFrom00To99[Mathf.Clamp(fpsCounter.LowestFPS, 0, 99)];
+            highestFPSLabel.text =
+                stringsFrom00To99[Mathf.Clamp(fpsCounter.HighestFPS, 0, 99)];
+            averageFPSLabel.text =
+                stringsFrom00To99[Mathf.Clamp(fpsCounter.AverageFPS, 0, 99)];
+            lowestFPSLabel.text =
+                stringsFrom00To99[Mathf.Clamp(fpsCounter.LowestFPS, 0, 99)];
         }
     }
 }

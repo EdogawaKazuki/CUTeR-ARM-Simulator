@@ -1,9 +1,9 @@
 ﻿/****************************************************************************
-* Copyright 2019 Xreal Techonology Limited. All rights reserved.
+* Copyright 2019 Nreal Techonology Limited. All rights reserved.
 *                                                                                                                                                          
 * This file is part of NRSDK.                                                                                                          
 *                                                                                                                                                           
-* https://www.xreal.com/        
+* https://www.nreal.ai/        
 * 
 *****************************************************************************/
 
@@ -11,7 +11,6 @@ namespace NRKernal.Record
 {
     using System;
     using UnityEngine;
-    using NRKernal;
 
     /// <summary> A capture behaviour base. </summary>
     public class CaptureBehaviourBase : MonoBehaviour, IFrameConsumer
@@ -36,17 +35,6 @@ namespace NRKernal.Record
         {
             this.m_FrameCaptureContext = context;
         }
-        
-        /// <summary> Updates the capture behaviour. </summary>
-        protected virtual void Update()
-        {
-            if (m_FrameCaptureContext != null && m_FrameCaptureContext.RequestCameraParam().lockRoll)
-            {
-                Vector3 eulerAngles = CaptureCamera.transform.eulerAngles;
-                eulerAngles.z = 0;
-                CaptureCamera.transform.eulerAngles = eulerAngles;
-            }
-        }
 
         public void SetCameraMask(int mask)
         {
@@ -55,7 +43,7 @@ namespace NRKernal.Record
 
         public void SetBackGroundColor(Color color)
         {
-            this.CaptureCamera.backgroundColor = color; //new Color(color.r, color.g, color.b, 0);
+            this.CaptureCamera.backgroundColor = new Color(color.r, color.g, color.b, 0);
         }
 
         /// <summary> Executes the 'frame' action. </summary>
@@ -89,10 +77,10 @@ namespace NRKernal.Record
         private void UpdateHeadPoseByTimestamp(UInt64 timestamp)
         {
             Pose head_pose = Pose.identity;
-            var result = NRSessionManager.Instance.NRHMDPoseTracker.GetHeadPoseByTimeInUnityWorld(ref head_pose, timestamp);
+            var result = NRFrame.GetHeadPoseByTime(ref head_pose, timestamp);
+            head_pose = ConversionUtility.ApiWorldToUnityWorld(head_pose);
             if (result)
             {
-                // NRDebugger.Info("UpdateHeadPoseByTimestamp: timestamp={0}, pos={1}", timestamp, head_pose.ToString("F2"));
                 RGBCameraRig.transform.position = head_pose.position;
                 RGBCameraRig.transform.rotation = head_pose.rotation;
             }
