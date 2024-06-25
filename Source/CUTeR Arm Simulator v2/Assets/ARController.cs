@@ -11,15 +11,15 @@ public class ARController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    
+
     public void SetARMode(int value)
     {
         switch (value)
@@ -50,8 +50,9 @@ public class ARController : MonoBehaviour
                 */
                 // _robot.transform.position = new Vector3(0, 0, 0);
                 _robot.transform.eulerAngles = new Vector3(0, 0, 0);
-                if(GameObject.Find("VirtualScene") != null){
-                //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.011f, 0.12f);
+                if (GameObject.Find("VirtualScene") != null)
+                {
+                    //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.011f, 0.12f);
                     GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 0, 0);
                 }
                 _robot.GetComponent<RobotController>().SetMask(false);
@@ -82,8 +83,9 @@ public class ARController : MonoBehaviour
                 */
                 // _robot.transform.position = new Vector3(0, -0.05f, 0.12f);
                 _robot.transform.eulerAngles = new Vector3(0, 180, 0);
-                if(GameObject.Find("VirtualScene") != null){
-                //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
+                if (GameObject.Find("VirtualScene") != null)
+                {
+                    //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
                     GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 180, 0);
                 }
                 _robot.GetComponent<RobotController>().SetMask(true);
@@ -112,10 +114,13 @@ public class ARController : MonoBehaviour
                 }
                 
                 */
-                // _robot.transform.position = new Vector3(0.002f, -0.05f, 0.118f);
-                _robot.transform.eulerAngles = new Vector3(0, 180, 0);
-                if(GameObject.Find("VirtualScene") != null){
-                //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
+                // _robot.transform.position = new Vector3(0, -0.15f, 0);
+                //  _robot.transform.position = new Vector3(0.002f, -0.05f, 0.118f);
+                _robot.transform.eulerAngles = new Vector3(0, 0, 0);
+                // the second is 180
+                if (GameObject.Find("VirtualScene") != null)
+                {
+                    //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
                     GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 180, 0);
                 }
                 // _robot.GetComponent<RobotController>().SetMask(true);
