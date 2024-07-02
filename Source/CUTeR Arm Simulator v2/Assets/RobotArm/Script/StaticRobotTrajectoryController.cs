@@ -142,7 +142,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             List<float> tmpList = new();
             for(int i = 0; i < _robotController.GetRobotDoF(); i++)
             {
-                tmpList.Add(_trajList[i][0]);
+                if(i < _trajList.Count)
+                {
+                    tmpList.Add(_trajList[i][0]);
+                }else{
+                    tmpList.Add(_robotController.GetJointAngle(i));
+                }
             }
             _robotController.SetTransparentCmdJointAngles(tmpList);
         }
@@ -289,7 +294,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             List<float> tmpList = new();
             for(int i = 0; i < _robotController.GetRobotDoF(); i++)
             {
-                tmpList.Add(_trajList[i][0]);
+                if(i < _trajList.Count)
+                {
+                    tmpList.Add(_trajList[i][0]);
+                }else{
+                    tmpList.Add(_robotController.GetJointAngle(i));
+                }
             }
             _robotController.SetTransparentCmdJointAngles(tmpList);
         }
