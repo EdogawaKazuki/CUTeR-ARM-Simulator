@@ -68,7 +68,7 @@ public class RobotClient : MonoBehaviour
 	public bool SendCmd = true;
 
 	// 0 for CUTeR; 1 for OpenManipulator Pro
-	public const int ROBOT_TYPE = 1;
+	static public int ROBOT_TYPE = 1;
 	private int ROBOT_DOF = 3;
 	public bool isReceive = true;
 	private float timer = 0;
@@ -287,22 +287,24 @@ public class RobotClient : MonoBehaviour
 						Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
 					}
 					else if(ROBOT_TYPE == 1){
-						// timer = timer + Time.fixedDeltaTime;
-						// if(timer > 0.02){
-						// 	byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
-						// 	byteArray[0] = 2;
-						// 	// Debug.Log(robotJointAngleCmd[0]);
-						// 	for(int i = 0; i < ROBOT_DOF; i++){
-						// 		Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[i]), 0, byteArray, 1 + i * 4, 4);
-						// 	}
-						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
-						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
-						// 	// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
-						// 	//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
-						// 	ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
-						// 	Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
-						// 	timer = 0;
-						// }
+						float path_time = 0.02f;
+						timer = timer + Time.fixedDeltaTime;
+						if(timer > 0.02){
+							byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
+							byteArray[0] = 2;
+							// Debug.Log(robotJointAngleCmd[0]);
+							for(int i = 0; i < ROBOT_DOF; i++){
+								Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[i]), 0, byteArray, 1 + i * 4, 4);
+							}
+							Buffer.BlockCopy(BitConverter.GetBytes(path_time), 0, byteArray, 1 + ROBOT_DOF * 4, 4);
+							// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
+							// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
+							// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
+							//sendData = Encoding.ASCII.GetBytes("angle," + String.Join(",", _robotController.GetJointAngles()));
+							ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+							Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
+							timer = 0;
+						}
 					}
 				}
 				else
@@ -319,13 +321,14 @@ public class RobotClient : MonoBehaviour
 			_debugText.text = e.ToString() + "\n" + _debugText.text;
 		}
 	}
-	public void SendJointCmdDirect(List<float> joint_list){
-		byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
+	public void SendJointCmdDirect(List<float> joint_list, float path_time){
+		byteArray = new byte[sizeof(float) * ROBOT_DOF + 4 + 1];
 		byteArray[0] = 2;
 		// Debug.Log(robotJointAngleCmd[0]);
 		for(int i = 0; i < ROBOT_DOF; i++){
 			Buffer.BlockCopy(BitConverter.GetBytes(joint_list[i]), 0, byteArray, 1 + i * 4, 4);
 		}
+		Buffer.BlockCopy(BitConverter.GetBytes(path_time), 0, byteArray, 1 + ROBOT_DOF * 4, 4);
 		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
 		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
 		// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
@@ -370,7 +373,7 @@ public class RobotClient : MonoBehaviour
     }
 	private void ParsePWMByte(byte[] byteArray)
 	{
-		Debug.Log("Parsing");
+		// Debug.Log("Parsing");
 		if (filterIndex == 1 && count <= windowSize)
 		{
 			count++;

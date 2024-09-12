@@ -18,8 +18,8 @@ public class RobotControllerUI : MonoBehaviour
     private TMP_Text _forceSliderValueText;
     private Button _fireButton;
     private bool isUserInterect = false;
-    public float _lastSliderValue = 0;
-    public int _sliderStatus = 0;
+    public float[] _lastSliderValue;
+    public int[] _sliderStatus;
     #endregion
     #region MonoBehaviour
     private void OnEnable()
@@ -31,6 +31,8 @@ public class RobotControllerUI : MonoBehaviour
         SetupSettingPanel(_robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window"));
         EnableFire(false);
         EnableForce(false);
+        _lastSliderValue = new float[_jointAngleSliders.Count];
+        _sliderStatus = new int[_jointAngleSliders.Count];
         // SetupARControlbar(_robotController.GetRobotCanvas().transform.Find("ARCtrlBtnGroup"));
         //Debug.Log(_jointAngleSliders.Count);
     }
@@ -40,37 +42,41 @@ public class RobotControllerUI : MonoBehaviour
     // Set joystick slider value
     public void SetAngleSliderValue(int index, float value)
     {
+        // Debug.Log("index = " + index);
         if(!isUserInterect){
             return;
         }
         // Debug.Log(value);
-        if(_sliderStatus != 0){
-            if(_sliderStatus == 1 && value > _lastSliderValue){
-                _sliderStatus = 0;
-            }
-            else if(_sliderStatus == -1 && value < _lastSliderValue){
-                _sliderStatus = 0;
-            }
-            else{
-                _jointAngleSliders[index].value = _lastSliderValue;
-                return;
-            }
-        }
-        if(_robotController.CheckCollision(index, value)){
-            if(value > _lastSliderValue)
-                _sliderStatus = -1;
-            else if(value < _lastSliderValue)
-                _sliderStatus = 1;
-            else
-                _sliderStatus = 0;
-            _jointAngleSliders[index].value = _lastSliderValue;
-            return;
+        bool isCollision = _robotController.CheckCollisionTransparent();
+        Debug.Log("Slider: " + _sliderStatus[index] + " last: " + _lastSliderValue[index] + " collision: " + isCollision);
+        if(isCollision){
+            // if there is collision, set the slider value to the last value
+            // if the value is greater than the last value, set the slider status to -1, means the slider is moving to the negative direction
+            // if(value > _lastSliderValue[index])
+            //     _sliderStatus[index] = -1;
+            // else if(value < _lastSliderValue[index])
+            //     _sliderStatus[index] = 1;
+            _jointAngleSliders[index].value = _lastSliderValue[index];
         }
         else{
-            _lastSliderValue = value;
+            // if there is no collision, set the slider value to the new value
+            _lastSliderValue[index] = value;
+            _sliderStatus[index] = 0;
             // _jointAngleSliders[index].value = value;
             _jointAngleSLiderValueTexts[index].text = value.ToString("F0");
         }
+        
+        // if(_sliderStatus[index] != 0){
+        //     // if the slider is moving, check the direction of the slider, if the slider is supposed to move to the positive direction, and the value is greater than the last value, set the slider status to 0
+        //     if(_sliderStatus[index] == 1 && value > _lastSliderValue[index]){
+        //         _sliderStatus[index] = 0;
+        //         _lastSliderValue[index] = value;
+        //     }
+        //     else if(_sliderStatus[index] == -1 && value < _lastSliderValue[index]){
+        //         _sliderStatus[index] = 0;
+        //         _lastSliderValue[index] = value;
+        //     }
+        // }
     }
     public void SetAngleSliderValues(List<float> values)
     {
@@ -117,10 +123,10 @@ public class RobotControllerUI : MonoBehaviour
                 child.Find("Slider").GetComponent<Slider>().onValueChanged.AddListener((value) => SetAngleSliderValue(child.name[^1] - '0', value));
                 EventTrigger eventTrigger = child.Find("Slider").gameObject.AddComponent<EventTrigger>();
                 EventTrigger.Entry pointerDownEntry = new(){ eventID = EventTriggerType.PointerDown };
-                pointerDownEntry.callback.AddListener(OnPointerDown);
+                pointerDownEntry.callback.AddListener((eventData) => OnPointerDown(eventData, child.name[^1] - '0'));
                 eventTrigger.triggers.Add(pointerDownEntry);
                 EventTrigger.Entry pointerUpEntry = new(){ eventID = EventTriggerType.PointerUp };
-                pointerUpEntry.callback.AddListener(OnPointerUp);
+                pointerUpEntry.callback.AddListener((eventData) => OnPointerUp(eventData, child.name[^1] - '0'));
                 eventTrigger.triggers.Add(pointerUpEntry);
             }
             else if (child.name == "Fire")
@@ -141,29 +147,31 @@ public class RobotControllerUI : MonoBehaviour
 
     }
     UnityEngine.Events.UnityAction<float> fn; // pointer for move transparent robot listener
-    public void OnPointerDown(BaseEventData eventData)
+    public void OnPointerDown(BaseEventData eventData, int index)
     {
         isUserInterect = true;
-        _lastSliderValue = eventData.selectedObject.GetComponent<Slider>().value;
-        Debug.Log(_lastSliderValue);
+        // _lastSliderValue[index] = eventData.selectedObject.GetComponent<Slider>().value;
+        // Debug.Log(_lastSliderValue);
         // add move transparent robot listenre  
         if(_robotController._enableTransparentRobot)
-            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(eventData.selectedObject.transform.parent.name[^1] - '0', value));
+            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value));
         else
-            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(eventData.selectedObject.transform.parent.name[^1] - '0', value));
+            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(index, value));
         if(RobotClient.ROBOT_TYPE == 1){
             _robotClient.isReceive = false;
         }
     }
-    public void OnPointerUp(BaseEventData eventData)
+    public void OnPointerUp(BaseEventData eventData, int index)
     {
         isUserInterect = false;
         // remove move transparent robot listenre  
         eventData.selectedObject.GetComponent<Slider>().onValueChanged.RemoveListener(fn);// Move "real robot" to transparent robot position
-        
-        if(_robotController._enableTransparentRobot)
-            _robotController.MoveJointTo(eventData.selectedObject.transform.parent.name[^1] - '0', eventData.selectedObject.GetComponent<Slider>().value);
-        _sliderStatus = 0;
+
+        if(_robotController._enableTransparentRobot){
+            _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
+                        _robotController.HideTransparentModel();
+        }
+        // _sliderStatus[index] = 0;
         if(RobotClient.ROBOT_TYPE == 1){
             _robotClient.isReceive = true;
         }

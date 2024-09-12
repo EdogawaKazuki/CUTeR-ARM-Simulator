@@ -23,6 +23,7 @@ public class QuinticSpline : MonoBehaviour
     float a4 = 0;
     float a5 = 0;
     float t = 0;
+    public List<float> joints = new List<float>{0, 0, 0};
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +65,8 @@ public class QuinticSpline : MonoBehaviour
             float t = i / 50f;
             float angle = a0 + a1 * t + a2 * t * t + a3 * t * t * t + a4 * t * t * t * t + a5 * t * t * t * t * t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+                joints[0] = angle;
+                _trajController.PushTrajPoints(joints);
 
             AngularVelocityList.Add(a1 + 2 * a2 * t + 3 * a3 * t * t + 4 * a4 * t * t * t + 5 * a5 * t * t * t * t);
 

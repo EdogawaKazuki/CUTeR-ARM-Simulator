@@ -118,25 +118,37 @@ public class RobotController : MonoBehaviour
     }
     #endregion
     #region Methods
-    public bool CheckCollision(int index, float angle)
+    public bool CheckCollisionTransparent()
     {
         if (!_enableCollisionChecker) return false;
-        //if (!_robotClient.IsConnected()) return false;
-        
-        float[] angles = GetJointAngles().ToArray();
+        Vector3 endeffectorPosition = _transparentRobotJointController.GetJointTransform(_currentDoF).position;
+        Vector3 origin = _transparentRobotJointController.GetJointTransform(0).position;
+        float x = endeffectorPosition.x - origin.x;
+        float y = endeffectorPosition.y - origin.y;
+        float z = endeffectorPosition.z - origin.z;
+        Debug.Log("x: " + x + " y: " + y + " z: " + z);
+        if (x < -0.4 || x > 0.4) return true;
+        if (y < 0.1 || y > 1) return true;
+        if (z < -0.7 || z > 0) return true;
 
-        angles[index] = angle;
-        double Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * angles[0]);
-        double Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * angles[0]);
-        double Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * angles[1]);
-        double Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * angles[1]);
-        double Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (angles[1] + angles[2]));
-        double Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (angles[1] + angles[2]));
-        double x = -Angle1Sin * Angle23Cos * 21 + (-19.2 * Angle1Sin * Angle2Cos - 2.8 * Angle1Sin * Angle2Sin) + 0.001;
-        double y = Angle1Cos * Angle23Cos * 21 + (19.2 * Angle1Cos * Angle2Cos + 2.8 * Angle1Cos * Angle2Sin) + 0.001;
-        double z = Angle23Sin * 21 + (19.2 * Angle2Sin - 2.8 * Angle2Cos) + 10.001;
-        if (z < 0) return true;
+
         return false;
+        // //if (!_robotClient.IsConnected()) return false;
+        
+        // float[] angles = GetJointAngles().ToArray();
+
+        // angles[index] = angle;
+        // double Angle1Sin = Mathf.Sin(Mathf.Deg2Rad * angles[0]);
+        // double Angle1Cos = Mathf.Cos(Mathf.Deg2Rad * angles[0]);
+        // double Angle2Sin = Mathf.Sin(Mathf.Deg2Rad * angles[1]);
+        // double Angle2Cos = Mathf.Cos(Mathf.Deg2Rad * angles[1]);
+        // double Angle23Sin = Mathf.Sin(Mathf.Deg2Rad * (angles[1] + angles[2]));
+        // double Angle23Cos = Mathf.Cos(Mathf.Deg2Rad * (angles[1] + angles[2]));
+        // double x = -Angle1Sin * Angle23Cos * 21 + (-19.2 * Angle1Sin * Angle2Cos - 2.8 * Angle1Sin * Angle2Sin) + 0.001;
+        // double y = Angle1Cos * Angle23Cos * 21 + (19.2 * Angle1Cos * Angle2Cos + 2.8 * Angle1Cos * Angle2Sin) + 0.001;
+        // double z = Angle23Sin * 21 + (19.2 * Angle2Sin - 2.8 * Angle2Cos) + 10.001;
+        // if (z < 0) return true;
+        // return false;
     }
 
 
@@ -210,11 +222,18 @@ public class RobotController : MonoBehaviour
         SetCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
         SetTransparentCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
     }
-    public void SetCmdJointAngles(List<float> angles)
+    public void SetCmdJointAngles(List<float> angleList)
     {
-        _joystickController.SetAngleSliderValues(angles.GetRange(0, _currentDoF));
-        CmdJointAngles = angles;
-        _robotJointController.SetJointAngles(angles.GetRange(0, _currentDoF));
+        if(angleList.Count < _currentDoF){
+            angleList.AddRange(new float[_currentDoF - angleList.Count]);
+            for(int i = 0; i < _currentDoF; i++)
+            {
+                if(angleList[i] == 0) angleList[i] = GetJointAngle(i);
+            }
+        }
+        _joystickController.SetAngleSliderValues(angleList.GetRange(0, _currentDoF));
+        CmdJointAngles = angleList;
+        _robotJointController.SetJointAngles(angleList.GetRange(0, _currentDoF));
     }
     public void SetCmdJointAngle(int index, float angle)
     {
@@ -237,10 +256,22 @@ public class RobotController : MonoBehaviour
     public void SetTransparentCmdJointAngle(int index, float angle) { 
         if(!_enableTransparentRobot) return;
         ShowTransparentModel();
-        if(_robotControllerUI._sliderStatus == 0) _transparentRobotJointController.SetJointAngle(index, angle); 
+        if(CheckCollisionTransparent()){
+            _transparentRobotJointController.SetColor(new Color(1, 0, 0, 0.254902f));
+        }else{
+            _transparentRobotJointController.SetColor(new Color(1, 1, 1, 0.254902f));
+        }
+        _transparentRobotJointController.SetJointAngle(index, angle); 
     }
     public void MoveJointsTo(List<float> angleList)
     {
+        if(angleList.Count < _currentDoF){
+            angleList.AddRange(new float[_currentDoF - angleList.Count]);
+            for(int i = 0; i < _currentDoF; i++)
+            {
+                if(angleList[i] == 0) angleList[i] = GetJointAngle(i);
+            }
+        }
         _staticRobotTrajectoryController.ResetTraj(_currentDoF);
         _staticRobotTrajectoryController.PushTrajPoints(angleList.GetRange(0, _currentDoF));
         _staticRobotTrajectoryController.SetStatus(StaticRobotTrajectoryController.State.ready);
@@ -251,12 +282,19 @@ public class RobotController : MonoBehaviour
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
         if(RobotClient.ROBOT_TYPE == 1 && _robotClient.IsConnected()){
-            _robotClient.SendJointCmdDirect(angleList);
+            _robotClient.SendJointCmdDirect(angleList, 2.0f);
             return;
         }
         MoveJointsTo(angleList);
         if(_enableTransparentRobot)
             HideTransparentModel();
+    }
+    public void SendCmdToRobot(float path_time)
+    {
+        if(RobotClient.ROBOT_TYPE == 1 && _robotClient.IsConnected())
+        {
+            _robotClient.SendJointCmdDirect(CmdJointAngles, path_time);
+        }
     }
     public void SetMask(bool value) { _robotJointController.SetMask(value); }
     public void ShowJointDHFrame(int index, bool value) { _robotJointController.ShowJointDHFrame(index, value); }

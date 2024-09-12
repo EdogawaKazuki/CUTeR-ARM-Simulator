@@ -206,7 +206,7 @@ public class SceneManager : MonoBehaviour
             _sceneStatusText.text = "Playing";
             _sceneStatusBackground.color = new Color32(100, 255, 100, 255);
             Time.timeScale = 1;
-            _robotTrajectoryController.StartTraj();
+            // _robotTrajectoryController.StartTraj();
         }
     }
     public void StopScene()
@@ -219,7 +219,7 @@ public class SceneManager : MonoBehaviour
         _sceneStatusText.text = "Ready";
         _sceneStatusBackground.color = new Color32(255, 255, 255, 255);
         _robotTrajectoryController.gameObject.GetComponent<RobotController>().ResetEndEffector();
-        _robotTrajectoryController.StopTraj();
+        // _robotTrajectoryController.StopTraj();
         transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().onValueChanged.RemoveAllListeners();
         transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().isOn = false;
         transform.Find("VirtualSceneCanvas/SceneCtrlBtnGroup/PlayToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => StartScene(value));
@@ -229,14 +229,14 @@ public class SceneManager : MonoBehaviour
     {
         for (int i = 0; i < _playingScene.childCount; i++)
         {
-            _playingScene.GetChild(i).GetComponent<SceneObjectController>().StartTraj();
+            _playingScene.GetChild(i)?.GetComponent<SceneObjectController>()?.StartTraj();
         }
     }
     public void StopObjectTrajectory()
     {
         for (int i = 0; i < _playingScene.childCount; i++)
         {
-            _playingScene.GetChild(i).GetComponent<SceneObjectController>().StopTraj();
+            _playingScene.GetChild(i)?.GetComponent<SceneObjectController>()?.StopTraj();
         }
     }
 

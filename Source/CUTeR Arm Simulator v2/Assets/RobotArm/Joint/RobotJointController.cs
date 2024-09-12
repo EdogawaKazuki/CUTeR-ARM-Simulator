@@ -148,12 +148,12 @@ public class RobotJointController : MonoBehaviour
     }
     public void SetMask(bool value){
         if(value){
-            for(int i = 0; i < _joints.Count-4; i++){
+            for(int i = 0; i < _joints.Count; i++){
                 HideJointLink(i);
                 ShowJointMask(i);
             }
         }else{
-            for(int i = 0; i < _joints.Count-4; i++){
+            for(int i = 0; i < _joints.Count; i++){
                 ShowJointLink(i);
                 HideJointMask(i);
             }
@@ -171,5 +171,11 @@ public class RobotJointController : MonoBehaviour
         }
     }
     
+    public void SetColor(Color color){
+        foreach (var joint in _joints)
+        {
+            joint.SetColor(color);
+        }
+    }
     #endregion
 }

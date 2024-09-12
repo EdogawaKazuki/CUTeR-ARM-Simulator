@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "R52T70CH3BA",
     "m_SelectedPackage": {
         "deviceId": "R52T70CH3BA",
-        "name": "com.GaladZHAO.CUTeRArmSimulator",
-        "processId": 28212,
+        "name": "com.GaladZHAO.DynamixelArmSimulator",
+        "processId": 30164,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -72,6 +72,24 @@
             "deviceId": "R52T70CH3BA",
             "name": "com.GaladZHAO.CUTeRArmSimulator",
             "processId": 28212,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.DynamixelArmSimulator",
+            "processId": 24982,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.DynamixelArmSimulator",
+            "processId": 28034,
+            "exited": false
+        },
+        {
+            "deviceId": "R52T70CH3BA",
+            "name": "com.GaladZHAO.DynamixelArmSimulator",
+            "processId": 30164,
             "exited": false
         }
     ],

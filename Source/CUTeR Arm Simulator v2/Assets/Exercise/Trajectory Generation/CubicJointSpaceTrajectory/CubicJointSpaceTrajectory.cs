@@ -37,6 +37,7 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
     TMP_InputField c3Input;
     TMP_InputField tInput;
     TMP_Dropdown jointDropdown;
+    public List<float> joints = new List<float>{0, 0, 0};
 
     int showTable = 0;
     // Start is called before the first frame update

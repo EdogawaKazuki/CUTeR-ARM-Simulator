@@ -59,7 +59,7 @@ public class ARController : MonoBehaviour
                 _groundPlane.SetActive(true);
                 _mainCameraContainer.gameObject.SetActive(true);
                 _arCameraContainer.gameObject.SetActive(false);
-                //_imageTarget.gameObject.SetActive(false);
+                // _imageTarget.gameObject.SetActive(false);
                 break;
             case 1: // Full AR
                 /*
@@ -82,11 +82,11 @@ public class ARController : MonoBehaviour
                 
                 */
                 // _robot.transform.position = new Vector3(0, -0.05f, 0.12f);
-                _robot.transform.eulerAngles = new Vector3(0, 180, 0);
+                _robot.transform.eulerAngles = new Vector3(0, 0, 0);
                 if (GameObject.Find("VirtualScene") != null)
                 {
                     //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
-                    GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 180, 0);
+                    GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 0, 0);
                 }
                 _robot.GetComponent<RobotController>().SetMask(true);
                 _groundPlane.SetActive(false);
@@ -121,7 +121,7 @@ public class ARController : MonoBehaviour
                 if (GameObject.Find("VirtualScene") != null)
                 {
                     //     GameObject.Find("VirtualScene").transform.position = new Vector3(0, -0.05f-0.011f, 0.12f);
-                    GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 180, 0);
+                    GameObject.Find("VirtualScene").transform.eulerAngles = new Vector3(0, 0, 0);
                 }
                 // _robot.GetComponent<RobotController>().SetMask(true);
                 _groundPlane.SetActive(false);

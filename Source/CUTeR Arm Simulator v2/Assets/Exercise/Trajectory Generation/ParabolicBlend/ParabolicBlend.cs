@@ -30,6 +30,7 @@ public class ParabolicBlend : MonoBehaviour
     TMP_InputField c2Input;
     TMP_InputField tbInput;
     TMP_InputField tfInput;
+    public List<float> joints = new List<float>{0, 0, 0};
 
     // Start is called before the first frame update
     void Start()
@@ -82,7 +83,8 @@ public class ParabolicBlend : MonoBehaviour
                 float t = i / 50f;
                 float angle = a0 + a1 * t + a2 * t * t;
                 JointAngleList.Add(angle);
-                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+                joints[0] = angle;
+                _trajController.PushTrajPoints(joints);
 
                 AngularVelocityList.Add(a1 + 2 * a2 * t);
 
@@ -94,7 +96,8 @@ public class ParabolicBlend : MonoBehaviour
                 float t = i / 50f;
                 float angle = b0 + b1 * t;
                 JointAngleList.Add(angle);
-                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+                joints[0] = angle;
+                _trajController.PushTrajPoints(joints);
 
                 AngularVelocityList.Add(b1);
 
@@ -106,7 +109,8 @@ public class ParabolicBlend : MonoBehaviour
                 float t = i / 50f;
                 float angle = c0 + c1 * t + c2 * t * t;
                 JointAngleList.Add(angle);
-                _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+                joints[0] = angle;
+                _trajController.PushTrajPoints(joints);
 
                 AngularVelocityList.Add(c1 + 2 * c2 * t);
 

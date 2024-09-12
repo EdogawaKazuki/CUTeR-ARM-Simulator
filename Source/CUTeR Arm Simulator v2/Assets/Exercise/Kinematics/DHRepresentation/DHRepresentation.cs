@@ -121,10 +121,10 @@ public class DHRepresentation : MonoBehaviour
                 matrix1IndexText[i].text = "" + (i + 1);
             }
             List<float> vs = _robotController.GetJointAngles();
-            for (int i = 0; i < 3; i++)
-            {
-                _robotController.SetJointSign(i, "θ" + (i + 1) + " = " + vs[i].ToString("F1") + "°", "");
-            }
+            // for (int i = 0; i < 3; i++)
+            // {
+            //     _robotController.SetJointSign(i, "θ" + (i + 1) + " = " + vs[i].ToString("F1") + "°", "");
+            // }
             s1 = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
             c1 = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
             s2 = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(1));
@@ -167,10 +167,10 @@ public class DHRepresentation : MonoBehaviour
                 matrix1IndexText[i].text = "" + (3 + i + 1);
             }
             List<float> vs = _robotController.GetJointAngles();
-            for (int i = 0; i < 3; i++)
-            {
-                _robotController.SetJointSign(i, "θ" + (i + 1) + " = " + vs[i].ToString("F1") + "°", "");
-            }
+            // for (int i = 0; i < 3; i++)
+            // {
+            //     _robotController.SetJointSign(i, "θ" + (i + 1) + " = " + vs[i].ToString("F1") + "°", "");
+            // }
             s1 = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
             c1 = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(0));
             s2 = Mathf.Sin(Mathf.Deg2Rad * (_robotController.GetJointAngle(1) - 8.3f));

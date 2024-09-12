@@ -76,5 +76,22 @@ public class RobotJoint : MonoBehaviour
     }
     public void ShowFrame(bool value) { transform.Find("frame_visual")?.gameObject.SetActive(value); }
     public void ShowDHFrame(bool value) { transform.Find("DHFrame")?.gameObject.SetActive(value); }
+    public void SetColor(Color color)
+    {
+        Transform part = transform.Find("Part");
+        if (part != null)
+        {
+            for(int i = 0; i < part.childCount; i++)
+            {
+                for(int j = 0; j < part.GetChild(i).childCount; j++)
+                {
+                    if (part.GetChild(i).GetChild(j).GetComponent<Renderer>() != null)
+                    {
+                        part.GetChild(i).GetChild(j).GetComponent<Renderer>().material.color = color;
+                    }
+                }
+            }
+        }
+    }
     #endregion
 }

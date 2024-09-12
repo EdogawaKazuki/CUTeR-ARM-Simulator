@@ -85,7 +85,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 _currentTrajIndex = 0;
                 if (_currentState == State.preplaying){
                     SetStatus(State.playing);
-                    GameObject.Find("VirtualScene").GetComponent<SceneManager>()?.StartObjectTrajectory();
+                    GameObject.Find("VirtualScene")?.GetComponent<SceneManager>()?.StartObjectTrajectory();
                 }
                 if(_currentState == State.prelooping)
                     SetStatus(State.looping);
@@ -118,6 +118,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 ReadTraj(_trajList, Direction.forward);
             }
         }
+        if (_currentState == State.stopped || _currentState == State.ready || _currentState == State.finished)
+        {
+            if(_robotController._enableTransparentRobot) _robotController.HideTransparentModel();
+        }
     }
     #endregion
 
@@ -136,9 +140,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         }
         //_robotController.SetModelJointAngles(angleList);
         _robotController.SetCmdJointAngles(angleList);
-        if(_currentState != State.prelooping && _currentState != State.preplaying)
-            _robotController.SetTransparentCmdJointAngles(angleList);
+        _robotController.SendCmdToRobot(0.02f);
         if(_currentState == State.prelooping || _currentState == State.preplaying){
+        // if(_currentState != State.prelooping && _currentState != State.preplaying)
+        //     _robotController.SetTransparentCmdJointAngles(angleList);
             List<float> tmpList = new();
             for(int i = 0; i < _robotController.GetRobotDoF(); i++)
             {
@@ -421,9 +426,13 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 }
                 _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), tmp);
                 // Debug.Log(_robotController.GetJointAngles()[0] + ", " +  _robotController.GetJointAngles()[1] + ", " + _robotController.GetJointAngles()[2]);
-                if (_prepareTrajList != null && prepare)
+                if (_prepareTrajList != null && prepare){
                     SetStatus(State.preplaying);
-                else SetStatus(State.playing);
+                }
+                else {
+                    SetStatus(State.playing);
+                }
+
             }
             else
             {
@@ -433,15 +442,18 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         else if (_currentState == State.playing)
         {
             SetStatus(State.pause);
+            GameObject.Find("VirtualScene").GetComponent<SceneManager>()?.StartObjectTrajectory();
         }
         else if (_currentState == State.pause)
         {
             SetStatus(State.playing);
+            GameObject.Find("VirtualScene").GetComponent<SceneManager>()?.StartObjectTrajectory();
         }
     }
     public void StopTraj()
     {
         SetStatus(State.stopped);
+        GameObject.Find("VirtualScene").GetComponent<SceneManager>()?.StopObjectTrajectory();
     }
     public void ResetTraj(int size)
     {

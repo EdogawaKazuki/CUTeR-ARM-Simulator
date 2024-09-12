@@ -72,6 +72,8 @@ public class LoadScenePanelController : MonoBehaviour
                     Transform newEle = Instantiate(_sceneListEle);
                     newEle.SetParent(_sceneListContiner);
                     newEle.localScale = new Vector3(1, 1, 1);
+                    newEle.localPosition = new Vector3(510 * (_sceneList.Count - 1), 0, 0);
+                    newEle.localRotation = Quaternion.identity;
                     newEle.gameObject.SetActive(true);
                     newEle.name = name;
                     // read scene info
@@ -87,6 +89,7 @@ public class LoadScenePanelController : MonoBehaviour
                     newEle.Find("Path").GetComponent<Text>().text = _sceneFolder + "/" + sceneDict["name"].ToString() + ".json";
                     newEle.Find("Image").GetComponent<Image>().overrideSprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
                     newEle.GetComponent<Button>().onClick.AddListener(()=>OnSceneEleClicked(sceneDict["name"].ToString()));
+                    _sceneListContiner.GetComponent<RectTransform>().sizeDelta = new Vector2(510 * (_sceneList.Count - 1), _sceneListContiner.GetComponent<RectTransform>().sizeDelta.y);
 
                 }
             }

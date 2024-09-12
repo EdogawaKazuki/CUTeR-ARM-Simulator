@@ -27,6 +27,7 @@ public class MultipleCubicSpline : MonoBehaviour
     TMP_InputField theta1Input;
     TMP_InputField thetaEndInput;
     TMP_Dropdown modeDropdown;
+    public List<float> joints = new List<float>{0, 0, 0};
     // Start is called before the first frame update
     void Start()
     {
@@ -186,7 +187,8 @@ public class MultipleCubicSpline : MonoBehaviour
             //Debug.Log(_t);
             float angle = a0 + a1 * _t + a2 * _t * _t + a3 * _t * _t * _t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float>{angle, 90, -90 });
+            joints[0] = angle;
+            _trajController.PushTrajPoints(joints);
 
             AngularVelocityList.Add(a1 + 2 * a2 * _t + 3 * a3 * _t * _t);
 
@@ -199,7 +201,8 @@ public class MultipleCubicSpline : MonoBehaviour
             //Debug.Log(_t);
             float angle = b0 + b1 * _t + b2 * _t * _t + b3 * _t * _t * _t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+            joints[0] = angle;
+            _trajController.PushTrajPoints(joints);
 
             AngularVelocityList.Add(b1 + 2 * b2 * _t + 3 * b3 * _t * _t);
             LinearJointAngleList.Add((thetaEnd - theta1) / (tEnd - t1) * (_t - t1) + theta1);

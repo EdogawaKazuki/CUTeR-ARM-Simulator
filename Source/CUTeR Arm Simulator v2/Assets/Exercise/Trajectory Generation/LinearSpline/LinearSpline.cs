@@ -15,6 +15,7 @@ public class LinearSpline : MonoBehaviour
     float a0 = 0;
     float a1 = 0;
     float t = 0;
+    public List<float> joints = new List<float>{0, 0, 0};
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +43,8 @@ public class LinearSpline : MonoBehaviour
         {
             float angle = a0 + a1 * (i / 50f);
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+            joints[0] = angle;
+            _trajController.PushTrajPoints(joints);
         }
         _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         drawer.ClearGraph("JointAngle");
