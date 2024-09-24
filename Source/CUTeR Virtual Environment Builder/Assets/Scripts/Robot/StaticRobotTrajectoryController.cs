@@ -134,8 +134,10 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         }
         //_robotController.SetModelJointAngles(angleList);
         _robotController.SetCmdJointAngles(angleList);
-        if (trajList[0][_currentTrajIndex] == 1000)
+        if (trajList[0][_currentTrajIndex] == 1000){
             _robotController.Fire();
+            // Debug.Log("Fire");
+        }
         if (direction == Direction.forward)
             _currentTrajIndex++;
         else

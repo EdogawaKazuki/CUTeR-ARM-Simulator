@@ -167,6 +167,7 @@ namespace Dummiesman
                     buffer.SkipWhitespaces();
                     buffer.ReadUntilNewLine();
                     string mtlLibPath = buffer.GetString();
+                    Debug.Log("MTL Path:" + mtlLibPath);
                     LoadMaterialLibrary(mtlLibPath, isWebGL);
                     continue;
                 }

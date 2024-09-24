@@ -47,10 +47,14 @@ public class HandleController : MonoBehaviour
     {
         //Debug.Log(_editorController.GetSelectedObj());
         if (_editorController.GetSelectedObj())
-            transform.position = Camera.main.transform.position - Vector3.Normalize(Camera.main.transform.position - _editorController.GetSelectedObj().position) * 50; 
+            transform.position = Camera.main.transform.position - Vector3.Normalize(Camera.main.transform.position - _editorController.GetSelectedObj().position) * 100; 
         if(_currentHandleType == HandleType.rotation)
         {
             _rotateHidingPlane.eulerAngles = new Vector3(Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
+        }
+        if(_currentHandleType == HandleType.scale)
+        {
+            transform.rotation = _editorController.GetSelectedObj().rotation;
         }
     }
     public void ShowHandle()

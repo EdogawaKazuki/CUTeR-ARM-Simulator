@@ -146,7 +146,7 @@ public class SceneManager : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-        else
+        else if(_playingScene == null && value)
         {
             _playingScene = Instantiate(_sceneContainer).transform;
             _playingScene.SetParent(_sceneContainer.parent);
@@ -178,17 +178,17 @@ public class SceneManager : MonoBehaviour
                 }
                 else
                 {
-                    if (_playingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>())
+                    if (_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<BoxCollider>())
                     {
-                        Destroy(_playingScene.transform.GetChild(i).gameObject.GetComponent<BoxCollider>());
+                        Destroy(_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<BoxCollider>());
                     }
-                    else if (_playingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>())
+                    else if (_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<CapsuleCollider>())
                     {
-                        Destroy(_playingScene.transform.GetChild(i).gameObject.GetComponent<CapsuleCollider>());
+                        Destroy(_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<CapsuleCollider>());
                     }
-                    else if (_playingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>())
+                    else if (_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<SphereCollider>())
                     {
-                        Destroy(_playingScene.transform.GetChild(i).gameObject.GetComponent<SphereCollider>());
+                        Destroy(_playingScene.transform.GetChild(i).GetChild(0).gameObject.GetComponent<SphereCollider>());
                     }
                     else
                     {
@@ -216,10 +216,15 @@ public class SceneManager : MonoBehaviour
             _editorController.GetSelectedObj();
             Time.timeScale = 1;
         }
+        GetComponent<EditorController>().GetBuilderCanvas().Find("SceneCtrlBtnGroup").Find("PlayToggle").GetComponent<Toggle>().isOn = value;
     }
     public void StopScene()
     {
-        Destroy(_playingScene.gameObject);
+        try{
+            Destroy(_playingScene.gameObject);
+        }catch(Exception e){
+            Debug.Log(e);
+        }
         _playingScene = null;
         _sceneContainer.gameObject.SetActive(true);
 
@@ -233,6 +238,9 @@ public class SceneManager : MonoBehaviour
         _sceneStatusBackground.color = new Color32(255, 255, 255, 78);
         _editorController.GetRobotController().ResetEndEffector();
         Time.timeScale = 1;
+        GetComponent<EditorController>().GetBuilderCanvas().Find("SceneCtrlBtnGroup").Find("PlayToggle").GetComponent<Toggle>().isOn = false;
+        
+
     }
     public void SetName(string name) { this.sceneName = name; }
     public void SetDescription(string description) { this.description = description; }

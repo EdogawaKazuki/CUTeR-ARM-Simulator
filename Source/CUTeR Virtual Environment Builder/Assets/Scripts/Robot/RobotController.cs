@@ -79,8 +79,8 @@ public class RobotController : MonoBehaviour
         _endEffectorController = transform.Find("FunctionalTools").GetComponent<EndEffectorController>();
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         //Debug.Log("set joints");
-        SetRobotDoF(3);
-        SetCmdJointAngles(new List<float> { 0, 180, -140, 0, 0, 0 });
+        SetRobotDoF(6);
+        SetCmdJointAngles(new List<float> { 0, 0, 0, 0, 0, 0 });
     }
     // Update is called once per frame
     void Update()

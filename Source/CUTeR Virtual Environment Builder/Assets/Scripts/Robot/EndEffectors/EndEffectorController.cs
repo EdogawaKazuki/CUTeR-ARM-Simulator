@@ -42,8 +42,10 @@ public class EndEffectorController : MonoBehaviour
     public int GetEndEffector() { return _currentEndEffectorIndex; }
     public void Fire()
     {
-        if (_robotController.GetEditorController().GetSceneManager().GetPlayingScene() != null)
+        if (_robotController.GetEditorController().GetSceneManager().GetPlayingScene() != null){
             _currentEndEffector?.Fire();
+            Debug.Log("Fire" + _currentEndEffector.GetEndEffectorName());
+        }
     }
     public void SetForce(float force)
     {

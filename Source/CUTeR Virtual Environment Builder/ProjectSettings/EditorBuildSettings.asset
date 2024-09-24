@@ -23,10 +23,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/6DoF_Main_AR.unity
     guid: fe676b5c787910c4aabaeb4be5fbc191
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/6DoF_Main_New.unity
     guid: 95f8c501782559c4f87b5a16790aaa08
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/6DoF_Main_No_AR.unity
     guid: 1887631f953dffd49911113300bb5827
   - enabled: 0
