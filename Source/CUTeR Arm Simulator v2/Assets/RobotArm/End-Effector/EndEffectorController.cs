@@ -38,9 +38,17 @@ public class EndEffectorController : MonoBehaviour
             statusText.text = "";
             // Vector3 euler = quaternion2Euler(_currentEndEffector.transform.rotation, RotSeq.yxz);
             // euler = euler * Mathf.Rad2Deg;
-            statusText.text = "Pos: " + "x: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.x + _robotArm.transform.position.x) * 100 + 
-            " y: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.z + _robotArm.transform.position.z) * 100 + 
-            " z: " + (_endEffectors[_currentEndEffectorIndex].transform.position.y - _robotArm.transform.position.y) * 100;   
+            // Display End Effector Position (Divide by the scale of the robot GameObject so it accurately represents real life position)
+            GameObject robot = GameObject.Find("Robot");
+            Transform robotTransform = robot.transform;
+            Vector3 robotScale = robotTransform.localScale;
+            Vector3 position = _endEffectors[_currentEndEffectorIndex].transform.position - _robotArm.transform.position;
+            position.x /= robotScale.x;
+            position.y /= robotScale.y;
+            position.z /= robotScale.z;
+            statusText.text = "Pos: " + "x: " + position.x * 100 + 
+            " y: " + position.y * 100 + 
+            " z: " + position.z * 100;   
             // statusText.text += "\nEular: " + "x: " + euler.y + " y: " + (180 + euler.x) + " z: " + -(180 + euler.z);
         }
     }
