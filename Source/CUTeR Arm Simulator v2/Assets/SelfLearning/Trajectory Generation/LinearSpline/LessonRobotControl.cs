@@ -49,7 +49,7 @@ public class LessonRobotControl : MonoBehaviour
         // Start the timer
         isTimerRunning = true;
         elapsedTime = 0f;
-        bool debug = false;
+        bool debug = true;
         _generalRobotControl._currentState = GeneralRobotControl.State.init;
 
         if (!debug)
@@ -97,7 +97,7 @@ public class LessonRobotControl : MonoBehaviour
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Task_Space_Position_Cubic_Trajectory(new List<float> { 20, 20, 10, 0, 0, 0 }, 3f));
-            List<List<float>> TaskTrajList0 = HardcodeTrajectory_task_space2(5);
+            List<List<float>> TaskTrajList0 = HardcodeTrajectory_task_space2(3);
             List<List<float>> JointTrajList0 = _generalRobotControl.SolveTaskSpaceTrajectories(TaskTrajList0);
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.DrawTrajectory(TaskTrajList0));
@@ -122,11 +122,9 @@ public class LessonRobotControl : MonoBehaviour
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[4], 1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[4].length));
         }
-        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[0], image_size_list[0]));
-        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(true));
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Task_Space_Position_Cubic_Trajectory(new List<float> { -30, 20, 10, 0, 0, 0 }, 3f));
 
-        List<List<float>> TaskTrajList = HardcodeTrajectory_task_space(5);
+        List<List<float>> TaskTrajList = HardcodeTrajectory_task_space(3);
         List<List<float>> JointTrajList = _generalRobotControl.SolveTaskSpaceTrajectories(TaskTrajList);
 
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.DrawTrajectory(TaskTrajList));
@@ -135,9 +133,21 @@ public class LessonRobotControl : MonoBehaviour
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.ExecuteTrajectoryWithDelay(JointTrajList));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
 
-        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[1], image_size_list[1]));
-        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Task_Space_Position_Cubic_Trajectory(new List<float> { 10, 20, 30, 0, 0, 0 }, 3f));
+        // audio
 
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[0], image_size_list[0]));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(true));
+
+        //audio
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
+
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[1], image_size_list[1]));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 50, 0, 10, 0, 0, 0 }, 1.0f));
+
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
+
+        List<List<float>> jointTrajList = HardcodeTrajectory_joint_space(3);
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.ExecuteTrajectoryWithDelay(jointTrajList));
         // List<List<float>> TaskTrajList2 = HardcodeTrajectory_task_space_semicircle(3);
         // List<List<float>> JointTrajList2 = _generalRobotControl.SolveTaskSpaceTrajectories(TaskTrajList2);
 
@@ -152,10 +162,11 @@ public class LessonRobotControl : MonoBehaviour
         // fourth action: execute robot action reverse
         // _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.RobotAction2);
         // fifth action: move to initial position
-        _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.Move_to_Initial_Position);
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(false));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.HideTraj());
+
+        _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.Move_to_Initial_Position);
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGameObjectActive(menu, true));
 
 
@@ -259,7 +270,34 @@ public class LessonRobotControl : MonoBehaviour
         }
         return trajList;
     }
+    public List<List<float>> HardcodeTrajectory_joint_space(float seconds)
+    {
+        int num_of_frames = (int)(seconds / _generalRobotControl.fs);
+        List<List<float>> trajList = new List<List<float>>();
+        for (int i = 0; i < dof; i++)
+        {
+            trajList.Add(new List<float>());
+        }
+        for (int j = 0; j < num_of_frames; j++)
+        {
+            List<float> jointSpacePosition;
 
+            // Define the trajectory in task space
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float theta1 = Mathf.Lerp(50, -50, (float)j / (num_of_frames - 1)); // Linearly interpolate theta1 from -30 to 30
+            float theta2 = Mathf.Lerp(0, -40, (float)j / (num_of_frames - 1)); // Linearly interpolate theta2 from 20 to 40
+            float theta3 = Mathf.Lerp(10, 40, (float)j / (num_of_frames - 1)); // Linearly interpolate theta3 from 10 to 40
+
+            jointSpacePosition = new List<float> { theta1, theta2, theta3, 0, 0, 0 };
+
+            // Add the calculated joint angles to the corresponding joint's list
+            for (int k = 0; k < dof; k++)
+            {
+                trajList[k].Add(jointSpacePosition[k]);
+            }
+        }
+        return trajList;
+    }
 }
 
 /* 1.	(Show robot arm with the first servo joint 35 deg, the second joint 50 deg, the last joint 15 deg, show menu additionally)
