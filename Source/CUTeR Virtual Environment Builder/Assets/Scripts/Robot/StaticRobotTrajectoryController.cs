@@ -72,8 +72,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
 
         SetStatus(State.init);
-        if (_openTrajectoryButton != null)
+        if (_openTrajectoryButton != null){
             _openTrajectoryButton.onClick.AddListener(OnClick);
+            Debug.Log("add listener");
+        }
+            
 
 
     }
@@ -152,6 +155,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             if(paths.Length > 0) OnFileUpload(new Uri(paths[0]).AbsoluteUri);
         }
         catch(Exception e){
+            Debug.Log(e);
             _robotController.DebugText.text = e.ToString() + "\n" + _robotController.DebugText.text;
         }
     }
