@@ -54,6 +54,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
 
     private List<List<float>> _trajList;
     private List<List<float>> _prepareTrajList;
+    private List<int> _eeTypeList;
+    public bool useCustomEE = false;
     private int _currentTrajIndex;
     private int _trajLength;
     #endregion
@@ -141,6 +143,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             _robotController.Fire();
             // Debug.Log("Fire");
         }
+        if (useCustomEE)
+            _robotController.SetCustomEEType(_eeTypeList[_currentTrajIndex]);
         if (direction == Direction.forward)
             _currentTrajIndex++;
         else
@@ -194,17 +198,26 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             _trajText = trajText;
             _currentState = State.stopped;
             _trajList = new List<List<float>>();
+            _eeTypeList = new List<int>();
+            
             _trajLength = 0;
             _currentTrajIndex = 0;
 
             string[] trajsTextArray = trajText.Split(';');
 
+            // the trajectory file is not in the correct format
             if (trajsTextArray.Length < 2 || !trajsTextArray[0].Equals("angle"))
             {
                 SetStatus(State.loadFailed);
                 return;
             }
-            for (int i = 1; i < trajsTextArray.Length - 1; i++)
+
+            int dof = 0;
+            if (trajsTextArray.Length == 1 + 6 + 1 || trajsTextArray.Length == 1 + 6)
+                dof = 6;
+            else if (trajsTextArray.Length == 1 + 3 + 1 || trajsTextArray.Length == 1 + 3)
+                dof = 3;
+            for (int i = 1; i < dof; i++)
             {
                 //Debug.Log(trajsTextArray[i]);
                 string[] tmp = trajsTextArray[i].Split(',');
@@ -230,6 +243,13 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                         }
                     }
                 }
+            }
+            if (dof == 6 && trajsTextArray.Length == 1 + 6 + 1){
+                string[] eeType = trajsTextArray[trajsTextArray.Length - 1].Split(',');
+                foreach (var type in eeType){
+                    _eeTypeList.Add(int.Parse(type));
+                }
+                useCustomEE = true;
             }
             SetStatus(State.ready);
         }

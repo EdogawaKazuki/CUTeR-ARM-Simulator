@@ -229,6 +229,10 @@ public class RobotController : MonoBehaviour
             _joystickController.EnableForce(false);
         }
     }
+    public void SetCustomEEType(int type)
+    {
+        _endEffectorController.SetCustomEEType(type);
+    }
     public int GetEndEffector() { return _endEffectorController.GetEndEffector(); }
     public void SetForce(float force)
     {
