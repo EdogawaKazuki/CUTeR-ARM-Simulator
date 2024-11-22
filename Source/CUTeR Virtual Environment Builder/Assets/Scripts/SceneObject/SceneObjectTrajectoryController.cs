@@ -27,7 +27,7 @@ public class SceneObjectTrajectoryController : MonoBehaviour
     private Text _loadResultText;
     public int _currentTrajIndex = 0;
     public int _trajLength = 0;
-    private bool _isWebGL = false;
+    // private bool _isWebGL = false;
     public bool _useTraj = true;
     #endregion
 

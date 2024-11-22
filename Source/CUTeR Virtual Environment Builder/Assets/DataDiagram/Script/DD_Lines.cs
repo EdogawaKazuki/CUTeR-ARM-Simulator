@@ -207,7 +207,7 @@ public class DD_Lines : DD_DrawGraphic {
 
             PointList.Clear();
         } catch (NullReferenceException e) {
-            //print(this + " : " + e);
+            print(this + " : " + e);
             return false;
         }
 

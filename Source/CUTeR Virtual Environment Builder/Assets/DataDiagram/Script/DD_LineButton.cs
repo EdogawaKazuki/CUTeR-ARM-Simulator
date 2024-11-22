@@ -105,22 +105,22 @@ public class DD_LineButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         GetComponentInParent<DD_DataDiagram>().SetPositionAndSize(new Vector2(0, m_Line.GetComponent<DD_Lines>().GetPointByIndex(0) - 6), new Vector2(10, 10));
         //GetComponentInParent<DD_DataDiagram>().GetComponentInChildren<DD_CoordinateAxis>().UpdateTable();
         return;
-        if (true == Input.GetKey(KeyCode.LeftControl)) {
-            return;
-        }
+        // if (true == Input.GetKey(KeyCode.LeftControl)) {
+        //     return;
+        // }
 
-        if (null == m_Line) {
-            Debug.LogWarning(this.ToString() + "error OnButtonClick : null == m_Line");
-            return;
-        }
+        // if (null == m_Line) {
+        //     Debug.LogWarning(this.ToString() + "error OnButtonClick : null == m_Line");
+        //     return;
+        // }
 
-        DD_Lines lines = m_Line.GetComponent<DD_Lines>();
-        if(null == lines) {
-            Debug.LogWarning(this.ToString() + "error OnButtonClick : null == DD_Lines");
-            return;
-        } else {
-            lines.IsShow = !lines.IsShow;
-        }
+        // DD_Lines lines = m_Line.GetComponent<DD_Lines>();
+        // if(null == lines) {
+        //     Debug.LogWarning(this.ToString() + "error OnButtonClick : null == DD_Lines");
+        //     return;
+        // } else {
+        //     lines.IsShow = !lines.IsShow;
+        // }
     }
 
     public void OnButtonClickWithCtrl() {

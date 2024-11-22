@@ -13,7 +13,7 @@ public class EditorController : MonoBehaviour
 #if UNITY_WEBGL
     private bool _isWebGL=true;
 #else 
-    private bool _isWebGL = false;
+    // private bool _isWebGL = false;
 #endif
 
     private SceneManager _sceneManager;

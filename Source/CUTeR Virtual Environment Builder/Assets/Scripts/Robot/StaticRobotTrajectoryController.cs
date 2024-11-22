@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
+// using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -17,7 +17,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
 #if UNITY_WEBGL
     private bool _isWebGL=true;
 #else 
-    private bool _isWebGL = false;
+    // private bool _isWebGL = false;
 #endif
 
     #region Variables
@@ -55,7 +55,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     private List<List<float>> _trajList;
     private List<List<float>> _prepareTrajList;
     private List<int> _eeTypeList;
-    public bool useCustomEE = false;
+    public bool useEndEffector = false;
     private int _currentTrajIndex;
     private int _trajLength;
     #endregion
@@ -143,8 +143,8 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             _robotController.Fire();
             // Debug.Log("Fire");
         }
-        if (useCustomEE)
-            _robotController.SetCustomEEType(_eeTypeList[_currentTrajIndex]);
+        if (useEndEffector)
+            _robotController.SetEndEffector(_eeTypeList[_currentTrajIndex]);
         if (direction == Direction.forward)
             _currentTrajIndex++;
         else
@@ -211,11 +211,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 SetStatus(State.loadFailed);
                 return;
             }
-
+            Debug.Log(trajsTextArray.Length);
             int dof = 0;
-            if (trajsTextArray.Length == 1 + 6 + 1 || trajsTextArray.Length == 1 + 6)
+            if (trajsTextArray.Length == 1 + 6 + 1 + 1  || trajsTextArray.Length == 1 + 6 + 1)
                 dof = 6;
-            else if (trajsTextArray.Length == 1 + 3 + 1 || trajsTextArray.Length == 1 + 3)
+            else if (trajsTextArray.Length == 1 + 3 + 1 + 1 || trajsTextArray.Length == 1 + 3 + 1)
                 dof = 3;
             for (int i = 1; i < dof; i++)
             {
@@ -244,13 +244,18 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                     }
                 }
             }
-            if (dof == 6 && trajsTextArray.Length == 1 + 6 + 1){
-                string[] eeType = trajsTextArray[trajsTextArray.Length - 1].Split(',');
+            if ((dof == 6 && trajsTextArray.Length == 1 + 6 + 1 + 1) || (dof == 3 && trajsTextArray.Length == 1 + 3 + 1 + 1)){
+                string[] eeType = trajsTextArray[trajsTextArray.Length - 2].Split(',');
+                // Debug.Log(trajsTextArray[trajsTextArray.Length - 2]);
                 foreach (var type in eeType){
                     _eeTypeList.Add(int.Parse(type));
                 }
-                useCustomEE = true;
+                useEndEffector = true;
+            }else{
+                useEndEffector = false;
             }
+            Debug.Log(trajsTextArray.Length);
+            Debug.Log(useEndEffector);
             SetStatus(State.ready);
         }
         catch (Exception e)
@@ -317,7 +322,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     public void LoopTraj()
     {
         _currentTrajIndex = 0;
-        _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), new List<float>() { _trajList[0][0], _trajList[1][0], _trajList[2][0] });
+        List<float> initTrajFrame = new List<float>();
+        for (int i = 0; i < _trajList.Count; i++)
+        {
+            initTrajFrame.Add(_trajList[i][0]);
+        }
+        _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), initTrajFrame);
 
         if(_prepareTrajList != null)
             SetStatus(State.prelooPIng);
@@ -331,7 +341,12 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             if(_trajLength > 0)
             {
                 _currentTrajIndex = 0;
-                _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), new List<float>() { _trajList[0][0], _trajList[1][0], _trajList[2][0] });
+                List<float> initTrajFrame = new List<float>();
+                for (int i = 0; i < _trajList.Count; i++)
+                {
+                    initTrajFrame.Add(_trajList[i][0]);
+                }
+                _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), initTrajFrame);
                 Debug.Log(_robotController.GetJointAngles()[0] + ", " +  _robotController.GetJointAngles()[1] + ", " + _robotController.GetJointAngles()[2]);
                 if (_prepareTrajList != null && prepare)
                     SetStatus(State.preplaying);
@@ -382,7 +397,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     private List<float> GenerateCubicTraj(float start, float end, float time)
     {
-        float tStart = 0;
+        // float tStart = 0;
         float tMid = time / 2.0f;
         float tEnd = time;
 

@@ -24,11 +24,11 @@ public class EndEffectorController : MonoBehaviour
     public bool _useCustomEE = false;
     private List<Transform> _customEETypeList = new List<Transform>();
     public Dropdown eeDropdown;
+    private int _builtInEECount = 0;
     #endregion
     #region MonoBehaviour
     private void Start()
     {
-
         for(int i = 0; i < _endEffectors.Count; i++)
         {
             _endEffectors[i].Init();
@@ -36,7 +36,9 @@ public class EndEffectorController : MonoBehaviour
             _endEffectors[i].SetRobotController(_robotController);
             //Debug.Log(_endEffectorNames[i]);
         }
+        _builtInEECount = _endEffectors.Count;
         SetEndEffector(0);
+        ScanCustomEE();
     }
     #endregion
     #region Methods
@@ -49,13 +51,16 @@ public class EndEffectorController : MonoBehaviour
         for(int i = 0; i < _customEETypeList.Count; i++){
             _customEETypeList[i].gameObject.SetActive(false);
         }
-        if(index <= _endEffectors.Count){
+        if(index < _builtInEECount){
             _currentEndEffectorIndex = index;
             _currentEndEffector = _endEffectors[_currentEndEffectorIndex];
             _currentEndEffector.GetGameObject().SetActive(true);
             _useCustomEE = false;
         }else{
-            _currentCustomEEIndex = index - _endEffectors.Count;
+            _currentCustomEEIndex = index - _builtInEECount;
+            // Debug.Log("index: " + index + " _builtInEECount: " + _builtInEECount);
+            Debug.Log(_currentCustomEEIndex);
+            Debug.Log(_customEETypeList.Count);
             _currentCustomEE = _customEETypeList[_currentCustomEEIndex];
             _currentCustomEE.gameObject.SetActive(true);
             _useCustomEE = true;
@@ -63,27 +68,19 @@ public class EndEffectorController : MonoBehaviour
     }
     public void SetCustomEEType(int index)
     {
-        if(_useCustomEE){
-            _currentCustomEE.gameObject.SetActive(false);
-        }else{
-            for(int i = 0; i < _endEffectors.Count; i++)
-            {
-                _endEffectors[i].GetGameObject().SetActive(false);
-            }
-        }
-        _currentCustomEE = _customEETypeList[index];
-        _currentCustomEE.gameObject.SetActive(true);
-        _currentCustomEEIndex = index;
-        _useCustomEE = true;
+        Debug.Log(index);
+        SetEndEffector(index + _builtInEECount + 1);
     }
     public void ScanCustomEE(){
         if(_customEETypeList.Count > 0){
             foreach(var ee in _customEETypeList){
                 Destroy(ee.gameObject);
                 // eeDropdown.removeOption(0);
+                eeDropdown.options.RemoveAt(eeDropdown.options.Count - 1);
             }
             _customEETypeList.Clear();
         }
+        
         string eeFolder = Application.dataPath + "/Resources/endEffector";
         List<string> eeFileList = new List<string>();
         if (Directory.Exists(eeFolder))
@@ -110,6 +107,7 @@ public class EndEffectorController : MonoBehaviour
                     Dictionary<string, object> eeDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(sceneDictString);
                     SetPropByDict(eeDict, newEle, transform);
                     newEle.gameObject.SetActive(false);
+                    eeDropdown.options.Add(new Dropdown.OptionData("Custom EE " + name));
                 }
             }
             // eeDropdown.addOption("custom ee 1");

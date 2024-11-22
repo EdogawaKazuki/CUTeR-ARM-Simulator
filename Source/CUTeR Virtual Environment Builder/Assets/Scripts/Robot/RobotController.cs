@@ -219,7 +219,7 @@ public class RobotController : MonoBehaviour
     public void SetEndEffector(int index)
     {
         _endEffectorController.SetEndEffector(index);
-        Debug.Log(index);
+        // Debug.Log(index);
         if(index == 3)
         {
             _joystickController.EnableForce(true);

@@ -11,14 +11,14 @@ public class PWMFeedback : MonoBehaviour
     private DD_DataDiagram m_DataDiagram;
     [SerializeField]
     List<LineRenderer> _joinLines;
-    private float h = 0;
+    // private float h = 0;
     private List<GameObject> lineList = new List<GameObject>();
     private List<List<int>> _pwmQueue = new List<List<int>>() { new List<int>(), new List<int>() , new List<int>() };
     private List<Vector3[]> _pwmPositions = new List<Vector3[]>();
     [SerializeField]
     private int _queueSize = 100;
-    [SerializeField]
-    private int _pwmCount = 0;
+    // [SerializeField]
+    // private int _pwmCount = 0;
     [SerializeField]
     private Text SliderText;
     private bool useMovingAverage;

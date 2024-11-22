@@ -52,7 +52,7 @@ public class RobotClient : MonoBehaviour
 	float[] sum = { 0, 0, 0 };
 	List<Queue<float>> tail;
 	int filterIndex = 0;
-	int frameIndex = 0;
+	// int frameIndex = 0;
 
 	#endregion
 
@@ -110,7 +110,7 @@ public class RobotClient : MonoBehaviour
 					if (_isESP32)
 					{
 
-						frameIndex = 0;
+						// frameIndex = 0;
 						byteArray = new byte[sizeof(float) * 3 + 1];
 						byteArray[0] = 2;
 						Debug.Log(robotJointAngleCmd[0]);
