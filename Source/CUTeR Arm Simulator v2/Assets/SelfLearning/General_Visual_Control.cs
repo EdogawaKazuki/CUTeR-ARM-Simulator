@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class GeneralVisualControl : MonoBehaviour
     public LineRenderer PathLine;
     private Transform _robotArm;
     private GameObject _visualizer;
+    private DrawGraph _graph_drawer;
     private GameObject _visualizer_image;
     public GameObject startSpherePrefab;
     public GameObject endSpherePrefab;
@@ -27,6 +29,7 @@ public class GeneralVisualControl : MonoBehaviour
         _visualizer = GameObject.Find("SelfLearningCanvas/Visualizer");
         // _visualizer_image = _visualizer.GetComponent<Image>();
         _visualizer_image = GameObject.Find("SelfLearningCanvas/Visualizer/ImageDisplayer");
+        _graph_drawer = _visualizer.GetComponent<DrawGraph>();
 
     }
 
@@ -34,6 +37,80 @@ public class GeneralVisualControl : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public IEnumerator PlotGraph(List<float> YList, string name="Graph1")
+    {
+        string graph_root = FindGraphRoot(name);
+        string graph_path = graph_root + name;
+        _graph_drawer.ClearGraph(graph_path);
+        _graph_drawer.ShowGraph(YList, graph_path);
+        // _graph_drawer.PlotPoints(graph_path, XList, new Color32(0, 255, 0, 255));
+        return null;
+    }
+
+    public IEnumerator ClearGraph(string name)
+    {
+        string graph_root = FindGraphRoot(name);
+        string graph_path = graph_root + name;
+        _graph_drawer.ClearGraph(graph_path);
+        return null;
+    }
+
+    public IEnumerator SetGraphStatus(string name, bool status)
+    {
+        string graph_root = "SelfLearningCanvas/Visualizer/" + FindGraphRoot(name);
+        string graph_path = graph_root + name;
+        GameObject.Find(graph_path).SetActive(status);
+        EnableGraph(graph_root);
+        
+        return null;
+    }
+
+    public IEnumerator CloseAllGraphs()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            string name = "Graph" + (char) (i+1 + 48);
+            ClearGraph(name);
+            SetGraphStatus(name, false);
+        }
+
+        return null;
+    }
+
+    public IEnumerator SetGraphTitle(string name, string title)
+    {
+        string graph_root = "SelfLearningCanvas/Visualizer/" + FindGraphRoot(name);
+        string title_path = graph_root + name + "/Title";
+        GameObject.Find(title_path).GetComponent<TMP_Text>().text = title;
+        
+        return null;
+    }
+
+    private string FindGraphRoot(string name)
+    {
+        return "Graphs" + (name[5] < '4' ? "0" : "1") + "/";
+    }
+
+    public void EnableGraph(string graph_root)
+    {
+        // string graph_root = "SelfLearningCanvas/Visualizer/Graphs";
+        Transform graphTransform = GameObject.Find(graph_root).transform;
+
+        bool anyActive = false;
+        foreach (Transform child in graphTransform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                anyActive = true;
+                break; // Exit loop if any child is active
+            }
+        }
+
+        // Set the graph_root game object active if any child is active
+        graphTransform.gameObject.SetActive(anyActive);
+        
     }
 
     public IEnumerator SetGameObjectActive(GameObject gameObject, bool status)
@@ -70,12 +147,13 @@ public class GeneralVisualControl : MonoBehaviour
     {
         _visualizer_image.GetComponent<Image>().sprite = image;
         float aspectRatio = size.x / size.y;
-        float widthLimit = 1024;
-        float heightLimit = 512;
+        float widthLimit = 2048;
+        float heightLimit = 1024;
         float widthScale = widthLimit / size.x;
         float heightScale = heightLimit / size.y;
         float scale = Mathf.Min(widthScale, heightScale);
         Vector2 newSize = new Vector2(size.x * scale, size.y * scale);
+        Vector2 newSizeV = new Vector2(size.x * scale + 670, size.y * scale);
         _visualizer_image.GetComponent<RectTransform>().sizeDelta = newSize;
         _visualizer.GetComponent<RectTransform>().sizeDelta = newSize;
         

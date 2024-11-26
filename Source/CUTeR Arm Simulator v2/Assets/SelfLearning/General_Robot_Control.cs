@@ -8,6 +8,8 @@ public class GeneralRobotControl : MonoBehaviour
 {
     public RobotController _robotController;
     public StaticRobotTrajectoryController _trajController;
+    public RobotClient _robotClient;
+
     PlayableDirector timeline;
 
     int dof = 6;
@@ -129,12 +131,9 @@ public class GeneralRobotControl : MonoBehaviour
         float theta2 = phi2 + phi2_offset;
         float theta3 = phi3 + phi3_offset;
 
-        Debug.Log("theta1: " + (Mathf.Rad2Deg * theta1));
-        Debug.Log("theta2: " + (Mathf.Rad2Deg * theta2));
-        Debug.Log("theta3: " + (Mathf.Rad2Deg * theta3));
-
         return new List<float> { Mathf.Rad2Deg * theta1, -Mathf.Rad2Deg * theta2 + 90, -Mathf.Rad2Deg * theta3 - 45, 0, 0, 0 };
     }
+
     public List<List<float>> SolveTaskSpaceTrajectories(List<List<float>> TaskTrajList)
     {
         List<List<float>> JointTrajList = new List<List<float>>();
@@ -155,6 +154,24 @@ public class GeneralRobotControl : MonoBehaviour
             }
         }
         return JointTrajList;
+    }
+    
+    public List<List<float>> SolveJointSpaceTrajectories(List<List<float>> JointTrajList)
+    {
+        List<List<float>> TaskTrajList = new List<List<float>>();
+        for (int i = 0; i < JointTrajList[0].Count; i++)
+        {
+            List<float> taskSpacePosition = new List<float>();
+            // Use forward kinematics to find the task space position for the current joint angles
+            List<float> jointAngles = new List<float>();
+            for (int k = 0; k < dof; k++)
+            {
+                jointAngles.Add(JointTrajList[k][i]); // Collect the angle for each joint
+            }
+            taskSpacePosition = ForwardKinematicsOpenManipulatorPro3DOF(jointAngles);
+            TaskTrajList.Add(taskSpacePosition);
+        }
+        return TaskTrajList;
     }
 
     public List<List<float>> HardcodeTrajectory(int num_of_frames)
@@ -415,6 +432,7 @@ public class GeneralRobotControl : MonoBehaviour
                 angles.Add(trajList[j][i]);
             }
             _robotController.SetCmdJointAngles(angles);
+            // _robotClient.SendJointCmdDirect(angles, fs);
             _robotController.SendCmdToRobot(fs);
 
             // Add a delay here

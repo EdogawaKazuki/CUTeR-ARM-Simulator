@@ -38,6 +38,7 @@ public class RobotJointController : MonoBehaviour
         ShowJointsFrame(false);
         // Debug.Log("Joint number: " + _jointNumber);
     }
+    
     // Update is called once per frame
     void Update()
     {

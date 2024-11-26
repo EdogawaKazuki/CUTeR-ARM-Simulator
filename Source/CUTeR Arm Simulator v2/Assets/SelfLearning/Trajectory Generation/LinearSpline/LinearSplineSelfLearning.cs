@@ -5,15 +5,15 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using System.Threading;
+using Unity.VisualScripting;
 
-public class LessonRobotControl : MonoBehaviour
+public class LinearSplineSelfLearning : MonoBehaviour
 {
     public RobotController _robotController;
     public StaticRobotTrajectoryController _trajController;
     public GeneralRobotControl _generalRobotControl;
     public GeneralAudioControl _generalAudioControl;
     public GeneralVisualControl _generalVisualControl;
-    public AudioClip audio1;
     [SerializeField] private AudioClip[] audio_list;
     [SerializeField] private Texture2D[] texture_list;
     private List<Sprite> image_sprite_list = new List<Sprite>();
@@ -27,8 +27,8 @@ public class LessonRobotControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeline = transform.Find("Lesson Timeline")?.GetComponent<PlayableDirector>();
-        timeline.Pause();
+        // timeline = transform.Find("Lesson Timeline")?.GetComponent<PlayableDirector>();
+        // timeline.Pause();
         Button startButton = transform.Find("Menu/MenuContainer/Start Button")?.GetComponent<Button>();
         startButton?.onClick.AddListener(OnClickStart);
         //_generalRobotControl = GameObject.Find("../..").GetComponent<GeneralRobotControl>();
@@ -49,7 +49,7 @@ public class LessonRobotControl : MonoBehaviour
         // Start the timer
         isTimerRunning = true;
         elapsedTime = 0f;
-        bool debug = true;
+        bool debug = false;
         _generalRobotControl._currentState = GeneralRobotControl.State.init;
 
         if (!debug)
@@ -58,8 +58,8 @@ public class LessonRobotControl : MonoBehaviour
             _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.Move_to_Initial_Position);
             // second action: wait for 1 second
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1.0f));
-            // _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[0], 1.0f));
-            // _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[0].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[0], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[0].length));
 
 
 
@@ -82,8 +82,8 @@ public class LessonRobotControl : MonoBehaviour
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 0, 0, 30, 0, 0, 0 }, 0.6f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 0, 0, 0, 0, 0, 0 }, 0.4f));
 
-            // _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[1], 1.0f));
-            // _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[1].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[1], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[1].length));
 
             List<List<float>> TaskTrajList2 = HardcodeTrajectory_task_space_semicircle(3);
             List<List<float>> JointTrajList2 = _generalRobotControl.SolveTaskSpaceTrajectories(TaskTrajList2);
@@ -109,19 +109,41 @@ public class LessonRobotControl : MonoBehaviour
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[2], 1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[2].length));
-
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 40, 0, 0, 0, 0, 0 }, 1f));
+            
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[3], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[3].length));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 40, 40, 0, 0, 0, 0 }, 1f));
+
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[4], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[4].length));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 40, 40, 40, 0, 0, 0 }, 1f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 0, 0, 0, 0, 0, 0 }, 1f));
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
 
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[3], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[3].length));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[4], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[4].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[5], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[5].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[6], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[6].length));
         }
+        List<float> YList = new List<float>();
+        List<float> XList = new List<float>();
+        ComputeGraphValue(out XList, out YList);
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(YList, name="Graph1"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphTitle("Graph1", "Joint Velocity"));        
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph1", true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(XList, name="Graph2"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph2", true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(YList, name="Graph3"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph3", true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(XList, name="Graph4"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph4", true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(YList, name="Graph5"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph5", true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(XList, name="Graph6"));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph6", true));
+
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Task_Space_Position_Cubic_Trajectory(new List<float> { -30, 20, 10, 0, 0, 0 }, 3f));
 
         List<List<float>> TaskTrajList = HardcodeTrajectory_task_space(3);
@@ -134,20 +156,30 @@ public class LessonRobotControl : MonoBehaviour
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
 
         // audio
-
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[7], 1.0f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[0], image_size_list[0]));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(true));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[7].length));
+
 
         //audio
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
-
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[8], 1.0f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[1], image_size_list[1]));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[8].length));
+
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 50, 0, 10, 0, 0, 0 }, 1.0f));
 
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[9], 1.0f));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[9].length));
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
 
         List<List<float>> jointTrajList = HardcodeTrajectory_joint_space(3);
         _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.ExecuteTrajectoryWithDelay(jointTrajList));
+
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[10], 1.0f));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(audio_list[10].length));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(1f));
         // List<List<float>> TaskTrajList2 = HardcodeTrajectory_task_space_semicircle(3);
         // List<List<float>> JointTrajList2 = _generalRobotControl.SolveTaskSpaceTrajectories(TaskTrajList2);
 
@@ -162,7 +194,9 @@ public class LessonRobotControl : MonoBehaviour
         // fourth action: execute robot action reverse
         // _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.RobotAction2);
         // fifth action: move to initial position
+
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(false));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.CloseAllGraphs());
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.HideTraj());
 
@@ -188,7 +222,18 @@ public class LessonRobotControl : MonoBehaviour
         }
     }
 
-
+    public void ComputeGraphValue(out List<float> XList, out List<float> YList)
+    {
+        XList = new List<float>();
+        YList = new List<float>();
+        for (int i = -10; i <=  10; i++)
+        {
+            float x = i;
+            float y = x * x;
+            YList.Add(y);
+            XList.Add(x);
+        }
+    }
     public List<List<float>> HardcodeTrajectory_task_space_semicircle(float seconds)
     {
         int num_of_frames = (int)(seconds / _generalRobotControl.fs);
