@@ -101,6 +101,13 @@ public class EndEffectorController : MonoBehaviour
                     eeFileList.Add(file);
                     // read ee model and set parent to ee root
                     Transform newEle = AddCustomEEByPath(eeFolder, name);
+                    for (int i = 0; i < newEle.transform.childCount; i++)   
+                    {
+                        MeshCollider meshCollider = newEle.transform.GetChild(i).gameObject.GetComponent<MeshCollider>();
+                        meshCollider.convex = false;
+                        Rigidbody rigidbody = newEle.transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
+                        rigidbody.isKinematic = true;
+                    }
                     _customEETypeList.Add(newEle);
                     // read ee position info
                     string sceneDictString = File.ReadAllText(file);
