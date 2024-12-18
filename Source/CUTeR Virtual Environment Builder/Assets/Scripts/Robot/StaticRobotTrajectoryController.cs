@@ -217,7 +217,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 dof = 6;
             else if (trajsTextArray.Length == 1 + 3 + 1 + 1 || trajsTextArray.Length == 1 + 3 + 1)
                 dof = 3;
-            for (int i = 1; i < dof; i++)
+            for (int i = 1; i <= dof; i++)
             {
                 //Debug.Log(trajsTextArray[i]);
                 string[] tmp = trajsTextArray[i].Split(',');
