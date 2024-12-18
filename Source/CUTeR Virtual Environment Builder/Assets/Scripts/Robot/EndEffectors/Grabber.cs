@@ -159,11 +159,12 @@ public class Grabber : EndEffector
     }
     public void Release()
     {
-        //Debug.Log("Release");
+        Debug.Log("Release");
         if (targetObject)
         {
             // set the parent back to the scene
-            targetObject.transform.SetParent(GameObject.Find("VirtualScene/PlayingScene").transform);
+            // targetObject.transform.SetParent(GameObject.Find("VirtualScene/PlayingScene").transform);
+            targetObject.transform.SetParent(_robotController.GetEditorController().GetSceneManager().GetPlayingScene());
             // enable the physical property
             Rigidbody rigidbody = targetObject.GetComponent<Rigidbody>();
             if (rigidbody)
