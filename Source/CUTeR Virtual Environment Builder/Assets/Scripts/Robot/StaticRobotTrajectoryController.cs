@@ -217,7 +217,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 dof = 6;
             else if (trajsTextArray.Length == 1 + 3 + 1 + 1 || trajsTextArray.Length == 1 + 3 + 1)
                 dof = 3;
-            for (int i = 1; i < dof; i++)
+            for (int i = 1; i <= dof; i++)
             {
                 //Debug.Log(trajsTextArray[i]);
                 string[] tmp = trajsTextArray[i].Split(',');
@@ -246,6 +246,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             }
             if ((dof == 6 && trajsTextArray.Length == 1 + 6 + 1 + 1) || (dof == 3 && trajsTextArray.Length == 1 + 3 + 1 + 1)){
                 string[] eeType = trajsTextArray[trajsTextArray.Length - 2].Split(',');
+                if (eeType.Length != _trajList[0].Count)
+                {
+                    SetStatus(State.loadFailed);
+                    return;
+                }
                 // Debug.Log(trajsTextArray[trajsTextArray.Length - 2]);
                 foreach (var type in eeType){
                     _eeTypeList.Add(int.Parse(type));
