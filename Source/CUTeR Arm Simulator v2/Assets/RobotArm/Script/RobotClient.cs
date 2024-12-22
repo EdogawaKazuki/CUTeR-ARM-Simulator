@@ -68,7 +68,7 @@ public class RobotClient : MonoBehaviour
 	public bool SendCmd = true;
 
 	// 0 for CUTeR; 1 for OpenManipulator Pro
-	static public int ROBOT_TYPE = 1;
+	static public int ROBOT_TYPE = 0;
 	private int ROBOT_DOF = 3;
 	public bool isReceive = true;
 	private float timer = 0;
