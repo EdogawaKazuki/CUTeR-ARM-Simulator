@@ -4,6 +4,8 @@ using System.Numerics;
 // using System.Windows.Forms;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UI;
+
 
 // using MathNet.Numerics.LinearAlgebra;
 
@@ -17,7 +19,7 @@ public class GeneralRobotControl : MonoBehaviour
     PlayableDirector timeline;
 
     int dof = 6;
-    public float fs = 0.01f;
+    public float fs;
 
     public enum State
     {
@@ -37,10 +39,13 @@ public class GeneralRobotControl : MonoBehaviour
     public delegate IEnumerator RobotAction();
     public Queue<RobotAction> actionQueue = new Queue<RobotAction>();
 
+    private Coroutine currentCoroutine; // Reference to the currently running coroutine
+
     // Start is called before the first frame update
     void Start()
     {
         _currentState = State.init;
+        fs = 1 / _robotClient.control_rate;
     }
 
     void OnEnable() { }
@@ -58,7 +63,7 @@ public class GeneralRobotControl : MonoBehaviour
                     RobotAction nextAction = actionQueue.Dequeue();
                     try
                     {
-                        StartCoroutine(nextAction());
+                        currentCoroutine = StartCoroutine(nextAction());
                         _currentState = State.playing;
                     }
                     catch
@@ -76,7 +81,7 @@ public class GeneralRobotControl : MonoBehaviour
                     // Robot action is paused
                     break;
                 case State.finished:
-                    // Robot has finished all actions
+                    // Robot has finished the current action
                     _currentState = State.ready;
                     break;
                 default:
@@ -84,6 +89,44 @@ public class GeneralRobotControl : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public IEnumerator StartLesson()
+    {
+        // GameObject joystickSlider = GameObject.Find("Robot/RobotCanvas/Joystick/Panel/Slider");
+        for (int i = 0; i < 6; i++)
+        {
+            GameObject sliderObject = GameObject.Find("Robot/RobotCanvas/Joystick/Panel/Slider/Joint" + i + "/Slider");
+            if (sliderObject != null)
+            {
+                Slider slider = sliderObject.GetComponent<Slider>();
+                if (slider != null)
+                {
+                    // Example usage: Set the slider value to 0.5
+                    slider.interactable = false;
+                }
+            }
+        }
+        return null;
+    }
+
+    public IEnumerator EndLesson()
+    {
+        // GameObject joystickSlider = GameObject.Find("Robot/RobotCanvas/Joystick/Panel/Slider");
+        for (int i = 0; i < 6; i++)
+        {
+            GameObject sliderObject = GameObject.Find("Robot/RobotCanvas/Joystick/Panel/Slider/Joint" + i + "/Slider");
+            if (sliderObject != null)
+            {
+                Slider slider = sliderObject.GetComponent<Slider>();
+                if (slider != null)
+                {
+                    // Example usage: Set the slider value to 0.5
+                    slider.interactable = true;
+                }
+            }
+        }
+        return null;
     }
 
     private float[,] RotationMatrixX(float theta)
@@ -167,7 +210,7 @@ public class GeneralRobotControl : MonoBehaviour
 
     private List<float> AnglesFromSimulation2Model(List<float> angles)
     {
-        if (angles.Count <= 6)
+        if (angles.Count < 6)
         {
             return new List<float>
             {
@@ -447,7 +490,9 @@ public class GeneralRobotControl : MonoBehaviour
             {
                 jointAngles.Add(JointTrajList[k][i]); // Collect the angle for each joint
             }
+
             taskSpacePosition = ForwardKinematicsOpenManipulatorPro6DOF(jointAngles);
+
             TaskTrajList.Add(taskSpacePosition);
         }
         return TaskTrajList;
@@ -455,13 +500,21 @@ public class GeneralRobotControl : MonoBehaviour
 
     public IEnumerator MoveToInitialPosition()
     {
+        List<float> current_angles = _robotController.GetJointAngles();
+        Debug.Log("Current angles: " + string.Join(", ", current_angles));
         List<float> target_angles = new List<float>();
         for (int i = 0; i < dof; i++)
         {
             target_angles.Add(0);
         }
+        float distance = 0;
+        for (int i = 0; i < dof; i++)
+        {
+            distance = Mathf.Max(distance, Mathf.Abs(current_angles[i] - target_angles[i]) * (dof-i)/dof);  // weighted, lower indexed joints have heavier weight
+        }
+        float duration = Mathf.Max(1.0f, 2.0f * distance / 40);
         yield return StartCoroutine(
-            MoveToTargetJointSpacePositionCubicTrajectory(target_angles, 2.0f)
+            MoveToTargetJointSpacePositionCubicTrajectory(target_angles, duration)
         );
         _currentState = State.finished;
     }
@@ -487,7 +540,7 @@ public class GeneralRobotControl : MonoBehaviour
 
             trajList.Add(tmp);
         }
-        yield return StartCoroutine(ExecuteTrajectoryWithDelay(trajList));
+        yield return StartCoroutine(ExecuteTrajectory(trajList));
         _currentState = State.finished;
     }
 
@@ -524,7 +577,7 @@ public class GeneralRobotControl : MonoBehaviour
             }
             trajList.Add(tmp);
         }
-        yield return StartCoroutine(ExecuteTrajectoryWithDelay(trajList));
+        yield return StartCoroutine(ExecuteTrajectory(trajList));
         _currentState = State.finished;
     }
 
@@ -581,7 +634,7 @@ public class GeneralRobotControl : MonoBehaviour
             }
         }
 
-        yield return StartCoroutine(ExecuteTrajectoryWithDelay(trajList));
+        yield return StartCoroutine(ExecuteTrajectory(trajList));
         _currentState = State.finished;
     }
 
@@ -624,7 +677,7 @@ public class GeneralRobotControl : MonoBehaviour
             }
         }
 
-        yield return StartCoroutine(ExecuteTrajectoryWithDelay(trajList));
+        yield return StartCoroutine(ExecuteTrajectory(trajList));
         _currentState = State.finished;
     }
 
@@ -667,11 +720,12 @@ public class GeneralRobotControl : MonoBehaviour
             }
         }
 
-        yield return StartCoroutine(ExecuteTrajectoryWithDelay(trajList));
+        yield return StartCoroutine(ExecuteTrajectory(trajList));
         _currentState = State.finished;
     }
 
-    public IEnumerator ExecuteTrajectoryWithDelay(List<List<float>> trajList)
+
+    public IEnumerator ExecuteTrajectory(List<List<float>> trajList)
     {
         for (int i = 0; i < trajList[0].Count; i++)
         {
@@ -680,6 +734,7 @@ public class GeneralRobotControl : MonoBehaviour
             {
                 angles.Add(trajList[j][i]);
             }
+            Debug.Log("Angles at frame " + i + ": " + string.Join(", ", angles));
             _robotController.SetCmdJointAngles(angles);
             // _robotClient.SendJointCmdDirect(angles, fs);
             _robotController.SendCmdToRobot(fs);
@@ -699,6 +754,20 @@ public class GeneralRobotControl : MonoBehaviour
     public void SetFinish()
     {
         _currentState = State.finished;
+    }
+
+    public void StopActions()
+    {
+        // Stop the current action and clear the action queue
+        actionQueue.Clear();
+        SetFinish();
+
+        // Stop the currently running coroutine if it exists
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null; // Clear the reference
+        }
     }
 
     // return to init

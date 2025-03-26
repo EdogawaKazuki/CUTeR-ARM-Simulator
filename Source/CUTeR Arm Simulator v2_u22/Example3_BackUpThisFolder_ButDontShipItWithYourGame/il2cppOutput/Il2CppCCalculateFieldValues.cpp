@@ -39277,9 +39277,9 @@ IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable663[2] =
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable664[5] = 
 {
 	static_cast<int32_t>(sizeof(RuntimeObject)),0,0,0,0,};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable665[5] = 
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable665[13] = 
 {
-	static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkChars_0)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkPrevious_1)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkLength_2)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkOffset_3)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_MaxCapacity_4)),};
+	static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkChars_0)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkPrevious_1)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkLength_2)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_ChunkOffset_3)),static_cast<int32_t>(offsetof(StringBuilder_t, ___m_MaxCapacity_4)),0,0,0,0,0,0,0,0,};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable666[1] = 
 {
 	static_cast<int32_t>(offsetof(StringBuilderCache_t346AF256BEEDBE1015EE81E74CD279FBE10DD7C9_ThreadStaticFields, ___t_cachedInstance_0)) | THREAD_LOCAL_STATIC_MASK,};

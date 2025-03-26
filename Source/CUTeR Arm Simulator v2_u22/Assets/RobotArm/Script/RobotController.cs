@@ -47,6 +47,8 @@ public class RobotController : MonoBehaviour
     private List<int> _pwmList;
 
     public List<float> CmdJointAngles;
+    
+    private bool _previousConnectedStatus = false;
 
     #endregion
     #region MonoBehaviour
@@ -94,6 +96,8 @@ public class RobotController : MonoBehaviour
         _endEffectorController = transform.Find("EndEffectors").GetComponent<EndEffectorController>();
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         _transparentRobotJointController = transform.Find("Joints Transparent").GetComponent<RobotJointController>();
+        _robotJointController.SetPathRoot("Joints");
+        _transparentRobotJointController.SetPathRoot("Joints Transparent");
         
         HeadLine = transform.Find("VisiualContent/HeadLine").GetComponent<LineRenderer>();
         PointHead = transform.Find("VisiualContent/PointHead");
@@ -109,12 +113,27 @@ public class RobotController : MonoBehaviour
     }
     void FixedUpdate(){
         
-        Vector3 origin = _robotJointController.GetJointTransform(0).position;
-        Vector3 end = _robotJointController.GetJointTransform(_currentDoF).position;
+        RobotJointController controller = _robotClient.IsConnected() ? _transparentRobotJointController : _robotJointController;
+        Vector3 origin = controller.GetJointTransform(0).position;
+        Vector3 end = controller.GetJointTransform(_currentDoF).position;
         Vector3 subEnd = end - Vector3.Normalize(end - origin) * 0.015f;
         HeadLine.SetPosition(0, origin);
         HeadLine.SetPosition(1, subEnd);
         PointHead.transform.SetPositionAndRotation(end, Quaternion.LookRotation(end - origin));
+
+        bool isConnected = _robotClient.IsConnected();
+        if (isConnected && !_previousConnectedStatus) // Rising edge detection
+        {
+            _robotJointController.SetJointsVisible(true);
+            _endEffectorController.HideEndEffector();
+        }
+        else if (!isConnected && _previousConnectedStatus) // Falling edge detection
+        {
+            _robotJointController.SetJointsVisible(false);
+            _endEffectorController.SetEndEffector(0);
+        }
+        _previousConnectedStatus = isConnected; // Update previous status
+        Debug.Log("Is robot connected: " + isConnected);
     }
     #endregion
     #region Methods
@@ -177,13 +196,14 @@ public class RobotController : MonoBehaviour
     public void ShowFrame(bool value){
         HeadLine.gameObject.SetActive(value);
         PointHead.gameObject.SetActive(value);
-        _robotJointController.ShowJointsFrame(value);
+        _robotJointController.ShowJointsFrame(value && !_robotClient.IsConnected());
+        _transparentRobotJointController.ShowJointsFrame(value && _robotClient.IsConnected());
     }
     public void SetJointSignActivate(bool value) { _robotJointController.SetJointSignActivate(value); }
     public void SetLinkSignActivate(bool value) { _robotJointController.SetLinkSignActivate(value); }
     public void ShowVirtualRobot(bool value) 
     {
-        if (!value)
+        if (!value || _robotClient.IsConnected())
         {
             _robotJointController.HideJointLink(0);
             _robotJointController.HideJointLink(1);
@@ -203,7 +223,14 @@ public class RobotController : MonoBehaviour
     // Get Joint Status
     public float GetJointAngle(int index) { return GetJointAngles()[index]; }
     public float GetTransparentJointAngle(int index) { return _transparentRobotJointController.GetJointAngle(index); }
-    public List<float> GetJointAngles() { return _robotJointController.GetJointAngles(); }
+    public List<float> GetJointAngles() { 
+        bool isConnected = _robotClient.IsConnected();
+        if (isConnected) {
+            return _transparentRobotJointController.GetJointAngles();
+        } else {
+            return _robotJointController.GetJointAngles();
+        }
+    }
     public List<float> GetCmdJointAngles() { return CmdJointAngles; }
     public List<int> GetSendPWM() { return _pwmList; }
     public List<Transform> GetJointsTransform() { return _robotJointController.GetJointsTransform(); }
@@ -243,25 +270,29 @@ public class RobotController : MonoBehaviour
     public void HideTransparentModel() { 
         for(int i = 0; i < _currentDoF; i++)
         _transparentRobotJointController.HideJointLink(i); 
+        _transparentRobotJointController.transform.Find("Part")?.gameObject.SetActive(false);
     }
     public void ShowTransparentModel() { 
         for(int i = 0; i < _currentDoF; i++)
         _transparentRobotJointController.ShowJointLink(i); 
+        _transparentRobotJointController.transform.Find("Part")?.gameObject.SetActive(true);
     }
     public void SetTransparentCmdJointAngles(List<float> angles) { 
-        if(!_enableTransparentRobot) return;
-        ShowTransparentModel();
         _transparentRobotJointController.SetJointAngles(angles); 
+
+        if(!_enableTransparentRobot || _robotClient.IsConnected()) return;
+        ShowTransparentModel();
     }
     public void SetTransparentCmdJointAngle(int index, float angle) { 
-        if(!_enableTransparentRobot) return;
+        _transparentRobotJointController.SetJointAngle(index, angle); 
+
+        if(!_enableTransparentRobot || _robotClient.IsConnected()) return;
         ShowTransparentModel();
         if(CheckCollisionTransparent()){
             _transparentRobotJointController.SetColor(new Color(1, 0, 0, 0.254902f));
         }else{
             _transparentRobotJointController.SetColor(new Color(1, 1, 1, 0.254902f));
         }
-        _transparentRobotJointController.SetJointAngle(index, angle); 
     }
     public void MoveJointsTo(List<float> angleList)
     {

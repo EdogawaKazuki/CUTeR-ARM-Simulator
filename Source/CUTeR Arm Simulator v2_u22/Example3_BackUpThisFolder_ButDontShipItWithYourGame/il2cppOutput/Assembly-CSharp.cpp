@@ -2842,6 +2842,8 @@ struct RobotController_t90F738AC64DE0FC1E1E2DD08A727CEE2F3739A36  : public MonoB
 	List_1_t05915E9237850A58106982B7FE4BC5DA4E872E73* ____pwmList_28;
 	// System.Collections.Generic.List`1<System.Single> RobotController::CmdJointAngles
 	List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___CmdJointAngles_29;
+	// System.Boolean RobotController::_previousConnectedStatus
+	bool ____previousConnectedStatus_30;
 };
 
 // Sample

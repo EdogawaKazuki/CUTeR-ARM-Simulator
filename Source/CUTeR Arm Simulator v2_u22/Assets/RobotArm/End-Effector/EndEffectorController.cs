@@ -65,6 +65,13 @@ public class EndEffectorController : MonoBehaviour
         _currentEndEffectorIndex = index;
     }
     public int GetEndEffector() { return _currentEndEffectorIndex; }
+    public void HideEndEffector()
+    {
+        for(int i = 0; i < _endEffectors.Count; i++)
+        {
+            _endEffectors[i].GetGameObject().SetActive(false);
+        }
+    }
     public void Fire()
     {
         //if (_robotController.GetEditorController().GetSceneManager().GetPlayingScene() != null)

@@ -22,7 +22,7 @@ public class RobotClient : MonoBehaviour
 
 	// Client Variables
 	[SerializeField]
-	private string _robotIP = "192.168.0.103";
+	private string _robotIP = "192.168.0.171";
 	[SerializeField]
 	private int _robotPort = 1234;
 
@@ -73,6 +73,7 @@ public class RobotClient : MonoBehaviour
 	public bool isReceive = true;
 	private float timer = 0;
 	private float timer2 = 0;
+	public float control_rate;
 
 
 	#endregion
@@ -325,18 +326,18 @@ public class RobotClient : MonoBehaviour
 		}
 	}
 	public void SendJointCmdDirect(List<float> joint_list, float path_time){
-		float control_rate = 4f;  // Hz
 		path_time = Math.Max(1/control_rate, path_time);
-		if(timer2 > 1/control_rate)
+		if(timer2 > 1/control_rate || true)
 		{
 			Debug.Log("Hello from the other side");
-			byteArray = new byte[sizeof(float) * ROBOT_DOF + 4 + 1];
+			byteArray = new byte[sizeof(float) * ROBOT_DOF + 4 + 1]; // + 8]; // Increased size for the double
 			byteArray[0] = 2;
 			// Debug.Log(robotJointAngleCmd[0]);
 			for(int i = 0; i < ROBOT_DOF; i++){
 				Buffer.BlockCopy(BitConverter.GetBytes(joint_list[i]), 0, byteArray, 1 + i * 4, 4);
 			}
 			Buffer.BlockCopy(BitConverter.GetBytes(path_time), 0, byteArray, 1 + ROBOT_DOF * 4, 4);
+			// Buffer.BlockCopy(BitConverter.GetBytes((double)Time.time), 0, byteArray, 1 + ROBOT_DOF * 4 + 4, 8); // Add current time as double
 			// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[0]), 0, byteArray, 1, 4);
 			// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[1]), 0, byteArray, 5, 4);
 			// Buffer.BlockCopy(BitConverter.GetBytes(robotJointAngleCmd[2]), 0, byteArray, 9, 4);
@@ -347,6 +348,7 @@ public class RobotClient : MonoBehaviour
 			timer2 = 0;
 		}
 	}
+
 	void ClientThread()
 	{
 		while (true)

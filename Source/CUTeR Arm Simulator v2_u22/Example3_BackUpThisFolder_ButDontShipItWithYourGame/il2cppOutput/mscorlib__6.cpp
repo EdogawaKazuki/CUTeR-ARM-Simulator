@@ -24839,6 +24839,13 @@ IL_000e:
 		return;
 	}
 }
+// System.Int64 System.GC::GetTotalMemory(System.Boolean)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int64_t GC_GetTotalMemory_mEBCDF07FBC4C4DE08893B7371860A887D45BA232 (bool ___0_forceFullCollection, const RuntimeMethod* method) 
+{
+	typedef int64_t (*GC_GetTotalMemory_mEBCDF07FBC4C4DE08893B7371860A887D45BA232_ftn) (bool);
+	using namespace il2cpp::icalls;
+	return ((GC_GetTotalMemory_mEBCDF07FBC4C4DE08893B7371860A887D45BA232_ftn)mscorlib::System::GC::GetTotalMemory) (___0_forceFullCollection);
+}
 // System.Void System.GC::.cctor()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GC__cctor_mE1743C977CBCA39CD0EC9B7AE2A12EDDE6D7B548 (const RuntimeMethod* method) 
 {

@@ -44,6 +44,15 @@ public class GeneralAudioControl : MonoBehaviour
         return null;
     }
 
+    public IEnumerator StopAudio()
+    {
+        if (!skip_audio)
+        {
+            audioSource.Stop();
+        }
+        return null;
+    }
+
     /* public IEnumerator PlayAudioWait(AudioClip clip, float volume)
     {
         PlayAudioInstant(clip, volume);
@@ -53,7 +62,7 @@ public class GeneralAudioControl : MonoBehaviour
     public IEnumerator PauseAudio()
     {
         audioSource.Pause(); // Pauses the audio playback
-        return null; // Yield to allow the method to be an IEnumerator
+        return null;
     }
 
     public IEnumerator ResumeAudio()

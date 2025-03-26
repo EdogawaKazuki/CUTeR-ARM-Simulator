@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using TexDrawLib;
+
+
 
 public class GeneralVisualControl : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class GeneralVisualControl : MonoBehaviour
     public GameObject _visualizer;
     private DrawGraph _graph_drawer;
     private GameObject _visualizer_image;
+    private GameObject _visualizer_latex;
     public RobotController _robotController;
     public GeneralRobotControl _generalRobotControl;
     public GameObject startSpherePrefab;
@@ -24,7 +28,9 @@ public class GeneralVisualControl : MonoBehaviour
     private GameObject endSphere; // Reference to the instantiated end sphere
     private List<float> _taskSpaceState; // [x, y, z, θx, θy, θz], updated in FixedUpdate()
     private TMP_Text TaskSpaceStatDisplay;
-    private TMP_Text TaskSpaceStatDisplayIntroTraj;
+    private TEXDraw TaskSpaceStatDisplayVector;
+    private TMP_Text JointSpaceStatDisplay;
+    private TEXDraw JointSpaceStatDisplayVector;
 
     // Start is called before the first frame update
     void Start()
@@ -32,13 +38,20 @@ public class GeneralVisualControl : MonoBehaviour
         _robotArm = GameObject.Find("Robot").transform;
         // _visualizer_image = _visualizer.GetComponent<Image>();
         _visualizer_image = GameObject.Find("SelfLearningCanvas/Visualizer/ImageDisplayer");
+        _visualizer_latex = GameObject.Find("SelfLearningCanvas/Visualizer/LatexDisplayer");
         _graph_drawer = _visualizer.GetComponent<DrawGraph>();
         TaskSpaceStatDisplay = GameObject
-            .Find("SelfLearningCanvas/TaskSpaceStatDisplay")
+            .Find("SelfLearningCanvas/StatDisplays/TaskSpaceStatDisplay")
             .GetComponent<TMP_Text>();
-        TaskSpaceStatDisplayIntroTraj = GameObject
-            .Find("SelfLearningCanvas/ExercisePanel/Trajectory Generation/0. Introduction to Trajectories/TaskSpaceStatDisplay")
+        TaskSpaceStatDisplayVector = GameObject
+            .Find("SelfLearningCanvas/StatDisplays/TaskSpaceStatDisplayVector")
+            .GetComponent<TEXDraw>();
+        JointSpaceStatDisplay = GameObject
+            .Find("SelfLearningCanvas/StatDisplays/JointSpaceStatDisplay")
             .GetComponent<TMP_Text>();
+        JointSpaceStatDisplayVector = GameObject
+            .Find("SelfLearningCanvas/StatDisplays/JointSpaceStatDisplayVector")
+            .GetComponent<TEXDraw>();
     }
 
     // Update is called once per frame
@@ -47,7 +60,7 @@ public class GeneralVisualControl : MonoBehaviour
     void FixedUpdate()
     {
         List<float> current_angles = _robotController.GetJointAngles();
-        string angleStr = "";
+        string angleStr = "aaaa ";
         for (int i = 0; i < current_angles.Count; i++)
         {
             angleStr += string.Format("{0:F2}", current_angles[i]);
@@ -66,7 +79,7 @@ public class GeneralVisualControl : MonoBehaviour
         if (_taskSpaceState != null && _taskSpaceState.Count >= 6)
         {
             TaskSpaceStatDisplay.text = string.Format(
-                "Task Space: x = [{0:F1}, {1:F1}, {2:F1}, {3:F1}°, {4:F1}°, {5:F1}°]",
+                "End Effector State: {0:F1}, {1:F1}, {2:F1}, {3:F1}°, {4:F1}°, {5:F1}°",
                 _taskSpaceState[0], // Convert to cm
                 _taskSpaceState[1],
                 _taskSpaceState[2],
@@ -74,14 +87,32 @@ public class GeneralVisualControl : MonoBehaviour
                 _taskSpaceState[4],
                 _taskSpaceState[5]
             );
-            TaskSpaceStatDisplayIntroTraj.text = string.Format(
-                "Task Space: \n <b>x</b> = [x, y, z, θx, θy, θz] \n = [{0:F1}, {1:F1}, {2:F1}, {3:F1}°, {4:F1}°, {5:F1}°]",
-                _taskSpaceState[0], // Convert to cm
+            TaskSpaceStatDisplayVector.text = string.Format(
+                "$$x = \\begin{{bmatrix}} x\\\\ y\\\\ z\\\\ \\theta_x\\\\ \\theta_y\\\\ \\theta_z \\end{{bmatrix}}=\\begin{{bmatrix}} {0:F1}\\\\ {1:F1}\\\\ {2:F1}\\\\ {3:F1}^\\circ\\\\ {4:F1}^\\circ\\\\ {5:F1}^\\circ\\end{{bmatrix}}$$",
+                _taskSpaceState[0],
                 _taskSpaceState[1],
                 _taskSpaceState[2],
                 _taskSpaceState[3],
                 _taskSpaceState[4],
                 _taskSpaceState[5]
+            );
+            JointSpaceStatDisplay.text = string.Format(
+                "Joint Space State: {0:F1}°, {1:F1}°, {2:F1}°, {3:F1}°, {4:F1}°, {5:F1}°",
+                current_angles[0],
+                current_angles[1],
+                current_angles[2],
+                current_angles[3],
+                current_angles[4],
+                current_angles[5]
+            );
+            JointSpaceStatDisplayVector.text = string.Format(
+                "$$q = \\begin{{bmatrix}} q_1\\\\ q_2\\\\ q_3\\\\ q_4\\\\ qa_5\\\\ q_6 \\end{{bmatrix}}=\\begin{{bmatrix}} {0:F1}^\\circ\\\\ {1:F1}^\\circ\\\\ {2:F1}^\\circ\\\\ {3:F1}^\\circ\\\\ {4:F1}^\\circ\\\\ {5:F1}^\\circ \\end{{bmatrix}}$$",
+                current_angles[0],
+                current_angles[1],
+                current_angles[2],
+                current_angles[3],
+                current_angles[4],
+                current_angles[5]
             );
             Debug.Log("Task Space State: " + TaskSpaceStatDisplay.text);
         }
@@ -211,6 +242,42 @@ public class GeneralVisualControl : MonoBehaviour
     public IEnumerator SetImageStatus(bool active)
     {
         _visualizer_image.SetActive(active);
+        return null;
+    }
+
+    public IEnumerator SetTaskSpaceStatDisplayVisibility(bool isVisible)
+    {
+        TaskSpaceStatDisplay.gameObject.SetActive(isVisible);
+        return null;
+    }
+
+    public IEnumerator SetTaskSpaceStatDisplayLatexVisibility(bool isVisible)
+    {
+        TaskSpaceStatDisplayVector.gameObject.SetActive(isVisible);
+        return null;
+    }
+
+    public IEnumerator SetJointSpaceStatDisplayVisibility(bool isVisible)
+    {
+        JointSpaceStatDisplay.gameObject.SetActive(isVisible);
+        return null;
+    }
+
+    public IEnumerator SetJointSpaceStatDisplayLatexVisibility(bool isVisible)
+    {
+        JointSpaceStatDisplayVector.gameObject.SetActive(isVisible);
+        return null;
+    }
+
+    public IEnumerator SetLatex(string latexText)
+    {
+        _visualizer_latex.GetComponent<TEXDraw>().text = latexText;
+        return null;
+    }
+
+    public IEnumerator SetLatexStatus(bool active)
+    {
+        _visualizer_latex.SetActive(active);
         return null;
     }
 

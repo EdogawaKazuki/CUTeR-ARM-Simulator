@@ -11,6 +11,9 @@ public class GeneralInteractiveControl : MonoBehaviour
     public GameObject _mc_layout;
     private int _selectedAnswer = -1;  // Add this field to store the answer
     private bool _waitingForAnswer = false;
+    private GameObject _imageDisplayer;
+    public AudioClip CorrectAnswerClip;
+    public AudioClip WrongAnswerClip;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +21,8 @@ public class GeneralInteractiveControl : MonoBehaviour
         // _mc_layout = GameObject.Find("SelfLearningCanvas/MCLayout");
         _mc_layout.SetActive(false);
         _robotControl = GetComponent<GeneralRobotControl>();
+        _imageDisplayer = _mc_layout.transform.Find("ImageDisplayer").gameObject;
+        SetImageStatus(false);
     }
 
     public void SetMCQuestion(string question)
@@ -51,11 +56,12 @@ public class GeneralInteractiveControl : MonoBehaviour
                 AddButtonListener(i - 1);
 
                 // Set the buttons to interactable to reset them
-                string buttonPath = FindOptionPath(i-1);
+                string buttonPath = FindOptionPath(i - 1);
                 Button button = _mc_layout.transform.Find(buttonPath).GetComponent<Button>();
                 button.interactable = true;
             }
         }
+        _waitingForAnswer = false;
         _mc_layout.SetActive(true);
         _mc_layout.transform.Find("ButtonGroup/Group2").gameObject.SetActive(texts.Count > 3);
         return null;
@@ -78,6 +84,12 @@ public class GeneralInteractiveControl : MonoBehaviour
 
     public void OnMCOptionSelected(int optionIndex)
     {
+        if (!_waitingForAnswer)
+        {
+            GameObject myEventSystem = GameObject.Find("EventSystem");
+            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+            return;
+        }
         _selectedAnswer = optionIndex;
         _waitingForAnswer = false;
         // Convert numeric option to letter (0=A, 1=B, etc)
@@ -90,8 +102,9 @@ public class GeneralInteractiveControl : MonoBehaviour
     {
         _selectedAnswer = -1;
         _waitingForAnswer = true;
-
-        yield return new WaitUntil(() => !_waitingForAnswer);
+        if (_waitingForAnswer) {
+            yield return new WaitUntil(() => !_waitingForAnswer);
+        }
         Debug.Log("Waiting for MC answer finished");
     }
 
@@ -103,7 +116,8 @@ public class GeneralInteractiveControl : MonoBehaviour
 
     // New function to set MC with answer 
     public IEnumerator SetMCWithAnswer(List<string> texts, int correctOption)
-    {
+    {   
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();;
         yield return SetMC(texts);
         yield return WaitForMCAnswer();
         while (_selectedAnswer != correctOption)
@@ -113,15 +127,38 @@ public class GeneralInteractiveControl : MonoBehaviour
             Button button = _mc_layout.transform.Find(buttonPath).GetComponent<Button>();
             button.interactable = false;
             Debug.Log("Incorrect answer. Please try again.");
-
+            audioSource.PlayOneShot(WrongAnswerClip, 1.0f);
+            yield return new WaitForSeconds(WrongAnswerClip.length);
             yield return WaitForMCAnswer();
         }
         Debug.Log("Correct answer selected!");
+        audioSource.PlayOneShot(CorrectAnswerClip, 1.0f);
+        yield return new WaitForSeconds(CorrectAnswerClip.length);
+        GameObject myEventSystem = GameObject.Find("EventSystem");
+        myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         yield return DisableMC();
         _robotControl._currentState = GeneralRobotControl.State.finished;
     }
 
+    public IEnumerator SetImage(Sprite image, Vector2 size)
+    {
+        _imageDisplayer.GetComponent<Image>().sprite = image;
+        float aspectRatio = size.x / size.y;
+        float widthLimit = 800;
+        float heightLimit = 300;
+        float widthScale = widthLimit / size.x;
+        float heightScale = heightLimit / size.y;
+        float scale = Mathf.Min(widthScale, heightScale);
+        Vector2 newSize = new Vector2(size.x * scale, size.y * scale);
+        _imageDisplayer.GetComponent<RectTransform>().sizeDelta = newSize;
+        return null;
+    }
 
+    public IEnumerator SetImageStatus(bool active)
+    {
+        _imageDisplayer.SetActive(active);
+        return null;
+    }
 
     // Update is called once per frame
     void Update()

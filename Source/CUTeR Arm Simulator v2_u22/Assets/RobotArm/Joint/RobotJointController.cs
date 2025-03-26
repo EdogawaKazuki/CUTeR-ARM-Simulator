@@ -11,12 +11,14 @@ public class RobotJointController : MonoBehaviour
     [SerializeField]
     private List<float> _initialAngles = new List<float>();
     private int _jointNumber = 0;
-    
+    private RobotClient _robotClient;
+    private string path_root;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _robotClient = GameObject.Find("Robot").GetComponent<RobotClient>();
     }
     void OnEnable(){
         
@@ -42,10 +44,12 @@ public class RobotJointController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
+
+
     #endregion
     #region Methods
+    public void SetPathRoot(string path) { path_root = path; }
     public int GetJointAngleMax(int index) { return _joints[index].MaxAngle; }
     public int GetJointAngleMin(int index) { return _joints[index].MinAngle; }
     public List<float> GetJointAngles()
@@ -130,11 +134,12 @@ public class RobotJointController : MonoBehaviour
         _joints[index].ShowFrame(value);
     }
     public void ShowJointsFrame(bool value){
-        transform.Find("frame_visual")?.gameObject.SetActive(value);
+        transform.Find(path_root + "/frame_visual")?.gameObject.SetActive(value);
         foreach (var joint in _joints)
         {
             joint.ShowFrame(value);
         }
+        transform.Find("frame_visual")?.gameObject.SetActive(value);
     }
     
     public void ShowJointDHFrame(int index, bool value){
@@ -161,12 +166,19 @@ public class RobotJointController : MonoBehaviour
         }
     }
     public void SetJointsVisible(bool value){
+        GameObject partObject = transform.Find("Part")?.gameObject;
+        if(partObject == null) {
+            Debug.LogWarning("Part GameObject not found!");
+        }
+        
         if(value){
-            for(int i = 0; i < _joints.Count-4; i++){
+            partObject?.SetActive(false);
+            for(int i = 0; i < _joints.Count; i++){
                 HideJointLink(i);
             }
         }else{
-            for(int i = 0; i < _joints.Count-4; i++){
+            partObject?.SetActive(true);
+            for(int i = 0; i < _joints.Count; i++){
                 ShowJointLink(i);
             }
         }
