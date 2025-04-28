@@ -1,95 +1,17 @@
 {
-    "m_SelectedDeviceId": "R52T70CH3BA",
-    "m_SelectedPackage": {
-        "deviceId": "R52T70CH3BA",
+    "m_SelectedDeviceId": "R52T70CH14B",
+    "m_SelectedProcess": {
+        "deviceId": "R52T70CH14B",
         "name": "com.GaladZHAO.DynamixelArmSimulator",
-        "processId": 30164,
+        "processId": 27681,
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownPackagesForSerialization": [
+    "m_KnownProcessesForSerialization": [
         {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22394,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22749,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22951,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 23158,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 23434,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 25037,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 25552,
-            "exited": true
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 26166,
-            "exited": true
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 26773,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 27400,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 28212,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
+            "deviceId": "R52T70CH14B",
             "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 24982,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 28034,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 30164,
+            "processId": 27681,
             "exited": false
         }
     ],
@@ -125,8 +47,11 @@
             }
         ]
     },
+    "m_ExtraWindowState": {
+        "Type": 0,
+        "Height": 0.0
+    },
     "m_MemoryViewerState": {
-        "MemoryWindowHeight": 300.0,
         "MemoryWindowWidth": 170.0,
         "MemoryTypeEnabled": [
             true,
@@ -141,7 +66,7 @@
             true
         ],
         "MemoryGroup": 2,
-        "Behavior": 0
+        "AutoCapture": true
     },
     "m_FilterOptions": {
         "m_Filter": "",
@@ -159,5 +84,24 @@
         "BitRateK": 20000,
         "DisplayIdEnabled": false,
         "DisplayId": ""
-    }
+    },
+    "m_ScreenCaptureSettings": {
+        "Mode": 0,
+        "m_LastSaveLocation": [
+            "/Users/kazuki/galad_ws/CUTeR-ARM-Simulator/Source/CUTeR Arm Simulator v2",
+            "/Users/kazuki/galad_ws/CUTeR-ARM-Simulator/Source/CUTeR Arm Simulator v2"
+        ]
+    },
+    "m_InputSettings": {
+        "ShiftModifier": false,
+        "SendText": "",
+        "PosixKillSignal": 0,
+        "TargetProcess": {
+            "deviceId": "",
+            "name": "",
+            "processId": 0,
+            "exited": false
+        }
+    },
+    "m_AutoScroll": 0
 }
