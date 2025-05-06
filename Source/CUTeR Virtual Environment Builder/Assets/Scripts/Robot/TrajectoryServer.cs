@@ -16,7 +16,7 @@ public class TrajectoryServer : MonoBehaviour
     private RobotController _robotController;
     private InputField _trajectoryPortIF;
     private Toggle _serverModeToggle;
-    private float[] angles = new float[3];
+    private float[] angles = new float[6];
     #endregion
 
     #region MonoBehaviour   
@@ -38,9 +38,12 @@ public class TrajectoryServer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < 3; i++)
+        if (isRunning)
         {
-            _robotController.GetJoystickController().SetAngleSliderValue(i, angles[i], false);
+            for (int i = 0; i < 6; i++)
+            {
+                _robotController.GetJoystickController().SetAngleSliderValue(i, angles[i], false);
+            }
         }
     }
     void OnDestroy()
@@ -113,7 +116,7 @@ public class TrajectoryServer : MonoBehaviour
     {
         // Add your command processing logic here
         string[] commandParts = command.Split(',');
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 6; i++)
         {
             angles[i] = float.Parse(commandParts[i]);
         }
