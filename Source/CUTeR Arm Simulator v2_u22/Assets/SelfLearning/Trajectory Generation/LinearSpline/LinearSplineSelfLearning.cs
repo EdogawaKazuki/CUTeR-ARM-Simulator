@@ -52,12 +52,16 @@ public class LinearSplineSelfLearning : MonoBehaviour
         _generalRobotControl.StopActions();
         _generalAudioControl.StopAudio();
         _generalVisualControl.SetImageStatus(false);
+        _generalVisualControl.SetLatexStatus(false);
         _generalVisualControl.CloseAllGraphs();
         _generalVisualControl.ClearPoints();
         _generalVisualControl.HideTraj();
         _generalInteractiveControl.DisableMC();
+        _generalVisualControl.SetTaskSpaceStatDisplayLatexVisibility(false);
+        _generalVisualControl.SetTaskSpaceStatDisplayVisibility(false);
+        _generalVisualControl.SetJointSpaceStatDisplayLatexVisibility(false);
+        _generalVisualControl.SetJointSpaceStatDisplayVisibility(false);
 
-        _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
         _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
         GameObject menu = transform.Find("Menu")?.gameObject;
         _generalRobotControl.actionQueue.Enqueue(
@@ -121,13 +125,113 @@ public class LinearSplineSelfLearning : MonoBehaviour
             // _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Move_to_Target_Joint_Space_Position_Cubic_Trajectory(new List<float> { 0, 0, 0, 0, 0, 0 }, 0.4f));
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[0], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[0].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(5f));
+
+            List<List<float>> jointTrajList1 = trajectory_6DOF_joint_space(3f);
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalRobotControl.ExecuteTrajectory(jointTrajList1)
+            );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[0].length - 8f));
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[1], 1.0f));
             // Do several trajectories and display their equations in the meantime
 
 
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[1].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[1].length-5f));
+
+            List<List<float>> TaskTrajListLinear = linear_time_function_task_space(5f);
+            List<List<float>> JointTrajListLinear= _generalRobotControl.SolveTaskSpaceTrajectories(
+                    TaskTrajListLinear
+                );
+
+            // Draw and command trajectories
+            _generalRobotControl.actionQueue.Enqueue(
+               () =>
+                _generalRobotControl.MoveToTargetJointSpacePositionCubicTrajectory(
+                       new List<float>
+                       {
+                            JointTrajListLinear[0][0],
+                            JointTrajListLinear[1][0],
+                            JointTrajListLinear[2][0],
+                            JointTrajListLinear[3][0],
+                            JointTrajListLinear[4][0],
+                            JointTrajListLinear[5][0],
+                       },
+                       3.0f
+                   )
+            );
+
+            _generalRobotControl.actionQueue.Enqueue(
+               () => _generalVisualControl.SetLatex(
+                    @"\begin{align*}
+                    x(t) &= -30 + 12 * t \\
+                    y(t) &= 20 \\
+                    z(t) &= 20 + 6 * t
+                    \end{align*}"
+                )
+            );
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalVisualControl.SetLatexStatus(true)
+            );
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalVisualControl.DrawTrajectory(TaskTrajListLinear)
+            );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.DisplayTraj());
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalRobotControl.ExecuteTrajectory(JointTrajListLinear)
+            );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
+
+            // quadratic motion
+            List<List<float>> TaskTrajListQuadratic = quadratic_time_function_task_space(5f);
+            List<List<float>> JointTrajListQuadratic= _generalRobotControl.SolveTaskSpaceTrajectories(
+                    TaskTrajListQuadratic
+                );
+
+            // Draw and command trajectories
+            _generalRobotControl.actionQueue.Enqueue(
+               () =>
+                _generalRobotControl.MoveToTargetJointSpacePositionCubicTrajectory(
+                       new List<float>
+                       {
+                            JointTrajListQuadratic[0][0],
+                            JointTrajListQuadratic[1][0],
+                            JointTrajListQuadratic[2][0],
+                            JointTrajListQuadratic[3][0],
+                            JointTrajListQuadratic[4][0],
+                            JointTrajListQuadratic[5][0],
+                       },
+                       1.0f
+                   )
+            );
+
+            _generalRobotControl.actionQueue.Enqueue(
+               () => _generalVisualControl.SetLatex(
+                    @"\begin{align*}
+                    x(t) &= 30 - 12 * t \\
+                    y(t) &= 20 \\
+                    z(t) &= 8 * (t-2.5)^2 + 10
+                    \end{align*}"
+                )
+            );
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalVisualControl.SetLatexStatus(true)
+            );
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalVisualControl.DrawTrajectory(TaskTrajListQuadratic)
+            );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.DisplayTraj());
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalRobotControl.ExecuteTrajectory(JointTrajListQuadratic)
+            );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ClearPoints());
+
+            _generalRobotControl.actionQueue.Enqueue(
+                () => _generalVisualControl.SetLatexStatus(false)
+            );
+
+            _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
+
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[2], 1.0f));
 
@@ -680,6 +784,59 @@ public class LinearSplineSelfLearning : MonoBehaviour
         return trajList;
     }
 
+    public List<List<float>> quadratic_time_function_task_space(float seconds)
+    {
+        int num_of_frames = (int)(seconds / _generalRobotControl.fs);
+        List<List<float>> trajList = new List<List<float>>();
+
+        for (int j = 0; j < num_of_frames; j++)
+        {
+            List<float> taskSpacePosition;
+
+            // Define the trajectory in task space
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float x = Mathf.Lerp(30, -30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float y = 20f; // Fixed y position
+            float z = 200f * ((float)j / (num_of_frames - 1) - 0.5f)  * ((float)j / (num_of_frames - 1) - 0.5f) + 10f; // Fixed z position
+
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            // float y = 25; // Fixed y position
+            // float z = 50 +  10 * (((float) j / (num_of_frames - 1))); // Fixed z position
+
+            taskSpacePosition = new List<float> { x, y, z };
+
+            // Add the calculated joint angles to the corresponding joint's list
+            trajList.Add(taskSpacePosition);
+        }
+        return trajList;
+    }
+
+    public List<List<float>> linear_time_function_task_space(float seconds)
+    {
+        int num_of_frames = (int)(seconds / _generalRobotControl.fs);
+        List<List<float>> trajList = new List<List<float>>();
+
+        for (int j = 0; j < num_of_frames; j++)
+        {
+            List<float> taskSpacePosition;
+
+            // Define the trajectory in task space
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float y = 20f; // Fixed y position
+            float z = Mathf.Lerp(20, 50, (float)j / (num_of_frames - 1)); // Fixed z position
+
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            // float y = 25; // Fixed y position
+            // float z = 50 +  10 * (((float) j / (num_of_frames - 1))); // Fixed z position
+
+            taskSpacePosition = new List<float> { x, y, z };
+
+            // Add the calculated joint angles to the corresponding joint's list
+            trajList.Add(taskSpacePosition);
+        }
+        return trajList;
+    }
     public List<List<float>> HardcodeTrajectory_task_space(float seconds)
     {
         int num_of_frames = (int)(seconds / _generalRobotControl.fs);
@@ -731,6 +888,39 @@ public class LinearSplineSelfLearning : MonoBehaviour
             // Add the calculated joint angles to the corresponding joint's list
             trajList.Add(taskSpacePosition);
         }
+        return trajList;
+    }
+
+    public List<List<float>> trajectory_6DOF_joint_space(float seconds)
+    {
+        int num_of_frames = (int)(seconds / _generalRobotControl.fs);
+        List<List<float>> trajList = new List<List<float>>();
+        for (int i = 0; i < dof; i++)
+        {
+            trajList.Add(new List<float>());
+        }
+        for (int j = 0; j < num_of_frames; j++)
+        {
+            List<float> jointSpacePosition;
+
+            // Define the trajectory in task space
+            // float x = Mathf.Lerp(-30, 30, (float)j / (num_of_frames - 1)); // Linearly interpolate x from -30 to 30
+            float theta1 = 20 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+            float theta2 = 10 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+            float theta3 = 10 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+            float theta4 = 20 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+            float theta5 = 20 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+            float theta6 = 20 * Mathf.Sin(2 * Mathf.PI * j / (num_of_frames-1)); // Linearly interpolate theta1 from -30 to 30
+
+            jointSpacePosition = new List<float> { theta1, theta2, theta3, theta4, theta5, theta6 };
+
+            // Add the calculated joint angles to the corresponding joint's list
+            for (int k = 0; k < dof; k++)
+            {
+                trajList[k].Add(jointSpacePosition[k]);
+            }
+        }
+
         return trajList;
     }
 

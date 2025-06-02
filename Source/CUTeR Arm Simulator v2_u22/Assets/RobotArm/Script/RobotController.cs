@@ -199,6 +199,13 @@ public class RobotController : MonoBehaviour
         _robotJointController.ShowJointsFrame(value && !_robotClient.IsConnected());
         _transparentRobotJointController.ShowJointsFrame(value && _robotClient.IsConnected());
     }
+
+    public void ShowArrow(int index, bool value){
+        Debug.Log("Attempting to show/hide arrow for index: " + index + " with value: " + value);
+        _robotJointController.ShowJointArrow(index, value && !_robotClient.IsConnected());
+        _transparentRobotJointController.ShowJointArrow(index, value && _robotClient.IsConnected());
+    }
+
     public void SetJointSignActivate(bool value) { _robotJointController.SetJointSignActivate(value); }
     public void SetLinkSignActivate(bool value) { _robotJointController.SetLinkSignActivate(value); }
     public void ShowVirtualRobot(bool value) 

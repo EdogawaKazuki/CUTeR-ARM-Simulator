@@ -55,6 +55,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
         _generalRobotControl.StopActions();
         _generalAudioControl.StopAudio();
         _generalVisualControl.SetImageStatus(false);
+        _generalVisualControl.SetLatexStatus(false);
         _generalVisualControl.CloseAllGraphs();
         _generalVisualControl.ClearPoints();
         _generalVisualControl.HideTraj();
@@ -88,7 +89,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
         isTimerRunning = true;
         elapsedTime = 0f;
         bool debug = false;
-        bool skip_audio = true;
+        bool skip_audio = false;
         _generalAudioControl.skip_audio = skip_audio;
 
         _generalRobotControl._currentState = GeneralRobotControl.State.init;
@@ -114,7 +115,11 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
             {
                 List<float> startPos = new List<float>(new float[6]); // [0,0,0,0,0,0]
                 List<float> movedPos = new List<float>(new float[6]); // [0,0,0,0,0,0]
-                movedPos[joint] = 20f; // Only set starting joint to 20
+                movedPos[joint] = 20f; // Only set the current joint to 20
+
+                int currentJoint = joint;
+
+                _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(currentJoint, true));
                 // Move joint forward
                 _generalRobotControl.actionQueue.Enqueue(
                     () =>
@@ -134,6 +139,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
                             0.75f
                         )
                 );
+                _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(currentJoint, false));
             }
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[2].length - 24.0f));
@@ -181,6 +187,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
             /* _generalRobotControl.actionQueue.Enqueue(
                 () => _generalVisualControl.SetImage(image_sprite_list[4], image_size_list[4])
             );*/
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, true));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
             _generalRobotControl.actionQueue.Enqueue(
                 () =>
@@ -192,6 +199,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
             );
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[5].length / 2 - 5.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, false));
             _generalRobotControl.actionQueue.Enqueue(
                 () => _generalVisualControl.SetJointSpaceStatDisplayLatexVisibility(false));
 
@@ -398,6 +406,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
             );
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[11], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, true));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(3));
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.MoveStartEndJointSpacePositionCubicTrajectory(
                             ExtractTrajPos(JointTrajList7, last_index),
@@ -420,6 +429,7 @@ public class IntroductionTrajectorySelfLearning : MonoBehaviour
                 2.0f
             ));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[11].length + 1 - 13));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, false));
 
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[12], 1.0f));

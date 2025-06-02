@@ -53,12 +53,16 @@ public class CubicSplineSelfLearning : MonoBehaviour
         _generalRobotControl.StopActions();
         _generalAudioControl.StopAudio();
         _generalVisualControl.SetImageStatus(false);
+        _generalVisualControl.SetLatexStatus(false);
         _generalVisualControl.CloseAllGraphs();
         _generalVisualControl.ClearPoints();
         _generalVisualControl.HideTraj();
         _generalInteractiveControl.DisableMC();
+        _generalVisualControl.SetTaskSpaceStatDisplayLatexVisibility(false);
+        _generalVisualControl.SetTaskSpaceStatDisplayVisibility(false);
+        _generalVisualControl.SetJointSpaceStatDisplayLatexVisibility(false);
+        _generalVisualControl.SetJointSpaceStatDisplayVisibility(false);
 
-        _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
         _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
         GameObject menu = transform.Find("Menu")?.gameObject;
         _generalRobotControl.actionQueue.Enqueue(
@@ -71,7 +75,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
     {
         // _generalAudioControl.audioSource.PlayOneShot(audio1, 1.0f);
         // timeline.Play();
-        bool skip_audio = true;
+        bool skip_audio = false;
         _generalAudioControl.skip_audio = skip_audio;
 
         GameObject menu = transform.Find("Menu")?.gameObject;
@@ -84,6 +88,14 @@ public class CubicSplineSelfLearning : MonoBehaviour
         elapsedTime = 0f;
         bool debug = false;
         _generalRobotControl._currentState = GeneralRobotControl.State.init;
+        // List<float> xList;
+        // List<float> yList;
+
+        // // Call the method
+        // ComputeGraphValue(out xList, out yList);
+
+        // _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.PlotGraph(yList, xList));
+        // _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetGraphStatus("Graph1", true));
 
         if (!debug)
         {
@@ -110,6 +122,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
             );
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[1].length - 7.0f));
 
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, true));
             float a = 0.75f;
             List<List<float>> jointTrajList1 = LinearHardcode1(a);
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.ExecuteTrajectory(jointTrajList1));
@@ -122,7 +135,20 @@ public class CubicSplineSelfLearning : MonoBehaviour
             // }
             // _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.ExecuteTrajectory(reversedJointTrajList1));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
-        
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, false));
+
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[2], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[2].length));
+            /* _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(8.0f));
+
+            // Show Linear Spline Cross Image
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[1], image_size_list[1]));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[2].length - 8.0f)); */
+
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[3], 1.0f));
+            _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(3.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, true));
             _generalRobotControl.actionQueue.Enqueue(
                 () =>
                     _generalRobotControl.MoveStartEndJointSpacePositionCubicTrajectory(
@@ -130,7 +156,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
                         new List<float> { -90, 0, 0, 0, 0, 0 },
                         a
                     )
-            );
+                );
             _generalRobotControl.actionQueue.Enqueue(
                 () =>
                     _generalRobotControl.MoveStartEndJointSpacePositionCubicTrajectory(
@@ -147,28 +173,17 @@ public class CubicSplineSelfLearning : MonoBehaviour
                         a
                     )
             );
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.ShowArrow(0, false));
 
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[2], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[2].length));
-            _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
-            /* _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(8.0f));
-
-            // Show Linear Spline Cross Image
-            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[1], image_size_list[1]));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[2].length - 8.0f)); */
-
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[3], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(3.0f));
-            
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[2], image_size_list[2]));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[3].length - 5.0f));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[3].length - 6.0f));
 
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(false));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[4], 1.0f));
 
-            List<List<float>> jointTrajList = Hardcode1(2.0f); 
+            List<List<float>> jointTrajList = Hardcode1(2.0f);
             List<List<float>> TaskTrajList = _generalRobotControl.SolveJointSpaceTrajectories(jointTrajList);
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.MoveToTargetTaskSpacePositionCubicTrajectory3DOF(TaskTrajList[0], 2.0f));
@@ -183,32 +198,32 @@ public class CubicSplineSelfLearning : MonoBehaviour
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[2], image_size_list[2]));
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(true));
-            
+
 
 
             // _generalRobotControl.actionQueue.Enqueue(() => _generalRobotControl.Wait(2.0f));
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[5], 1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[5].length));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(false));
 
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[6], 1.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let} \\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$"));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let } \\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$"));
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatexStatus(true));
             _generalRobotControl.actionQueue.Enqueue(_generalRobotControl.MoveToInitialPosition);
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[6].length - 4.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(false));
 
             // first equation
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[7], 1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let }\\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$The acceleration is given by:$$ \\dotaccent{\\theta}(t) = a_1 + 2a_2t + 3a_3t^2 $$"));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let }\\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$The velocity is given by:$$ \\dotaccent{\\theta}(t) = a_1 + 2a_2t + 3a_3t^2 $$"));
             _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatexStatus(true));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
 
             // second equation
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[8], 1.0f));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.5f));
-            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let } \\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$The acceleration is given by:$$ \\dotaccent{\\theta}(t) = a_1 + 2a_2t + 3a_3t^2 $$ The acceleration is given by:$$ \\ddot{\theta}(t) = 2a_2 + 6a_3t $$"));
+            _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("$$\\text{Let } \\theta(t) = a_0 + a_1t + a_2t^2 + a_3t^3 $$The velocity is given by:$$ \\dotaccent{\\theta}(t) = a_1 + 2a_2t + 3a_3t^2 $$ The acceleration is given by:$$ \\ddot{\theta}(t) = 2a_2 + 6a_3t $$"));
             _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(2.0f));
 
 
@@ -267,7 +282,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
 
         // solve a0
         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[14], 1.0f));
-         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(6f));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(6f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatex("\\begin{align*}\\theta_{\\text{start}} &= a_0 + a_1 t + a_2 t^2 + a_3 t^3\\big|_{t=0} \\end{align*}"));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatexStatus(true));
         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(4f));
@@ -308,7 +323,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
         a_3 &= -\frac{2(\theta_{\text{end}} - \theta_{\text{start}})}{T^3}
         \end{align*}
         "));
-        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[17].length - 9f));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[17].length - 6f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetLatexStatus(false));
 
         // matrix form
@@ -316,7 +331,7 @@ public class CubicSplineSelfLearning : MonoBehaviour
         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(6f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImage(image_sprite_list[16], image_size_list[16]));
         _generalRobotControl.actionQueue.Enqueue(() => _generalVisualControl.SetImageStatus(true));
-        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[18].length-6.0f));
+        _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[18].length - 6.0f));
 
         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.PlayAudioInstant(audio_list[19], 1.0f));
         _generalRobotControl.actionQueue.Enqueue(() => _generalAudioControl.Wait(audio_list[19].length));
@@ -452,8 +467,8 @@ public class CubicSplineSelfLearning : MonoBehaviour
             List<float> tmp = new List<float>();
             if (i < 3)
             {
-                
-                for (int j = 0; j < num_of_frames*4; j++)
+
+                for (int j = 0; j < num_of_frames * 4; j++)
                 {
                     if (j < num_of_frames)
                     {
@@ -462,20 +477,20 @@ public class CubicSplineSelfLearning : MonoBehaviour
                     }
                     else if (j < 3 * num_of_frames)
                     {
-                        double t = (double) (j-num_of_frames) / (2 * num_of_frames - 1) * second;
+                        double t = (double)(j - num_of_frames) / (2 * num_of_frames - 1) * second;
                         tmp.Add((float)(target[i] + (target2[i] - target[i]) * t / second));
                     }
                     else
                     {
-                        double t = (double) (j-3 * num_of_frames) / (num_of_frames - 1) * second;
+                        double t = (double)(j - 3 * num_of_frames) / (num_of_frames - 1) * second;
                         tmp.Add((float)(target2[i] + (target3[i] - target2[i]) * t / second));
                     }
-                    
+
                 }
             }
             else
             {
-                for (int j = 0; j < num_of_frames*4; j++)
+                for (int j = 0; j < num_of_frames * 4; j++)
                 {
                     tmp.Add(0);
                 }

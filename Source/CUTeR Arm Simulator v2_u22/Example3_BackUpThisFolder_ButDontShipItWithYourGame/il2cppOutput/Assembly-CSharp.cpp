@@ -231,6 +231,8 @@ struct ARButtonHandler_t8621D598CE18320822808177C164282A17B37620;
 struct ARController_tFFEC6C4A72E0D20209597BC477479037541D67F4;
 // UnityEngine.UI.AnimationTriggers
 struct AnimationTriggers_tA0DC06F89C5280C6DD972F6F4C8A56D7F4F79074;
+// System.ArgumentException
+struct ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263;
 // System.AsyncCallback
 struct AsyncCallback_t7FEF460CBDCFB9C5FA2EF776984778B9A4145F4C;
 // UnityEngine.EventSystems.BaseRaycaster
@@ -460,6 +462,7 @@ struct ScrollRectEvent_t812C011901E6101F2A0FFC34C66AC5F65C0DEC26;
 // UnityEngine.UI.Toggle/ToggleEvent
 struct ToggleEvent_t88B31268F9D6D1882E4F921B14704FB9F7047F02;
 
+IL2CPP_EXTERN_C RuntimeClass* ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* ColorU5BU5D_t612261CF293F6FFC3D80AB52259FF0DC2B2CC389_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* CoordinateRectChangeHandler_t5367EC5C83456A3FF5FE14871F93AC1D830B38AA_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* CoordinateScaleChangeHandler_tA36B1D485AAA884A6BB8E1BD5B60E2825F99B6E9_il2cpp_TypeInfo_var;
@@ -570,6 +573,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral73A04A333E0F4263E355E90C5AC30B5DCEC56CAD
 IL2CPP_EXTERN_C String_t* _stringLiteral74E5603AD710A03895BE52996B40CF025480D293;
 IL2CPP_EXTERN_C String_t* _stringLiteral7C36A3C8AAAFC7C2C8C56EAB1E71352A2D4893BA;
 IL2CPP_EXTERN_C String_t* _stringLiteral7DE56FFC35ABD0FF4268A8B8EECB81062244ABCE;
+IL2CPP_EXTERN_C String_t* _stringLiteral7DF05BD8D7A102943CD2F9DE4D05C8E520AF6D18;
 IL2CPP_EXTERN_C String_t* _stringLiteral80F1F9E7011C9C964433BDD44FAE2AE77FA2BB35;
 IL2CPP_EXTERN_C String_t* _stringLiteral81400C69DEEEA9D1D6583F8583DBE4883BDAD51F;
 IL2CPP_EXTERN_C String_t* _stringLiteral835DB72FF9902FC00C4E5794E35E914D73DA36DA;
@@ -642,6 +646,7 @@ IL2CPP_EXTERN_C const RuntimeMethod* DHRepresentation_U3COnEnableU3Eb__21_2_m22F
 IL2CPP_EXTERN_C const RuntimeMethod* DHRepresentation_U3COnEnableU3Eb__21_3_m3831F336E8CCDC8E993EF7B742C4654399861D24_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* DHRepresentation_U3COnEnableU3Eb__21_4_mAA18324609919F84F4F0B017CDFE48EE9F8F73B0_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* DHRepresentation_U3COnEnableU3Eb__21_5_mFED91BBD78A56E1AB68291D07C837403B1A60322_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* DrawGraph_GetEquallySpacedValues_m9C3BB23ECCF840B2671D36FC9B47025BDE4ECCB0_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Enumerator_Dispose_m07D362A07C19B36C2FD1B4DC79DD99903D4DA95D_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Enumerator_Dispose_mCD48FDD0F418E976C266AF07E14C127B6E896A8C_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Enumerator_MoveNext_m5DDD3E697A492E99DDE91E6AB7B2390C491F89AA_RuntimeMethod_var;
@@ -2179,6 +2184,13 @@ struct Type_t  : public MemberInfo_t
 // UnityEngine.Events.UnityAction`1<System.Boolean>
 struct UnityAction_1_t8EC357AF4FBD2A0C4A575C4BBD0B3A81029E43A9  : public MulticastDelegate_t
 {
+};
+
+// System.ArgumentException
+struct ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263  : public SystemException_tCC48D868298F4C0705279823E34B00F4FBDB7295
+{
+	// System.String System.ArgumentException::_paramName
+	String_t* ____paramName_18;
 };
 
 // System.AsyncCallback
@@ -4040,6 +4052,10 @@ struct Type_t_StaticFields
 
 // UnityEngine.Events.UnityAction`1<System.Boolean>
 
+// System.ArgumentException
+
+// System.ArgumentException
+
 // System.AsyncCallback
 
 // System.AsyncCallback
@@ -5479,6 +5495,13 @@ inline RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* GameObject_AddCo
 {
 	return ((  RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* (*) (GameObject_t76FEDD663AB33C991A9C9A23129337651094216F*, const RuntimeMethod*))GameObject_AddComponent_TisRuntimeObject_m69B93700FACCF372F5753371C6E8FB780800B824_gshared)(__this, method);
 }
+// System.Void System.ArgumentException::.ctor(System.String)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ArgumentException__ctor_m026938A67AF9D36BB7ED27F80425D7194B514465 (ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263* __this, String_t* ___0_message, const RuntimeMethod* method) ;
+// T System.Collections.Generic.List`1<System.Single>::get_Item(System.Int32)
+inline float List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50 (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* __this, int32_t ___0_index, const RuntimeMethod* method)
+{
+	return ((  float (*) (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918*, int32_t, const RuntimeMethod*))List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_gshared)(__this, ___0_index, method);
+}
 // UnityEngine.Transform UnityEngine.Transform::Find(System.String)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* Transform_Find_m3087032B0E1C5B96A2D2C27020BAEAE2DA08F932 (Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* __this, String_t* ___0_n, const RuntimeMethod* method) ;
 // T UnityEngine.Component::GetComponent<TMPro.TMP_Text>()
@@ -5490,6 +5513,8 @@ inline TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* Component_GetComponen
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float Enumerable_Max_m3215FA2A65ACAFE226A0FBE065D772C7CE1A5E9F (RuntimeObject* ___0_source, const RuntimeMethod* method) ;
 // System.Single System.Linq.Enumerable::Min(System.Collections.Generic.IEnumerable`1<System.Single>)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float Enumerable_Min_m782D1182232A1D5E5C01BE673628CC7272923D1B (RuntimeObject* ___0_source, const RuntimeMethod* method) ;
+// System.Collections.Generic.List`1<System.Single> DrawGraph::GetEquallySpacedValues(System.Collections.Generic.List`1<System.Single>,System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* DrawGraph_GetEquallySpacedValues_m9C3BB23ECCF840B2671D36FC9B47025BDE4ECCB0 (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___0_list, int32_t ___1_numberOfValues, const RuntimeMethod* method) ;
 // UnityEngine.Transform TMPro.TMP_Text::get_transform()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* TMP_Text_get_transform_m6BD41E08BFCFCE722DFCE4627626AD60CA99CCA8 (TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* __this, const RuntimeMethod* method) ;
 // System.String System.Int32::ToString()
@@ -5511,17 +5536,12 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR Vector3_t24C512C7B96BBABAD472002D
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633 (Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* __this, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___0_value, const RuntimeMethod* method) ;
 // System.Void DrawGraph::CreateDotConnection(UnityEngine.RectTransform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Color,System.Single)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_CreateDotConnection_m2CD87D2EA7C180BE78FB2C389B7FD620C1C1FE10 (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* ___0_graphContainer, Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 ___1_dotPositionA, Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 ___2_dotPositionB, Color_tD001788D726C3A7F1379BEED0260B9591F440C1F ___3_color, float ___4_thickness, const RuntimeMethod* method) ;
-// System.Void DrawGraph::DrawGrid(System.String,System.Collections.Generic.List`1<System.Single>)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633B2D35F8FB5C86F68663E (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, String_t* ___0_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___1_valueList, const RuntimeMethod* method) ;
+// System.Void DrawGraph::DrawGrid(System.String,System.Collections.Generic.List`1<System.Single>,System.Collections.Generic.List`1<System.Single>)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_mFBA231D6E32C0B35D329C21BE59656FE4D99B9FD (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, String_t* ___0_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___1_valueList, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___2_XList, const RuntimeMethod* method) ;
 // System.Void UnityEngine.Color32::.ctor(System.Byte,System.Byte,System.Byte,System.Byte)
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void Color32__ctor_mC9C6B443F0C7CA3F8B174158B2AF6F05E18EAC4E_inline (Color32_t73C5004937BF5BB8AD55323D51AAA40A898EF48B* __this, uint8_t ___0_r, uint8_t ___1_g, uint8_t ___2_b, uint8_t ___3_a, const RuntimeMethod* method) ;
 // System.Void DrawGraph::PlotPoints(System.String,System.Collections.Generic.List`1<System.Single>,UnityEngine.Color32)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_PlotPoints_m8D8FD92014DFCBAC92BB40CDFA722CE3D68467FA (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, String_t* ___0_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___1_valueList, Color32_t73C5004937BF5BB8AD55323D51AAA40A898EF48B ___2_color, const RuntimeMethod* method) ;
-// T System.Collections.Generic.List`1<System.Single>::get_Item(System.Int32)
-inline float List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50 (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* __this, int32_t ___0_index, const RuntimeMethod* method)
-{
-	return ((  float (*) (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918*, int32_t, const RuntimeMethod*))List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_gshared)(__this, ___0_index, method);
-}
 // UnityEngine.Color UnityEngine.Color32::op_Implicit(UnityEngine.Color32)
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR Color_tD001788D726C3A7F1379BEED0260B9591F440C1F Color32_op_Implicit_m47CBB138122B400E0B1F4BFD7C30A6C2C00FCA3E_inline (Color32_t73C5004937BF5BB8AD55323D51AAA40A898EF48B ___0_c, const RuntimeMethod* method) ;
 // System.Boolean System.String::op_Inequality(System.String,System.String)
@@ -17776,8 +17796,106 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR GameObject_t76FEDD663AB33C991A9C9A23129337651
 		return L_4;
 	}
 }
-// System.Void DrawGraph::DrawGrid(System.String,System.Collections.Generic.List`1<System.Single>)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633B2D35F8FB5C86F68663E (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, String_t* ___0_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___1_valueList, const RuntimeMethod* method) 
+// System.Collections.Generic.List`1<System.Single> DrawGraph::GetEquallySpacedValues(System.Collections.Generic.List`1<System.Single>,System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* DrawGraph_GetEquallySpacedValues_m9C3BB23ECCF840B2671D36FC9B47025BDE4ECCB0 (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___0_list, int32_t ___1_numberOfValues, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_Add_m2F86E252D086E288E02FA1C830B7E86C0A431E51_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1__ctor_mC29D3D824786832A31096310B3B3016B8B42B802_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* V_0 = NULL;
+	float V_1 = 0.0f;
+	int32_t V_2 = 0;
+	int32_t V_3 = 0;
+	int32_t G_B2_0 = 0;
+	int32_t G_B1_0 = 0;
+	{
+		// List<float> result = new List<float>();
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_0 = (List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918*)il2cpp_codegen_object_new(List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918_il2cpp_TypeInfo_var);
+		NullCheck(L_0);
+		List_1__ctor_mC29D3D824786832A31096310B3B3016B8B42B802(L_0, List_1__ctor_mC29D3D824786832A31096310B3B3016B8B42B802_RuntimeMethod_var);
+		V_0 = L_0;
+		// int totalCount = list.Count;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_1 = ___0_list;
+		NullCheck(L_1);
+		int32_t L_2;
+		L_2 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_1, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		// if (totalCount < numberOfValues)
+		int32_t L_3 = L_2;
+		int32_t L_4 = ___1_numberOfValues;
+		G_B1_0 = L_3;
+		if ((((int32_t)L_3) >= ((int32_t)L_4)))
+		{
+			G_B2_0 = L_3;
+			goto IL_001b;
+		}
+	}
+	{
+		// throw new ArgumentException("The list does not contain enough values.");
+		ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263* L_5 = (ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263*)il2cpp_codegen_object_new(((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263_il2cpp_TypeInfo_var)));
+		NullCheck(L_5);
+		ArgumentException__ctor_m026938A67AF9D36BB7ED27F80425D7194B514465(L_5, ((String_t*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&_stringLiteral7DF05BD8D7A102943CD2F9DE4D05C8E520AF6D18)), NULL);
+		IL2CPP_RAISE_MANAGED_EXCEPTION(L_5, ((RuntimeMethod*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&DrawGraph_GetEquallySpacedValues_m9C3BB23ECCF840B2671D36FC9B47025BDE4ECCB0_RuntimeMethod_var)));
+	}
+
+IL_001b:
+	{
+		// float step = (float)(totalCount - 1) / (numberOfValues - 1);
+		int32_t L_6 = ___1_numberOfValues;
+		V_1 = ((float)(((float)((int32_t)il2cpp_codegen_subtract(G_B2_0, 1)))/((float)((int32_t)il2cpp_codegen_subtract(L_6, 1)))));
+		// for (int i = 0; i < numberOfValues; i++)
+		V_2 = 0;
+		goto IL_0045;
+	}
+
+IL_0028:
+	{
+		// int index = (int)Math.Round(i * step);
+		int32_t L_7 = V_2;
+		float L_8 = V_1;
+		il2cpp_codegen_runtime_class_init_inline(Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
+		double L_9;
+		L_9 = bankers_round(((double)((float)il2cpp_codegen_multiply(((float)L_7), L_8))));
+		V_3 = il2cpp_codegen_cast_double_to_int<int32_t>(L_9);
+		// result.Add(list[index]);
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_10 = V_0;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_11 = ___0_list;
+		int32_t L_12 = V_3;
+		NullCheck(L_11);
+		float L_13;
+		L_13 = List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50(L_11, L_12, List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_RuntimeMethod_var);
+		NullCheck(L_10);
+		List_1_Add_m2F86E252D086E288E02FA1C830B7E86C0A431E51_inline(L_10, L_13, List_1_Add_m2F86E252D086E288E02FA1C830B7E86C0A431E51_RuntimeMethod_var);
+		// for (int i = 0; i < numberOfValues; i++)
+		int32_t L_14 = V_2;
+		V_2 = ((int32_t)il2cpp_codegen_add(L_14, 1));
+	}
+
+IL_0045:
+	{
+		// for (int i = 0; i < numberOfValues; i++)
+		int32_t L_15 = V_2;
+		int32_t L_16 = ___1_numberOfValues;
+		if ((((int32_t)L_15) < ((int32_t)L_16)))
+		{
+			goto IL_0028;
+		}
+	}
+	{
+		// return result;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_17 = V_0;
+		return L_17;
+	}
+}
+// System.Void DrawGraph::DrawGrid(System.String,System.Collections.Generic.List`1<System.Single>,System.Collections.Generic.List`1<System.Single>)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_mFBA231D6E32C0B35D329C21BE59656FE4D99B9FD (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, String_t* ___0_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___1_valueList, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___2_XList, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
 	if (!s_Il2CppMethodInitialized)
@@ -17787,6 +17905,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral1A82671F2C34BEA09C35354DDB899812746CBCF9);
@@ -17800,13 +17919,18 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633
 	float V_1 = 0.0f;
 	float V_2 = 0.0f;
 	float V_3 = 0.0f;
-	float V_4 = 0.0f;
+	List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* V_4 = NULL;
 	float V_5 = 0.0f;
-	Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D V_6;
-	memset((&V_6), 0, sizeof(V_6));
-	int32_t V_7 = 0;
-	float V_8 = 0.0f;
-	int32_t V_9 = 0;
+	float V_6 = 0.0f;
+	Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D V_7;
+	memset((&V_7), 0, sizeof(V_7));
+	int32_t V_8 = 0;
+	TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* V_9 = NULL;
+	float V_10 = 0.0f;
+	int32_t V_11 = 0;
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* G_B7_0 = NULL;
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* G_B6_0 = NULL;
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* G_B8_0 = NULL;
 	{
 		// RectTransform graphContainer = transform.Find(name + "/Table").GetComponent<RectTransform>();
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_0;
@@ -17839,9 +17963,9 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633
 		NullCheck(L_9);
 		Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D L_10;
 		L_10 = RectTransform_get_rect_mC82A60F8C3805ED9833508CCC233689641207488(L_9, NULL);
-		V_6 = L_10;
+		V_7 = L_10;
 		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_11;
-		L_11 = Rect_get_size_mFB990FFC0FE0152179C8C74A59E4AC258CB44267((&V_6), NULL);
+		L_11 = Rect_get_size_mFB990FFC0FE0152179C8C74A59E4AC258CB44267((&V_7), NULL);
 		float L_12 = L_11.___y_1;
 		V_1 = L_12;
 		// float graphWidth = graphContainer.rect.size.x;
@@ -17849,9 +17973,9 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633
 		NullCheck(L_13);
 		Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D L_14;
 		L_14 = RectTransform_get_rect_mC82A60F8C3805ED9833508CCC233689641207488(L_13, NULL);
-		V_6 = L_14;
+		V_7 = L_14;
 		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_15;
-		L_15 = Rect_get_size_mFB990FFC0FE0152179C8C74A59E4AC258CB44267((&V_6), NULL);
+		L_15 = Rect_get_size_mFB990FFC0FE0152179C8C74A59E4AC258CB44267((&V_7), NULL);
 		float L_16 = L_15.___x_0;
 		V_2 = L_16;
 		// float yMax = valueList.Max();
@@ -17863,334 +17987,374 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_DrawGrid_m2097418C14DEBF4DE633
 		float L_20;
 		L_20 = Enumerable_Min_m782D1182232A1D5E5C01BE673628CC7272923D1B(L_19, NULL);
 		V_3 = L_20;
+		// List<float> equallySpacedXList = GetEquallySpacedValues(XList, 7);
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_21 = ___2_XList;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_22;
+		L_22 = DrawGraph_GetEquallySpacedValues_m9C3BB23ECCF840B2671D36FC9B47025BDE4ECCB0(L_21, 7, NULL);
+		V_4 = L_22;
 		// float deltaY = yMax - yMin;
-		float L_21 = V_3;
-		V_4 = ((float)il2cpp_codegen_subtract(L_18, L_21));
+		float L_23 = V_3;
+		V_5 = ((float)il2cpp_codegen_subtract(L_18, L_23));
 		// if (deltaY > 6)
-		float L_22 = V_4;
-		if ((!(((float)L_22) > ((float)(6.0f)))))
+		float L_24 = V_5;
+		if ((!(((float)L_24) > ((float)(6.0f)))))
 		{
-			goto IL_0092;
+			goto IL_009b;
 		}
 	}
 	{
 		// deltaY = 6 * Mathf.Ceil(deltaY / 6f);
-		float L_23 = V_4;
-		float L_24;
-		L_24 = ceilf(((float)(L_23/(6.0f))));
-		V_4 = ((float)il2cpp_codegen_multiply((6.0f), L_24));
-		goto IL_00aa;
+		float L_25 = V_5;
+		float L_26;
+		L_26 = ceilf(((float)(L_25/(6.0f))));
+		V_5 = ((float)il2cpp_codegen_multiply((6.0f), L_26));
+		goto IL_00b3;
 	}
 
-IL_0092:
+IL_009b:
 	{
 		// else if (deltaY == 0)
-		float L_25 = V_4;
-		if ((!(((float)L_25) == ((float)(0.0f)))))
+		float L_27 = V_5;
+		if ((!(((float)L_27) == ((float)(0.0f)))))
 		{
-			goto IL_00aa;
+			goto IL_00b3;
 		}
 	}
 	{
 		// yMin = yMin - 1;
-		float L_26 = V_3;
-		V_3 = ((float)il2cpp_codegen_subtract(L_26, (1.0f)));
+		float L_28 = V_3;
+		V_3 = ((float)il2cpp_codegen_subtract(L_28, (1.0f)));
 		// deltaY = 2;
-		V_4 = (2.0f);
+		V_5 = (2.0f);
 	}
 
-IL_00aa:
+IL_00b3:
 	{
 		// float xSize = graphWidth / (valueList.Count - 1);
-		float L_27 = V_2;
-		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_28 = ___1_valueList;
-		NullCheck(L_28);
-		int32_t L_29;
-		L_29 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_28, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
-		V_5 = ((float)(L_27/((float)((int32_t)il2cpp_codegen_subtract(L_29, 1)))));
+		float L_29 = V_2;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_30 = ___1_valueList;
+		NullCheck(L_30);
+		int32_t L_31;
+		L_31 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_30, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		V_6 = ((float)(L_29/((float)((int32_t)il2cpp_codegen_subtract(L_31, 1)))));
 		// for (int i = 0; i < 7; i++)
-		V_7 = 0;
-		goto IL_0230;
+		V_8 = 0;
+		goto IL_0263;
 	}
 
-IL_00bf:
+IL_00c8:
 	{
 		// GameObject newText = Instantiate(TMPobject.gameObject, TMPobject.transform.parent);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_30 = __this->___TMPobject_4;
-		NullCheck(L_30);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_31;
-		L_31 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(L_30, NULL);
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_32 = __this->___TMPobject_4;
 		NullCheck(L_32);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_33;
-		L_33 = TMP_Text_get_transform_m6BD41E08BFCFCE722DFCE4627626AD60CA99CCA8(L_32, NULL);
-		NullCheck(L_33);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_34;
-		L_34 = Transform_get_parent_m65354E28A4C94EC00EBCF03532F7B0718380791E(L_33, NULL);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_33;
+		L_33 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(L_32, NULL);
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_34 = __this->___TMPobject_4;
+		NullCheck(L_34);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_35;
+		L_35 = TMP_Text_get_transform_m6BD41E08BFCFCE722DFCE4627626AD60CA99CCA8(L_34, NULL);
+		NullCheck(L_35);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_36;
+		L_36 = Transform_get_parent_m65354E28A4C94EC00EBCF03532F7B0718380791E(L_35, NULL);
 		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_35;
-		L_35 = Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811(L_31, L_34, Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811_RuntimeMethod_var);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_37;
+		L_37 = Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811(L_33, L_36, Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811_RuntimeMethod_var);
 		// newText.SetActive(true);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_36 = L_35;
-		NullCheck(L_36);
-		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_36, (bool)1, NULL);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_38 = L_37;
+		NullCheck(L_38);
+		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_38, (bool)1, NULL);
 		// newText.name = "x_label" + i;
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_37 = L_36;
-		String_t* L_38;
-		L_38 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5((&V_7), NULL);
-		String_t* L_39;
-		L_39 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteralBDDB8D1CE788E58F9F4161A81606B9EC38927BBA, L_38, NULL);
-		NullCheck(L_37);
-		Object_set_name_mC79E6DC8FFD72479C90F0C4CC7F42A0FEAF5AE47(L_37, L_39, NULL);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_39 = L_38;
+		String_t* L_40;
+		L_40 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5((&V_8), NULL);
+		String_t* L_41;
+		L_41 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteralBDDB8D1CE788E58F9F4161A81606B9EC38927BBA, L_40, NULL);
+		NullCheck(L_39);
+		Object_set_name_mC79E6DC8FFD72479C90F0C4CC7F42A0FEAF5AE47(L_39, L_41, NULL);
 		// TMP_Text myText = newText.GetComponent<TMP_Text>();
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_40 = L_37;
-		NullCheck(L_40);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_41;
-		L_41 = GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3(L_40, GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3_RuntimeMethod_var);
-		// myText.enabled = true;
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_42 = L_41;
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_42 = L_39;
 		NullCheck(L_42);
-		Behaviour_set_enabled_mF1DCFE60EB09E0529FE9476CA804A3AA2D72B16A(L_42, (bool)1, NULL);
-		// myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_43 = L_42;
-		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_44 = ___1_valueList;
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_43;
+		L_43 = GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3(L_42, GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3_RuntimeMethod_var);
+		V_9 = L_43;
+		// myText.enabled = true;
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_44 = V_9;
 		NullCheck(L_44);
-		int32_t L_45;
-		L_45 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_44, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
-		int32_t L_46 = V_7;
-		V_8 = ((float)il2cpp_codegen_multiply(((float)(((float)(((float)((int32_t)il2cpp_codegen_subtract(L_45, 1)))/(50.0f)))/(6.0f))), ((float)L_46)));
-		String_t* L_47;
-		L_47 = Single_ToString_m3F2C4433B6ADFA5ED8E3F14ED19CD23014E5179D((&V_8), _stringLiteralC613D4D2FE3F5D74727D376F793286A2BCBB1391, NULL);
-		NullCheck(L_43);
-		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_43, L_47);
-		// myText.color = new Color(0, 0, 0, 1);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_48 = L_43;
-		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_49;
-		memset((&L_49), 0, sizeof(L_49));
-		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_49), (0.0f), (0.0f), (0.0f), (1.0f), /*hidden argument*/NULL);
-		NullCheck(L_48);
-		VirtualActionInvoker1< Color_tD001788D726C3A7F1379BEED0260B9591F440C1F >::Invoke(23 /* System.Void UnityEngine.UI.Graphic::set_color(UnityEngine.Color) */, L_48, L_49);
-		// myText.fontSize = 14;
-		NullCheck(L_48);
-		TMP_Text_set_fontSize_m1C3A3BA2BC88E5E1D89375FD35A0AA91E75D3AAD(L_48, (14.0f), NULL);
-		// newText.transform.SetParent(graphContainer.transform);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_50 = L_40;
-		NullCheck(L_50);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_51;
-		L_51 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_50, NULL);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_52 = V_0;
+		Behaviour_set_enabled_mF1DCFE60EB09E0529FE9476CA804A3AA2D72B16A(L_44, (bool)1, NULL);
+		// if (XList != null)
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_45 = ___2_XList;
+		G_B6_0 = L_42;
+		if (!L_45)
+		{
+			G_B7_0 = L_42;
+			goto IL_0139;
+		}
+	}
+	{
+		// myText.text = equallySpacedXList[i].ToString("F1");
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_46 = V_9;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_47 = V_4;
+		int32_t L_48 = V_8;
+		NullCheck(L_47);
+		float L_49;
+		L_49 = List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50(L_47, L_48, List_1_get_Item_mFE556F47C4CD09EAC6C898EF39D4A8EC112CFC50_RuntimeMethod_var);
+		V_10 = L_49;
+		String_t* L_50;
+		L_50 = Single_ToString_m3F2C4433B6ADFA5ED8E3F14ED19CD23014E5179D((&V_10), _stringLiteralC613D4D2FE3F5D74727D376F793286A2BCBB1391, NULL);
+		NullCheck(L_46);
+		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_46, L_50);
+		G_B8_0 = G_B6_0;
+		goto IL_0167;
+	}
+
+IL_0139:
+	{
+		// myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_51 = V_9;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_52 = ___1_valueList;
 		NullCheck(L_52);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_53;
-		L_53 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(L_52, NULL);
+		int32_t L_53;
+		L_53 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_52, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		int32_t L_54 = V_8;
+		V_10 = ((float)il2cpp_codegen_multiply(((float)(((float)(((float)((int32_t)il2cpp_codegen_subtract(L_53, 1)))/(50.0f)))/(6.0f))), ((float)L_54)));
+		String_t* L_55;
+		L_55 = Single_ToString_m3F2C4433B6ADFA5ED8E3F14ED19CD23014E5179D((&V_10), _stringLiteralC613D4D2FE3F5D74727D376F793286A2BCBB1391, NULL);
 		NullCheck(L_51);
-		Transform_SetParent_m6677538B60246D958DD91F931C50F969CCBB5250(L_51, L_53, NULL);
-		// newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_54 = L_50;
-		NullCheck(L_54);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_55;
-		L_55 = GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4(L_54, GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4_RuntimeMethod_var);
-		float L_56 = V_2;
-		float L_57 = V_1;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_58;
-		memset((&L_58), 0, sizeof(L_58));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_58), ((float)(L_56/(6.0f))), ((float)(L_57/(6.0f))), /*hidden argument*/NULL);
-		NullCheck(L_55);
-		RectTransform_set_sizeDelta_mC9A980EA6036E6725EF24CEDF3EE80A9B2B50EE5(L_55, L_58, NULL);
-		// newText.transform.localPosition = new Vector3((valueList.Count - 1) / 6f * xSize * i - graphWidth / 2, - graphHeight / 2 - 14, 0);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_59 = L_54;
+		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_51, L_55);
+		G_B8_0 = G_B7_0;
+	}
+
+IL_0167:
+	{
+		// myText.color = new Color(0, 0, 0, 1);
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_56 = V_9;
+		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_57;
+		memset((&L_57), 0, sizeof(L_57));
+		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_57), (0.0f), (0.0f), (0.0f), (1.0f), /*hidden argument*/NULL);
+		NullCheck(L_56);
+		VirtualActionInvoker1< Color_tD001788D726C3A7F1379BEED0260B9591F440C1F >::Invoke(23 /* System.Void UnityEngine.UI.Graphic::set_color(UnityEngine.Color) */, L_56, L_57);
+		// myText.fontSize = 14;
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_58 = V_9;
+		NullCheck(L_58);
+		TMP_Text_set_fontSize_m1C3A3BA2BC88E5E1D89375FD35A0AA91E75D3AAD(L_58, (14.0f), NULL);
+		// newText.transform.SetParent(graphContainer.transform);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_59 = G_B8_0;
 		NullCheck(L_59);
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_60;
 		L_60 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_59, NULL);
-		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_61 = ___1_valueList;
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_61 = V_0;
 		NullCheck(L_61);
-		int32_t L_62;
-		L_62 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_61, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
-		float L_63 = V_5;
-		int32_t L_64 = V_7;
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_62;
+		L_62 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(L_61, NULL);
+		NullCheck(L_60);
+		Transform_SetParent_m6677538B60246D958DD91F931C50F969CCBB5250(L_60, L_62, NULL);
+		// newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_63 = L_59;
+		NullCheck(L_63);
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_64;
+		L_64 = GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4(L_63, GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4_RuntimeMethod_var);
 		float L_65 = V_2;
 		float L_66 = V_1;
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_67;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_67;
 		memset((&L_67), 0, sizeof(L_67));
-		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_67), ((float)il2cpp_codegen_subtract(((float)il2cpp_codegen_multiply(((float)il2cpp_codegen_multiply(((float)(((float)((int32_t)il2cpp_codegen_subtract(L_62, 1)))/(6.0f))), L_63)), ((float)L_64))), ((float)(L_65/(2.0f))))), ((float)il2cpp_codegen_subtract(((float)(((-L_66))/(2.0f))), (14.0f))), (0.0f), /*hidden argument*/NULL);
-		NullCheck(L_60);
-		Transform_set_localPosition_mDE1C997F7D79C0885210B7732B4BA50EE7D73134(L_60, L_67, NULL);
-		// newText.transform.localScale = Vector3.one;
-		NullCheck(L_59);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_68;
-		L_68 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_59, NULL);
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_69;
-		L_69 = Vector3_get_one_mC9B289F1E15C42C597180C9FE6FB492495B51D02_inline(NULL);
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_67), ((float)(L_65/(6.0f))), ((float)(L_66/(6.0f))), /*hidden argument*/NULL);
+		NullCheck(L_64);
+		RectTransform_set_sizeDelta_mC9A980EA6036E6725EF24CEDF3EE80A9B2B50EE5(L_64, L_67, NULL);
+		// newText.transform.localPosition = new Vector3((valueList.Count - 1) / 6f * xSize * i - graphWidth / 2, - graphHeight / 2 - 14, 0);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_68 = L_63;
 		NullCheck(L_68);
-		Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633(L_68, L_69, NULL);
-		// CreateDotConnection(graphContainer, new Vector2(graphWidth / 6f * i, 0), new Vector2(graphWidth / 6f * i, graphHeight), new Color(0, 0, 0, 0.5f), 1f);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_70 = V_0;
-		float L_71 = V_2;
-		int32_t L_72 = V_7;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_73;
-		memset((&L_73), 0, sizeof(L_73));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_73), ((float)il2cpp_codegen_multiply(((float)(L_71/(6.0f))), ((float)L_72))), (0.0f), /*hidden argument*/NULL);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_69;
+		L_69 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_68, NULL);
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_70 = ___1_valueList;
+		NullCheck(L_70);
+		int32_t L_71;
+		L_71 = List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_inline(L_70, List_1_get_Count_m545762F67009314D9C63DD209B42FFF950569B05_RuntimeMethod_var);
+		float L_72 = V_6;
+		int32_t L_73 = V_8;
 		float L_74 = V_2;
-		int32_t L_75 = V_7;
-		float L_76 = V_1;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_77;
-		memset((&L_77), 0, sizeof(L_77));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_77), ((float)il2cpp_codegen_multiply(((float)(L_74/(6.0f))), ((float)L_75))), L_76, /*hidden argument*/NULL);
-		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_78;
-		memset((&L_78), 0, sizeof(L_78));
-		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_78), (0.0f), (0.0f), (0.0f), (0.5f), /*hidden argument*/NULL);
-		DrawGraph_CreateDotConnection_m2CD87D2EA7C180BE78FB2C389B7FD620C1C1FE10(__this, L_70, L_73, L_77, L_78, (1.0f), NULL);
+		float L_75 = V_1;
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_76;
+		memset((&L_76), 0, sizeof(L_76));
+		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_76), ((float)il2cpp_codegen_subtract(((float)il2cpp_codegen_multiply(((float)il2cpp_codegen_multiply(((float)(((float)((int32_t)il2cpp_codegen_subtract(L_71, 1)))/(6.0f))), L_72)), ((float)L_73))), ((float)(L_74/(2.0f))))), ((float)il2cpp_codegen_subtract(((float)(((-L_75))/(2.0f))), (14.0f))), (0.0f), /*hidden argument*/NULL);
+		NullCheck(L_69);
+		Transform_set_localPosition_mDE1C997F7D79C0885210B7732B4BA50EE7D73134(L_69, L_76, NULL);
+		// newText.transform.localScale = Vector3.one;
+		NullCheck(L_68);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_77;
+		L_77 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_68, NULL);
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_78;
+		L_78 = Vector3_get_one_mC9B289F1E15C42C597180C9FE6FB492495B51D02_inline(NULL);
+		NullCheck(L_77);
+		Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633(L_77, L_78, NULL);
+		// CreateDotConnection(graphContainer, new Vector2(graphWidth / 6f * i, 0), new Vector2(graphWidth / 6f * i, graphHeight), new Color(0, 0, 0, 0.5f), 1f);
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_79 = V_0;
+		float L_80 = V_2;
+		int32_t L_81 = V_8;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_82;
+		memset((&L_82), 0, sizeof(L_82));
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_82), ((float)il2cpp_codegen_multiply(((float)(L_80/(6.0f))), ((float)L_81))), (0.0f), /*hidden argument*/NULL);
+		float L_83 = V_2;
+		int32_t L_84 = V_8;
+		float L_85 = V_1;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_86;
+		memset((&L_86), 0, sizeof(L_86));
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_86), ((float)il2cpp_codegen_multiply(((float)(L_83/(6.0f))), ((float)L_84))), L_85, /*hidden argument*/NULL);
+		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_87;
+		memset((&L_87), 0, sizeof(L_87));
+		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_87), (0.0f), (0.0f), (0.0f), (0.5f), /*hidden argument*/NULL);
+		DrawGraph_CreateDotConnection_m2CD87D2EA7C180BE78FB2C389B7FD620C1C1FE10(__this, L_79, L_82, L_86, L_87, (1.0f), NULL);
 		// for (int i = 0; i < 7; i++)
-		int32_t L_79 = V_7;
-		V_7 = ((int32_t)il2cpp_codegen_add(L_79, 1));
+		int32_t L_88 = V_8;
+		V_8 = ((int32_t)il2cpp_codegen_add(L_88, 1));
 	}
 
-IL_0230:
+IL_0263:
 	{
 		// for (int i = 0; i < 7; i++)
-		int32_t L_80 = V_7;
-		if ((((int32_t)L_80) < ((int32_t)7)))
+		int32_t L_89 = V_8;
+		if ((((int32_t)L_89) < ((int32_t)7)))
 		{
-			goto IL_00bf;
+			goto IL_00c8;
 		}
 	}
 	{
 		// for (int i = 0; i < 7; i++)
-		V_9 = 0;
-		goto IL_039b;
+		V_11 = 0;
+		goto IL_03ce;
 	}
 
-IL_0240:
+IL_0273:
 	{
 		// GameObject newText = Instantiate(TMPobject.gameObject, TMPobject.transform.parent);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_81 = __this->___TMPobject_4;
-		NullCheck(L_81);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_82;
-		L_82 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(L_81, NULL);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_83 = __this->___TMPobject_4;
-		NullCheck(L_83);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_84;
-		L_84 = TMP_Text_get_transform_m6BD41E08BFCFCE722DFCE4627626AD60CA99CCA8(L_83, NULL);
-		NullCheck(L_84);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_85;
-		L_85 = Transform_get_parent_m65354E28A4C94EC00EBCF03532F7B0718380791E(L_84, NULL);
-		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_86;
-		L_86 = Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811(L_82, L_85, Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811_RuntimeMethod_var);
-		// newText.SetActive(true);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_87 = L_86;
-		NullCheck(L_87);
-		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_87, (bool)1, NULL);
-		// newText.name = "y_label" + i;
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_88 = L_87;
-		String_t* L_89;
-		L_89 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5((&V_9), NULL);
-		String_t* L_90;
-		L_90 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteral3EEA1C6B0F4AC11AABAF74011F44AD96B83824F9, L_89, NULL);
-		NullCheck(L_88);
-		Object_set_name_mC79E6DC8FFD72479C90F0C4CC7F42A0FEAF5AE47(L_88, L_90, NULL);
-		// TMP_Text myText = newText.GetComponent<TMP_Text>();
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_91 = L_88;
-		NullCheck(L_91);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_92;
-		L_92 = GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3(L_91, GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3_RuntimeMethod_var);
-		// myText.enabled = true;
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_93 = L_92;
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_90 = __this->___TMPobject_4;
+		NullCheck(L_90);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_91;
+		L_91 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(L_90, NULL);
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_92 = __this->___TMPobject_4;
+		NullCheck(L_92);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_93;
+		L_93 = TMP_Text_get_transform_m6BD41E08BFCFCE722DFCE4627626AD60CA99CCA8(L_92, NULL);
 		NullCheck(L_93);
-		Behaviour_set_enabled_mF1DCFE60EB09E0529FE9476CA804A3AA2D72B16A(L_93, (bool)1, NULL);
-		// myText.text = (deltaY / 6f * i + yMin).ToString("F1");
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_94 = L_93;
-		float L_95 = V_4;
-		int32_t L_96 = V_9;
-		float L_97 = V_3;
-		V_8 = ((float)il2cpp_codegen_add(((float)il2cpp_codegen_multiply(((float)(L_95/(6.0f))), ((float)L_96))), L_97));
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_94;
+		L_94 = Transform_get_parent_m65354E28A4C94EC00EBCF03532F7B0718380791E(L_93, NULL);
+		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_95;
+		L_95 = Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811(L_91, L_94, Object_Instantiate_TisGameObject_t76FEDD663AB33C991A9C9A23129337651094216F_m58C654F1134533E29502629CA67645682B404811_RuntimeMethod_var);
+		// newText.SetActive(true);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_96 = L_95;
+		NullCheck(L_96);
+		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_96, (bool)1, NULL);
+		// newText.name = "y_label" + i;
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_97 = L_96;
 		String_t* L_98;
-		L_98 = Single_ToString_m3F2C4433B6ADFA5ED8E3F14ED19CD23014E5179D((&V_8), _stringLiteralC613D4D2FE3F5D74727D376F793286A2BCBB1391, NULL);
-		NullCheck(L_94);
-		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_94, L_98);
-		// myText.color = new Color(0, 0, 0, 1);
-		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_99 = L_94;
-		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_100;
-		memset((&L_100), 0, sizeof(L_100));
-		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_100), (0.0f), (0.0f), (0.0f), (1.0f), /*hidden argument*/NULL);
-		NullCheck(L_99);
-		VirtualActionInvoker1< Color_tD001788D726C3A7F1379BEED0260B9591F440C1F >::Invoke(23 /* System.Void UnityEngine.UI.Graphic::set_color(UnityEngine.Color) */, L_99, L_100);
-		// myText.fontSize = 14;
-		NullCheck(L_99);
-		TMP_Text_set_fontSize_m1C3A3BA2BC88E5E1D89375FD35A0AA91E75D3AAD(L_99, (14.0f), NULL);
-		// newText.transform.SetParent(graphContainer.transform);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_101 = L_91;
-		NullCheck(L_101);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_102;
-		L_102 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_101, NULL);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_103 = V_0;
-		NullCheck(L_103);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_104;
-		L_104 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(L_103, NULL);
+		L_98 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5((&V_11), NULL);
+		String_t* L_99;
+		L_99 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteral3EEA1C6B0F4AC11AABAF74011F44AD96B83824F9, L_98, NULL);
+		NullCheck(L_97);
+		Object_set_name_mC79E6DC8FFD72479C90F0C4CC7F42A0FEAF5AE47(L_97, L_99, NULL);
+		// TMP_Text myText = newText.GetComponent<TMP_Text>();
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_100 = L_97;
+		NullCheck(L_100);
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_101;
+		L_101 = GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3(L_100, GameObject_GetComponent_TisTMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9_mA59A63181077B821132B53D44724D7F86C6FECB3_RuntimeMethod_var);
+		// myText.enabled = true;
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_102 = L_101;
 		NullCheck(L_102);
-		Transform_SetParent_m6677538B60246D958DD91F931C50F969CCBB5250(L_102, L_104, NULL);
-		// newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_105 = L_101;
-		NullCheck(L_105);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_106;
-		L_106 = GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4(L_105, GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4_RuntimeMethod_var);
-		float L_107 = V_2;
-		float L_108 = V_1;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_109;
+		Behaviour_set_enabled_mF1DCFE60EB09E0529FE9476CA804A3AA2D72B16A(L_102, (bool)1, NULL);
+		// myText.text = (deltaY / 6f * i + yMin).ToString("F1");
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_103 = L_102;
+		float L_104 = V_5;
+		int32_t L_105 = V_11;
+		float L_106 = V_3;
+		V_10 = ((float)il2cpp_codegen_add(((float)il2cpp_codegen_multiply(((float)(L_104/(6.0f))), ((float)L_105))), L_106));
+		String_t* L_107;
+		L_107 = Single_ToString_m3F2C4433B6ADFA5ED8E3F14ED19CD23014E5179D((&V_10), _stringLiteralC613D4D2FE3F5D74727D376F793286A2BCBB1391, NULL);
+		NullCheck(L_103);
+		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_103, L_107);
+		// myText.color = new Color(0, 0, 0, 1);
+		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_108 = L_103;
+		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_109;
 		memset((&L_109), 0, sizeof(L_109));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_109), ((float)(L_107/(6.0f))), ((float)(L_108/(6.0f))), /*hidden argument*/NULL);
-		NullCheck(L_106);
-		RectTransform_set_sizeDelta_mC9A980EA6036E6725EF24CEDF3EE80A9B2B50EE5(L_106, L_109, NULL);
-		// newText.transform.localPosition = new Vector3(-graphWidth / 2 - 20, graphHeight / 6f * i - graphHeight / 2, 0);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_110 = L_105;
+		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_109), (0.0f), (0.0f), (0.0f), (1.0f), /*hidden argument*/NULL);
+		NullCheck(L_108);
+		VirtualActionInvoker1< Color_tD001788D726C3A7F1379BEED0260B9591F440C1F >::Invoke(23 /* System.Void UnityEngine.UI.Graphic::set_color(UnityEngine.Color) */, L_108, L_109);
+		// myText.fontSize = 14;
+		NullCheck(L_108);
+		TMP_Text_set_fontSize_m1C3A3BA2BC88E5E1D89375FD35A0AA91E75D3AAD(L_108, (14.0f), NULL);
+		// newText.transform.SetParent(graphContainer.transform);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_110 = L_100;
 		NullCheck(L_110);
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_111;
 		L_111 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_110, NULL);
-		float L_112 = V_2;
-		float L_113 = V_1;
-		int32_t L_114 = V_9;
-		float L_115 = V_1;
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_116;
-		memset((&L_116), 0, sizeof(L_116));
-		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_116), ((float)il2cpp_codegen_subtract(((float)(((-L_112))/(2.0f))), (20.0f))), ((float)il2cpp_codegen_subtract(((float)il2cpp_codegen_multiply(((float)(L_113/(6.0f))), ((float)L_114))), ((float)(L_115/(2.0f))))), (0.0f), /*hidden argument*/NULL);
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_112 = V_0;
+		NullCheck(L_112);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_113;
+		L_113 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(L_112, NULL);
 		NullCheck(L_111);
-		Transform_set_localPosition_mDE1C997F7D79C0885210B7732B4BA50EE7D73134(L_111, L_116, NULL);
-		// newText.transform.localScale = Vector3.one;
-		NullCheck(L_110);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_117;
-		L_117 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_110, NULL);
-		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_118;
-		L_118 = Vector3_get_one_mC9B289F1E15C42C597180C9FE6FB492495B51D02_inline(NULL);
-		NullCheck(L_117);
-		Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633(L_117, L_118, NULL);
-		// CreateDotConnection(graphContainer, new Vector2(0, graphHeight / 6f * i), new Vector2(graphWidth, graphHeight / 6f * i), new Color(0, 0, 0, 0.5f), 1f);
-		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_119 = V_0;
-		float L_120 = V_1;
-		int32_t L_121 = V_9;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_122;
-		memset((&L_122), 0, sizeof(L_122));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_122), (0.0f), ((float)il2cpp_codegen_multiply(((float)(L_120/(6.0f))), ((float)L_121))), /*hidden argument*/NULL);
-		float L_123 = V_2;
+		Transform_SetParent_m6677538B60246D958DD91F931C50F969CCBB5250(L_111, L_113, NULL);
+		// newText.GetComponent<RectTransform>().sizeDelta = new Vector2(graphWidth / 6, graphHeight / 6);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_114 = L_110;
+		NullCheck(L_114);
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_115;
+		L_115 = GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4(L_114, GameObject_GetComponent_TisRectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5_m1592DCB5AA07291F73A76006F0913A64DFB8A9C4_RuntimeMethod_var);
+		float L_116 = V_2;
+		float L_117 = V_1;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_118;
+		memset((&L_118), 0, sizeof(L_118));
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_118), ((float)(L_116/(6.0f))), ((float)(L_117/(6.0f))), /*hidden argument*/NULL);
+		NullCheck(L_115);
+		RectTransform_set_sizeDelta_mC9A980EA6036E6725EF24CEDF3EE80A9B2B50EE5(L_115, L_118, NULL);
+		// newText.transform.localPosition = new Vector3(-graphWidth / 2 - 20, graphHeight / 6f * i - graphHeight / 2, 0);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_119 = L_114;
+		NullCheck(L_119);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_120;
+		L_120 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_119, NULL);
+		float L_121 = V_2;
+		float L_122 = V_1;
+		int32_t L_123 = V_11;
 		float L_124 = V_1;
-		int32_t L_125 = V_9;
-		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_126;
-		memset((&L_126), 0, sizeof(L_126));
-		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_126), L_123, ((float)il2cpp_codegen_multiply(((float)(L_124/(6.0f))), ((float)L_125))), /*hidden argument*/NULL);
-		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_127;
-		memset((&L_127), 0, sizeof(L_127));
-		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_127), (0.0f), (0.0f), (0.0f), (0.5f), /*hidden argument*/NULL);
-		DrawGraph_CreateDotConnection_m2CD87D2EA7C180BE78FB2C389B7FD620C1C1FE10(__this, L_119, L_122, L_126, L_127, (1.0f), NULL);
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_125;
+		memset((&L_125), 0, sizeof(L_125));
+		Vector3__ctor_m376936E6B999EF1ECBE57D990A386303E2283DE0_inline((&L_125), ((float)il2cpp_codegen_subtract(((float)(((-L_121))/(2.0f))), (20.0f))), ((float)il2cpp_codegen_subtract(((float)il2cpp_codegen_multiply(((float)(L_122/(6.0f))), ((float)L_123))), ((float)(L_124/(2.0f))))), (0.0f), /*hidden argument*/NULL);
+		NullCheck(L_120);
+		Transform_set_localPosition_mDE1C997F7D79C0885210B7732B4BA50EE7D73134(L_120, L_125, NULL);
+		// newText.transform.localScale = Vector3.one;
+		NullCheck(L_119);
+		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_126;
+		L_126 = GameObject_get_transform_m0BC10ADFA1632166AE5544BDF9038A2650C2AE56(L_119, NULL);
+		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_127;
+		L_127 = Vector3_get_one_mC9B289F1E15C42C597180C9FE6FB492495B51D02_inline(NULL);
+		NullCheck(L_126);
+		Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633(L_126, L_127, NULL);
+		// CreateDotConnection(graphContainer, new Vector2(0, graphHeight / 6f * i), new Vector2(graphWidth, graphHeight / 6f * i), new Color(0, 0, 0, 0.5f), 1f);
+		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_128 = V_0;
+		float L_129 = V_1;
+		int32_t L_130 = V_11;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_131;
+		memset((&L_131), 0, sizeof(L_131));
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_131), (0.0f), ((float)il2cpp_codegen_multiply(((float)(L_129/(6.0f))), ((float)L_130))), /*hidden argument*/NULL);
+		float L_132 = V_2;
+		float L_133 = V_1;
+		int32_t L_134 = V_11;
+		Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7 L_135;
+		memset((&L_135), 0, sizeof(L_135));
+		Vector2__ctor_m9525B79969AFFE3254B303A40997A56DEEB6F548_inline((&L_135), L_132, ((float)il2cpp_codegen_multiply(((float)(L_133/(6.0f))), ((float)L_134))), /*hidden argument*/NULL);
+		Color_tD001788D726C3A7F1379BEED0260B9591F440C1F L_136;
+		memset((&L_136), 0, sizeof(L_136));
+		Color__ctor_m3786F0D6E510D9CFA544523A955870BD2A514C8C_inline((&L_136), (0.0f), (0.0f), (0.0f), (0.5f), /*hidden argument*/NULL);
+		DrawGraph_CreateDotConnection_m2CD87D2EA7C180BE78FB2C389B7FD620C1C1FE10(__this, L_128, L_131, L_135, L_136, (1.0f), NULL);
 		// for (int i = 0; i < 7; i++)
-		int32_t L_128 = V_9;
-		V_9 = ((int32_t)il2cpp_codegen_add(L_128, 1));
+		int32_t L_137 = V_11;
+		V_11 = ((int32_t)il2cpp_codegen_add(L_137, 1));
 	}
 
-IL_039b:
+IL_03ce:
 	{
 		// for (int i = 0; i < 7; i++)
-		int32_t L_129 = V_9;
-		if ((((int32_t)L_129) < ((int32_t)7)))
+		int32_t L_138 = V_11;
+		if ((((int32_t)L_138) < ((int32_t)7)))
 		{
-			goto IL_0240;
+			goto IL_0273;
 		}
 	}
 	{
@@ -18198,21 +18362,22 @@ IL_039b:
 		return;
 	}
 }
-// System.Void DrawGraph::ShowGraph(System.Collections.Generic.List`1<System.Single>,System.String)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_ShowGraph_m7E096D930D25232800F77620B7D9182E266C2BE3 (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___0_valueList, String_t* ___1_name, const RuntimeMethod* method) 
+// System.Void DrawGraph::ShowGraph(System.Collections.Generic.List`1<System.Single>,System.String,System.Collections.Generic.List`1<System.Single>)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DrawGraph_ShowGraph_mE1833E482C087B4D292013CAA9172DAB72E1F91E (DrawGraph_t7A63FD531B5DCEEDA863D0A92795D393B66C9158* __this, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___0_valueList, String_t* ___1_name, List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* ___2_XList, const RuntimeMethod* method) 
 {
 	{
-		// DrawGrid(name, valueList);
+		// DrawGrid(name, valueList, XList);
 		String_t* L_0 = ___1_name;
 		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_1 = ___0_valueList;
-		DrawGraph_DrawGrid_m2097418C14DEBF4DE633B2D35F8FB5C86F68663E(__this, L_0, L_1, NULL);
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_2 = ___2_XList;
+		DrawGraph_DrawGrid_mFBA231D6E32C0B35D329C21BE59656FE4D99B9FD(__this, L_0, L_1, L_2, NULL);
 		// PlotPoints(name, valueList, new Color32(255, 0, 0, 255));
-		String_t* L_2 = ___1_name;
-		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_3 = ___0_valueList;
-		Color32_t73C5004937BF5BB8AD55323D51AAA40A898EF48B L_4;
-		memset((&L_4), 0, sizeof(L_4));
-		Color32__ctor_mC9C6B443F0C7CA3F8B174158B2AF6F05E18EAC4E_inline((&L_4), (uint8_t)((int32_t)255), (uint8_t)0, (uint8_t)0, (uint8_t)((int32_t)255), /*hidden argument*/NULL);
-		DrawGraph_PlotPoints_m8D8FD92014DFCBAC92BB40CDFA722CE3D68467FA(__this, L_2, L_3, L_4, NULL);
+		String_t* L_3 = ___1_name;
+		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_4 = ___0_valueList;
+		Color32_t73C5004937BF5BB8AD55323D51AAA40A898EF48B L_5;
+		memset((&L_5), 0, sizeof(L_5));
+		Color32__ctor_mC9C6B443F0C7CA3F8B174158B2AF6F05E18EAC4E_inline((&L_5), (uint8_t)((int32_t)255), (uint8_t)0, (uint8_t)0, (uint8_t)((int32_t)255), /*hidden argument*/NULL);
+		DrawGraph_PlotPoints_m8D8FD92014DFCBAC92BB40CDFA722CE3D68467FA(__this, L_3, L_4, L_5, NULL);
 		// }
 		return;
 	}

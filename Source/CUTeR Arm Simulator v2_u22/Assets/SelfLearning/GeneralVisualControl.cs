@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using TexDrawLib;
+using Unity.VisualScripting;
 
 
 
@@ -118,12 +119,12 @@ public class GeneralVisualControl : MonoBehaviour
         }
     }
 
-    public IEnumerator PlotGraph(List<float> YList, string name = "Graph1")
+    public IEnumerator PlotGraph(List<float> YList, List<float> XList, string name = "Graph1")
     {
         string graph_root = FindGraphRoot(name);
         string graph_path = graph_root + name;
         _graph_drawer.ClearGraph(graph_path);
-        _graph_drawer.ShowGraph(YList, graph_path);
+        _graph_drawer.ShowGraph(YList, graph_path, XList);
         // _graph_drawer.PlotPoints(graph_path, XList, new Color32(0, 255, 0, 255));
         return null;
     }
@@ -402,6 +403,12 @@ public class GeneralVisualControl : MonoBehaviour
             Destroy(endSphere); // Destroy the end sphere
             endSphere = null; // Clear the reference
         }
+        return null;
+    }
+
+    public IEnumerator ShowArrow(int joint, bool value)
+    {
+        _robotController.ShowArrow(joint, value);
         return null;
     }
 }
