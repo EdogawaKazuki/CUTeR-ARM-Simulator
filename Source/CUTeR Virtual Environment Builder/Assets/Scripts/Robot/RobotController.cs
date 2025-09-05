@@ -44,7 +44,7 @@ public class RobotController : MonoBehaviour
     {
     }
     void OnEnable()
-    {
+    {   
         CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
         switch (_robotIndex)
         {
@@ -80,7 +80,8 @@ public class RobotController : MonoBehaviour
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         //Debug.Log("set joints");
         SetRobotDoF(6);
-        SetCmdJointAngles(new List<float> { 0, 0, 0, 0, 0, 0 });
+        // initial joint angles
+        SetCmdJointAngles(new List<float> { 0, 180, -140, 0, 0, 0 });
     }
     // Update is called once per frame
     void Update()
@@ -164,6 +165,10 @@ public class RobotController : MonoBehaviour
     public void SetJointSignActivate(int index, bool value)
     {
         _robotJointController.SetJointSignActivate(index, value);
+    }
+    public void SetFrameActivate(bool value)
+    {
+        _robotJointController.SetFrameActivate(value);
     }
     public void SetLinkSignActivate(int index, bool value)
     {

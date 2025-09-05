@@ -27,7 +27,7 @@ public class MultipleCubicSpline : MonoBehaviour
     TMP_InputField theta1Input;
     TMP_InputField thetaEndInput;
     TMP_Dropdown modeDropdown;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,7 +70,7 @@ public class MultipleCubicSpline : MonoBehaviour
         b2t = transform.Find("Input/Line6/b2").GetComponent<TMP_Text>();
         b3t = transform.Find("Input/Line6/b3").GetComponent<TMP_Text>();
 
-
+        joints = _robotController.GetJointAngles();
     }
 
     void UpdateTrajectory()
@@ -180,7 +180,7 @@ public class MultipleCubicSpline : MonoBehaviour
         b1t.text = b1.ToString("F2");
         b2t.text = b2.ToString("F2");
         b3t.text = b3.ToString("F2");
-        _trajController.ResetTraj(3);
+        _trajController.ResetTraj(_robotController.GetDoF());
         for (int i = 0; i < 50 * t1 + 1; i++)
         {
             float _t = i / 50f;

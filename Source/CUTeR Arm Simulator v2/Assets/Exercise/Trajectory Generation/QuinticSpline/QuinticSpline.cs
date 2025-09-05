@@ -23,7 +23,7 @@ public class QuinticSpline : MonoBehaviour
     float a4 = 0;
     float a5 = 0;
     float t = 0;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +47,7 @@ public class QuinticSpline : MonoBehaviour
         a5Input.onValueChanged.AddListener(SetA5);
         tInput = transform.Find("Input/Line3/T").GetComponent<TMP_InputField>();
         tInput.onValueChanged.AddListener(SetT);
+        joints = _robotController.GetJointAngles();
     }
 
     void UpdateTrajectory()
@@ -59,7 +60,7 @@ public class QuinticSpline : MonoBehaviour
             return;
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + a4 + "," + a5 + "," + t);
-        _trajController.ResetTraj(3);
+        _trajController.ResetTraj(_robotController.GetDoF());
         for (int i = 0; i < 50 * t + 1; i++)
         {
             float t = i / 50f;

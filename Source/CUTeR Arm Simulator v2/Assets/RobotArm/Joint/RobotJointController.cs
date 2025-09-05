@@ -84,6 +84,7 @@ public class RobotJointController : MonoBehaviour
     }
     public void HideJointLink(int index)
     {
+        // Debug.Log("HideJointLink: " + index);
         _joints[index].transform.Find("Part")?.gameObject.SetActive(false);
     }
     public void HideJointMask(int index)

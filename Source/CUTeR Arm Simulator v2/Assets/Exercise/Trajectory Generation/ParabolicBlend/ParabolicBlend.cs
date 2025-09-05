@@ -30,7 +30,7 @@ public class ParabolicBlend : MonoBehaviour
     TMP_InputField c2Input;
     TMP_InputField tbInput;
     TMP_InputField tfInput;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +67,7 @@ public class ParabolicBlend : MonoBehaviour
         c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
         c2Input.onValueChanged.AddListener((value) => { SetC2(value); });
         tfInput.onValueChanged.AddListener((value) => { SetTF(value); });
+        joints = _robotController.GetJointAngles();
     }
 
     void UpdateTrajectory()
@@ -76,7 +77,7 @@ public class ParabolicBlend : MonoBehaviour
         List<float> AngularAccelerationList = new List<float>();
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + b0 + "," + b1 + "," + c0 + "," + c1 + "," + c2 + "," + tb + "," + tf);
-        _trajController.ResetTraj(3);
+        _trajController.ResetTraj(_robotController.GetDoF());
         if(tb != 0)
             for (int i = 0; i < 50 * tb + 1; i++)
             {

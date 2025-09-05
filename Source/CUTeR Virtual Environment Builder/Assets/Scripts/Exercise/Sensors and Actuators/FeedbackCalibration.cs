@@ -31,7 +31,7 @@ public class FeedbackCalibration : MonoBehaviour
         {
             //Debug.Log("Input/Line" + (i + 1) + "/Value");
             PWMTextList.Add(transform.Find("Input/Line" + (i + 2) + "/PWM").GetComponent<Text>());
-            thetaTextList.Add(transform.Find("Input/Line" + (i + 2) + "/£c").GetComponent<Text>());
+            thetaTextList.Add(transform.Find("Input/Line" + (i + 2) + "/theta").GetComponent<Text>());
             offsetIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Offset").GetComponent<InputField>());
             scaleIFList.Add(transform.Find("Input/Line" + (i + 2) + "/Scale").GetComponent<InputField>());
         }
@@ -45,7 +45,7 @@ public class FeedbackCalibration : MonoBehaviour
     void UpdateTrajectory()
     {
         List<int> vs = _robotController.GetReadPWM();
-        for (int i = 0; i < vs.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
             PWMTextList[i].text = vs[i].ToString();
             thetaTextList[i].text = (scaleList[i] * (vs[i] - offsetList[i])).ToString();

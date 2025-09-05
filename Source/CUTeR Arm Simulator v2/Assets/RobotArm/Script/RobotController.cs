@@ -24,7 +24,7 @@ public class RobotController : MonoBehaviour
 
     private int MAX_ROBOT_DOF;
     [SerializeField]
-    private int INIT_ROBOT_DOF = 3;
+    private int INIT_ROBOT_DOF = 6;
     [SerializeField]
     private bool _enableCollisionChecker = true;
     [SerializeField]
@@ -201,9 +201,10 @@ public class RobotController : MonoBehaviour
     public void SetLinkSignActivate(int index, bool value) { _robotJointController.SetLinkSignActivate(index, value); }
 
     // Get Joint Status
+    public int GetDoF() { return _currentDoF; }
     public float GetJointAngle(int index) { return GetJointAngles()[index]; }
     public float GetTransparentJointAngle(int index) { return _transparentRobotJointController.GetJointAngle(index); }
-    public List<float> GetJointAngles() { return _robotJointController.GetJointAngles(); }
+    public List<float> GetJointAngles() { return _robotJointController.GetJointAngles().GetRange(0, _currentDoF); }
     public List<float> GetCmdJointAngles() { return CmdJointAngles; }
     public List<int> GetSendPWM() { return _pwmList; }
     public List<Transform> GetJointsTransform() { return _robotJointController.GetJointsTransform(); }
@@ -281,7 +282,7 @@ public class RobotController : MonoBehaviour
     {
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
-        if(RobotClient.ROBOT_TYPE == 1 && _robotClient.IsConnected()){
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected()){
             _robotClient.SendJointCmdDirect(angleList, 2.0f);
             return;
         }
@@ -291,7 +292,7 @@ public class RobotController : MonoBehaviour
     }
     public void SendCmdToRobot(float path_time)
     {
-        if(RobotClient.ROBOT_TYPE == 1 && _robotClient.IsConnected())
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected())
         {
             _robotClient.SendJointCmdDirect(CmdJointAngles, path_time);
         }
@@ -352,7 +353,7 @@ public class RobotController : MonoBehaviour
         _robotControllerUI.SetRobotDoF(dof);
         _endEffectorController.transform.SetParent(_robotJointController.GetJointTransform(dof - 1));
         _endEffectorController.transform.localPosition = _robotJointController.GetJointTransform(dof).localPosition;
-        _endEffectorController.transform.localEulerAngles = Vector3.zero;
+        _endEffectorController.transform.localEulerAngles = _robotJointController.GetJointTransform(dof).localEulerAngles;
         _currentDoF = dof;
     }    
     public void SetTransparentRobotDoF(int dof)

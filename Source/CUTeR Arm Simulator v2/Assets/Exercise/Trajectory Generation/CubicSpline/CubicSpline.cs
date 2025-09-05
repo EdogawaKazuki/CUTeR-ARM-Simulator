@@ -19,7 +19,7 @@ public class CubicSpline : MonoBehaviour
     float a2 = 0;
     float a3 = 0;
     float t = 0;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,11 +39,12 @@ public class CubicSpline : MonoBehaviour
         tInput = transform.Find("Input/Line2/T").GetComponent<TMP_InputField>();
         tInput.onValueChanged.AddListener(SetT);
         drawer = GetComponent<DrawGraph>();
+        joints = _robotController.GetJointAngles();
     }
 
     void UpdateTrajectory()
     {
-        _trajController.ResetTraj(3);
+        _trajController.ResetTraj(_robotController.GetDoF());
         List<float> JointAngleList = new List<float>();
         List<float> AngularVelocityList = new List<float>();
         List<float> AngularAccelerationList = new List<float>();
@@ -51,7 +52,9 @@ public class CubicSpline : MonoBehaviour
         if (t == 0)
             return;
 
-        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + t);
+        // Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + t);
+        Debug.Log(_robotController.GetDoF());
+        Debug.Log(joints.Count);
         for (int i = 0; i < 50 * t + 1; i++)
         {
             float _t = i / 50f;

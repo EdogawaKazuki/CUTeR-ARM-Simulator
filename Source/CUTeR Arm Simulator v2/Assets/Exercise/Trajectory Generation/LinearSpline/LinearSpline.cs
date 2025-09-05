@@ -15,7 +15,7 @@ public class LinearSpline : MonoBehaviour
     float a0 = 0;
     float a1 = 0;
     float t = 0;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,14 +31,15 @@ public class LinearSpline : MonoBehaviour
         tInput = transform.Find("Input/Line2/T").GetComponent<TMP_InputField>();
         tInput.onValueChanged.AddListener(SetT);
         drawer = GetComponent<DrawGraph>();
+        joints = _robotController.GetJointAngles();
     }
     void UpdateTrajectory()
     {
         List<float> JointAngleList = new List<float>();
         if (t == 0)
             return;
-        Debug.Log("" + a0 + "," + a1 + "," + t);
-        _trajController.ResetTraj(3);
+        // Debug.Log("" + a0 + "," + a1 + "," + t);
+        _trajController.ResetTraj(_robotController.GetDoF());
         for (int i = 0; i < 50 * t + 1; i++)
         {
             float angle = a0 + a1 * (i / 50f);

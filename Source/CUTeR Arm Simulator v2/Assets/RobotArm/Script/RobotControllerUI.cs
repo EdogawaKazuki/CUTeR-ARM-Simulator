@@ -48,7 +48,7 @@ public class RobotControllerUI : MonoBehaviour
         }
         // Debug.Log(value);
         bool isCollision = _robotController.CheckCollisionTransparent();
-        Debug.Log("Slider: " + _sliderStatus[index] + " last: " + _lastSliderValue[index] + " collision: " + isCollision);
+        // Debug.Log("Slider: " + _sliderStatus[index] + " last: " + _lastSliderValue[index] + " collision: " + isCollision);
         if(isCollision){
             // if there is collision, set the slider value to the last value
             // if the value is greater than the last value, set the slider status to -1, means the slider is moving to the negative direction
@@ -157,7 +157,7 @@ public class RobotControllerUI : MonoBehaviour
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value));
         else
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(index, value));
-        if(RobotClient.ROBOT_TYPE == 1){
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = false;
         }
     }
@@ -172,7 +172,7 @@ public class RobotControllerUI : MonoBehaviour
                         _robotController.HideTransparentModel();
         }
         // _sliderStatus[index] = 0;
-        if(RobotClient.ROBOT_TYPE == 1){
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = true;
         }
     }
@@ -215,11 +215,11 @@ public class RobotControllerUI : MonoBehaviour
         tmp_Dropdown.ClearOptions();
         TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData { text = "Select Robot DoF" };
         tmp_Dropdown.options.Add(newData);
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < _robotController.GetRobotDoF(); i++){
             newData = new TMP_Dropdown.OptionData { text = (i + 1).ToString() };
             tmp_Dropdown.options.Add(newData);
         }
-        tmp_Dropdown.value = 3;
+        tmp_Dropdown.value = _robotController.GetRobotDoF();
         tmp_Dropdown.onValueChanged.AddListener((value) => { if(value!= 0) _robotController.SetRobotDoF(value); });
 
         // Setup Robot Endeffector Dropdown

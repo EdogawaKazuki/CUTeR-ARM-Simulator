@@ -1,4 +1,12 @@
 {
+    "files.watcherExclude": 
+    {
+        "**/Library/**": true,
+        "**/Logs/**": true,
+        "**/Temp/**": true,
+        "**/Obj/**": true,
+        "**/.git/**": true
+    },
     "files.exclude":
     {
         "**/.DS_Store":true,
@@ -50,7 +58,11 @@
         "Obj/":true,
         "ProjectSettings/":true,
         "temp/":true,
-        "Temp/":true
+        "Temp/":true,
+        "**/Library/**": true,
+        "**/Logs/**": true,
+        "**/Temp/**": true,
+        "**/Obj/**": true,
     },
     "dotnet.defaultSolution": "CUTeR Arm Simulator v2.sln",
     "dotnet.preferCSharpExtension": true

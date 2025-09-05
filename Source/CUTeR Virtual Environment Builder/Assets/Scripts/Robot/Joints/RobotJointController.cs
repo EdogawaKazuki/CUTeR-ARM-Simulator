@@ -8,12 +8,14 @@ public class RobotJointController : MonoBehaviour
     #region Variables
     [SerializeField]
     private List<RobotJoint> _joints = new List<RobotJoint>();
+    private Transform _frame;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _frame = transform.Find("frame_visual");
+        SetFrameActivate(false);
     }
 
     // Update is called once per frame
@@ -93,6 +95,15 @@ public class RobotJointController : MonoBehaviour
     public void SetLinkSignActivate(int index, bool value)
     {
         _joints[index].SetLinkSignActivate(value);
+    }
+    public void SetFrameActivate(bool value)
+    {
+        if (_frame != null)
+            _frame.gameObject.SetActive(value);
+        foreach (var joint in _joints)
+        {
+            joint.SetFrameActivate(value);
+        }
     }
     #endregion
 }

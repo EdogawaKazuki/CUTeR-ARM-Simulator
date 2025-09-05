@@ -64,6 +64,7 @@ public class RobotJoint : MonoBehaviour
     }
     public void SetSignText(string line1, string line2)
     {
+        // Debug.Log("SetSignText: " + transform.name);
         _title.text = line1;
         _value.text = line2;
     }

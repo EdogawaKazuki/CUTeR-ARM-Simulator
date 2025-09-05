@@ -34,6 +34,7 @@ public class RobotJoint : MonoBehaviour
     private List<GameObject> _linkSign;
     private Text _title;
     private Text _value;
+    private Transform _frame;
     #endregion
     #region Methods
     private void OnEnable()
@@ -41,6 +42,8 @@ public class RobotJoint : MonoBehaviour
         _jointSign = transform.Find("Canvas/Panel")?.gameObject ;
         _title = transform.Find("Canvas/Panel/Title")?.GetComponent<Text>();
         _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<Text>();
+        _frame = transform.Find("frame_visual");
+        SetFrameActivate(false);
         SetJointSignActivate(false);
     }
     public float GetAngle() { return _angle; }
@@ -70,6 +73,11 @@ public class RobotJoint : MonoBehaviour
         if (_linkSign.Count != 0)
             foreach (var link in _linkSign)
                 link.SetActive(value);
+    }
+    public void SetFrameActivate(bool value)
+    {
+        if (_frame != null)
+            _frame.gameObject.SetActive(value);
     }
     #endregion
 }
