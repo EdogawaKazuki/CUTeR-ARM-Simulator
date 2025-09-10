@@ -243,20 +243,30 @@ public class RobotController : MonoBehaviour
     }
     public void HideTransparentModel() { 
         for(int i = 0; i < _currentDoF; i++)
-        _transparentRobotJointController.HideJointLink(i); 
+            _transparentRobotJointController.HideJointLink(i); 
     }
-    public void ShowTransparentModel() { 
-        for(int i = 0; i < _currentDoF; i++)
-        _transparentRobotJointController.ShowJointLink(i); 
+    public void ShowTransparentModel(List<bool> visibleList=null) { 
+        for(int i = 0; i < _currentDoF; i++){
+            if(visibleList == null || visibleList[i])
+            _transparentRobotJointController.ShowJointLink(i); 
+        }
+
     }
-    public void SetTransparentCmdJointAngles(List<float> angles) { 
+    public void SetTransparentCmdJointAngles(List<float> angles, List<bool> visibleList=null) { 
         if(!_enableTransparentRobot) return;
-        ShowTransparentModel();
+        ShowTransparentModel(visibleList);
         _transparentRobotJointController.SetJointAngles(angles); 
     }
-    public void SetTransparentCmdJointAngle(int index, float angle) { 
+    public void SetTransparentCmdJointAngle(int index, float angle, List<bool> visibleList=null) { 
         if(!_enableTransparentRobot) return;
-        ShowTransparentModel();
+        if(visibleList == null){
+            visibleList = new List<bool>(new bool[_currentDoF]);
+            for(int i = index; i < _currentDoF; i++)
+            {
+                visibleList[i] = true;
+            }
+        }
+        ShowTransparentModel(visibleList);
         if(CheckCollisionTransparent()){
             _transparentRobotJointController.SetColor(new Color(1, 0, 0, 0.254902f));
         }else{
@@ -264,7 +274,7 @@ public class RobotController : MonoBehaviour
         }
         _transparentRobotJointController.SetJointAngle(index, angle); 
     }
-    public void MoveJointsTo(List<float> angleList)
+    public void MoveJointsTo(List<float> angleList, List<bool> visibleList=null)
     {
         if(angleList.Count < _currentDoF){
             angleList.AddRange(new float[_currentDoF - angleList.Count]);
@@ -276,7 +286,7 @@ public class RobotController : MonoBehaviour
         _staticRobotTrajectoryController.ResetTraj(_currentDoF);
         _staticRobotTrajectoryController.PushTrajPoints(angleList.GetRange(0, _currentDoF));
         _staticRobotTrajectoryController.SetStatus(StaticRobotTrajectoryController.State.ready);
-        _staticRobotTrajectoryController.StartTraj();
+        _staticRobotTrajectoryController.StartTraj(prepare:true, visibleList:visibleList);
     }
     public void MoveJointTo(int index, float value)
     {
@@ -286,9 +296,14 @@ public class RobotController : MonoBehaviour
             _robotClient.SendJointCmdDirect(angleList, 2.0f);
             return;
         }
-        MoveJointsTo(angleList);
-        if(_enableTransparentRobot)
-            HideTransparentModel();
+        List<bool> visibleList = new List<bool>(new bool[_currentDoF]);
+        for(int i = index; i < _currentDoF; i++)
+        {
+            visibleList[i] = true;
+        }
+        MoveJointsTo(angleList, visibleList);
+        // if(_enableTransparentRobot)
+        //     HideTransparentModel();
     }
     public void SendCmdToRobot(float path_time)
     {

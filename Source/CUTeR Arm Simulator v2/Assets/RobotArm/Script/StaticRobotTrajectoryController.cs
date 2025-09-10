@@ -49,6 +49,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     private List<List<float>> _prepareTrajList;
     private int _currentTrajIndex;
     private int _trajLength;
+    private List<bool> _visibleList;
     #endregion
 
 
@@ -63,7 +64,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _openTrajectoryButton = TrajCtrlBtnGroup.Find("upload").GetComponent<Button>();
         _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<TMP_Text>();
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
-        TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(true));
+        TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(prepare:true, visibleList:null));
         TrajCtrlBtnGroup.Find("loop").GetComponent<Button>().onClick.AddListener(() => LoopTraj());
         TrajCtrlBtnGroup.Find("stop").GetComponent<Button>().onClick.AddListener(() => StopTraj());
         SetStatus(State.init);
@@ -118,10 +119,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 ReadTraj(_trajList, Direction.forward);
             }
         }
-        if (_currentState == State.stopped || _currentState == State.ready || _currentState == State.finished)
-        {
-            if(_robotController._enableTransparentRobot) _robotController.HideTransparentModel();
-        }
     }
     #endregion
 
@@ -142,8 +139,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _robotController.SetCmdJointAngles(angleList);
         _robotController.SendCmdToRobot(0.02f);
         if(_currentState == State.prelooping || _currentState == State.preplaying){
-        // if(_currentState != State.prelooping && _currentState != State.preplaying)
-        //     _robotController.SetTransparentCmdJointAngles(angleList);
             List<float> tmpList = new();
             for(int i = 0; i < _robotController.GetRobotDoF(); i++)
             {
@@ -154,7 +149,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                     tmpList.Add(_robotController.GetJointAngle(i));
                 }
             }
-            _robotController.SetTransparentCmdJointAngles(tmpList);
+            _robotController.SetTransparentCmdJointAngles(tmpList, _visibleList);
         }
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
@@ -306,7 +301,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                     tmpList.Add(_robotController.GetJointAngle(i));
                 }
             }
-            _robotController.SetTransparentCmdJointAngles(tmpList);
+            _robotController.SetTransparentCmdJointAngles(tmpList, _visibleList);
         }
         catch (Exception e)
         {
@@ -371,11 +366,14 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 break;
             case State.finished:
                 SetStatus("Finished", new Color32(255, 255, 255, 78));
-                _robotController.HideTransparentModel();
+                if(_robotController._enableTransparentRobot) _robotController.HideTransparentModel();
+                _visibleList = null;
                 break;
             case State.stopped:
                 if (_trajLength > 0)
                     SetStatus("Stopped", new Color32(255, 255, 255, 78));
+                if(_robotController._enableTransparentRobot) _robotController.HideTransparentModel();
+                _visibleList = null;
                 break;
             case State.looping:
                 if (_trajLength > 0)
@@ -411,9 +409,9 @@ public class StaticRobotTrajectoryController : MonoBehaviour
             SetStatus(State.prelooping);
         else SetStatus(State.looping);
     }
-    public void StartTraj(bool prepare=true)
+    public void StartTraj(bool prepare=true, List<bool> visibleList=null)
     {
-        
+        _visibleList = visibleList;
         if (_currentState == State.stopped || _currentState == State.ready || _currentState == State.finished || _currentState == State.init)
         {
             if(_trajLength > 0)
@@ -421,7 +419,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 _currentTrajIndex = 0;
                 List<float> tmp = new();
                 for(int i = 0; i < _trajList.Count; i++) {
-                    Debug.Log(_trajList[i].Count); 
+                    // Debug.Log(_trajList[i].Count); 
                     tmp.Add(_trajList[i][0]); 
                 }
                 _prepareTrajList = GeneratePrepareTraj(_robotController.GetJointAngles(), tmp);
@@ -549,7 +547,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         {
             result.Add(GenerateCubicTraj(start[i], end[i], time));
         }
-        Debug.Log(result.Count);
+        // Debug.Log(result.Count);
         return result;
     }
 #endregion

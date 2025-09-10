@@ -149,6 +149,7 @@ public class RobotControllerUI : MonoBehaviour
     UnityEngine.Events.UnityAction<float> fn; // pointer for move transparent robot listener
     public void OnPointerDown(BaseEventData eventData, int index)
     {
+        // Debug.Log("OnPointerDown: " + index);
         isUserInterect = true;
         // _lastSliderValue[index] = eventData.selectedObject.GetComponent<Slider>().value;
         // Debug.Log(_lastSliderValue);
@@ -163,13 +164,14 @@ public class RobotControllerUI : MonoBehaviour
     }
     public void OnPointerUp(BaseEventData eventData, int index)
     {
+        // Debug.Log("OnPointerUp: " + index);
         isUserInterect = false;
         // remove move transparent robot listenre  
         eventData.selectedObject.GetComponent<Slider>().onValueChanged.RemoveListener(fn);// Move "real robot" to transparent robot position
 
         if(_robotController._enableTransparentRobot){
             _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
-                        _robotController.HideTransparentModel();
+            // _robotController.HideTransparentModel();
         }
         // _sliderStatus[index] = 0;
         if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
@@ -239,7 +241,8 @@ public class RobotControllerUI : MonoBehaviour
         // panel.Find("Robot/RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
         // panel.Find("Robot/RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
-        //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
+        // panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
+        panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
     }
     public void SetRobotDoF(int value)
     {
