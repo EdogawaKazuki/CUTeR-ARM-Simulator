@@ -44,7 +44,7 @@ public class RobotController : MonoBehaviour
     {
     }
     void OnEnable()
-    {
+    {   
         CmdJointAngles = new List<float>() { 0, 0, 0, 0, 0, 0 };
         switch (_robotIndex)
         {
@@ -79,7 +79,8 @@ public class RobotController : MonoBehaviour
         _endEffectorController = transform.Find("FunctionalTools").GetComponent<EndEffectorController>();
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         //Debug.Log("set joints");
-        SetRobotDoF(3);
+        SetRobotDoF(6);
+        // initial joint angles
         SetCmdJointAngles(new List<float> { 0, 180, -140, 0, 0, 0 });
     }
     // Update is called once per frame
@@ -165,6 +166,10 @@ public class RobotController : MonoBehaviour
     {
         _robotJointController.SetJointSignActivate(index, value);
     }
+    public void SetFrameActivate(bool value)
+    {
+        _robotJointController.SetFrameActivate(value);
+    }
     public void SetLinkSignActivate(int index, bool value)
     {
         _robotJointController.SetLinkSignActivate(index, value);
@@ -219,7 +224,7 @@ public class RobotController : MonoBehaviour
     public void SetEndEffector(int index)
     {
         _endEffectorController.SetEndEffector(index);
-        Debug.Log(index);
+        // Debug.Log(index);
         if(index == 3)
         {
             _joystickController.EnableForce(true);
@@ -228,6 +233,10 @@ public class RobotController : MonoBehaviour
         {
             _joystickController.EnableForce(false);
         }
+    }
+    public void SetCustomEEType(int type)
+    {
+        _endEffectorController.SetCustomEEType(type);
     }
     public int GetEndEffector() { return _endEffectorController.GetEndEffector(); }
     public void SetForce(float force)

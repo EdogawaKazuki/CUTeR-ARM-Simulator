@@ -7,9 +7,9 @@ public class Grabber : EndEffector
     #region Variables
 
     // Dictionary of all objects in the grabbing point(cube)
-    private Dictionary<Transform, int> colliderDict = new Dictionary<Transform, int>();
+    public Dictionary<Transform, int> colliderDict = new Dictionary<Transform, int>();
     // counter of number of objects that in grabbing point.
-    private int _colliderCounter;
+    public int _colliderCounter;
 
     private Color colorOff = new Color(0.2f, 0.2f, 0.2f, 0.5f);
     private Color colorOn = new Color(0.2f, 1f, 0.2f, 0.5f);
@@ -20,13 +20,14 @@ public class Grabber : EndEffector
 
     private Transform _leftPalm;
     private Transform _rightPalm;
+    private Transform _detectCube;
 
 
 
     // states
-    // released: the grabber is open, ready to grab
+    // released: the Gripper is open, ready to grab
     // grabbing: playing the grab animation 
-    // grabbed: the grabber is closed, ready to release
+    // grabbed: the Gripper is closed, ready to release
     // releasing: playing the release animation
     enum State
     {
@@ -47,13 +48,14 @@ public class Grabber : EndEffector
     // Start is called before the first frame update
     void Start()
     {
-        _material = GetComponent<MeshRenderer>().material;
         _leftPalm = transform.Find("PartHand/Left");
         _rightPalm = transform.Find("PartHand/Right");
+        _detectCube = transform.Find("DetectCube");
+        _material = _detectCube.GetComponent<MeshRenderer>().material;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         switch (_currentState)
         {
@@ -82,67 +84,22 @@ public class Grabber : EndEffector
                 return;
 
         }
-        //Debug.Log("released: " + Released + " grabber: " + Grabbed + " releasing: " + Releasing + " grabbing: " + Grabbing);
-    }
-
-    // object enter the grabbing point
-    void OnTriggerEnter(Collider collider)
-    {
-        //Debug.Log(collider.name);
-        //Debug.Log(collider.gameObject.layer + "," + LayerMask.NameToLayer("Scene"));
-
-        // Check whether the object is scene object.
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
+        
+        if (_colliderCounter == 0)
         {
-            // get the parent object of the object. Object imported from files may be made up by not only one part.
-            Debug.Log(collider.transform.name);
-            Debug.Log(collider.transform.GetComponent<SceneObjectPart>().GetParent());
-            Transform obj = collider.transform.GetComponent<SceneObjectPart>().GetParent();
-            
-            // increase the counter that belongs to the entered object
-            if (colliderDict.ContainsKey(obj))
-            {
-                colliderDict[obj]++;
-            }
-            else
-            {
-                colliderDict.Add(obj, 1);
-            }
-            
-            // increase the colliedr counter
-            _colliderCounter++;
+            _material.color = colorOff;
+        }else{
             _material.color = colorOn;
         }
+        //Debug.Log("released: " + Released + " Gripper: " + Grabbed + " releasing: " + Releasing + " grabbing: " + Grabbing);
     }
-    // object exit the grabbing point
-    void OnTriggerExit(Collider collider)
-    {
-        // Check whether the object is scene object.
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Scene"))
-        {
-            // get the parent object of the object. Object imported from files may be made up by not only one part.
-            Transform obj = collider.transform.GetComponent<SceneObjectPart>().GetParent();
-            
-            // decrease the counter that belongs to the entered object
-            if (colliderDict.ContainsKey(obj))
-            {
-                colliderDict[obj]--;
-            }
-            
-            // decrease the colliedr counter
-            _colliderCounter--;
-            if (_colliderCounter == 0)
-            {
-                _material.color = colorOff;
-            }
-        }
-    }
+
     #endregion
     #region EndEffector Methods
     public override void Init()
     {
         base.Init();
-        _name = "Grabber";
+        _name = "Gripper";
         _force = 0;
     }
     public override void Fire()
@@ -181,7 +138,7 @@ public class Grabber : EndEffector
             }
 
              Debug.Log(targetObject.name);
-            // Make the object static to the grabber
+            // Make the object static to the Gripper
             if(targetObject.GetComponent<SceneObjectTrajectoryController>())
                 targetObject.GetComponent<SceneObjectTrajectoryController>().StartTraj();
             // disable the physical property
@@ -202,10 +159,11 @@ public class Grabber : EndEffector
     }
     public void Release()
     {
-        //Debug.Log("Release");
+        Debug.Log("Release");
         if (targetObject)
         {
             // set the parent back to the scene
+            // targetObject.transform.SetParent(GameObject.Find("VirtualScene/PlayingScene").transform);
             targetObject.transform.SetParent(_robotController.GetEditorController().GetSceneManager().GetPlayingScene());
             // enable the physical property
             Rigidbody rigidbody = targetObject.GetComponent<Rigidbody>();

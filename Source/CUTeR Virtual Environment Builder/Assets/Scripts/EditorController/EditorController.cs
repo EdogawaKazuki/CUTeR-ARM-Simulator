@@ -13,7 +13,7 @@ public class EditorController : MonoBehaviour
 #if UNITY_WEBGL
     private bool _isWebGL=true;
 #else 
-    private bool _isWebGL = false;
+    // private bool _isWebGL = false;
 #endif
 
     private SceneManager _sceneManager;
@@ -105,7 +105,7 @@ public class EditorController : MonoBehaviour
         newObj.GetComponent<SceneObjectController>().filename = Path.GetFileName(path);
         newObj.GetComponent<SceneObjectController>().type = SceneObjectController.Type.obj;
         _objectCounter++;
-
+        Debug.Log(_objectFolder + "/" + path + ".obj");
         Transform newPart = new OBJLoader().Load(_objectFolder + "/" + path + ".obj").transform;
         Debug.Log(newPart.transform.childCount);
         int totalObj = newPart.transform.childCount;
@@ -116,9 +116,23 @@ public class EditorController : MonoBehaviour
             newPart.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Scene");
             newPart.transform.GetChild(0).gameObject.AddComponent<MeshCollider>().convex = true;
             newPart.transform.GetChild(0).SetParent(newObj.transform);
-            newObj.transform.GetChild(i).localPosition = new Vector3(0, 0, 0);
+            // newObj.transform.GetChild(i).localPosition = new Vector3(0, 0, 0);
             newObj.transform.GetChild(i).localRotation = Quaternion.identity;
             newObj.transform.GetChild(i).localScale = Vector3.one;
+            Mesh mesh = newObj.transform.GetChild(i).GetComponent<MeshFilter>().mesh;
+            Vector3[] vertices = mesh.vertices;
+
+            // Calculate the average position of all vertices
+            Vector3 meshCenter = Vector3.zero;
+            foreach (Vector3 vertex in vertices)
+            {
+                meshCenter += vertex;
+            }
+            meshCenter /= vertices.Length;
+
+            // Convert the local center to world space if needed
+            meshCenter = transform.TransformPoint(meshCenter);
+            newObj.transform.GetChild(i).localPosition = -meshCenter;
         }
         Destroy(newPart.gameObject);
         return newObj;
@@ -378,8 +392,10 @@ public class EditorController : MonoBehaviour
     }
     public void ResetCamera()
     {
-        Camera.main.transform.position = new Vector3(40f, 45f, -12f);
-        Camera.main.transform.LookAt(new Vector3(0, 0, 10));
+        // Camera.main.transform.position = new Vector3(40f, 45f, -12f);
+        // Camera.main.transform.LookAt(new Vector3(0, 0, 10));
+        Camera.main.transform.position = new Vector3(55f, 63f, -51f);
+        Camera.main.transform.localEulerAngles = new Vector3(35, -40, 0);
     }
     public Camera GetARCamera()
     {

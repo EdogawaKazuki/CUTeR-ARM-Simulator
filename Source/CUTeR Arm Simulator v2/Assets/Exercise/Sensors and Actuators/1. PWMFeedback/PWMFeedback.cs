@@ -8,22 +8,23 @@ public class PWMFeedback : MonoBehaviour
 {
     private RobotController _robotController;
     [SerializeField]
-    private List<Transform> lineList = new();
-    private List<List<int>> _pwmQueue = new List<List<int>>() { new List<int>(), new List<int>() , new List<int>() };
-    private List<Vector3[]> _pwmPositions = new List<Vector3[]>();
+    private List<Transform> lineList;
+    private List<List<int>> _pwmQueue;
+    private List<Vector3[]> _pwmPositions;
     [SerializeField]
     private int _queueSize = 300;
     [SerializeField]
     private Text SliderText;
     [SerializeField]
     Transform _circle;
-    List<List<Transform>> _circles = new List<List<Transform>>();
+    List<List<Transform>> _circles;
     private bool useMovingAverage;
     private int windowSize = 5;
     int count = 0;
     float tmp;
-    float[] sum = { 0, 0, 0 };
+    float[] sum;
     List<Queue<float>> tail;
+    List<int> pwmList;
     public float x = 0.1f;
     public float y = 0.1f;
     public float z = 0.1f;
@@ -35,10 +36,30 @@ public class PWMFeedback : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
+        // get the robot controller
+        _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
+        _robotController.GetJoystickController().HideHandleText();
+        _robotController.SetJointSignActivate(true);
+
+
+        // initialize variable
+        _pwmQueue = new List<List<int>>();
+        _pwmPositions = new List<Vector3[]>();
+        _circles = new List<List<Transform>>();
+        pwmList = new List<int>();
+        sum = new float[_robotController.GetDoF()];
+        tail = new List<Queue<float>>();
+
+        
+        for(int i = 0; i < _robotController.GetDoF(); i++){
+            _pwmQueue.Add(new List<int>());
+            tail.Add(new Queue<float>());
+            _pwmPositions.Add(new Vector3[_queueSize]);
+            pwmList.Add(0);
+        }
         for(int i = 0; i < 3; i++){
             _circles.Add(new List<Transform>());
-            
-            for(int j = 0; j < _queueSize; j++){
+            for(int j = lineList[i].childCount; j < _queueSize; j++){
                 _circles[i].Add(Instantiate(_circle, lineList[i].transform));
                 _circles[i][j].SetParent(lineList[i]);
                 _circles[i][j].GetComponent<RectTransform>().localPosition = Vector3.zero;
@@ -47,22 +68,6 @@ public class PWMFeedback : MonoBehaviour
             }
         }
         _circle.gameObject.SetActive(false);
-        _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        _robotController.GetJoystickController().HideHandleText();
-        for (int i = 0; i < 3; i++)
-        {
-            _pwmPositions.Add(new Vector3[_queueSize]);
-        }
-
-        {
-            for (int i = 0; i < _pwmPositions.Count; i++)
-            {
-                for (int j = 0; j < _queueSize; j++)
-                    _pwmPositions[i][j] = new Vector3(j, 0, 0);
-            }
-        }
-        tail = new List<Queue<float>>() { new Queue<float>(), new Queue<float>(), new Queue<float>() };
-        _robotController.SetJointSignActivate(true);
         
     }
     private void OnDisable()
@@ -85,17 +90,17 @@ public class PWMFeedback : MonoBehaviour
             count++;
         }
 
-        List<int> vs = _robotController.GetReadPWM();
+        pwmList = _robotController.GetReadPWM();
         for (int i = 0; i < _pwmPositions.Count; i++)
         {
             for(int j = lineList[0].childCount - 1; j > 0; j--)
-            {
+            {   
                 _pwmPositions[i][j] = _pwmPositions[i][j - 1];
                 _pwmPositions[i][j].x += dis;
             }
             if (useMovingAverage)
             {
-                tmp = vs[i];
+                tmp = pwmList[i];
                 sum[i] += tmp;
                 tail[i].Enqueue(tmp);
                 if (count > windowSize)
@@ -108,7 +113,7 @@ public class PWMFeedback : MonoBehaviour
             }
             else
             {
-                _pwmPositions[i][0] = new Vector3(0, vs[i] / 30.0f, 0);
+                _pwmPositions[i][0] = new Vector3(0, pwmList[i] / 30.0f, 0);
             }
         }
 
@@ -117,8 +122,8 @@ public class PWMFeedback : MonoBehaviour
             for(int j = 0; j < _pwmPositions[i].Length; j++)
             {
                 // _pwmPositions[i][j].y *= 30;
-                _circles[i][j].GetComponent<RectTransform>().localPosition = _pwmPositions[i][j];
-                _circles[i][j].GetComponent<RectTransform>().localScale = new Vector3(x, y, z);
+                lineList[i].GetChild(j).GetComponent<RectTransform>().localPosition = _pwmPositions[i][j];
+                lineList[i].GetChild(j).GetComponent<RectTransform>().localScale = new Vector3(x, y, z);
             }
             // _joinLines[i].SetPositions(_pwmPositions[i]);
         }
@@ -141,27 +146,10 @@ public class PWMFeedback : MonoBehaviour
     public void UpdateTable()
     {
 
-        //Debug.Log(_robotController.GetPWM());
-        List<int> vs = new List<int> { (int)(_pwmPositions[0][0].y * 30), (int)(_pwmPositions[1][0].y * 30), (int)(_pwmPositions[2][0].y * 30) };
-        for (int i = 0; i < vs.Count; i++)
+        for (int i = 0; i < pwmList.Count; i++)
         {
-            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", vs[i].ToString());
+            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", pwmList[i].ToString());
         }
-        /*
-        if(_joint0PWMList.Count > _graphLength)
-        {
-            _joint0PWMList.RemoveAt(0);
-            _joint1PWMList.RemoveAt(1);
-            _joint2PWMList.RemoveAt(2);
-        }
-        _joint0PWMList.Add(vs[0]);
-        _joint1PWMList.Add(vs[1]);
-        _joint2PWMList.Add(vs[2]);
-        _drawer.ClearGraph("PWM");
-        _drawer.PlotPoints("PWM", _joint0PWMList, new Color32(255, 0, 0, 255));
-        _drawer.PlotPoints("PWM", _joint1PWMList, new Color32(0, 255, 0, 255));
-        _drawer.PlotPoints("PWM", _joint2PWMList, new Color32(0, 0, 255, 255));
-        */
     }
     private int GetCurrentAverage(int index)
     {

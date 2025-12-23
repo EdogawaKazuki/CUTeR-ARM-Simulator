@@ -22,8 +22,8 @@ public class FeedbackCalibration : MonoBehaviour
     }
     void OnEnable()
     {
-        _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
-        _trajController = GameObject.Find("Robot").GetComponent<StaticRobotTrajectoryController>();
+        _robotController = GameObject.Find("/Robot").GetComponent<RobotController>();
+        _trajController = GameObject.Find("/Robot").GetComponent<StaticRobotTrajectoryController>();
         drawer = GetComponent<DrawGraph>();
         for (int i = 0; i < 3; i++)
         {

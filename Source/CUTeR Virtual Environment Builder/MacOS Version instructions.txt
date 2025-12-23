@@ -1,0 +1,10 @@
+If you are using MacOS and have issues with opening the application, please try the following:
+1. Open terminal and run the following command:
+```
+cd ~/Downloads/MacOS_Ver.app/Contents/MacOS
+chmod -R +x CUTeR\ Virtual\ Environment\ Builder
+```
+2. Allow the application to run in security preferences.
+System Preferences → Security & Privacy 
+Scroll down to the bottom and click "Open Anyway" for CUTeR Virtual Environment Builder
+```

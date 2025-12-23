@@ -1,95 +1,71 @@
 {
-    "m_SelectedDeviceId": "R52T70CH3BA",
-    "m_SelectedPackage": {
-        "deviceId": "R52T70CH3BA",
-        "name": "com.GaladZHAO.DynamixelArmSimulator",
-        "processId": 30164,
+    "m_SelectedDeviceId": "2G0YC1ZF7G07F5",
+    "m_SelectedProcess": {
+        "deviceId": "2G0YC1ZF7G07F5",
+        "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+        "processId": 25067,
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownPackagesForSerialization": [
+    "m_KnownProcessesForSerialization": [
         {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22394,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.oculus.systemux:SystemUX",
+            "processId": 4775,
             "exited": false
         },
         {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22749,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 22951,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 23158,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 23434,
-            "exited": false
-        },
-        {
-            "deviceId": "0123456789ABCDEF",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 25037,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 25552,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 32225,
             "exited": true
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 26166,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 18131,
             "exited": true
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 26773,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 31977,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 1532,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 8402,
             "exited": false
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 27400,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 20233,
             "exited": false
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.CUTeRArmSimulator",
-            "processId": 28212,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 20558,
             "exited": false
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 24982,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 23619,
             "exited": false
         },
         {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 28034,
-            "exited": false
-        },
-        {
-            "deviceId": "R52T70CH3BA",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 30164,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 25067,
             "exited": false
         }
     ],
@@ -125,8 +101,11 @@
             }
         ]
     },
+    "m_ExtraWindowState": {
+        "Type": 0,
+        "Height": 0.0
+    },
     "m_MemoryViewerState": {
-        "MemoryWindowHeight": 300.0,
         "MemoryWindowWidth": 170.0,
         "MemoryTypeEnabled": [
             true,
@@ -141,10 +120,10 @@
             true
         ],
         "MemoryGroup": 2,
-        "Behavior": 0
+        "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "",
+        "m_Filter": "loaded a",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },
@@ -159,5 +138,28 @@
         "BitRateK": 20000,
         "DisplayIdEnabled": false,
         "DisplayId": ""
-    }
+    },
+    "m_ScreenCaptureSettings": {
+        "Mode": 0,
+        "m_LastSaveLocation": [
+            "C:\\Users\\thisi\\Downloads\\CUTeR-ARM-Simulator\\Source\\CuTeRArm-Simulator-v3",
+            "C:\\Users\\thisi\\Downloads\\CUTeR-ARM-Simulator\\Source\\CuTeRArm-Simulator-v3"
+        ]
+    },
+    "m_QueryLayoutSettings": {
+        "LastLayoutSaveLocation": "",
+        "LastScreenshotSaveLocation": ""
+    },
+    "m_InputSettings": {
+        "ShiftModifier": false,
+        "SendText": "",
+        "PosixKillSignal": 0,
+        "TargetProcess": {
+            "deviceId": "",
+            "name": "",
+            "processId": 0,
+            "exited": false
+        }
+    },
+    "m_AutoScroll": 2
 }

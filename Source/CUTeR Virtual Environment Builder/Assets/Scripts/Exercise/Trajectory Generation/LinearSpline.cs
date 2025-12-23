@@ -32,7 +32,8 @@ public class LinearSpline : MonoBehaviour
         {
             float angle = a0 + a1 * (i / 50f);
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float> { angle, 90, -90 });
+            List<float> jointAngles = _robotController.GetJointAngles();
+            _trajController.PushTrajPoints(new List<float> { jointAngles[0], jointAngles[1], angle });
         }
         _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         drawer.ClearGraph("JointAngle");

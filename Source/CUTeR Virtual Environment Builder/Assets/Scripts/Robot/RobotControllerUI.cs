@@ -123,7 +123,7 @@ public class RobotControllerUI : MonoBehaviour
     }
     public void EnableForce(bool value)
     {
-        Debug.Log(value);
+        // Debug.Log(value);
         _joyStickPanel.Find("Force").GetComponent<Slider>().interactable = value;
     }
     public void SetupControlBar(Transform robotCtrlBtnGroup)

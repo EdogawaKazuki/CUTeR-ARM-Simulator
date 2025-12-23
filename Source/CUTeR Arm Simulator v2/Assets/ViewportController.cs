@@ -56,8 +56,9 @@ public class ViewportController : MonoBehaviour
         if(Input.touchCount == 1)
         {
             touch0 = Input.GetTouch(0);
-            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), Vector3.up, touch0.deltaPosition.x * 0.1f);
-            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), -Camera.main.transform.right, touch0.deltaPosition.y * 0.05f);
+            if (touch0.deltaPosition.magnitude > 100f) return;
+            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), Vector3.up, -touch0.deltaPosition.x * 0.1f);
+            Camera.main.transform.RotateAround(new Vector3(0, 0, 0), -Camera.main.transform.right, -touch0.deltaPosition.y * 0.05f);
         }
         if (Input.touchCount == 2)
         {

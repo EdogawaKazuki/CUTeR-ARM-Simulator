@@ -17,7 +17,7 @@ public class RobotControllerUI : MonoBehaviour
     private Slider _forceSlider;
     private TMP_Text _forceSliderValueText;
     private Button _fireButton;
-    private bool isUserInterect = false;
+    public bool isUserInterect = false;
     public float[] _lastSliderValue;
     public int[] _sliderStatus;
     #endregion
@@ -48,7 +48,7 @@ public class RobotControllerUI : MonoBehaviour
         }
         // Debug.Log(value);
         bool isCollision = _robotController.CheckCollisionTransparent();
-        Debug.Log("Slider: " + _sliderStatus[index] + " last: " + _lastSliderValue[index] + " collision: " + isCollision);
+        // Debug.Log("Slider: " + _sliderStatus[index] + " last: " + _lastSliderValue[index] + " collision: " + isCollision);
         if(isCollision){
             // if there is collision, set the slider value to the last value
             // if the value is greater than the last value, set the slider status to -1, means the slider is moving to the negative direction
@@ -154,10 +154,10 @@ public class RobotControllerUI : MonoBehaviour
         // Debug.Log(_lastSliderValue);
         // add move transparent robot listenre  
         if(_robotController._enableTransparentRobot)
-            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value));
+            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value, true));
         else
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(index, value));
-        if(RobotClient.ROBOT_TYPE == 1){
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = false;
         }
     }
@@ -169,10 +169,10 @@ public class RobotControllerUI : MonoBehaviour
 
         if(_robotController._enableTransparentRobot){
             _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
-                        _robotController.HideTransparentModel();
+            _robotController.HideTransparentModel();
         }
         // _sliderStatus[index] = 0;
-        if(RobotClient.ROBOT_TYPE == 1){
+        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = true;
         }
     }
@@ -215,11 +215,11 @@ public class RobotControllerUI : MonoBehaviour
         tmp_Dropdown.ClearOptions();
         TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData { text = "Select Robot DoF" };
         tmp_Dropdown.options.Add(newData);
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < _robotController.GetRobotDoF(); i++){
             newData = new TMP_Dropdown.OptionData { text = (i + 1).ToString() };
             tmp_Dropdown.options.Add(newData);
         }
-        tmp_Dropdown.value = 3;
+        tmp_Dropdown.value = _robotController.GetRobotDoF();
         tmp_Dropdown.onValueChanged.AddListener((value) => { if(value!= 0) _robotController.SetRobotDoF(value); });
 
         // Setup Robot Endeffector Dropdown
@@ -240,6 +240,7 @@ public class RobotControllerUI : MonoBehaviour
         // panel.Find("Robot/RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
         //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
+        // panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
     }
     public void SetRobotDoF(int value)
     {

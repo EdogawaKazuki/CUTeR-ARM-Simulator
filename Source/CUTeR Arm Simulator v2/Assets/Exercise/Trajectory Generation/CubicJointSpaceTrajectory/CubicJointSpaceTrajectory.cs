@@ -37,7 +37,7 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
     TMP_InputField c3Input;
     TMP_InputField tInput;
     TMP_Dropdown jointDropdown;
-    public List<float> joints = new List<float>{0, 0, 0};
+    public List<float> joints;
 
     int showTable = 0;
     // Start is called before the first frame update
@@ -92,7 +92,7 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
 
         tInput.onValueChanged.AddListener((value) => { SetT(value); });
 
-        
+        joints = _robotController.GetJointAngles();
     }
 
     void UpdateTrajectory()
@@ -110,8 +110,8 @@ public class CubicJointSpaceTrajectory : MonoBehaviour
         if (total_time == 0)
             return;
 
-        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + c0 + "," + c1 + "," + total_time);
-        _trajController.ResetTraj(3);
+        // Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + c0 + "," + c1 + "," + total_time);
+        _trajController.ResetTraj(_robotController.GetDoF());
         for (int i = 0; i < 50 * total_time + 1; i++)
         {
             float t = i / 50f;

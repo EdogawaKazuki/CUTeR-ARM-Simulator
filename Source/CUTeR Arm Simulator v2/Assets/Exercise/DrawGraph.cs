@@ -34,7 +34,30 @@ public class DrawGraph : MonoBehaviour {
         rectTransform.anchorMax = new Vector2(0, 0);
         return gameObject;
     }
-    public void DrawGrid(string name, List<float> valueList)
+
+    public static List<float> GetEquallySpacedValues(List<float> list, int numberOfValues)
+    {
+        List<float> result = new List<float>();
+        int totalCount = list.Count;
+
+        // Ensure we don't exceed the bounds of the list
+        if (totalCount < numberOfValues)
+        {
+            throw new ArgumentException("The list does not contain enough values.");
+        }
+
+        // Calculate the step size
+        float step = (float)(totalCount - 1) / (numberOfValues - 1);
+
+        for (int i = 0; i < numberOfValues; i++)
+        {
+            int index = (int)Math.Round(i * step);
+            result.Add(list[index]);
+        }
+
+        return result;
+    }
+    public void DrawGrid(string name, List<float> valueList, List<float> XList=null)
     {
         RectTransform graphContainer = transform.Find(name + "/Table").GetComponent<RectTransform>();
         TMPobject = graphContainer.transform.Find("Text").GetComponent<TMP_Text>();
@@ -42,6 +65,14 @@ public class DrawGraph : MonoBehaviour {
         float graphWidth = graphContainer.rect.size.x;
         float yMax = valueList.Max();
         float yMin = valueList.Min();
+        // Get 7 equally spaced values
+        List<float> equallySpacedXList = new List<float>();
+        if (XList != null)
+        {
+            equallySpacedXList = GetEquallySpacedValues(XList, 7);
+        }
+        // List<float> equallySpacedYList = GetEquallySpacedValues(valueList, 7);
+
         float deltaY = yMax - yMin;
         if (deltaY > 6)
         {
@@ -60,7 +91,14 @@ public class DrawGraph : MonoBehaviour {
             newText.name = "x_label" + i;
             TMP_Text myText = newText.GetComponent<TMP_Text>();
             myText.enabled = true;
-            myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
+            if (XList != null)
+            {
+                myText.text = equallySpacedXList[i].ToString("F1");
+            }
+            else
+            {
+                myText.text = ((valueList.Count - 1) / 50f / 6 * i).ToString("F1");
+            }
             // Font ArialFont = (Font)Resources.Load("ARIAL");
             // myText.font = ArialFont;
             // myText.material = ArialFont.material;
@@ -94,9 +132,9 @@ public class DrawGraph : MonoBehaviour {
             CreateDotConnection(graphContainer, new Vector2(0, graphHeight / 6f * i), new Vector2(graphWidth, graphHeight / 6f * i), new Color(0, 0, 0, 0.5f), 1f);
         }
     }
-    public void ShowGraph(List<float> valueList, string name)
+    public void ShowGraph(List<float> valueList, string name,  List<float> XList=null)
     {
-        DrawGrid(name, valueList);
+        DrawGrid(name, valueList, XList);
         PlotPoints(name, valueList, new Color32(255, 0, 0, 255));
     }
     public void PlotPoints(string name, List<float> valueList, Color32 color)

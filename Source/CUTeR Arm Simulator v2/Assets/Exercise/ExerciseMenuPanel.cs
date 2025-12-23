@@ -10,7 +10,7 @@ public class ExerciseMenuPanel : MonoBehaviour
 {
     [SerializeField]
     private ExercisePanel _exercisePanel;
-    private Color[] colors = new Color[] { new Color(0f, 0.5882353f, 0.5333334f), new Color(0.5450981f, 0.764706f, 0.2901961f), new Color(1f, 0.7568628f, 0f), new Color(0.9568628f, 0.2588235f, 0.2078432f) };
+    private Color[] colors = new Color[] { new Color(0f, 0.2f, 0.8333334f), new Color(0f, 0.5882353f, 0.5333334f), new Color(0.5450981f, 0.764706f, 0.2901961f), new Color(1f, 0.7568628f, 0f), new Color(0.9568628f, 0.2588235f, 0.2078432f) };
     // Start is called before the first frame update
     void OnEnable()
     {

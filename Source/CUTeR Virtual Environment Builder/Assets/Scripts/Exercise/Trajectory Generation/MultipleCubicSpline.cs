@@ -153,7 +153,7 @@ public class MultipleCubicSpline : MonoBehaviour
             //Debug.Log(_t);
             float angle = a0 + a1 * _t + a2 * _t * _t + a3 * _t * _t * _t;
             JointAngleList.Add(angle);
-            _trajController.PushTrajPoints(new List<float>{angle, 90, -90 });
+            _trajController.PushTrajPoints(new List<float>{ angle, 90, -90 });
 
             AngularVelocityList.Add(a1 + 2 * a2 * _t + 3 * a3 * _t * _t);
 

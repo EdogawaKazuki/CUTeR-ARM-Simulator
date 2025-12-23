@@ -30,7 +30,7 @@ public class PWMCommand : MonoBehaviour
     void OnEnable()
     {
         // _robotController.MoveJointsTo(new List<float>() { 0, 0, 0 });
-        _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
+        _robotController = GameObject.Find("/Robot").GetComponent<RobotController>();
         for (int i = 0; i < 3; i++)
         {
             //Debug.Log("Input/Line" + (i + 1) + "/Value");

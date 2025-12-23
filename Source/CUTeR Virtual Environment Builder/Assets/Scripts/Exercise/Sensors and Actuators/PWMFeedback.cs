@@ -11,14 +11,14 @@ public class PWMFeedback : MonoBehaviour
     private DD_DataDiagram m_DataDiagram;
     [SerializeField]
     List<LineRenderer> _joinLines;
-    private float h = 0;
+    // private float h = 0;
     private List<GameObject> lineList = new List<GameObject>();
-    private List<List<int>> _pwmQueue = new List<List<int>>() { new List<int>(), new List<int>() , new List<int>() };
+    private List<List<int>> _pwmQueue = new List<List<int>>();
     private List<Vector3[]> _pwmPositions = new List<Vector3[]>();
     [SerializeField]
     private int _queueSize = 100;
-    [SerializeField]
-    private int _pwmCount = 0;
+    // [SerializeField]
+    // private int _pwmCount = 0;
     [SerializeField]
     private Text SliderText;
     private bool useMovingAverage;
@@ -27,6 +27,7 @@ public class PWMFeedback : MonoBehaviour
     float tmp;
     float[] sum = { 0, 0, 0 };
     List<Queue<float>> tail;
+    List<int> pwmList;
 
 
     //private int _graphLength =1000;
@@ -34,9 +35,14 @@ public class PWMFeedback : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
+        lineList = new List<GameObject>();
+        _pwmQueue = new List<List<int>>();
+        _pwmPositions = new List<Vector3[]>();
+        sum = new float[] { 0, 0, 0, 0, 0, 0 };
+        
         _robotController = GameObject.Find("EditorAdmin").GetComponent<EditorController>().GetRobotController();
         _robotController.GetJoystickController().HideHandleText();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < _robotController.GetRobotDoF(); i++)
         {
             _pwmPositions.Add(new Vector3[_queueSize]);
         }
@@ -52,7 +58,11 @@ public class PWMFeedback : MonoBehaviour
                     _pwmPositions[i][j] = new Vector3(j, 0, 0);
             }
         }
-        tail = new List<Queue<float>>() { new Queue<float>(), new Queue<float>(), new Queue<float>() };
+        tail = new List<Queue<float>>();
+        for (int i = 0; i < _robotController.GetRobotDoF(); i++)
+        {
+            tail.Add(new Queue<float>());
+        }
         _robotController.SetJointSignActivate(true);
     }
     private void OnDisable()
@@ -75,7 +85,7 @@ public class PWMFeedback : MonoBehaviour
             count++;
         }
 
-        List<int> vs = _robotController.GetReadPWM();
+        pwmList = _robotController.GetReadPWM();
         for (int i = 0; i < _pwmPositions.Count; i++)
         {
             for(int j = _joinLines[0].positionCount - 1; j > 0; j--)
@@ -83,9 +93,11 @@ public class PWMFeedback : MonoBehaviour
                 _pwmPositions[i][j] = _pwmPositions[i][j - 1];
                 _pwmPositions[i][j].x += 1;
             }
+            // print(i);
             if (useMovingAverage)
             {
-                tmp = vs[i];
+                print(i);
+                tmp = pwmList[i];
                 sum[i] += tmp;
                 tail[i].Enqueue(tmp);
                 if (count > windowSize)
@@ -98,7 +110,7 @@ public class PWMFeedback : MonoBehaviour
             }
             else
             {
-                _pwmPositions[i][0] = new Vector3(0, vs[i] / 30, 0);
+                _pwmPositions[i][0] = new Vector3(0, pwmList[i] / 30, 0);
             }
         }
 
@@ -112,7 +124,7 @@ public class PWMFeedback : MonoBehaviour
         windowSize = (int)value;
         SliderText.text = value.ToString();
         count = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < _robotController.GetRobotDoF(); i++)
         {
             sum[i] = 0;
             tail[i].Clear();
@@ -125,27 +137,10 @@ public class PWMFeedback : MonoBehaviour
     public void UpdateTable()
     {
 
-        //Debug.Log(_robotController.GetPWM());
-        List<int> vs = new List<int> { (int)(_pwmPositions[0][0].y * 30), (int)(_pwmPositions[1][0].y * 30), (int)(_pwmPositions[2][0].y * 30) };
-        for (int i = 0; i < vs.Count; i++)
+        for (int i = 0; i < pwmList.Count; i++)
         {
-            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", vs[i].ToString());
+            _robotController.SetJointSign(i, "Joint " + (i + 1) + " PWM:", pwmList[i].ToString());
         }
-        /*
-        if(_joint0PWMList.Count > _graphLength)
-        {
-            _joint0PWMList.RemoveAt(0);
-            _joint1PWMList.RemoveAt(1);
-            _joint2PWMList.RemoveAt(2);
-        }
-        _joint0PWMList.Add(vs[0]);
-        _joint1PWMList.Add(vs[1]);
-        _joint2PWMList.Add(vs[2]);
-        _drawer.ClearGraph("PWM");
-        _drawer.PlotPoints("PWM", _joint0PWMList, new Color32(255, 0, 0, 255));
-        _drawer.PlotPoints("PWM", _joint1PWMList, new Color32(0, 255, 0, 255));
-        _drawer.PlotPoints("PWM", _joint2PWMList, new Color32(0, 0, 255, 255));
-        */
     }
     private int GetCurrentAverage(int index)
     {
@@ -173,8 +168,8 @@ public class PWMFeedback : MonoBehaviour
     {
         if (value)
         {
-            transform.localScale = Vector3.one * 3.5f;
-            transform.localPosition = new Vector3(-620, 100, 0);
+            transform.localScale = Vector3.one * 2f;
+            transform.localPosition = new Vector3(-620, 0, 0);
         }
         else
         {

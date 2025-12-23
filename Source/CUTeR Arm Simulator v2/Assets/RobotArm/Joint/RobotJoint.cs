@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum JointFrameMode
+{
+    Normal,
+    DH
+}
 public class RobotJoint : MonoBehaviour
 {
     #region Variables
@@ -20,6 +25,7 @@ public class RobotJoint : MonoBehaviour
         nul,
         pos
     }
+
     [SerializeField]
     private Axis _rotateAxis;
     [SerializeField]
@@ -41,17 +47,19 @@ public class RobotJoint : MonoBehaviour
     private TMP_Text _value;
     private Transform _frame;
     private Transform _DHframe;
+    public List<string> prefixes = new List<string>() { "frame_visual", "DHFrame" };
     #endregion
     #region Methods
     private void OnEnable()
     {
-        _jointSign = transform.Find("Canvas")?.gameObject ;
+        _jointSign = transform.Find("Canvas")?.gameObject;
         _title = transform.Find("Canvas/Panel/Title")?.GetComponent<TMP_Text>();
         _value = transform.Find("Canvas/Panel/pwm")?.GetComponent<TMP_Text>();
         SetJointSignActivate(false);
     }
     public float GetAngle() { return _angle; }
-    public void SetAngle(float angle) {
+    public void SetAngle(float angle)
+    {
         //Debug.Log(angle);
         _angle = angle;
         switch (_rotateAxis)
@@ -74,16 +82,47 @@ public class RobotJoint : MonoBehaviour
             foreach (var link in _linkSign)
                 link.SetActive(value);
     }
-    public void ShowFrame(bool value) { transform.Find("frame_visual")?.gameObject.SetActive(value); }
+    public void ShowAxis(int index, bool value, JointFrameMode mode=JointFrameMode.Normal)
+    {
+        transform.Find($"{prefixes[(int)mode]}/Brep {index}")?.gameObject.SetActive(value);
+        transform.Find($"{prefixes[(int)mode]}/Extrusion {index}")?.gameObject.SetActive(value);
+    }
+    public void ShowFrame(bool value, JointFrameMode mode=JointFrameMode.Normal) { for(int i=0; i<3; i++) ShowAxis(i, value, mode); }
     public void ShowDHFrame(bool value) { transform.Find("DHFrame")?.gameObject.SetActive(value); }
+
+    public void ShowArrows(bool value)
+    {
+        var arrow = transform.Find("arrow")?.gameObject;
+        var arrow1 = transform.Find("arrow (1)")?.gameObject;
+        var arrow2 = transform.Find("arrow (2)")?.gameObject;
+
+        Debug.Log("Attempting to show/hide arrows with value: " + value);
+
+        if (arrow != null)
+        {
+            arrow.SetActive(value);
+            Debug.Log("Single arrow found and set to active: " + value);
+        }
+        else if (arrow1 != null && arrow2 != null)
+        {
+            arrow1.SetActive(value);
+            arrow2.SetActive(value);
+            Debug.Log("Two arrows found and set to active: " + value);
+        }
+        else
+        {
+            Debug.LogError("No arrows found to show/hide.");
+        }
+    }
+
     public void SetColor(Color color)
     {
         Transform part = transform.Find("Part");
         if (part != null)
         {
-            for(int i = 0; i < part.childCount; i++)
+            for (int i = 0; i < part.childCount; i++)
             {
-                for(int j = 0; j < part.GetChild(i).childCount; j++)
+                for (int j = 0; j < part.GetChild(i).childCount; j++)
                 {
                     if (part.GetChild(i).GetChild(j).GetComponent<Renderer>() != null)
                     {
