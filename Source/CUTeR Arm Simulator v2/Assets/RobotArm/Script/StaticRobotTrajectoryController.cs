@@ -77,7 +77,6 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Debug.Log("Traj List Length: " + _trajList?.Count);
         if(_currentState == State.preplaying || _currentState == State.prelooping)
         {
             if (_currentTrajIndex < _prepareTrajList[0].Count)
@@ -472,7 +471,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     public void PushTrajPoints(List<float> pointSet)
     {
-        Debug.Log("Push Traj Points: " + pointSet.Count + " Traj List Count: " + _trajList.Count);
+        // Debug.Log("Push Traj Points: " + pointSet.Count + " Traj List Count: " + _trajList.Count);
         for(int i = 0; i < pointSet.Count; i++)
         {
             _trajList[i].Add(pointSet[i]);

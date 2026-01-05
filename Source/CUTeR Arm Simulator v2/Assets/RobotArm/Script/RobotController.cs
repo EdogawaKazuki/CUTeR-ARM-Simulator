@@ -282,7 +282,7 @@ public class RobotController : MonoBehaviour
         _robotJointController.SetJointAngle(index, angle);
     }
     public void HideTransparentModel() { 
-        Debug.Log("Hiding transparent model");
+        // Debug.Log("Hiding transparent model");
         for(int i = 0; i < _currentDoF; i++)
         _transparentRobotJointController.HideJointLink(i); 
         _transparentRobotJointController.transform.Find("Part")?.gameObject.SetActive(false);
@@ -310,7 +310,7 @@ public class RobotController : MonoBehaviour
                 visibleList[i] = true;
             }
         }
-        ShowTransparentModel();
+        ShowTransparentModel(visibleList);
         if(CheckCollisionTransparent()){
             _transparentRobotJointController.SetColor(new Color(1, 0, 0, 0.254902f));
         }else{
