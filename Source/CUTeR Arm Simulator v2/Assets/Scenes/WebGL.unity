@@ -326,7 +326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -499,7 +499,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1110,6 +1110,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &96970594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,7 +1249,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2970,7 +2973,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3053,7 +3056,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3303,6 +3306,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &303535802
 GameObject:
   m_ObjectHideFlags: 0
@@ -5039,7 +5045,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5601,7 +5607,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5689,6 +5695,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &612439534
 GameObject:
   m_ObjectHideFlags: 0
@@ -8183,6 +8192,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -8412,7 +8424,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9249,6 +9261,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1060182143
 GameObject:
   m_ObjectHideFlags: 0
@@ -9395,6 +9410,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 0
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1074885486
 GameObject:
   m_ObjectHideFlags: 0
@@ -10057,7 +10075,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12367,6 +12385,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 25
   MinAngle: -170
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1402274164
 GameObject:
   m_ObjectHideFlags: 0
@@ -12857,6 +12878,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1503739547
 GameObject:
   m_ObjectHideFlags: 0
@@ -13033,6 +13057,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 25
   MinAngle: -170
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1535706327
 GameObject:
   m_ObjectHideFlags: 0
@@ -14720,6 +14747,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1798877944
 GameObject:
   m_ObjectHideFlags: 0
@@ -14773,7 +14803,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0949fb86a151ac142974fffc6a41d120, type: 2}
+  - {fileID: 2100000, guid: af54a2004d9101c43930a90a6124f789, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15027,6 +15057,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1832817727
 GameObject:
   m_ObjectHideFlags: 0
@@ -15164,6 +15197,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1845142244
 GameObject:
   m_ObjectHideFlags: 0
@@ -15961,6 +15997,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 0
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1920848460
 GameObject:
   m_ObjectHideFlags: 0
@@ -16419,6 +16458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SOARM101
       objectReference: {fileID: 0}
+    - target: {fileID: 4302274633867889507, guid: 06b2cdf8a54e04a4d874e39f0c40bc83, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8099296914590923422, guid: 06b2cdf8a54e04a4d874e39f0c40bc83, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -16677,6 +16720,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &2029063549
 GameObject:
   m_ObjectHideFlags: 0

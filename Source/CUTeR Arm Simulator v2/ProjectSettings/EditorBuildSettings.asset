@@ -5,30 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Main.unity
-    guid: 3e37b7b4cff96314ea648288006eb60b
-  - enabled: 0
-    path: Assets/Scenes/WebGL.unity
-    guid: 96677b66b9388444a87ec29e4166e311
   - enabled: 1
-    path: Assets/Scenes/Main_AR.unity
-    guid: 1823a60d2aa60804ab20a09ec157550b
-  - enabled: 0
-    path: Assets/Scenes/Main_Nreal.unity
-    guid: 15d88007d2fa14244a57357b64113e7f
-  - enabled: 0
-    path: Assets/NRSDK/Demos/HelloMR.unity
-    guid: dd74f1c9685ef48499229d4957b58000
-  - enabled: 0
-    path: Assets/NRSDK/Demos/ImageTracking.unity
-    guid: cae4e384337e206419d07ea80c82ee12
-  - enabled: 0
-    path: Assets/Scenes/Main_AR_VR.unity
-    guid: 761992ff865e89440805a1f86697478b
+    path: Assets/Scenes/Main_AR_VR 1.unity
+    guid: bd251a21ae5ebb047ae73b9d97bb7b9b
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 8d7ac27a1a3dd494b988b5a08cdf1f5f, type: 2}
-    com.unity.input.settings: {fileID: 11400000, guid: 6cf3e40be2bf2184db9b94364ebf769c, type: 2}
-    com.unity.renderstreaming.settings: {fileID: 11400000, guid: 51fd139a861b3d64cb2165bd7d72adf7, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 31a43bd812d2ba544a10c025e2173d1d, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: c70d52c81cb0c0f45b43b5d9bc6e7d7e, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: e7e7c2da567577c46afb08bc08dd00d9, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8f30a776d4c8b88418a01eb26261f4c3, type: 2}

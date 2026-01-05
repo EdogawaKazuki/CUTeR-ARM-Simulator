@@ -51,7 +51,7 @@ public class SceneManager : MonoBehaviour
         // _sceneDescriptionIF = _saveScenePanel.Find("Window/Description/InputField").GetComponent<InputField>();
 
         SetupControlBar(_sceneCtrlBtnGroup);
-        GameObject.Find("Robot").GetComponent<RobotController>()._enableTransparentRobot = false;
+       GameObject.Find("Robot").GetComponent<RobotController>()._enableTransparentRobot = false;
     }
     private void OnDisable()
     {

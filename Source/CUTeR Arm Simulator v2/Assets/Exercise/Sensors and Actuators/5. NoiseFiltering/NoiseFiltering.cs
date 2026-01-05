@@ -20,7 +20,7 @@ public class NoiseFiltering : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        _robotController = GameObject.Find("Robot").GetComponent<RobotController>();
+        _robotController = GameObject.Find("/Robot").GetComponent<RobotController>();
         m_DataDiagram.PreDestroyLineEvent += (s, e) => { lineList.Remove(e.line); };
         for(int i = 0; i < 3; i++)
         {

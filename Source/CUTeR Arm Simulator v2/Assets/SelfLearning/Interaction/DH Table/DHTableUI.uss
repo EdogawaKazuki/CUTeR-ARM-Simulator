@@ -1,0 +1,10 @@
+.dh-row {
+    background-color: #2d2d2d;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    padding: 4px;
+}
+
+.dh-row:hover {
+    background-color: #3a3a3a;
+}

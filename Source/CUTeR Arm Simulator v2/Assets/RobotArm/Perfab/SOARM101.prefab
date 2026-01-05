@@ -54,6 +54,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &63423502191082012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1031,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 0
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &613317629897215875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,6 +1240,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &985171985861175565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2860,6 +2869,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1855277375578505305
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,6 +2929,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 25
   MinAngle: -170
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &1995952626134187775
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,6 +5068,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &3129334566364966763
 GameObject:
   m_ObjectHideFlags: 0
@@ -9332,6 +9350,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: -180
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &5545945974420859407
 GameObject:
   m_ObjectHideFlags: 0
@@ -9912,6 +9933,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 0
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &5915357795575486461
 GameObject:
   m_ObjectHideFlags: 0
@@ -9969,6 +9993,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &5945175798506820463
 GameObject:
   m_ObjectHideFlags: 0
@@ -12731,6 +12758,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &7761247870203215326
 GameObject:
   m_ObjectHideFlags: 0
@@ -13203,6 +13233,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &8268996417035387175
 GameObject:
   m_ObjectHideFlags: 0
@@ -13755,6 +13788,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 180
   MinAngle: 0
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &8767642313890560137
 GameObject:
   m_ObjectHideFlags: 0
@@ -13809,6 +13845,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 25
   MinAngle: -170
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &8807691936132777700
 GameObject:
   m_ObjectHideFlags: 0
@@ -13980,6 +14019,9 @@ MonoBehaviour:
   _linkSign: []
   MaxAngle: 90
   MinAngle: -90
+  prefixes:
+  - frame_visual
+  - DHFrame
 --- !u!1 &8933952740389019731
 GameObject:
   m_ObjectHideFlags: 0
@@ -14659,6 +14701,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6694297260254119618}
     m_Modifications:
+    - target: {fileID: 465549440005905310, guid: 716f553167ed77143a074981d4cbfd8d, type: 3}
+      propertyPath: m_Name
+      value: Brep 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1814128003920037316, guid: 716f553167ed77143a074981d4cbfd8d, type: 3}
+      propertyPath: m_Name
+      value: Extrusion 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2158170310136319656, guid: 716f553167ed77143a074981d4cbfd8d, type: 3}
+      propertyPath: m_Name
+      value: Extrusion 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6837175260875061283, guid: 716f553167ed77143a074981d4cbfd8d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.12

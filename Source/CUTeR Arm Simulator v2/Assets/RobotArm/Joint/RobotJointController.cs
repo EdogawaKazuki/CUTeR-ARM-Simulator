@@ -11,12 +11,14 @@ public class RobotJointController : MonoBehaviour
     [SerializeField]
     private List<float> _initialAngles = new List<float>();
     private int _jointNumber = 0;
-    
+    private RobotClient _robotClient;
+    private string path_root;
     #endregion
     #region MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _robotClient = GameObject.Find("Robot").GetComponent<RobotClient>();
     }
     void OnEnable(){
         
@@ -34,17 +36,22 @@ public class RobotJointController : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("Total Joints: " + _jointNumber);
         SetJointAngles(_initialAngles);
         ShowJointsFrame(false);
         // Debug.Log("Joint number: " + _jointNumber);
     }
+    
     // Update is called once per frame
     void Update()
     {
-
     }
+
+
     #endregion
     #region Methods
+    public void SetPathRoot(string path) { path_root = path; }
+    public string GetPathRoot() { return path_root; }
     public int GetJointAngleMax(int index) { return _joints[index].MaxAngle; }
     public int GetJointAngleMin(int index) { return _joints[index].MinAngle; }
     public List<float> GetJointAngles()
@@ -89,7 +96,7 @@ public class RobotJointController : MonoBehaviour
     }
     public void HideJointMask(int index)
     {
-        _joints[index].transform.Find("Mask")?.gameObject.SetActive(true);
+        _joints[index].transform.Find("Mask")?.gameObject.SetActive(false);
     }
     public void ShowJointLink(int index)
     {
@@ -125,29 +132,72 @@ public class RobotJointController : MonoBehaviour
     {
         _joints[index].SetSignText(line1, line2);
     }
-    
-    public void ShowJointFrame(int index, bool value){
-        _joints[index].ShowFrame(value);
+
+    public void ShowJointFrameAxis(int index, int axisIndex, bool value, JointFrameMode mode= JointFrameMode.Normal)
+    {
+        _joints[index].ShowAxis(axisIndex, value, mode);
     }
-    public void ShowJointsFrame(bool value){
-        transform.Find("frame_visual")?.gameObject.SetActive(value);
-        foreach (var joint in _joints)
+    public void ShowJointFrame(int index, bool value, JointFrameMode mode= JointFrameMode.Normal)
+    {
+        _joints[index].ShowFrame(value, mode);
+    }
+    
+    public void ShowJointBaseFrameAxis(int index, bool value, JointFrameMode mode= JointFrameMode.Normal)
+    {
+        var prefix = _joints[0].prefixes[(int)mode];
+        transform.Find($"{prefix}/Brep {index}")?.gameObject.SetActive(value);
+        transform.Find($"{prefix}/Extrusion {index}")?.gameObject.SetActive(value);
+        
+    }
+    public void ShowJointBaseFrame(bool value, JointFrameMode mode= JointFrameMode.Normal)
+    {
+        var prefix = _joints[0].prefixes[(int)mode];
+        for (int i = 0; i < 3; i++)
         {
-            joint.ShowFrame(value);
+            ShowJointBaseFrameAxis(i, value, mode);
         }
     }
-    
-    public void ShowJointDHFrame(int index, bool value){
+    public void ShowJointsFrame(bool value, JointFrameMode mode= JointFrameMode.Normal){
+        ShowJointBaseFrame(value, mode);
+        foreach (var joint in _joints)
+        {
+            joint.ShowFrame(value, mode);
+        }
+        // transform.Find("frame_visual")?.gameObject.SetActive(value);
+    }
+
+    public void ShowJointArrow(int index, bool value){
+        _joints[index].ShowArrows(value);
+    }
+
+    public void ShowJointsArrows(bool value){
+        foreach (var joint in _joints)
+        {
+            joint.ShowArrows(value);
+        }
+    }
+
+    public void ShowJointDHFrame(int index, bool value)
+    {
         _joints[index].ShowDHFrame(value);
     }
-    public void ShowJointsDHFrame(bool value){
+
+    public void ShowJointDHBaseFrame(bool value)
+    {
         transform.Find("DHFrame")?.gameObject.SetActive(value);
+    }    
+    public void ShowJointsDHFrame(bool value){
+        // transform.Find("DHFrame")?.gameObject.SetActive(value);
+        ShowJointDHBaseFrame(value);
         foreach (var joint in _joints)
         {
             joint.ShowDHFrame(value);
         }
     }
     public void SetMask(bool value){
+        transform.Find("Mask")?.gameObject.SetActive(value);
+        transform.Find("Part")?.gameObject.SetActive(!value);
+
         if(value){
             for(int i = 0; i < _joints.Count; i++){
                 HideJointLink(i);
@@ -161,12 +211,19 @@ public class RobotJointController : MonoBehaviour
         }
     }
     public void SetJointsVisible(bool value){
+        GameObject partObject = transform.Find("Part")?.gameObject;
+        if(partObject == null) {
+            Debug.LogWarning("Part GameObject not found!");
+        }
+        
         if(value){
-            for(int i = 0; i < _joints.Count-4; i++){
+            partObject?.SetActive(false);
+            for(int i = 0; i < _joints.Count; i++){
                 HideJointLink(i);
             }
         }else{
-            for(int i = 0; i < _joints.Count-4; i++){
+            partObject?.SetActive(true);
+            for(int i = 0; i < _joints.Count; i++){
                 ShowJointLink(i);
             }
         }

@@ -64,7 +64,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         _openTrajectoryButton = TrajCtrlBtnGroup.Find("upload").GetComponent<Button>();
         _trajStatusText = TrajCtrlBtnGroup.Find("status/Text").GetComponent<TMP_Text>();
         _trajStatusBackground = TrajCtrlBtnGroup.Find("status/Image").GetComponent<Image>();
-        TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(prepare:true, visibleList:null));
+        TrajCtrlBtnGroup.Find("play").GetComponent<Button>().onClick.AddListener(() => StartTraj(prepare:true, visibleList:null));        
         TrajCtrlBtnGroup.Find("loop").GetComponent<Button>().onClick.AddListener(() => LoopTraj());
         TrajCtrlBtnGroup.Find("stop").GetComponent<Button>().onClick.AddListener(() => StopTraj());
         SetStatus(State.init);
@@ -77,6 +77,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        Debug.Log("Traj List Length: " + _trajList?.Count);
         if(_currentState == State.preplaying || _currentState == State.prelooping)
         {
             if (_currentTrajIndex < _prepareTrajList[0].Count)
@@ -119,6 +120,11 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                 ReadTraj(_trajList, Direction.forward);
             }
         }
+        if (_currentState == State.stopped || _currentState == State.ready || _currentState == State.finished)
+        {
+            if(_robotController._enableTransparentRobot) _robotController.HideTransparentModel();
+            if(_currentState == State.finished) SetStatus(State.init);
+        }
     }
     #endregion
 
@@ -149,7 +155,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                     tmpList.Add(_robotController.GetJointAngle(i));
                 }
             }
-            _robotController.SetTransparentCmdJointAngles(tmpList, _visibleList);
+            _robotController.SetTransparentCmdJointAngles(tmpList, visibleList:_visibleList);
         }
         if (trajList[0][_currentTrajIndex] == 1000)
             _robotController.Fire();
@@ -301,7 +307,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
                     tmpList.Add(_robotController.GetJointAngle(i));
                 }
             }
-            _robotController.SetTransparentCmdJointAngles(tmpList, _visibleList);
+            _robotController.SetTransparentCmdJointAngles(tmpList, visibleList:_visibleList);
         }
         catch (Exception e)
         {
@@ -466,6 +472,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
     }
     public void PushTrajPoints(List<float> pointSet)
     {
+        Debug.Log("Push Traj Points: " + pointSet.Count + " Traj List Count: " + _trajList.Count);
         for(int i = 0; i < pointSet.Count; i++)
         {
             _trajList[i].Add(pointSet[i]);

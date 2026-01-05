@@ -17,7 +17,7 @@ public class RobotControllerUI : MonoBehaviour
     private Slider _forceSlider;
     private TMP_Text _forceSliderValueText;
     private Button _fireButton;
-    private bool isUserInterect = false;
+    public bool isUserInterect = false;
     public float[] _lastSliderValue;
     public int[] _sliderStatus;
     #endregion
@@ -155,7 +155,7 @@ public class RobotControllerUI : MonoBehaviour
         // Debug.Log(_lastSliderValue);
         // add move transparent robot listenre  
         if(_robotController._enableTransparentRobot)
-            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value));
+            eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value, true));
         else
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(index, value));
         if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
@@ -171,7 +171,7 @@ public class RobotControllerUI : MonoBehaviour
 
         if(_robotController._enableTransparentRobot){
             _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
-            // _robotController.HideTransparentModel();
+            _robotController.HideTransparentModel();
         }
         // _sliderStatus[index] = 0;
         if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
@@ -241,8 +241,8 @@ public class RobotControllerUI : MonoBehaviour
         // panel.Find("Robot/RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmConnect(value));
         // panel.Find("Robot/RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
-        // panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
-        panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
+        //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
+        // panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
     }
     public void SetRobotDoF(int value)
     {

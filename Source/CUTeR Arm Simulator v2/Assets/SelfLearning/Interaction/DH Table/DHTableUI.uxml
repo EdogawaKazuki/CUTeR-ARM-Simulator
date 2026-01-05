@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" engine="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/SelfLearning/DH%20Table/DHTableUI.uss?fileID=7433441132597879392&amp;guid=acc2737b0d0dc8e49b540823cbebc5b3&amp;type=3#DHTableUI" />
+
+    <!-- Root container: positioned bottom-left, fixed size -->
+    <ui:VisualElement name="DHTableRoot" 
+                      style="position: absolute; 
+                             left: 20; 
+                             bottom: 20; 
+                             width: 400; 
+                             height: 300; 
+                             background-color: rgb(130, 130, 130); 
+                             padding: 10; 
+                             border-radius: 8; 
+                             border-width: 1; 
+                             border-color: rgb(100, 100, 100);">
+        
+        <ui:Label text="Denavit-Hartenberg Parameters" 
+                  style="font-size: 16; font-weight: bold; margin-bottom: 10;" />
+        
+        <ui:VisualElement style="flex-direction: row; margin-bottom: 5; font-weight: bold;">
+            <ui:Label text="Link" style="width: 70;" />
+            <ui:Label text="θ (deg)" style="width: 70;" />
+            <ui:Label text="d" style="width: 70;" />
+            <ui:Label text="a" style="width: 70;" />
+            <ui:Label text="α (deg)" style="width: 70;" />
+        </ui:VisualElement>
+        
+        <ui:ScrollView name="DHScrollView" 
+                       style="flex-grow: 1; 
+                              margin-top: 5; 
+                              margin-bottom: 10; 
+                              border-width: 1; 
+                              border-color: rgb(60, 60, 60);" />
+        
+        <ui:VisualElement style="flex-direction: row; justify-content: center;">
+            <ui:Button name="AddRowButton" text="Add Row" style="width: 100; margin-right: 10;" />
+            <ui:Button name="RemoveRowButton" text="Remove Last" style="width: 100;" />
+            <ui:Button name="QuitButton" text="Quit" style="width: 100;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

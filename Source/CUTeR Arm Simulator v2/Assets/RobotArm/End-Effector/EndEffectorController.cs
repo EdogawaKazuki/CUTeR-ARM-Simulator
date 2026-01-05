@@ -27,7 +27,7 @@ public class EndEffectorController : MonoBehaviour
             _endEffectors[i].Init();
             _endEffectorNames.Add(_endEffectors[i].GetEndEffectorName());
         }
-        SetEndEffector(_currentEndEffectorIndex);
+        // SetEndEffector(_currentEndEffectorIndex);
         statusText = GameObject.Find("Robot/RobotCanvas/EEStatus").GetComponent<TMP_Text>();
         _robotArm = GameObject.Find("Robot").transform;
     }
@@ -38,6 +38,8 @@ public class EndEffectorController : MonoBehaviour
             statusText.text = "";
             // Vector3 euler = quaternion2Euler(_currentEndEffector.transform.rotation, RotSeq.yxz);
             // euler = euler * Mathf.Rad2Deg;
+            
+            // Display End Effector Position (Divide by the scale of the robot GameObject so it accurately represents real life position)
             statusText.text = "Pos: " + "x: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.x + _robotArm.transform.position.x) * 100 + 
             " y: " + (-_endEffectors[_currentEndEffectorIndex].transform.position.z + _robotArm.transform.position.z) * 100 + 
             " z: " + (_endEffectors[_currentEndEffectorIndex].transform.position.y - _robotArm.transform.position.y) * 100;   
@@ -57,6 +59,13 @@ public class EndEffectorController : MonoBehaviour
         _currentEndEffectorIndex = index;
     }
     public int GetEndEffector() { return _currentEndEffectorIndex; }
+    public void HideEndEffector()
+    {
+        for(int i = 0; i < _endEffectors.Count; i++)
+        {
+            _endEffectors[i].GetGameObject().SetActive(false);
+        }
+    }
     public void Fire()
     {
         //if (_robotController.GetEditorController().GetSceneManager().GetPlayingScene() != null)

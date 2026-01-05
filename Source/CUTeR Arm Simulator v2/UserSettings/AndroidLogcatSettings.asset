@@ -1,17 +1,83 @@
 {
-    "m_SelectedDeviceId": "R52T70CH14B",
+    "m_SelectedDeviceId": "2G0YC1ZF7G07F5",
     "m_SelectedProcess": {
-        "deviceId": "R52T70CH14B",
-        "name": "com.GaladZHAO.DynamixelArmSimulator",
-        "processId": 27681,
+        "deviceId": "2G0YC1ZF7G07F5",
+        "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+        "processId": 13402,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownProcessesForSerialization": [
         {
-            "deviceId": "R52T70CH14B",
-            "name": "com.GaladZHAO.DynamixelArmSimulator",
-            "processId": 27681,
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.oculus.systemux:SystemUX",
+            "processId": 4775,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 32225,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 18131,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 31977,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 1532,
+            "exited": true
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 8402,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 20233,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 20558,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 23619,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 25067,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 31861,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 13402,
             "exited": false
         }
     ],
@@ -69,7 +135,7 @@
         "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "",
+        "m_Filter": "loaded a",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },
@@ -88,9 +154,13 @@
     "m_ScreenCaptureSettings": {
         "Mode": 0,
         "m_LastSaveLocation": [
-            "/Users/kazuki/galad_ws/CUTeR-ARM-Simulator/Source/CUTeR Arm Simulator v2",
-            "/Users/kazuki/galad_ws/CUTeR-ARM-Simulator/Source/CUTeR Arm Simulator v2"
+            "C:\\Users\\thisi\\Downloads\\CUTeR-ARM-Simulator\\Source\\CuTeRArm-Simulator-v3",
+            "C:\\Users\\thisi\\Downloads\\CUTeR-ARM-Simulator\\Source\\CuTeRArm-Simulator-v3"
         ]
+    },
+    "m_QueryLayoutSettings": {
+        "LastLayoutSaveLocation": "",
+        "LastScreenshotSaveLocation": ""
     },
     "m_InputSettings": {
         "ShiftModifier": false,
@@ -103,5 +173,5 @@
             "exited": false
         }
     },
-    "m_AutoScroll": 0
+    "m_AutoScroll": 2
 }

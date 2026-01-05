@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4273148181514197693}
   - component: {fileID: 1746711069896033308}
   m_Layer: 0
-  m_Name: Brep
+  m_Name: Brep 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6697441043505264987}
   - component: {fileID: 756042243280997024}
   m_Layer: 0
-  m_Name: Extrusion 1
+  m_Name: Extrusion 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 9155889675279490402}
   - component: {fileID: 2422430675535230736}
   m_Layer: 0
-  m_Name: Extrusion
+  m_Name: Extrusion 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

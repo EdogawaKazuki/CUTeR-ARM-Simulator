@@ -11,9 +11,10 @@ using System.Runtime.ConstrainedExecution;
 
 public class RobotClient : MonoBehaviour
 {
-    #region Variables
+	#region Variables
 	// Hooks
-    private RobotController _robotController;
+	private RobotController _robotController;
+	private RobotControllerUI _robotControllerUI;
 	private TMP_InputField _robotIPIF;
 	private TMP_InputField _robotPortIF;
 	private Text _debugText;
@@ -22,7 +23,7 @@ public class RobotClient : MonoBehaviour
 
 	// Client Variables
 	[SerializeField]
-	private string _robotIP = "192.168.4.1";
+	private string _robotIP = "192.168.0.171";
 	[SerializeField]
 	private int _robotPort = 1234;
 
@@ -48,6 +49,7 @@ public class RobotClient : MonoBehaviour
 	float angleRead;
 	float[] sum = { 0, 0, 0, 0, 0, 0};
 
+	
 	// Client Threads
 	private Thread _clientThread;
 	private Socket ClientSocket;
@@ -60,19 +62,22 @@ public class RobotClient : MonoBehaviour
 	private byte[] infoData = new byte[4*3*6*2];
 	private byte[] byteArray;
 	public bool SendCmd = true;
-
 	public enum RobotType
 	{
 		CUTeR,
 		OpenManipulatorPro,
 		SOARM101,
 	}
+
 	// 0 for CUTeR; 1 for OpenManipulator Pro
-	static public RobotType ROBOT_TYPE = RobotType.SOARM101;
+	static public RobotType ROBOT_TYPE = RobotType.OpenManipulatorPro;
 	private int ROBOT_DOF = 3;
 	private bool HAS_PWM = false;
+
 	public bool isReceive = true;
 	private float timer = 0;
+	private float timer2 = 0;
+	public float control_rate;
 
 
 	#endregion
@@ -92,7 +97,8 @@ public class RobotClient : MonoBehaviour
 			ROBOT_DOF = 6;
 		}
 		// Get hooks
-        _robotController = GetComponent<RobotController>();
+		_robotController = GetComponent<RobotController>();
+		_robotControllerUI = GetComponent<RobotControllerUI>();
 		_debugText = _robotController.GetRobotCanvas().transform.Find("DebugText")?.GetComponent<Text>();
 		_robotSettingTransform = _robotController.GetRobotCanvas().transform.Find("RobotSettingPanel/Window/Robot");
 		_robotIPIF = _robotSettingTransform.Find("RobotServer/RobotIP/InputField (TMP)")?.GetComponent<TMP_InputField>();
@@ -106,7 +112,7 @@ public class RobotClient : MonoBehaviour
 
 		_filterDropdown.ClearOptions();
 		_filterDropdown.AddOptions(new List<string> { "No Filter", "Moving Average", "First Order Kalmen"});
-		_filterDropdown.onValueChanged.AddListener((value) => { SetFilter((FilterType)value); });
+		_filterDropdown.onValueChanged.AddListener((value) => { SetFilter((FilterType) value); });
 		
 		
 		_robotIPIF.text = PlayerPrefs.GetString("_robotIP", "192.168.4.1");
@@ -121,6 +127,7 @@ public class RobotClient : MonoBehaviour
     private void FixedUpdate()
 	{
 		SendToRobot();
+		timer2 = timer2 + Time.fixedDeltaTime;
 	}
     private void OnApplicationQuit()
 	{
@@ -210,7 +217,7 @@ public class RobotClient : MonoBehaviour
                     SendTimeout = 1000,
                     ReceiveTimeout = 1000
                 };
-
+                
 				byteArray = new byte[2];
 				byteArray[0] = 0;
 				byteArray[1] = 1;
@@ -220,7 +227,7 @@ public class RobotClient : MonoBehaviour
 				}
 				// Debug.Log(BitConverter.ToInt16(recvData, 4));
 				SetFilter(filterIndex);
-                _receiveThread = new Thread(new ThreadStart(ClientThread));
+				_receiveThread = new Thread(new ThreadStart(ClientThread));
 				_receiveThread.Start();
 				_connected = true;
 			}
@@ -265,13 +272,12 @@ public class RobotClient : MonoBehaviour
 		{
 			//Debug.Log("" + robotJointAngles[0] + "," + robotJointAngles[1] + "," + robotJointAngles[2]);
 
-			if (_unlocked || !SendCmd || (ROBOT_TYPE == RobotType.OpenManipulatorPro && isReceive))
+			if ((_unlocked || !SendCmd || (ROBOT_TYPE == RobotType.OpenManipulatorPro && isReceive)) && !_robotControllerUI.isUserInterect)
 			{
-				// Debug.Log("Unlocking or not sending command" + _unlocked + " " + SendCmd + " " + (ROBOT_TYPE == RobotType.OpenManipulatorPro && isReceive));
 				if (_unlocked || (ROBOT_TYPE == RobotType.OpenManipulatorPro && isReceive) )
 				{
 					// put here because only main thread can change the angle of the robot
-					_robotController.SetCmdJointAngles(_angleListRead);
+					_robotController.SetCmdJointAngles(_angleListRead, true);
 					_robotController.SetTransparentCmdJointAngles(_angleListRead);
 				}
 			}
@@ -287,11 +293,12 @@ public class RobotClient : MonoBehaviour
 					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 					Debug.Log("Angles: " + string.Join(",", _robotController.GetJointAngles()));
 				}
+
+					
 				else if(ROBOT_TYPE == RobotType.OpenManipulatorPro){
-					// OpenManipulator Pro needs this trick to override the default planning algo
-					float path_time = 0.02f;
+					float path_time = 0.05f;
 					timer = timer + Time.fixedDeltaTime;
-					if(timer > path_time){
+					if(timer > 0.05){
 						byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
 						byteArray[0] = 2;
 						for(int i = 0; i < ROBOT_DOF; i++){
@@ -299,7 +306,7 @@ public class RobotClient : MonoBehaviour
 						}
 						Buffer.BlockCopy(BitConverter.GetBytes(path_time), 0, byteArray, 1 + ROBOT_DOF * 4, 4);
 						ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
-						Debug.Log("Angles: " + string.Join(",", _robotController.GetJointAngles()));
+						Debug.Log("Angles: " + String.Join(",", _robotController.GetJointAngles()));
 						timer = 0;
 					}
 				}
@@ -312,6 +319,8 @@ public class RobotClient : MonoBehaviour
 					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 					Debug.Log("Angles: " + string.Join(",", _robotController.GetJointAngles()));
 				}
+				
+
 				//_debugText.text = "angle," + String.Join(",", _robotController.GetJointAngles()) + ",end" + "\n" + _debugText.text;
 			}
 		}
@@ -322,7 +331,7 @@ public class RobotClient : MonoBehaviour
 		}
 	}
 	public void SendJointCmdDirect(List<float> joint_list, float path_time){
-		Debug.Log("Sending joint command to robot");
+		Debug.Log("Sending joint command to robot with dof: " + ROBOT_DOF);
 		if(ROBOT_TYPE == RobotType.CUTeR){
 			byteArray = new byte[sizeof(float) * ROBOT_DOF + 1];
 			byteArray[0] = 3;
@@ -346,7 +355,9 @@ public class RobotClient : MonoBehaviour
 		}
 		ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
 		Debug.Log("Angles: " + string.Join(",", _robotController.GetJointAngles()));
+		Debug.Log("Byte Array Length: " + byteArray.Length);
 	}
+
 	void ClientThread()
 	{
 		while (true)
@@ -363,7 +374,6 @@ public class RobotClient : MonoBehaviour
 			}
 			catch (Exception e)
 			{
-				// _debugText.text = e.ToString() + "\n" + _debugText.text;
 				Debug.Log(e);
                 if (_connected)
 				{
@@ -372,10 +382,12 @@ public class RobotClient : MonoBehaviour
 					byteArray[0] = 0;
 					byteArray[1] = 1;
 					ClientSocket.SendTo(byteArray, byteArray.Length, SocketFlags.None, ServerEndPoint);
+					
 					if(ROBOT_TYPE == RobotType.CUTeR){
 						recvLen = ClientSocket.ReceiveFrom(infoData, ref ServerEndPoint);
-					}
+					}				
 				}
+				
 			}
 		}
 
@@ -383,17 +395,14 @@ public class RobotClient : MonoBehaviour
 	private void ParsePWMByte(byte[] byteArray)
 	{
 		// Debug.Log("Parsing");
-
 		ROBOT_DOF = BitConverter.ToInt16(byteArray, 0);
 		HAS_PWM = BitConverter.ToInt16(byteArray, 2) == 1;
-		
 		for (int i = 0; i < ROBOT_DOF; i++)
 		{
 			if (HAS_PWM)
 			{
 				_feedbackPwmList[i] = BitConverter.ToInt16(byteArray, 4 + ROBOT_DOF * 4 + i * 2);
-			}
-			//Debug.Log(BitConverter.ToInt16(byteArray, i * 2));
+			}			//Debug.Log(BitConverter.ToInt16(byteArray, i * 2));
 		}
 		//Debug.Log(_feedbackPwmList[0] + " " + _feedbackPwmList[1] + " " + _feedbackPwmList[2] + " ");
 		
@@ -401,7 +410,6 @@ public class RobotClient : MonoBehaviour
 		for (int i = 0; i < ROBOT_DOF; i++)
 		{
 			angleRead = BitConverter.ToSingle(byteArray, 4 + i * 4);
-
 			if (filterIndex == FilterType.MovingAverageFilter)
 			{
 				if (count <= windowSize)
@@ -452,6 +460,8 @@ public class RobotClient : MonoBehaviour
 			{
 				_angleListRead[i - ROBOT_DOF] = float.Parse(vs[i]);
 			}
+            
+            
 		}
 		catch(Exception e)
         {

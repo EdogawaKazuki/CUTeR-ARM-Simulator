@@ -8,11 +8,11 @@ public class RobotController : MonoBehaviour
 {
     #region Variables
     private RobotControllerUI _robotControllerUI;
-    private RobotJointController _robotJointController;
+    public RobotJointController _robotJointController;
     private RobotJointController _transparentRobotJointController;
     private EndEffectorController _endEffectorController;
     private RobotControllerUI _joystickController;
-    private RobotClient _robotClient;
+    public RobotClient _robotClient;
     private PathRecoder _pathRecoder;
     private GameObject _robotCanvas;
     private List<float> _cmdOffset;
@@ -47,6 +47,8 @@ public class RobotController : MonoBehaviour
     private List<int> _pwmList;
 
     public List<float> CmdJointAngles;
+    
+    private bool _previousConnectedStatus = false;
 
     #endregion
     #region MonoBehaviour
@@ -94,6 +96,8 @@ public class RobotController : MonoBehaviour
         _endEffectorController = transform.Find("EndEffectors").GetComponent<EndEffectorController>();
         _robotJointController = transform.Find("Joints").GetComponent<RobotJointController>();
         _transparentRobotJointController = transform.Find("Joints Transparent").GetComponent<RobotJointController>();
+        _robotJointController.SetPathRoot("Joints");
+        _transparentRobotJointController.SetPathRoot("Joints Transparent");
         
         HeadLine = transform.Find("VisiualContent/HeadLine").GetComponent<LineRenderer>();
         PointHead = transform.Find("VisiualContent/PointHead");
@@ -101,7 +105,7 @@ public class RobotController : MonoBehaviour
         // setup the ar content ui
         Transform ARCtrlGroup = GetRobotCanvas().transform.Find("ARCtrlBtnGroup");
         ARCtrlGroup.Find("AR").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowVirtualRobot(value));
-        ARCtrlGroup.Find("FramesToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowFrame(value));
+        ARCtrlGroup.Find("FramesToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowFrames(value));
         ARCtrlGroup.Find("3DToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => Show3DWorkSpace(value));
         ARCtrlGroup.Find("VertToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowVertWorkSpace(value));
         ARCtrlGroup.Find("HorzToggle").GetComponent<Toggle>().onValueChanged.AddListener((value) => ShowHorizWorkSpace(value));
@@ -115,6 +119,19 @@ public class RobotController : MonoBehaviour
         HeadLine.SetPosition(0, origin);
         HeadLine.SetPosition(1, subEnd);
         PointHead.transform.SetPositionAndRotation(end, Quaternion.LookRotation(end - origin));
+
+        bool isConnected = _robotClient.IsConnected();
+        if (isConnected && !_previousConnectedStatus) // Rising edge detection
+        {
+            _robotJointController.SetMask(true);
+            _endEffectorController.HideEndEffector();
+        }
+        else if (!isConnected && _previousConnectedStatus) // Falling edge detection
+        {
+            _robotJointController.SetMask(false);
+            _endEffectorController.SetEndEffector(0);
+        }
+        _previousConnectedStatus = isConnected; // Update previous status
     }
     #endregion
     #region Methods
@@ -174,16 +191,25 @@ public class RobotController : MonoBehaviour
     public void Show3DWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/3d").gameObject.SetActive(value);}
     public void ShowHorizWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/horiz").gameObject.SetActive(value);}
     public void ShowVertWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/vert").gameObject.SetActive(value);}
-    public void ShowFrame(bool value){
+    public void ShowFrames(bool value)
+    {
         HeadLine.gameObject.SetActive(value);
         PointHead.gameObject.SetActive(value);
-        _robotJointController.ShowJointsFrame(value);
+        _robotJointController.ShowJointsFrame(value );
+        // _transparentRobotJointController.ShowJointsFrame(value && _robotClient.IsConnected());
     }
+
+    public void ShowArrow(int index, bool value)
+    {
+        _robotJointController.ShowJointArrow(index, value );
+        // _transparentRobotJointController.ShowJointArrow(index, value && _robotClient.IsConnected());
+    }
+
     public void SetJointSignActivate(bool value) { _robotJointController.SetJointSignActivate(value); }
     public void SetLinkSignActivate(bool value) { _robotJointController.SetLinkSignActivate(value); }
     public void ShowVirtualRobot(bool value) 
     {
-        if (!value)
+        if (!value || _robotClient.IsConnected())
         {
             _robotJointController.HideJointLink(0);
             _robotJointController.HideJointLink(1);
@@ -204,7 +230,16 @@ public class RobotController : MonoBehaviour
     public int GetDoF() { return _currentDoF; }
     public float GetJointAngle(int index) { return GetJointAngles()[index]; }
     public float GetTransparentJointAngle(int index) { return _transparentRobotJointController.GetJointAngle(index); }
+    // public List<float> GetJointAngles() { 
+    //     bool isConnected = _robotClient.IsConnected();
+    //     if (isConnected) {
+    //         return _transparentRobotJointController.GetJointAngles();
+    //     } else {
+    //         return _robotJointController.GetJointAngles();
+    //     }
+    // }
     public List<float> GetJointAngles() { return _robotJointController.GetJointAngles().GetRange(0, _currentDoF); }
+
     public List<float> GetCmdJointAngles() { return CmdJointAngles; }
     public List<int> GetSendPWM() { return _pwmList; }
     public List<Transform> GetJointsTransform() { return _robotJointController.GetJointsTransform(); }
@@ -223,7 +258,7 @@ public class RobotController : MonoBehaviour
         SetCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
         SetTransparentCmdJointAngle(index, (pwm - _cmdOffset[index]) / _cmdScale[index]);
     }
-    public void SetCmdJointAngles(List<float> angleList)
+    public void SetCmdJointAngles(List<float> angleList, bool updateRobotJoint=false)
     {
         if(angleList.Count < _currentDoF){
             angleList.AddRange(new float[_currentDoF - angleList.Count]);
@@ -234,31 +269,40 @@ public class RobotController : MonoBehaviour
         }
         _joystickController.SetAngleSliderValues(angleList.GetRange(0, _currentDoF));
         CmdJointAngles = angleList;
-        _robotJointController.SetJointAngles(angleList.GetRange(0, _currentDoF));
+        if (!_robotClient.IsConnected() || updateRobotJoint)
+        {
+            _robotJointController.SetJointAngles(angleList.GetRange(0, _currentDoF));
+            _transparentRobotJointController.SetJointAngles(angleList.GetRange(0, _currentDoF));
+        }
     }
+
     public void SetCmdJointAngle(int index, float angle)
     {
         CmdJointAngles[index] = angle;
         _robotJointController.SetJointAngle(index, angle);
     }
     public void HideTransparentModel() { 
+        Debug.Log("Hiding transparent model");
         for(int i = 0; i < _currentDoF; i++)
-            _transparentRobotJointController.HideJointLink(i); 
+        _transparentRobotJointController.HideJointLink(i); 
+        _transparentRobotJointController.transform.Find("Part")?.gameObject.SetActive(false);
     }
     public void ShowTransparentModel(List<bool> visibleList=null) { 
-        for(int i = 0; i < _currentDoF; i++){
-            if(visibleList == null || visibleList[i])
-            _transparentRobotJointController.ShowJointLink(i); 
-        }
-
+        for(int i = 0; i < _currentDoF; i++)
+            if(visibleList == null || visibleList[i])   
+                _transparentRobotJointController.ShowJointLink(i); 
+        _transparentRobotJointController.transform.Find("Part")?.gameObject.SetActive(true);
     }
-    public void SetTransparentCmdJointAngles(List<float> angles, List<bool> visibleList=null) { 
-        if(!_enableTransparentRobot) return;
-        ShowTransparentModel(visibleList);
+    public void SetTransparentCmdJointAngles(List<float> angles, bool showRobot=false, List<bool> visibleList=null) { 
         _transparentRobotJointController.SetJointAngles(angles); 
+
+        if(!_enableTransparentRobot || !showRobot) return;
+        ShowTransparentModel(visibleList);
     }
-    public void SetTransparentCmdJointAngle(int index, float angle, List<bool> visibleList=null) { 
-        if(!_enableTransparentRobot) return;
+    public void SetTransparentCmdJointAngle(int index, float angle, bool showRobot=false, List<bool> visibleList=null) { 
+        _transparentRobotJointController.SetJointAngle(index, angle); 
+
+        if(!_enableTransparentRobot || !showRobot) return;
         if(visibleList == null){
             visibleList = new List<bool>(new bool[_currentDoF]);
             for(int i = index; i < _currentDoF; i++)
@@ -266,13 +310,12 @@ public class RobotController : MonoBehaviour
                 visibleList[i] = true;
             }
         }
-        ShowTransparentModel(visibleList);
+        ShowTransparentModel();
         if(CheckCollisionTransparent()){
             _transparentRobotJointController.SetColor(new Color(1, 0, 0, 0.254902f));
         }else{
             _transparentRobotJointController.SetColor(new Color(1, 1, 1, 0.254902f));
         }
-        _transparentRobotJointController.SetJointAngle(index, angle); 
     }
     public void MoveJointsTo(List<float> angleList, List<bool> visibleList=null)
     {
@@ -293,7 +336,7 @@ public class RobotController : MonoBehaviour
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
         if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected()){
-            _robotClient.SendJointCmdDirect(angleList, 2.0f);
+            _robotClient.SendJointCmdDirect(angleList, 3.0f);
             return;
         }
         List<bool> visibleList = new List<bool>(new bool[_currentDoF]);
