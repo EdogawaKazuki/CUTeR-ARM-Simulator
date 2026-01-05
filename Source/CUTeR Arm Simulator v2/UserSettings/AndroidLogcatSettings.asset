@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "2G0YC1ZF7G07F5",
         "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
-        "processId": 25067,
+        "processId": 13402,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -66,6 +66,18 @@
             "deviceId": "2G0YC1ZF7G07F5",
             "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
             "processId": 25067,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 31861,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC1ZF7G07F5",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 13402,
             "exited": false
         }
     ],
