@@ -21,6 +21,7 @@ public class GeneralVisualControl : MonoBehaviour
     private GameObject _visualizer_latex;
     public RobotController _robotController;
     public GeneralRobotControl _generalRobotControl;
+    public RobotKinematics _robotKinematics;
     public GameObject startSpherePrefab;
     public GameObject endSpherePrefab;
     int pathPointCount = 0;
@@ -43,6 +44,7 @@ public class GeneralVisualControl : MonoBehaviour
     void Start()
     {
         // _visualizer_image = _visualizer.GetComponent<Image>();
+        _robotKinematics = transform.GetComponent<RobotKinematics>();
         _visualizer_image = GameObject.Find("SelfLearningCanvas/Visualizer/ImageDisplayer");
         _visualizer_latex = GameObject.Find("SelfLearningCanvas/Visualizer/LatexDisplayer");
         _graph_drawer = _visualizer.GetComponent<DrawGraph>();
@@ -82,7 +84,10 @@ public class GeneralVisualControl : MonoBehaviour
         return _robotController.GetJointAngles();
     }
     // Update is called once per frame
-    void Update() { }
+    void Update()
+    {
+        
+    }
 
     void FixedUpdate()
     {
@@ -133,6 +138,50 @@ public class GeneralVisualControl : MonoBehaviour
                 current_angles[5]
             );
             // Debug.Log("Task Space State: " + TaskSpaceStatDisplay.text);
+
+            // var angles = new List<float> { 0f, 0, 0, 0, 0, 0 }.ToArray();
+            var J = _robotKinematics.ComputeJacobian(current_angles.ToArray());
+            var pose = _robotKinematics.ComputeForwardKinematics(current_angles.ToArray());
+            string jacobianLatex = "$$J = \\begin{bmatrix}";
+            for (int row = 0; row < 6; row++)
+            {
+                for (int col = 0; col < 6; col++)
+                {
+                    jacobianLatex += $"{J[row, col]:F2}";
+                    if (col < 5) jacobianLatex += " & ";
+                }
+                if (row < 5) jacobianLatex += " \\\\ ";
+            }
+            jacobianLatex += "\\end{bmatrix}$$";
+            float[,] R_x = _generalRobotControl.RotationMatrixX(_taskSpaceState[3]);
+            float[,] R_y = _generalRobotControl.RotationMatrixY(_taskSpaceState[4]);
+            float[,] R_z = _generalRobotControl.RotationMatrixZ(_taskSpaceState[5]);
+            float[,] R_0_6 = _generalRobotControl.MatrixMultiply(R_x, _generalRobotControl.MatrixMultiply(R_y, R_z));
+            // Debug Log R_0_6 using latex
+            string R_0_6_latex = "$$R_{0}^{6} = \\begin{bmatrix}";
+            for (int row = 0; row < 3; row++)
+            {
+                for (int col = 0; col < 3; col++)
+                {
+                    R_0_6_latex += $"{R_0_6[row, col]:F2}";
+                    if (col < 2) R_0_6_latex += " & ";
+                }
+                if (row < 2) R_0_6_latex += " \\\\ ";
+            }
+            // Debug Log T using latex
+            string T_latex = "$$T = \\begin{bmatrix}";
+            for (int row = 0; row < 4; row++)
+            {
+                for (int col = 0; col < 4; col++)
+                {
+                    T_latex += $"{_robotKinematics.T_debug[row, col]:F2}";
+                    if (col < 3) T_latex += " & ";
+                }
+                if (row < 3) T_latex += " \\\\ ";
+            }
+            T_latex += "\\end{bmatrix}$$";
+            _visualizer_latex.GetComponent<TEXDraw>().text =  R_0_6_latex + "\n" + T_latex;
+            Debug.Log("Current Pose: " + string.Join(", ", pose));
         }
     }
 

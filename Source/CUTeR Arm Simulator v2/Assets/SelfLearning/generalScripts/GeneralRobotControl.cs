@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -5,8 +6,9 @@ using System.Numerics;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
-
-
+using Matrix4x4 = UnityEngine.Matrix4x4;
+using Vector3 = UnityEngine.Vector3;
+using Vector4 = UnityEngine.Vector4;
 // using MathNet.Numerics.LinearAlgebra;
 
 
@@ -129,7 +131,7 @@ public class GeneralRobotControl : MonoBehaviour
         return null;
     }
 
-    private float[,] RotationMatrixX(float theta)
+    public float[,] RotationMatrixX(float theta)
     {
         float cosTheta = Mathf.Cos(theta);
         float sinTheta = Mathf.Sin(theta);
@@ -142,7 +144,7 @@ public class GeneralRobotControl : MonoBehaviour
         };
     }
 
-    private float[,] RotationMatrixY(float theta)
+    public float[,] RotationMatrixY(float theta)
     {
         float cosTheta = Mathf.Cos(theta);
         float sinTheta = Mathf.Sin(theta);
@@ -155,7 +157,7 @@ public class GeneralRobotControl : MonoBehaviour
         };
     }
 
-    private float[,] RotationMatrixZ(float theta)
+    public float[,] RotationMatrixZ(float theta)
     {
         float cosTheta = Mathf.Cos(theta);
         float sinTheta = Mathf.Sin(theta);
@@ -168,7 +170,7 @@ public class GeneralRobotControl : MonoBehaviour
         };
     }
 
-    private float[,] MatrixMultiply(float[,] A, float[,] B)
+    public float[,] MatrixMultiply(float[,] A, float[,] B)
     {
         int aRows = A.GetLength(0);
         int aCols = A.GetLength(1);
@@ -208,7 +210,7 @@ public class GeneralRobotControl : MonoBehaviour
         return result;
     }
 
-    private List<float> AnglesFromSimulation2Model(List<float> angles)
+    public static List<float> AnglesFromSimulation2Model(List<float> angles)
     {
         if (angles.Count < 6)
         {
@@ -337,7 +339,7 @@ public class GeneralRobotControl : MonoBehaviour
         return AnglesFromModel2Simulation(InverseKinematicsOpenManipulatorPro6DOF(pos));
     }
 
-    public List<float> InverseKinematicsOpenManipulatorPro6DOF(List<float> pos)
+    public List<float> InverseKinematicsOpenManipulatorPro6DOF(List<float> pos, float l6_long = 12.3f)
     {
         List<float> euler_angles = new List<float> { pos[3], pos[4], pos[5] };
         float[,] R_x = RotationMatrixX(euler_angles[0]);
@@ -348,7 +350,7 @@ public class GeneralRobotControl : MonoBehaviour
         float[,] l_6 = new float[3, 1]
         {
             { 0 },
-            { 12.3f },
+            { l6_long },
             { 0 },
         };
         float[,] adjusted_pos_matrix = MatrixMultiply(R_0_6, l_6);
@@ -827,3 +829,5 @@ public class GeneralRobotControl : MonoBehaviour
     // follow a trajectory
     // wait for x seconds
 }
+
+
