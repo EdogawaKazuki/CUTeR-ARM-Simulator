@@ -1,0 +1,1004 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8657794569078673374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 6.3046665
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 6
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 6.3046665
+--- !u!114 &-8527122660471130986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_9
+  m_EditorClassIdentifier: 
+  Description: jacobian derivation 1
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \begin{bmatrix} \.{x}_1\end{bmatrix}  = \begin{bmatrix} \frac{\partial x_1}{\partial
+    q_1} & \frac{\partial x_1}{\partial q_2} & \cdots & \frac{\partial x_1}{\partial
+    q_n}\end{bmatrix} \begin{bmatrix} \.q_1 \\ \.q_2 \\ . \\ . \\ . \\  \.q_n\end{bmatrix}
+--- !u!114 &-8306908546305056299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_12
+  m_EditorClassIdentifier: 
+  Description: jacobian derivation 4
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 0
+  text: = J(q) \.\bb{q}
+--- !u!114 &-7813548426276989887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_5
+  m_EditorClassIdentifier: 
+  Description: Latex
+  Duration: 17
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 1435108722396211841}
+  - {fileID: 1609022592157589480}
+  - {fileID: -5684397819760802150}
+  - {fileID: -995607168490044709}
+  - {fileID: 3849655255804837475}
+  - {fileID: -743706906352257387}
+--- !u!114 &-7715844986760849820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391bbefad4674284face6ea49afa9744, type: 3}
+  m_Name: BranchLessonStep_0
+  m_EditorClassIdentifier: 
+  Description: Branch Lesson Step
+  Duration: 54.426003
+  isActive: 1
+  Group: 
+  branch_index: 2
+  steps:
+  - {fileID: 9040168771667762494}
+  - {fileID: -5141450678815591088}
+  - {fileID: -377810465923791207}
+  - {fileID: -7357189332389082351}
+  end_branch_index: 0
+--- !u!114 &-7357189332389082351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_4
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence Step
+  Duration: 11.414
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 5376199459893180654}
+--- !u!114 &-6993426998222919064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 9.323334
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 5
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 9.323334
+--- !u!114 &-6701217609481439838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_3
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 7.19
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 12
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 7.19
+--- !u!114 &-6288187758787636312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962a3507f0bab764188cbb222f7e5102, type: 3}
+  m_Name: LoopStep_1
+  m_EditorClassIdentifier: 
+  Description: Loop Step
+  Duration: 11.969334
+  isActive: 1
+  Group: 
+  branch_index: -1
+  loopMode: 1
+  LoopCount: 0
+  TargetBranchIndex: 3
+  steps:
+  - {fileID: -7715844986760849820}
+--- !u!114 &-5684397819760802150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_5
+  m_EditorClassIdentifier: 
+  Description: x1_dot derive 2
+  Duration: 6
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \\ \.{x}_1 = \frac {\partial{f_1}} {\partial{q_1}} * \frac {\partial{q_1}}
+    {\partial{t }}
+--- !u!114 &-5578673821577874659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_7
+  m_EditorClassIdentifier: 
+  Description: Audio
+  Duration: 31.650667
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 7530432216360346177}
+  - {fileID: 5131575801996516308}
+  - {fileID: -4503564829045087615}
+  - {fileID: -1458675659244101646}
+--- !u!114 &-5141450678815591088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Wrong Drag
+  Duration: 5.515333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 2832971622627622969}
+--- !u!114 &-5094754385967490089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_2
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 13.227333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 13
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 13.227333
+--- !u!114 &-4503564829045087615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_5
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 11.051333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 2
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 11.051333
+--- !u!114 &-3443798426454389465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_2
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 5.8886666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 7
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.8886666
+--- !u!114 &-3297098533114132631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_13
+  m_EditorClassIdentifier: 
+  Description: Intro
+  Duration: 31.650667
+  isActive: 0
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 3771986417117170273}
+--- !u!114 &-3283964053673967427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Audio
+  Duration: 20.652
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 822922309354571229}
+  - {fileID: -6993426998222919064}
+--- !u!114 &-2613134104069919132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_4
+  m_EditorClassIdentifier: 
+  Description: Latex
+  Duration: 31
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -347829862393307052}
+  - {fileID: -1404702815301031087}
+  - {fileID: 2066709742440291206}
+  - {fileID: 5380456978090826419}
+--- !u!114 &-1975381217661513189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_4
+  m_EditorClassIdentifier: 
+  Description: Bridge
+  Duration: 13.366
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 5287702032108412768}
+--- !u!114 &-1458675659244101646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_6
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 5.8886666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 3
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.8886666
+--- !u!114 &-1404702815301031087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_1
+  m_EditorClassIdentifier: 
+  Description: Assumption
+  Duration: 8
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \frac{\partial{q_n}}{\partial{q_m}} = 0, \forall n, m such that n \neq m
+--- !u!114 &-995607168490044709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_7
+  m_EditorClassIdentifier: 
+  Description: x1_dot derive 3
+  Duration: 3
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: '\\ \.{x}_1 = \frac {\partial{f_1}} {\partial{q_1}} * \frac {\partial{q_1}}
+    {\partial{t }} + ... '
+--- !u!114 &-743706906352257387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_8
+  m_EditorClassIdentifier: 
+  Description: x1_dot linear combination
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 0
+  text: $=\sum_{i=1}^{n}  \frac{\partial x_1}{\partial q_i} \.{q_i}$
+--- !u!114 &-739735178688374963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 9.004
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 14
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 9.004
+--- !u!114 &-538383345657073853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_11
+  m_EditorClassIdentifier: 
+  Description: jacobian derivation 3
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \begin{bmatrix} \.{x}_1 \\ \.{x}_2 \\  . \\ . \\ . \\ \.{x}_m\end{bmatrix} 
+    = \begin{bmatrix} \frac{\partial x_1}{\partial q_1} & \frac{\partial x_1}{\partial
+    q_2} & \cdots & \frac{\partial x_1}{\partial q_n} \\  \frac{\partial x_2}{\partial
+    q_1} & \frac{\partial x_2}{\partial q_2} & \cdots & \frac{\partial x_2}{\partial
+    q_n} \\ \.\.\.{} & \.\.\.{} & \cdots & \.\.\.{} \\ \frac{\partial x_m}{\partial
+    q_1} & \frac{\partial x_m}{\partial q_2} & \cdots & \frac{\partial x_m}{\partial
+    q_n} \\ \end{bmatrix} \begin{bmatrix} \.q_1 \\ \.q_2 \\ . \\ . \\ . \\  \.q_n\end{bmatrix}
+--- !u!114 &-377810465923791207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_3
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence Step
+  Duration: 42.648666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 2399626723043370063}
+  - {fileID: -6701217609481439838}
+  - {fileID: -5094754385967490089}
+  - {fileID: -739735178688374963}
+--- !u!114 &-347829862393307052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_3
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 10
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8296f9d4d6268e841838db2630bd1038, type: 3}
+  m_Name: 6
+  m_EditorClassIdentifier: 
+  steps:
+  - {fileID: -3297098533114132631}
+  - {fileID: 2316567856600918305}
+  - {fileID: 603811420633310274}
+  - {fileID: -1975381217661513189}
+  - {fileID: -6288187758787636312}
+--- !u!114 &603811420633310274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_7
+  m_EditorClassIdentifier: 
+  Description: jacobian derivation
+  Duration: 17.57
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 2572525778997776859}
+  - {fileID: 1392544347084968459}
+--- !u!114 &822922309354571229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 11.328667
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 4
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 11.328667
+--- !u!114 &1392544347084968459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Audio
+  Duration: 17.57
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -8657794569078673374}
+  - {fileID: -3443798426454389465}
+  - {fileID: 3717348350574315957}
+--- !u!114 &1435108722396211841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_5
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &1609022592157589480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_4
+  m_EditorClassIdentifier: 
+  Description: x1_dot derive 1
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: '\\ \.{x}_1 = '
+--- !u!114 &2066709742440291206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_2
+  m_EditorClassIdentifier: 
+  Description: FK Abstraction
+  Duration: 7
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 0
+  text: '\\ \bb{x} =\begin{bmatrix} x_1 \\ x_2 \\x_3 \\ x_4 \\ x_5 \\x_6 \\  \end{bmatrix} 
+    = f(\bb{q}) = \begin{bmatrix} f_1(\b{q}) \\ f_2(\b{q}) \\ f_3(\b{q}) \\ f_4(\b{q})
+    \\ f_5(\b{q}) \\ f_6(\b{q}) \\  \end{bmatrix}  '
+--- !u!114 &2316567856600918305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_11
+  m_EditorClassIdentifier: 
+  Description: x dot derivation
+  Duration: 20.652
+  isActive: 0
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -7813548426276989887}
+  - {fileID: -3283964053673967427}
+--- !u!114 &2399626723043370063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 13.227333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 11
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 13.227333
+--- !u!114 &2572525778997776859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_4
+  m_EditorClassIdentifier: 
+  Description: Latex
+  Duration: 14
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -8527122660471130986}
+  - {fileID: 8061701917639020718}
+  - {fileID: -538383345657073853}
+  - {fileID: -8306908546305056299}
+--- !u!114 &2832971622627622969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 5.515333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 10
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.515333
+--- !u!114 &3717348350574315957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 5.3766665
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 8
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.3766665
+--- !u!114 &3771986417117170273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_2
+  m_EditorClassIdentifier: 
+  Description: Group Step
+  Duration: 31.650667
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -2613134104069919132}
+  - {fileID: -5578673821577874659}
+--- !u!114 &3849655255804837475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_6
+  m_EditorClassIdentifier: 
+  Description: x1_dot derive 4
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \\ \.{x}_1 = \frac {\partial{f_1}} {\partial{q_1}} * \frac {\partial{q_1}}
+    {\partial{t }} + ...  +  \frac {\partial{f_1}} {\partial{q_n}} * \frac {\partial{q_n}}
+    {\partial{t }}
+--- !u!114 &5131575801996516308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_4
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 9.003333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 1
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 9.003333
+--- !u!114 &5287702032108412768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 13.366
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 9
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 13.366
+--- !u!114 &5376199459893180654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 11.414
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 15
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 11.414
+--- !u!114 &5380456978090826419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_3
+  m_EditorClassIdentifier: 
+  Description: Focus on First x Entry
+  Duration: 6
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: x_1 = f_1(\bb{q})
+--- !u!114 &7530432216360346177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_3
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 5.7073336
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: fe76866fc8ee9d84da873197c6411c46, type: 2}
+  audioClipIndex: 0
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.7073336
+--- !u!114 &8061701917639020718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d279fc01eb39fed43a6b255d720b74f2, type: 3}
+  m_Name: LatexDisplay_10
+  m_EditorClassIdentifier: 
+  Description: jacobian derivation 2
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  clear: 1
+  text: \begin{bmatrix} \.{x}_1 \\ \.{x}_2 \end{bmatrix}  = \begin{bmatrix} \frac{\partial
+    x_1}{\partial q_1} & \frac{\partial x_1}{\partial q_2} & \cdots & \frac{\partial
+    x_1}{\partial q_n} \\  \frac{\partial x_2}{\partial q_1} & \frac{\partial x_2}{\partial
+    q_2} & \cdots & \frac{\partial x_2}{\partial q_n}\end{bmatrix} \begin{bmatrix}
+    \.q_1 \\ \.q_2 \\ . \\ . \\ . \\  \.q_n\end{bmatrix}
+--- !u!114 &9040168771667762494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2376d7d5fbe6ddc4db68e2e205a79832, type: 3}
+  m_Name: JacobianStep_0
+  m_EditorClassIdentifier: 
+  Description: Jacobian Step
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0

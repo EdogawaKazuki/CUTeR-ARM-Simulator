@@ -36,6 +36,14 @@ public class RobotController : MonoBehaviour
         green,
         red,
     }
+
+    public enum RobotMode
+    {
+        app,
+        web,
+        ar
+    }
+    public RobotMode robotMode = RobotMode.app;
     private int _currentDoF = 6;
     public float A1 = 10.8f;  //length properties of the teaching robot arm (in cm)
     public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
@@ -121,16 +129,20 @@ public class RobotController : MonoBehaviour
         PointHead.transform.SetPositionAndRotation(end, Quaternion.LookRotation(end - origin));
 
         bool isConnected = _robotClient.IsConnected();
-        if (isConnected && !_previousConnectedStatus) // Rising edge detection
+        if (robotMode == RobotMode.ar)
         {
-            _robotJointController.SetMask(true);
-            _endEffectorController.HideEndEffector();
+            if (isConnected && !_previousConnectedStatus) // Rising edge detection
+            {
+                _robotJointController.SetMask(true);
+                _endEffectorController.HideEndEffector();
+            }
+            else if (!isConnected && _previousConnectedStatus) // Falling edge detection
+            {
+                _robotJointController.SetMask(false);
+                _endEffectorController.SetEndEffector(0);
+            }
         }
-        else if (!isConnected && _previousConnectedStatus) // Falling edge detection
-        {
-            _robotJointController.SetMask(false);
-            _endEffectorController.SetEndEffector(0);
-        }
+
         _previousConnectedStatus = isConnected; // Update previous status
     }
     #endregion

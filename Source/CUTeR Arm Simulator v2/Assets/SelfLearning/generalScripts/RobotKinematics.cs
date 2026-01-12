@@ -16,7 +16,7 @@ public class RobotKinematics : MonoBehaviour
     // DH parameters for OpenManipulator-P (in meters)
     private  float[,] dhParams = new float[6, 4];
 
-    private static readonly float[] theta_sign = new float[]
+    public float[] theta_sign = new float[]
     {
         1f, -1f, -1f, 1f, -1f, -1f
     };
@@ -35,7 +35,7 @@ public class RobotKinematics : MonoBehaviour
                 { 0.03f,      Mathf.PI/2,     0f,        Mathf.PI/4 + Mathf.Atan2(0.03f, 0.264f) },     // Link 4
                 { 0f,        -Mathf.PI/2,     0.258f,    0f },                                          // Link 5
                 { 0f,         Mathf.PI/2,     0f,        0f },                                          // Link 6
-                { 0f,         0f,             0.123f,    0f }                                           // End-Effector
+                { 0f,         Mathf.PI/2,             0.123f,    Mathf.PI/2 }                                           // End-Effector
             };
         }
     }
@@ -105,12 +105,7 @@ public class RobotKinematics : MonoBehaviour
             throw new System.ArgumentException("Exactly 6 joint angles required.");
 
         var T = Matrix4x4.identity;
-        var T_extra = new Matrix4x4(
-            new Vector4(0, 0, 1, 0),
-            new Vector4(1, 0, 0, 0),
-            new Vector4(0, 1, 0, 0),
-            new Vector4(0, 0, 0, 1)
-        );
+
         // Forward kinematics
         for (int i = 0; i < 6; i++)
         {
@@ -118,7 +113,7 @@ public class RobotKinematics : MonoBehaviour
             Matrix4x4 Ai = DHTransform(dhParams[i, 0], dhParams[i, 1], dhParams[i, 2], theta);
             T = T * Ai;
             if (i == 5)
-                T_debug = T_extra.inverse * T;
+                T_debug = T;
         }
 
         Vector3 position = T.GetColumn(3);
@@ -126,7 +121,7 @@ public class RobotKinematics : MonoBehaviour
         // float roll = Mathf.Atan2(T[2, 1], T[2, 2]);
         // float pitch = Mathf.Asin(-T[2, 0]);
         // float yaw = Mathf.Atan2(T[1, 0], T[0, 0]);
-        Vector3 eulerAngles = GetEulerAnglesXYZ(T * T_extra.inverse);
+        Vector3 eulerAngles = GetEulerAnglesXYZ(T);
         float roll = eulerAngles.x;
         float pitch = eulerAngles.y;
         float yaw = eulerAngles.z;

@@ -94,7 +94,7 @@ public class StepLibrary : LessonStep
             
         // Robot arm related
         if (className.Contains("movement") || className.Contains("joint") || className.Contains("trajectory") || 
-            className.Contains("robot") || className.Contains("arm") || className.Contains("dhtable"))
+            className.Contains("robot") || className.Contains("arm") || className.Contains("dhtable") || className.Contains("jacobian"))
             return "Robot Arm";
             
         // Matrix related

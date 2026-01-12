@@ -11,6 +11,7 @@ public class GeneralInteractiveControl : MonoBehaviour
     public DHTableUI _DHTableUI;
     public InteractiveRobotArmUI _interactiveRobotArmUI;
     public Interactive2RPlanarRobotArm _interactive2RPlanarRobotArm;
+    public Jacobian _jacobianVisualizer;
     private List<DHRowData> dhParameters = new();
 
     public GameObject _mc_layout;
@@ -19,6 +20,7 @@ public class GeneralInteractiveControl : MonoBehaviour
     private GameObject _imageDisplayer;
     public AudioClip CorrectAnswerClip;
     public AudioClip WrongAnswerClip;
+    public int branch_index = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,7 @@ public class GeneralInteractiveControl : MonoBehaviour
         _DHTableUI = transform.Find("../Visualizer/DH Table").GetComponent<DHTableUI>();
         _interactiveRobotArmUI = transform.Find("../Visualizer/Hand Guidance UI").GetComponent<InteractiveRobotArmUI>();
         _interactive2RPlanarRobotArm = transform.Find("../Visualizer/Hand Guidance UI").GetComponent<Interactive2RPlanarRobotArm>();
+        _jacobianVisualizer = transform.Find("Self Learning Modules/7. Jacobian").GetComponent<Jacobian>();
     }
 
     public void CloseAllUIs()

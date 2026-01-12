@@ -18,6 +18,7 @@ public class RobotControllerUI : MonoBehaviour
     private TMP_Text _forceSliderValueText;
     private Button _fireButton;
     public bool isUserInterect = false;
+    public bool sliderChanged = false;
     public float[] _lastSliderValue;
     public int[] _sliderStatus;
     #endregion
@@ -166,6 +167,7 @@ public class RobotControllerUI : MonoBehaviour
     {
         // Debug.Log("OnPointerUp: " + index);
         isUserInterect = false;
+        sliderChanged = true;
         // remove move transparent robot listenre  
         eventData.selectedObject.GetComponent<Slider>().onValueChanged.RemoveListener(fn);// Move "real robot" to transparent robot position
 
