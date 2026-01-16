@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Name: BranchLessonStep_0
   m_EditorClassIdentifier: 
   Description: Branch Lesson Step
-  Duration: 54.426003
+  Duration: 59.578003
   isActive: 1
   Group: 
-  branch_index: 2
+  branch_index: 3
   steps:
   - {fileID: 9040168771667762494}
   - {fileID: -5141450678815591088}
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: LoopStep_1
   m_EditorClassIdentifier: 
   Description: Loop Step
-  Duration: 11.969334
+  Duration: 59.578003
   isActive: 1
   Group: 
   branch_index: -1
@@ -335,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Intro
   Duration: 31.650667
-  isActive: 0
+  isActive: 1
   Group: 
   branch_index: -1
   steps:
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: x dot derivation
   Duration: 20.652
-  isActive: 0
+  isActive: 1
   Group: 
   branch_index: -1
   steps:
@@ -1000,5 +1000,5 @@ MonoBehaviour:
   Duration: 0
   isActive: 1
   Group: 
-  branch_index: -1
+  branch_index: 3
   jointIndex: 0

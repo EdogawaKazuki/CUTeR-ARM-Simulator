@@ -17,16 +17,18 @@ public class MultipleCubicSpline : MonoBehaviour
     float theta1 = 0;
     float thetaEnd = 0;
     int Mode = 0;
+    int controlMode = 0;
     float a0, a1, a2, a3 = 0;
     float b0, b1, b2, b3 = 0;
-    TMP_Text a0t, a1t, a2t, a3t;
-    TMP_Text b0t, b1t, b2t, b3t;
+    TMP_InputField a0t, a1t, a2t, a3t;
+    TMP_InputField b0t, b1t, b2t, b3t;
     TMP_InputField t1Input;
     TMP_InputField tEndInput;
     TMP_InputField theta0Input;
     TMP_InputField theta1Input;
     TMP_InputField thetaEndInput;
     TMP_Dropdown modeDropdown;
+    TMP_Dropdown controlModeDropdown;
     public List<float> joints;
     // Start is called before the first frame update
     void Start()
@@ -52,6 +54,13 @@ public class MultipleCubicSpline : MonoBehaviour
         theta1Input.onValueChanged.AddListener(SetAngleInter);
         thetaEndInput.onValueChanged.AddListener(SetAngleEnd);
 
+        controlModeDropdown = transform.Find("Input/Line8/Dropdown").GetComponent<TMP_Dropdown>();
+        controlModeDropdown.onValueChanged.AddListener(SetControlMode);
+        controlModeDropdown.ClearOptions();
+        controlModeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Point Specification" });
+        controlModeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Equation" });
+        controlModeDropdown.value = 0;
+
         modeDropdown = transform.Find("Input/Line4/Dropdown").GetComponent<TMP_Dropdown>();
         modeDropdown.onValueChanged.AddListener(SetMode);
         modeDropdown.ClearOptions();
@@ -60,32 +69,37 @@ public class MultipleCubicSpline : MonoBehaviour
         modeDropdown.options.Add(new TMP_Dropdown.OptionData { text = "Average Vel" });
         modeDropdown.value = 0;
 
-        a0t = transform.Find("Input/Line5/a0").GetComponent<TMP_Text>();
-        a1t = transform.Find("Input/Line5/a1").GetComponent<TMP_Text>();
-        a2t = transform.Find("Input/Line5/a2").GetComponent<TMP_Text>();
-        a3t = transform.Find("Input/Line5/a3").GetComponent<TMP_Text>();
+        a0t = transform.Find("Input/Line5/a0").GetComponent<TMP_InputField>();
+        a1t = transform.Find("Input/Line5/a1").GetComponent<TMP_InputField>();
+        a2t = transform.Find("Input/Line5/a2").GetComponent<TMP_InputField>();
+        a3t = transform.Find("Input/Line5/a3").GetComponent<TMP_InputField>();
        
-        b0t = transform.Find("Input/Line6/b0").GetComponent<TMP_Text>();
-        b1t = transform.Find("Input/Line6/b1").GetComponent<TMP_Text>();
-        b2t = transform.Find("Input/Line6/b2").GetComponent<TMP_Text>();
-        b3t = transform.Find("Input/Line6/b3").GetComponent<TMP_Text>();
+        b0t = transform.Find("Input/Line6/b0").GetComponent<TMP_InputField>();
+        b1t = transform.Find("Input/Line6/b1").GetComponent<TMP_InputField>();
+        b2t = transform.Find("Input/Line6/b2").GetComponent<TMP_InputField>();
+        b3t = transform.Find("Input/Line6/b3").GetComponent<TMP_InputField>();
+
+        a0t.onValueChanged.AddListener((value) => { SetA0(value); });
+        a1t.onValueChanged.AddListener((value) => { SetA1(value); });
+        a2t.onValueChanged.AddListener((value) => { SetA2(value); });
+        a3t.onValueChanged.AddListener((value) => { SetA3(value); });
+
+        b0t.onValueChanged.AddListener((value) => { SetB0(value); });
+        b1t.onValueChanged.AddListener((value) => { SetB1(value); });
+        b2t.onValueChanged.AddListener((value) => { SetB2(value); });
+        b3t.onValueChanged.AddListener((value) => { SetB3(value); });
 
         joints = _robotController.GetJointAngles();
     }
 
-    void UpdateTrajectory()
+    void UpdatePoints()
     {
-        List<float> JointAngleList = new List<float>();
-        List<float> AngularVelocityList = new List<float>();
-        List<float> AngularAccelerationList = new List<float>();
-        List<float> LinearJointAngleList = new List<float>();
-        
-        if (!(tEnd > t1 && t1 > t0))
-        {
-            return;
-        }
+        ComputeParameters();
+        UpdateTrajectory();
+    }
 
-        Debug.Log("" + t0 + "," + t1 + "," + tEnd + "," + theta0 + "," + theta1 + "," + thetaEnd + ",");
+    void ComputeParameters()
+    {
         if (Mode == 0)
         {
 
@@ -180,6 +194,24 @@ public class MultipleCubicSpline : MonoBehaviour
         b1t.text = b1.ToString("F2");
         b2t.text = b2.ToString("F2");
         b3t.text = b3.ToString("F2");
+    }
+
+    void UpdateTrajectory()
+    {
+        List<float> JointAngleList = new List<float>();
+        List<float> AngularVelocityList = new List<float>();
+        List<float> AngularAccelerationList = new List<float>();
+        List<float> LinearJointAngleList = new List<float>();
+        
+        if (t0 >= t1 || t1 >= tEnd)
+        {
+            return;
+        }
+
+        Debug.Log("" + t0 + "," + t1 + "," + tEnd + "," + theta0 + "," + theta1 + "," + thetaEnd + ",");
+        
+
+        
         _trajController.ResetTraj(_robotController.GetDoF());
         for (int i = 0; i < 50 * t1 + 1; i++)
         {
@@ -222,36 +254,101 @@ public class MultipleCubicSpline : MonoBehaviour
         drawer.ShowGraph(AngularAccelerationList, "AngularAcceleration");
     }
 
+    public void SetA0(string value)
+    {
+        float.TryParse(value, out a0);
+        UpdateTrajectory();
+    }
+    public void SetA1(string value)
+    {
+        float.TryParse(value, out a1);
+        UpdateTrajectory();
+    }
+    public void SetA2(string value)
+    {
+        float.TryParse(value, out a2);
+        UpdateTrajectory();
+    }
+    public void SetA3(string value)
+    {
+        float.TryParse(value, out a3);
+        UpdateTrajectory();
+    }
+
+        public void SetB0(string value)
+    {
+        float.TryParse(value, out b0);
+        UpdateTrajectory();
+    }
+    public void SetB1(string value)
+    {
+        float.TryParse(value, out b1);
+        UpdateTrajectory();
+    }
+    public void SetB2(string value)
+    {
+        float.TryParse(value, out b2);
+        UpdateTrajectory();
+    }
+    public void SetB3(string value)
+    {
+        float.TryParse(value, out b3);
+        UpdateTrajectory();
+    }
+
     public void SetTimeInter(string value)
     {
         float.TryParse(value, out t1);
-        UpdateTrajectory();
+        UpdatePoints();
     }
     public void SetTimeEnd(string value)
     {
         float.TryParse(value, out tEnd);
-        UpdateTrajectory();
+        UpdatePoints();
     }
     public void SetAngleStart(string value)
     {
         float.TryParse(value, out theta0);
-        UpdateTrajectory();
+        UpdatePoints();
     }
     public void SetAngleInter (string value)
     {
         float.TryParse(value, out theta1);
-        UpdateTrajectory();
+        UpdatePoints();
     }
     public void SetAngleEnd(string value)
     {
         float.TryParse(value, out thetaEnd);
-        UpdateTrajectory();
+        UpdatePoints();
+    }
+
+    public void SetControlMode(int value)
+    {
+        controlMode = value;
+        Debug.Log(value);
+        if (controlMode == 0)
+        {
+            // hide all coeff input fields
+            transform.Find("Input/Line3").gameObject.SetActive(true);
+            transform.Find("Input/Line4").gameObject.SetActive(true);
+            transform.Find("Input/Line5").gameObject.SetActive(false);
+            transform.Find("Input/Line6").gameObject.SetActive(false);
+            UpdatePoints();
+        }
+        else
+        {
+            // show all coeff input fields
+            transform.Find("Input/Line3").gameObject.SetActive(false);
+            transform.Find("Input/Line4").gameObject.SetActive(false);
+            transform.Find("Input/Line5").gameObject.SetActive(true);
+            transform.Find("Input/Line6").gameObject.SetActive(true);
+        }
     }
     public void SetMode(int value)
     {
         Mode = value;
         Debug.Log(value);
-        UpdateTrajectory();
+        UpdatePoints();
     }
     public void Clear()
     {

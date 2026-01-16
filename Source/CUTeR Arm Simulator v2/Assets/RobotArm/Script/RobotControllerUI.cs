@@ -13,12 +13,14 @@ public class RobotControllerUI : MonoBehaviour
     private RobotController _robotController;
     private RobotClient _robotClient;
     private List<Slider> _jointAngleSliders = new();
-    private List<TMP_Text> _jointAngleSLiderValueTexts = new();
+    private List<TMP_InputField> _jointAngleSLiderValueTexts = new();
     private Slider _forceSlider;
     private TMP_Text _forceSliderValueText;
     private Button _fireButton;
     public bool isUserInterect = false;
+    public bool isDragging = false;
     public bool sliderChanged = false;
+    private int editIndex = -1;
     public float[] _lastSliderValue;
     public int[] _sliderStatus;
     #endregion
@@ -85,6 +87,7 @@ public class RobotControllerUI : MonoBehaviour
         {
             _jointAngleSliders[i].value = values[i];
             _jointAngleSLiderValueTexts[i].text = values[i].ToString("F0");
+            _jointAngleSLiderValueTexts[i].gameObject.GetComponent<TMP_InputField>().text = values[i].ToString("F0");
         }
     }
     // Show or hide joystick handle text
@@ -118,17 +121,27 @@ public class RobotControllerUI : MonoBehaviour
                 _jointAngleSliders[i].maxValue = _robotController.GetJointAngleMax(i);
                 _jointAngleSliders[i].minValue = _robotController.GetJointAngleMin(i);
                 _jointAngleSliders[i].value = _robotController.GetJointAngle(i);
-                _jointAngleSLiderValueTexts.Add(child.Find("Slider/Handle Slide Area/Handle/Value").GetComponent<TMP_Text>());
+                _jointAngleSLiderValueTexts.Add(child.Find("Slider/Handle Slide Area/Handle/Value").GetComponent<TMP_InputField>());
                 _jointAngleSLiderValueTexts[i].text = _jointAngleSliders[i].value.ToString("F0");
                 // child.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetCmdJointAngle(child.name[^1] - '0', value));
                 child.Find("Slider").GetComponent<Slider>().onValueChanged.AddListener((value) => SetAngleSliderValue(child.name[^1] - '0', value));
+                
                 EventTrigger eventTrigger = child.Find("Slider").gameObject.AddComponent<EventTrigger>();
                 EventTrigger.Entry pointerDownEntry = new(){ eventID = EventTriggerType.PointerDown };
                 pointerDownEntry.callback.AddListener((eventData) => OnPointerDown(eventData, child.name[^1] - '0'));
                 eventTrigger.triggers.Add(pointerDownEntry);
+                
                 EventTrigger.Entry pointerUpEntry = new(){ eventID = EventTriggerType.PointerUp };
                 pointerUpEntry.callback.AddListener((eventData) => OnPointerUp(eventData, child.name[^1] - '0'));
                 eventTrigger.triggers.Add(pointerUpEntry);
+
+                EventTrigger.Entry beginDragEntry = new(){ eventID = EventTriggerType.BeginDrag };
+                beginDragEntry.callback.AddListener((eventData) => OnBeginDrag(eventData, child.name[^1] - '0'));
+                eventTrigger.triggers.Add(beginDragEntry);
+
+                EventTrigger.Entry endDragEntry = new(){ eventID = EventTriggerType.EndDrag };
+                endDragEntry.callback.AddListener((eventData) => OnEndDrag(eventData, child.name[^1] - '0'));
+                eventTrigger.triggers.Add(endDragEntry);
             }
             else if (child.name == "Fire")
             {
@@ -142,14 +155,65 @@ public class RobotControllerUI : MonoBehaviour
                 _forceSlider.onValueChanged.AddListener((value) =>{
                         _forceSliderValueText.text = value.ToString("F0");
                         _robotController.SetForce(value);
-                    });
+                });
             }
         }
 
     }
-    UnityEngine.Events.UnityAction<float> fn; // pointer for move transparent robot listener
-    public void OnPointerDown(BaseEventData eventData, int index)
+    void SetInputFieldVisible(int index, bool visible)
     {
+        _jointAngleSLiderValueTexts[index].gameObject.GetComponent<TMP_InputField>().enabled = visible;
+    }
+
+    void EditInputField(int index, string newText)
+    {
+        if (float.TryParse(newText, out float newValue))
+        {
+            // Clamp the new value to the slider's min and max
+            newValue = Mathf.Clamp(newValue, _jointAngleSliders[index].minValue, _jointAngleSliders[index].maxValue);
+            // _jointAngleSliders[index].value = newValue;
+            // _jointAngleSLiderValueTexts[index].text = newValue.ToString("F0");
+            // _robotController.SetCmdJointAngle(index, newValue);
+            if(_robotController._enableTransparentRobot)
+                _robotController.SetTransparentCmdJointAngle(index, newValue, true);
+            else
+                _robotController.SetCmdJointAngle(index, newValue);
+            if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
+                _robotClient.isReceive = false;
+        }
+        }
+    }
+    void FinishEditing(int index, string newText)
+    {
+        if (float.TryParse(newText, out float newValue))
+        {
+            // Clamp the new value to the slider's min and max
+            newValue = Mathf.Clamp(newValue, _jointAngleSliders[index].minValue, _jointAngleSliders[index].maxValue);
+            _jointAngleSliders[index].value = newValue;
+            _jointAngleSLiderValueTexts[index].text = newValue.ToString("F0");
+            // _robotController.SetCmdJointAngle(index, newValue);
+            _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
+            _robotController.HideTransparentModel();
+            if(_robotController._enableTransparentRobot){
+                _robotController.SetTransparentCmdJointAngle(index, newValue);
+            }
+        }
+        else
+        {
+            // If parsing fails, revert to the current slider value
+            _jointAngleSLiderValueTexts[index].text = _jointAngleSliders[index].value.ToString("F0");
+        }
+        SetInputFieldVisible(index, false);
+        editIndex = -1;
+    }
+
+    UnityEngine.Events.UnityAction<float> fn; // pointer for move transparent robot listener
+    public void OnBeginDrag(BaseEventData eventData, int index)
+    {
+        isDragging = true;
+        // Optional: hide input if it was visible
+        SetInputFieldVisible(index, false);
+
         // Debug.Log("OnPointerDown: " + index);
         isUserInterect = true;
         // _lastSliderValue[index] = eventData.selectedObject.GetComponent<Slider>().value;
@@ -163,14 +227,16 @@ public class RobotControllerUI : MonoBehaviour
             _robotClient.isReceive = false;
         }
     }
-    public void OnPointerUp(BaseEventData eventData, int index)
+
+    // You can also use OnEndDrag if you want to reset isDragging
+    public void OnEndDrag(BaseEventData eventData, int index)
     {
-        // Debug.Log("OnPointerUp: " + index);
+        isDragging = false;
         isUserInterect = false;
         sliderChanged = true;
         // remove move transparent robot listenre  
         eventData.selectedObject.GetComponent<Slider>().onValueChanged.RemoveListener(fn);// Move "real robot" to transparent robot position
-
+        
         if(_robotController._enableTransparentRobot){
             _robotController.MoveJointTo(index, _jointAngleSliders[index].value);
             _robotController.HideTransparentModel();
@@ -179,6 +245,28 @@ public class RobotControllerUI : MonoBehaviour
         if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = true;
         }
+    }
+    public void OnPointerDown(BaseEventData eventData, int index)
+    {
+        
+    }
+    public void OnPointerUp(BaseEventData eventData, int index)
+    {
+        Debug.Log("OnPointerUp: " + index);
+        if (!isDragging && editIndex == -1)
+        {
+            SetInputFieldVisible(index, true);
+            var inputField = _jointAngleSLiderValueTexts[index].gameObject.GetComponent<TMP_InputField>();
+            inputField.ActivateInputField();
+            inputField.Select();
+            editIndex = index;
+            // Clean previous listeners
+            inputField.onEndEdit.RemoveAllListeners();
+            inputField.onEndEdit.AddListener((newText) => FinishEditing(index, newText));
+            inputField.onDeselect.AddListener((_) => FinishEditing(index, inputField.text)); // also finish if click away
+        }
+
+        
     }
     public void UpdateJoysticPanelkHeight(){
         int count = 8;

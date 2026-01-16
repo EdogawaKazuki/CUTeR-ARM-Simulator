@@ -15,6 +15,10 @@ public class Jacobian: MonoBehaviour
     private List<float> LastJointAngle;
     private List<List<float>> TargetJointAngleList = new();
     private List<float> CommandedJointAngle;
+    private Queue<List<float>> angleHistory = new Queue<List<float>>();
+    private const int windowSize = 5;
+
+
     int index = 0;
     private static int quitBranchIndex = 3;
 
@@ -40,7 +44,7 @@ public class Jacobian: MonoBehaviour
         {
             for (int col = 0; col < 6; col++)
             {
-                jacobianLatex += $"{J[row, col]:F2}";
+                jacobianLatex += $"{J[row, col]:F1}";
                 if (col < 5) jacobianLatex += " & ";
             }
             if (row < 5) jacobianLatex += " \\\\ ";
@@ -49,10 +53,10 @@ public class Jacobian: MonoBehaviour
 
         var jointVelocities = ComputeJointVelocity(current_angles.ToArray(), Time.deltaTime);
 
-        jacobianLatex += "\\dot{q} = \\begin{bmatrix}";
+        jacobianLatex += "  \\dot{q} = \\begin{bmatrix}";
         for (int i = 0; i < jointVelocities.Length; i++)
         {
-            jacobianLatex += $"{jointVelocities[i]:F2}";
+            jacobianLatex += $"{jointVelocities[i]:F1}";
             if (i < jointVelocities.Length - 1) jacobianLatex += " \\\\ ";
         }
         jacobianLatex += "\\end{bmatrix}$$";
@@ -72,13 +76,13 @@ public class Jacobian: MonoBehaviour
             jacobianLatex += "$$v = \\begin{bmatrix}";
             for (int i = 0; i < 3; i++)
             {
-                jacobianLatex += $"{linearVelocity[i, 0]:F2}";
+                jacobianLatex += $"{linearVelocity[i, 0]:F1}";
                 if (i < 2) jacobianLatex += " \\\\ ";
             }
             jacobianLatex += "\\end{bmatrix} \\quad \\omega = \\begin{bmatrix}";
             for (int i = 3; i < 6; i++)
             {
-                jacobianLatex += $"{linearVelocity[i, 0]:F2}";
+                jacobianLatex += $"{linearVelocity[i, 0]:F1}";
                 if (i < 5) jacobianLatex += " \\\\ ";
             }
             jacobianLatex += "\\end{bmatrix}$$";
@@ -97,7 +101,7 @@ public class Jacobian: MonoBehaviour
         float[] jointVelocities = new float[current_angles.Length];
         for (int i = 0; i < current_angles.Length; i++)
         {
-            jointVelocities[i] = (current_angles[i] - LastJointAngle[i]) * _robotKinematics.theta_sign[i] / deltaTime;
+            jointVelocities[i] = (current_angles[i] - LastJointAngle[i]) * _robotKinematics.theta_sign[i] / Time.fixedDeltaTime;
             LastJointAngle[i] = current_angles[i];
         }
         return jointVelocities;
@@ -119,6 +123,7 @@ public class Jacobian: MonoBehaviour
             this.enabled = false;
         });
         index = 0;
+        CommandedJointAngle = new List<float> { 0, 0, 0, 0, 0, 0 };
     }
     void OnDisable()
     {
@@ -128,7 +133,7 @@ public class Jacobian: MonoBehaviour
 
     IEnumerator Check()
     {
-        yield return new WaitForSeconds(2f); // wait for stability 
+        yield return new WaitForSeconds(4f); // wait for stability 
         var currentAngles =_robotController?.GetJointAngles();
         if (index < TargetJointAngleList.Count)
         {
@@ -192,9 +197,40 @@ public class Jacobian: MonoBehaviour
         }
         return maxIndex;
     }
-    void Update()
+    List<float> ComputeAverageAngles(List<float> currentAngles, int windowSize)
     {
-        ShowJacobian(_robotController?.GetJointAngles());
+        // Add current angles to history
+        angleHistory.Enqueue(new List<float>(currentAngles));
+        if (angleHistory.Count > windowSize)
+        angleHistory.Dequeue();
+
+        // Compute moving average
+        List<float> avgAngles = new List<float>(currentAngles.Count);
+        for (int i = 0; i < currentAngles.Count; i++)
+        {
+        float sum = 0f;
+        int count = 0;
+        foreach (var angles in angleHistory)
+        {
+            sum += angles[i];
+            count++;
+        }
+        avgAngles.Add(sum / count);
+        }
+        return avgAngles;
+    }
+
+    void FixedUpdate()
+    {
+        // Get current joint angles (avoid null propagation for Unity objects)
+        List<float> currentAngles = null;
+        if (_robotController != null)
+            currentAngles = _robotController.GetJointAngles();
+
+        // Apply moving average filter to currentAngles
+        List<float> avgAngles = ComputeAverageAngles(currentAngles, windowSize);
+        ShowJacobian(avgAngles);
+        
         if (_robotControllerUI.sliderChanged)
         {
             StartCoroutine(Check());
