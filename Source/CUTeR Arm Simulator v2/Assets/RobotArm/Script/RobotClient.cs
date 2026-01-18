@@ -23,7 +23,7 @@ public class RobotClient : MonoBehaviour
 
 	// Client Variables
 	[SerializeField]
-	private string _robotIP = "192.168.0.171";
+	private string _robotIP = "127.0.0.1";
 	[SerializeField]
 	private int _robotPort = 1234;
 
@@ -70,7 +70,7 @@ public class RobotClient : MonoBehaviour
 	}
 
 	// 0 for CUTeR; 1 for OpenManipulator Pro
-	static public RobotType ROBOT_TYPE = RobotType.OpenManipulatorPro;
+	static public RobotType ROBOT_TYPE = RobotType.SOARM101;
 	private int ROBOT_DOF = 3;
 	private bool HAS_PWM = false;
 
@@ -115,7 +115,7 @@ public class RobotClient : MonoBehaviour
 		_filterDropdown.onValueChanged.AddListener((value) => { SetFilter((FilterType) value); });
 		
 		
-		_robotIPIF.text = PlayerPrefs.GetString("_robotIP", "192.168.4.1");
+		// _robotIPIF.text = PlayerPrefs.GetString("_robotIP", "127.0.0.1");
 		_robotPortIF.text = PlayerPrefs.GetInt("_robotPort", 1234).ToString();
 
         _robotSettingTransform.Find("RobotServer/Robot/Connect/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => SetConnect(value));

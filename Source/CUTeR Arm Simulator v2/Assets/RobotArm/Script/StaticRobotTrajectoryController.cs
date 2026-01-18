@@ -141,7 +141,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
 
         }
         //_robotController.SetModelJointAngles(angleList);
-        _robotController.SetCmdJointAngles(angleList);
+        _robotController.SetCmdJointAngles(angleList, true);
         _robotController.SendCmdToRobot(0.02f);
         if(_currentState == State.prelooping || _currentState == State.preplaying){
             List<float> tmpList = new();

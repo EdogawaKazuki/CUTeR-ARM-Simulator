@@ -332,7 +332,7 @@ public class RobotControllerUI : MonoBehaviour
         // panel.Find("Robot/RobotServer/Robot/Lock/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.SetRobotArmLock(value));
         // panel.Find("Robot/Filter/Dropdown").gameObject.GetComponent<Dropdown>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilter(value));
         //panel.Find("Robot/Filter/Slider").gameObject.GetComponent<Slider>().onValueChanged.AddListener((value) => _robotController.SetRobotArmFilterWindow((int)value));
-        // panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
+        panel.Find("Robot/SmoothSliding/Enable/Toggle").gameObject.GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController._enableTransparentRobot = value);
     }
     public void SetRobotDoF(int value)
     {

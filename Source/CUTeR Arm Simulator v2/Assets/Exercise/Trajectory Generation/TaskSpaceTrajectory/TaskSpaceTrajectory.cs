@@ -98,7 +98,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
         setTrajectoryButton.onClick.AddListener(UpdateTrajectory);
     }
     void UpdateTrajectory()
-    {
+    {   
         List<float> PositionListX = new List<float>();
         List<float> AngularVelocityListX = new List<float>();
         List<float> AngularAccelerationListX = new List<float>();
@@ -113,7 +113,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
             return;
 
         Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + a3 + "," + b0 + "," + b1 + "," + b2 + "," + b3 + "," + c0 + "," + c1 + "," + c2 + "," + c3 + "," + total_time);
-        _trajController.ResetTraj(3);
+        _trajController.ResetTraj(6);
         for (int i = 0; i < 50 * total_time + 1; i++)
         {
             float t = i / 50f;
@@ -134,7 +134,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
 
             float[] angles = _robotController.CartesianToAngle(x, y, z);
             Debug.Log(angles[0] + "," + angles[1] + "," + angles[2]);
-            _trajController.PushTrajPoints(new List<float> { angles[0], angles[1], angles[2] });
+            _trajController.PushTrajPoints(new List<float> { angles[0], angles[1], angles[2], 0, 0, 0 });
 
         }
 

@@ -199,7 +199,7 @@ public class DHRepresentation : MonoBehaviour
 
             matrix15Text[0].text = "90°";
             matrix15Text[1].text = "0";
-            matrix15Text[2].text = _robotController.L2_6DoF.ToString("F1");
+            matrix15Text[2].text = _robotController.L2.ToString("F1");
             matrix15Text[3].text = _robotController.GetJointAngle(3).ToString("F1") + "°";
             matrix15Text[4].text = "-90°";
             matrix15Text[5].text = "0";
