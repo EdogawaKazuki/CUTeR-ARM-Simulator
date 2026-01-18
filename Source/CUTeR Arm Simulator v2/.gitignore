@@ -1,5 +1,28 @@
-./Assets/Resources/objects/
-./Assets/Resources/scenes/
-./Build/
-./Packages/
-./obj/Debug/
+# Unity generated files and folders
+
+Build/
+Packages/
+obj/
+
+# Unity specific
+Library/
+Temp/
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

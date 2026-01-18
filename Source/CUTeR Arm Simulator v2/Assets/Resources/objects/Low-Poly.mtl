@@ -1,0 +1,48 @@
+newmtl Green_platformSG
+illum 4
+Kd 0.01 0.79 0.01
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.16 0.16 0.16
+Ns 57.71
+newmtl MillSG
+illum 4
+Kd 0.57 0.35 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 126.00
+newmtl TreeSG
+illum 4
+Kd 0.33 0.17 0.01
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 205.94
+newmtl TreeSG1
+illum 4
+Kd 0.00 0.70 0.26
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.11 0.11 0.11
+Ns 76.79
+newmtl propellerSG
+illum 4
+Kd 0.64 0.44 0.21
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.29 0.29 0.29
+Ns 62.00
+newmtl propellerSG1
+illum 4
+Kd 0.81 0.76 0.83
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 30.00
