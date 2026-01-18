@@ -45,12 +45,19 @@ public class RobotController : MonoBehaviour
     }
     public RobotMode robotMode = RobotMode.app;
     private int _currentDoF = 6;
-    public float A1 = 10.8f;  //length properties of the teaching robot arm (in cm)
-    public float A2 = 2.8f; //length properties of the teaching robot arm (in cm)
-    public float L1 = 19.4f; //length properties of the teaching robot arm (in cm)
-    public float L2 = 21;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
-    public float L2_6DoF = 25.01f;
-    public float L3_6DoF = 3.2f; //length properties of the teaching robot arm (in cm)
+    public float A1 = 11.97f;  // Frame 2 to Frame 1 in z axis
+    public float A2 = 2.8f; // Frame 3 to Frame 2 in z axis
+    // A3
+    // 3 DoF 0.485
+    // 6 DoF 1.335
+    public float A3 = 1.335f; // End Effector to Frame 3 in z axis
+    public float L0 = 3.115f; // Frame 2 to Frame 1 in y axis
+    public float L1 = 11.235f; // Frame 3 to Frame 2 in y axis
+
+    // L2
+    // 3 DoF 13.49
+    // 6 DoF 29.72
+    public float L2 = 29.72f;  // End Effector to Frame 3 in y axis
 
     private List<int> _pwmList;
 
@@ -453,46 +460,55 @@ public class RobotController : MonoBehaviour
     
     public float[] CartesianToAngle(float x, float y, float z)
     {
-        x = -x;
-        y = -y;
         float[] angles = new float[3];
-        float L23 = Mathf.Sqrt(L1 * L1 + A2 * A2);
-        float alpha = Mathf.Atan(A2 / L1);
-        if (x == 0)
-        {
-            angles[0] = Mathf.PI / 2;
-        }
-        else
-        {
-            if (x > 0)
-            {
-                angles[0] = Mathf.Atan(-y / x);
-            }
-            else
-            {
-                angles[0] = Mathf.PI - Mathf.Atan(y / x);
-            }
-        }
-        float A = -y * Mathf.Sin(angles[0]) + x * Mathf.Cos(angles[0]);
-        float B = z - A1;
-        float tmp = (A * A + B * B - (L23 * L23 + L2 * L2)) / (2 * L23 * L2);
-        if (tmp < -1)
-            tmp = -0.999999f;
-        if (tmp > 1)
-            tmp = 0.99999f;
-        angles[2] = -Mathf.Acos(tmp);
-        if ((A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])) > 0)
-            angles[1] = Mathf.Atan((B * (L23 + L2 * Mathf.Cos(angles[2])) - A * L2 * Mathf.Sin(angles[2])) /
-                                   (A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])));
-        else
-            angles[1] = Mathf.PI - Mathf.Atan((B * (L23 + L2 * Mathf.Cos(angles[2])) - A * L2 * Mathf.Sin(angles[2])) /
-                                   -(A * (L23 + L2 * Mathf.Cos(angles[2])) + B * L2 * Mathf.Sin(angles[2])));
 
-        angles[0] = angles[0] / Mathf.PI * 180 - 90;
-        angles[1] = (angles[1] + alpha) / Mathf.PI * 180;
-        angles[2] = (angles[2] - alpha) / Mathf.PI * 180;
+        float L1_new = Mathf.Sqrt(L1 * L1 + A2 * A2);
+        float alpha  = Mathf.Atan2(A2, L1);
+
+        float L2_new = Mathf.Sqrt(L2 * L2 + A3 * A3);
+        float beta   = Mathf.Atan2(A3, L2);
+
+        // Base
+        angles[0] = Mathf.Atan2(-x, y);
+
+        float A = - x * Mathf.Sin(angles[0]) + y * Mathf.Cos(angles[0]) - L0;
+        float B = z - A1;
+
+        float tmp = (A * A + B * B - (L1_new * L1_new + L2_new * L2_new)) / (2f * L1_new * L2_new);
+        tmp = Mathf.Clamp(tmp, -1f, 1f);
+
+        angles[2] = -Mathf.Acos(tmp);
+
+        float num = (B * (L1_new + L2_new * Mathf.Cos(angles[2])) - A * L2_new * Mathf.Sin(angles[2]));
+        float den = (A * (L1_new + L2_new * Mathf.Cos(angles[2])) + B * L2_new * Mathf.Sin(angles[2]));
+        angles[1] = Mathf.Atan2(num, den);
+
+        // rad -> deg and offsets
+        angles[0] = angles[0] * Mathf.Rad2Deg;
+        angles[1] = (angles[1] + alpha) * Mathf.Rad2Deg;
+        angles[2] = (angles[2] - alpha - beta) * Mathf.Rad2Deg;
+
         return angles;
     }
 
+    
+    public float[] CartesianToAngleNew(float x, float y, float z, float yaw = 0, float pitch = 0, float roll = 0)
+    {
+        // Create SOARM101 instance for inverse kinematics calculation
+        SOARM101 soarm101 = new SOARM101();
+        
+        // Convert Euler angles to rotation matrix, then to quaternion
+        Matrix4x4 rotationMatrix = soarm101.EulerAnglesToRotationMatrix(yaw, pitch, roll);
+        Vector4 quaternion = soarm101.RotationMatrixToQuaternion(rotationMatrix);
+        
+        // Calculate inverse kinematics to get joint angles
+        float[] angles = soarm101.InverseKinematicsNumerical(quaternion, new Vector3(x, y, z));
+        for (int i = 0; i < angles.Length; i++)
+        {
+            angles[i] = angles[i] / Mathf.PI * 180;
+        }
+        Debug.Log("Angles: " + string.Join(",", angles));
+        return angles;
+    }
     #endregion
 }

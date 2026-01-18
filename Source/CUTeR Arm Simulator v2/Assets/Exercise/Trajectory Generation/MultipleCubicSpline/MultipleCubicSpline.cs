@@ -275,7 +275,7 @@ public class MultipleCubicSpline : MonoBehaviour
         UpdateTrajectory();
     }
 
-        public void SetB0(string value)
+    public void SetB0(string value)
     {
         float.TryParse(value, out b0);
         UpdateTrajectory();
@@ -329,6 +329,8 @@ public class MultipleCubicSpline : MonoBehaviour
         if (controlMode == 0)
         {
             // hide all coeff input fields
+            transform.Find("Input/Line1").gameObject.SetActive(true);
+            transform.Find("Input/Line2").gameObject.SetActive(true);
             transform.Find("Input/Line3").gameObject.SetActive(true);
             transform.Find("Input/Line4").gameObject.SetActive(true);
             transform.Find("Input/Line5").gameObject.SetActive(false);
@@ -338,6 +340,8 @@ public class MultipleCubicSpline : MonoBehaviour
         else
         {
             // show all coeff input fields
+            transform.Find("Input/Line1").gameObject.SetActive(false);
+            transform.Find("Input/Line2").gameObject.SetActive(false);
             transform.Find("Input/Line3").gameObject.SetActive(false);
             transform.Find("Input/Line4").gameObject.SetActive(false);
             transform.Find("Input/Line5").gameObject.SetActive(true);

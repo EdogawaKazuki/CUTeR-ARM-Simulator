@@ -38,6 +38,8 @@ public class TaskSpaceTrajectory : MonoBehaviour
     TMP_InputField tInput;
     TMP_Dropdown jointDropdown;
 
+    Button setTrajectoryButton;
+
     int showTable = 0;
     // Start is called before the first frame update
     void Start()
@@ -68,6 +70,8 @@ public class TaskSpaceTrajectory : MonoBehaviour
 
         tInput = transform.Find("Input/Line4/T").GetComponent<TMP_InputField>();
 
+        setTrajectoryButton = transform.Find("Input/Line5/Set").GetComponent<Button>();
+
         jointDropdown.ClearOptions();
         jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "x" });
         jointDropdown.options.Add(new TMP_Dropdown.OptionData { text = "y" });
@@ -91,7 +95,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
 
         tInput.onValueChanged.AddListener((value) => { SetT(value); });
 
-        
+        setTrajectoryButton.onClick.AddListener(UpdateTrajectory);
     }
     void UpdateTrajectory()
     {
@@ -129,7 +133,7 @@ public class TaskSpaceTrajectory : MonoBehaviour
             AngularAccelerationListZ.Add(2 * c2 + 6 * c3 * t);
 
             float[] angles = _robotController.CartesianToAngle(x, y, z);
-            //Debug.Log(angles[0] + "," + angles[1] + "," + angles[2]);
+            Debug.Log(angles[0] + "," + angles[1] + "," + angles[2]);
             _trajController.PushTrajPoints(new List<float> { angles[0], angles[1], angles[2] });
 
         }
@@ -172,67 +176,67 @@ public class TaskSpaceTrajectory : MonoBehaviour
     public void SetA0(string value)
     {
         float.TryParse(value, out a0);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetA1(string value)
     {
         float.TryParse(value, out a1);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetA2(string value)
     {
         float.TryParse(value, out a2);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetA3(string value)
     {
         float.TryParse(value, out a3);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetB0(string value)
     {
         float.TryParse(value, out b0);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetB1(string value)
     {
         float.TryParse(value, out b1);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetB2(string value)
     {
         float.TryParse(value, out b2);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetB3(string value)
     {
         float.TryParse(value, out b3);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetC0(string value)
     {
         float.TryParse(value, out c0);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetC1(string value)
     {
         float.TryParse(value, out c1);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetC2(string value)
     {
         float.TryParse(value, out c2);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetC3(string value)
     {
         float.TryParse(value, out c3);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void SetT(string value)
     {
         float.TryParse(value, out total_time);
-        UpdateTrajectory();
+        // UpdateTrajectory();
     }
     public void Clear()
     {
