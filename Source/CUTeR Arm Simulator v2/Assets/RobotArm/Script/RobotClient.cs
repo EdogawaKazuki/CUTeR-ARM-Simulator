@@ -70,7 +70,7 @@ public class RobotClient : MonoBehaviour
 	}
 
 	// 0 for CUTeR; 1 for OpenManipulator Pro
-	static public RobotType ROBOT_TYPE = RobotType.SOARM101;
+	static public RobotType ROBOT_TYPE = RobotType.OpenManipulatorPro;
 	private int ROBOT_DOF = 3;
 	private bool HAS_PWM = false;
 
