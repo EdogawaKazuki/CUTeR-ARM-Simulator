@@ -12,9 +12,10 @@ public class ParabolicBlend : MonoBehaviour
     DrawGraph drawer;
     float a0 = 0;
     float a1 = 0;
-    float a2 = 0;
     float b0 = 0;
     float b1 = 0;
+    float b2 = 0;
+
     float c0 = 0;
     float c1 = 0;
     float c2 = 0;
@@ -22,9 +23,9 @@ public class ParabolicBlend : MonoBehaviour
     float tf = 0;
     TMP_InputField a0Input;
     TMP_InputField a1Input;
-    TMP_InputField a2Input;
     TMP_InputField b0Input;
     TMP_InputField b1Input;
+    TMP_InputField b2Input;
     TMP_InputField c0Input;
     TMP_InputField c1Input;
     TMP_InputField c2Input;
@@ -44,11 +45,11 @@ public class ParabolicBlend : MonoBehaviour
 
         a0Input = transform.Find("Input/Equation/Line1/a0").GetComponent<TMP_InputField>();
         a1Input = transform.Find("Input/Equation/Line1/a1").GetComponent<TMP_InputField>();
-        a2Input = transform.Find("Input/Equation/Line1/a2").GetComponent<TMP_InputField>();
         tbInput = transform.Find("Input/Condition/Line1/tb(s)").GetComponent<TMP_InputField>();
 
         b0Input = transform.Find("Input/Equation/Line2/b0").GetComponent<TMP_InputField>();
         b1Input = transform.Find("Input/Equation/Line2/b1").GetComponent<TMP_InputField>();
+        b2Input = transform.Find("Input/Equation/Line2/b2").GetComponent<TMP_InputField>();
 
         c0Input = transform.Find("Input/Equation/Line3/c0").GetComponent<TMP_InputField>();
         c1Input = transform.Find("Input/Equation/Line3/c1").GetComponent<TMP_InputField>();
@@ -57,11 +58,12 @@ public class ParabolicBlend : MonoBehaviour
 
         a0Input.onValueChanged.AddListener((value) => { SetA0(value); });
         a1Input.onValueChanged.AddListener((value) => { SetA1(value); });
-        a2Input.onValueChanged.AddListener((value) => { SetA2(value); });
         tbInput.onValueChanged.AddListener((value) => { SetTB(value); });
 
         b0Input.onValueChanged.AddListener((value) => { SetB0(value); });
         b1Input.onValueChanged.AddListener((value) => { SetB1(value); });
+        b2Input.onValueChanged.AddListener((value) => { SetB2(value); });
+
 
         c0Input.onValueChanged.AddListener((value) => { SetC0(value); });
         c1Input.onValueChanged.AddListener((value) => { SetC1(value); });
@@ -76,31 +78,31 @@ public class ParabolicBlend : MonoBehaviour
         List<float> AngularVelocityList = new List<float>();
         List<float> AngularAccelerationList = new List<float>();
 
-        Debug.Log("" + a0 + "," + a1 + "," + a2 + "," + b0 + "," + b1 + "," + c0 + "," + c1 + "," + c2 + "," + tb + "," + tf);
+        Debug.Log("" + a0 + "," + a1  + "," + b0 + "," + b1 + "," + b2 + "," + c0 + "," + c1 + "," + c2 + "," + tb + "," + tf);
         _trajController.ResetTraj(_robotController.GetDoF());
         if(tb != 0)
             for (int i = 0; i < 50 * tb + 1; i++)
             {
                 float t = i / 50f;
-                float angle = a0 + a1 * t + a2 * t * t;
+                float angle = a1 + a0 * t * t;
                 JointAngleList.Add(angle);
                 joints[0] = angle;
                 _trajController.PushTrajPoints(joints);
 
-                AngularVelocityList.Add(a1 + 2 * a2 * t);
+                AngularVelocityList.Add(2 * a0 * t);
 
-                AngularAccelerationList.Add(2 * a2);
+                AngularAccelerationList.Add(2 * a0);
             }
         if(tf - tb != 0)
             for (int i = (int)(50 * tb + 1); i < 50 * (tf - tb) + 1; i++)
             {
                 float t = i / 50f;
-                float angle = b0 + b1 * t;
+                float angle = b0 * (t-b1) + b2;
                 JointAngleList.Add(angle);
                 joints[0] = angle;
                 _trajController.PushTrajPoints(joints);
 
-                AngularVelocityList.Add(b1);
+                AngularVelocityList.Add(b0);
 
                 AngularAccelerationList.Add(0);
             }
@@ -108,14 +110,14 @@ public class ParabolicBlend : MonoBehaviour
             for (int i = (int)(50 * (tf - tb) + 1); i < 50 * tf + 1; i++)
             {
                 float t = i / 50f;
-                float angle = c0 + c1 * t + c2 * t * t;
+                float angle = c0 * (t-c1)*(t-c1) +c2;
                 JointAngleList.Add(angle);
                 joints[0] = angle;
                 _trajController.PushTrajPoints(joints);
 
-                AngularVelocityList.Add(c1 + 2 * c2 * t);
+                AngularVelocityList.Add(2* c0 * (t-c1));
 
-                AngularAccelerationList.Add(2 * c2);
+                AngularAccelerationList.Add(2 * c0);
             }
         _trajController.SetStatus(StaticRobotTrajectoryController.State.ready);
         try
@@ -145,11 +147,6 @@ public class ParabolicBlend : MonoBehaviour
         float.TryParse(value, out a1);
         UpdateTrajectory();
     }
-    public void SetA2(string value)
-    {
-        float.TryParse(value, out a2);
-        UpdateTrajectory();
-    }
     public void SetB0(string value)
     {
         float.TryParse(value, out b0);
@@ -158,6 +155,11 @@ public class ParabolicBlend : MonoBehaviour
     public void SetB1(string value)
     {
         float.TryParse(value, out b1);
+        UpdateTrajectory();
+    }
+    public void SetB2(string value)
+    {
+        float.TryParse(value, out b2);
         UpdateTrajectory();
     }
     public void SetC0(string value)

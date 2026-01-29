@@ -178,7 +178,7 @@ public class RobotControllerUI : MonoBehaviour
                 _robotController.SetTransparentCmdJointAngle(index, newValue, true);
             else
                 _robotController.SetCmdJointAngle(index, newValue);
-            if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
+            if(_robotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
                 _robotClient.isReceive = false;
         }
         }
@@ -223,7 +223,7 @@ public class RobotControllerUI : MonoBehaviour
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetTransparentCmdJointAngle(index, value, true));
         else
             eventData.selectedObject.GetComponent<Slider>().onValueChanged.AddListener(fn = (value) => _robotController.SetCmdJointAngle(index, value));
-        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
+        if(_robotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = false;
         }
     }
@@ -242,7 +242,7 @@ public class RobotControllerUI : MonoBehaviour
             _robotController.HideTransparentModel();
         }
         // _sliderStatus[index] = 0;
-        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
+        if(_robotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro){
             _robotClient.isReceive = true;
         }
     }

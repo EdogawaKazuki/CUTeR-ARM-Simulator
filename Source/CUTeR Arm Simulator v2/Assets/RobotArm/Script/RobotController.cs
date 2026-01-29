@@ -354,7 +354,7 @@ public class RobotController : MonoBehaviour
     {
         List<float> angleList = _robotJointController.GetJointAngles();
         angleList[index] = value;
-        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected()){
+        if(_robotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected()){
             _robotClient.SendJointCmdDirect(angleList, 3.0f);
             return;
         }
@@ -369,7 +369,7 @@ public class RobotController : MonoBehaviour
     }
     public void SendCmdToRobot(float path_time)
     {
-        if(RobotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected())
+        if(_robotClient.ROBOT_TYPE == RobotClient.RobotType.OpenManipulatorPro && _robotClient.IsConnected())
         {
             _robotClient.SendJointCmdDirect(CmdJointAngles, path_time);
         }

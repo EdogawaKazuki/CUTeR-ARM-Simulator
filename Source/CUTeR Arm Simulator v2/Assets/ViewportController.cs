@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ViewportController : MonoBehaviour
 {
-
+    
+    Transform robotTransform;
     // get mouse position
     private float _mouseX = 0;
     private float _mouseY = 0;
@@ -19,6 +20,7 @@ public class ViewportController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        robotTransform = transform.Find("/Robot");
     }
 
     // Update is called once per frame
@@ -39,8 +41,8 @@ public class ViewportController : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            Camera.main.transform.RotateAround(Camera.main.transform.position, Vector3.up, _mouseX * 3);
-            Camera.main.transform.RotateAround(Camera.main.transform.position, -Camera.main.transform.right, _mouseY * 3);
+            Camera.main.transform.RotateAround(robotTransform.position, Vector3.up, _mouseX * 3);
+            Camera.main.transform.RotateAround(robotTransform.position, -Camera.main.transform.right, _mouseY * 3);
         }
         if (Input.GetMouseButton(2))
         {
