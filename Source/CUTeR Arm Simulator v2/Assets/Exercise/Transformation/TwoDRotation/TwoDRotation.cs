@@ -26,10 +26,19 @@ public class TwoDRotation : MonoBehaviour
     TMP_Text matrix1cText;
     TMP_Text matrix1dText;
 
+    TMP_Text matrix2aText;
+    TMP_Text matrix2bText;
+    TMP_Text matrix2cText;
+    TMP_Text matrix2dText;
+
     Button JointSetBtn1;
     Button JointSetBtn2;
+    Button FrameBtn1, FrameBtn2;
     float Angle2Sin;
     float Angle2Cos;
+    float Angle3Sin;
+    float Angle3Cos;
+    
     Vector3 _redLineStart;
     Vector3 _redLineEnd;
     // Start is called before the first frame update
@@ -43,20 +52,47 @@ public class TwoDRotation : MonoBehaviour
         matrix1bText = transform.Find("Input/Line2/Values/b").GetComponent<TMP_Text>();
         matrix1cText = transform.Find("Input/Line2/Values/c").GetComponent<TMP_Text>();
         matrix1dText = transform.Find("Input/Line2/Values/d").GetComponent<TMP_Text>();
-        JointSetBtn1 = transform.Find("Input/Line3/Set1").GetComponent<Button>();
-        JointSetBtn2 = transform.Find("Input/Line4/Set2").GetComponent<Button>();
+        FrameBtn1 = transform.Find("Input/Line2/R").GetComponent<Button>();
+
+        matrix2aText = transform.Find("Input/Line3/Values/a").GetComponent<TMP_Text>();
+        matrix2bText = transform.Find("Input/Line3/Values/b").GetComponent<TMP_Text>();
+        matrix2cText = transform.Find("Input/Line3/Values/c").GetComponent<TMP_Text>();
+        matrix2dText = transform.Find("Input/Line3/Values/d").GetComponent<TMP_Text>();
+        FrameBtn2 = transform.Find("Input/Line3/R").GetComponent<Button>();
+
+        JointSetBtn1 = transform.Find("Input/Line4/Set1").GetComponent<Button>();
+        JointSetBtn2 = transform.Find("Input/Line5/Set2").GetComponent<Button>();
         JointSetBtn1.onClick.AddListener(() => SetJointAngles(new(){ 30, 180, -140 }));
         JointSetBtn2.onClick.AddListener(() => SetJointAngles(new(){ 30, 100, -140 }));
+        FrameBtn1.onClick.AddListener(() => ShowRelativeFrames(0));
+        FrameBtn2.onClick.AddListener(() => ShowRelativeFrames(1));
         UpdateTable();
 
-        _robotJointController.ShowJointBaseFrame(true);
-        _robotJointController.ShowJointFrame(1, true);
+        // _robotJointController.ShowJointBaseFrame(true);
+        // _robotJointController.ShowJointFrame(1, true);
     }
 
     void OnDisable()
     {
-        _robotJointController.ShowJointBaseFrame(false);
-        _robotJointController.ShowJointFrame(1, false);
+        if (_robotJointController != null)
+        {
+            _robotController.ShowFrames(false);
+        }
+    }
+
+    private void ShowRelativeFrames(int index)
+    {
+        _robotController.ShowFrames(false);
+        if (index == 0)
+        {
+            _robotJointController.ShowJointBaseFrame(true);
+            _robotJointController.ShowJointFrame(1, true);
+        }
+        else
+        {
+            _robotJointController.ShowJointFrame(1, true);
+            _robotJointController.ShowJointFrame(2, true);
+        }
     }
 
     private void FixedUpdate()
@@ -71,6 +107,14 @@ public class TwoDRotation : MonoBehaviour
         matrix1bText.text = (-Angle2Sin + 0.00001f).ToString("F3");
         matrix1cText.text = (Angle2Sin + 0.00001f).ToString("F3");
         matrix1dText.text = (Angle2Cos + 0.00001f).ToString("F3");
+
+        Angle3Sin = Mathf.Sin(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
+        Angle3Cos = Mathf.Cos(Mathf.Deg2Rad * _robotController.GetJointAngle(2));
+        matrix2aText.text = (Angle3Cos + 0.00001f).ToString("F3");
+        matrix2bText.text = (-Angle3Sin + 0.00001f).ToString("F3");
+        matrix2cText.text = (Angle3Sin + 0.00001f).ToString("F3");
+        matrix2dText.text = (Angle3Cos + 0.00001f).ToString("F3");
+
 
         _redLineStart = _jointTransformList[1].position;
         _redLineEnd = _jointTransformList[1].position - _jointTransformList[1].forward * 10;
