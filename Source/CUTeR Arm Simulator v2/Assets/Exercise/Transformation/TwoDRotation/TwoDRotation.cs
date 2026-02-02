@@ -33,7 +33,7 @@ public class TwoDRotation : MonoBehaviour
 
     Button JointSetBtn1;
     Button JointSetBtn2;
-    Button FrameBtn1, FrameBtn2;
+    Toggle FrameBtn1, FrameBtn2;
     float Angle2Sin;
     float Angle2Cos;
     float Angle3Sin;
@@ -52,20 +52,20 @@ public class TwoDRotation : MonoBehaviour
         matrix1bText = transform.Find("Input/Line2/Values/b").GetComponent<TMP_Text>();
         matrix1cText = transform.Find("Input/Line2/Values/c").GetComponent<TMP_Text>();
         matrix1dText = transform.Find("Input/Line2/Values/d").GetComponent<TMP_Text>();
-        FrameBtn1 = transform.Find("Input/Line2/R").GetComponent<Button>();
+        FrameBtn1 = transform.Find("Input/Line2/R").GetComponent<Toggle>();
 
         matrix2aText = transform.Find("Input/Line3/Values/a").GetComponent<TMP_Text>();
         matrix2bText = transform.Find("Input/Line3/Values/b").GetComponent<TMP_Text>();
         matrix2cText = transform.Find("Input/Line3/Values/c").GetComponent<TMP_Text>();
         matrix2dText = transform.Find("Input/Line3/Values/d").GetComponent<TMP_Text>();
-        FrameBtn2 = transform.Find("Input/Line3/R").GetComponent<Button>();
+        FrameBtn2 = transform.Find("Input/Line3/R").GetComponent<Toggle>();
 
         JointSetBtn1 = transform.Find("Input/Line4/Set1").GetComponent<Button>();
         JointSetBtn2 = transform.Find("Input/Line5/Set2").GetComponent<Button>();
         JointSetBtn1.onClick.AddListener(() => SetJointAngles(new(){ 30, 180, -140 }));
         JointSetBtn2.onClick.AddListener(() => SetJointAngles(new(){ 30, 100, -140 }));
-        FrameBtn1.onClick.AddListener(() => ShowRelativeFrames(0));
-        FrameBtn2.onClick.AddListener(() => ShowRelativeFrames(1));
+        FrameBtn1.onValueChanged.AddListener((value) => ShowRelativeFrames(0, value));
+        FrameBtn2.onValueChanged.AddListener((value) => ShowRelativeFrames(1,value));
         UpdateTable();
 
         // _robotJointController.ShowJointBaseFrame(true);
@@ -80,18 +80,23 @@ public class TwoDRotation : MonoBehaviour
         }
     }
 
-    private void ShowRelativeFrames(int index)
+    private void ShowRelativeFrames(int index, bool value)
     {
         _robotController.ShowFrames(false);
-        if (index == 0)
-        {
-            _robotJointController.ShowJointBaseFrame(true);
-            _robotJointController.ShowJointFrame(1, true);
-        }
-        else
-        {
-            _robotJointController.ShowJointFrame(1, true);
-            _robotJointController.ShowJointFrame(2, true);
+        if (value){
+            if (index == 0)
+            {
+                // turn on base frame and frame 1, turn off others
+                _robotJointController.ShowJointBaseFrame(true);
+                _robotJointController.ShowJointFrame(1, true);
+                FrameBtn2.isOn = false;
+            }
+            else
+            {
+                _robotJointController.ShowJointFrame(1, true);
+                _robotJointController.ShowJointFrame(2, true);
+                FrameBtn1.isOn = false;
+            }
         }
     }
 
