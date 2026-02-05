@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fb8dc1f5ccc0f4da055f39a11d50a0, type: 3}
+  m_Name: VideoLibrary_164036
+  m_EditorClassIdentifier: 
+  Description: New Video Library
+  videoClips:
+  - {fileID: 32900000, guid: 7048c9aa3505e6d409d47c7417d0294f, type: 3}
+  - {fileID: 32900000, guid: b14ef8764732a7c479a1537a974e8629, type: 3}

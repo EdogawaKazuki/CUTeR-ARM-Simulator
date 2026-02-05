@@ -47,7 +47,7 @@ public class VideoPlayStep : LessonStep
             VideoClip clip = videoLibrary.videoClips[videoIndex];
             if (clip != null)
             {
-                if (videoMode == VideoModeType.PlayFullVideo || previousVideoIndex != videoIndex)
+                if (videoMode == VideoModeType.PlayFullVideo)
                     Duration = (float) clip.length; // Default to full length if invalid
             }
         }

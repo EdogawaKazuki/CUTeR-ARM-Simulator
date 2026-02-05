@@ -33,7 +33,7 @@ public class GeneralInteractiveControl : MonoBehaviour
         _DHTableUI = transform.Find("../Visualizer/DH Table").GetComponent<DHTableUI>();
         _interactiveRobotArmUI = transform.Find("../Visualizer/Hand Guidance UI").GetComponent<InteractiveRobotArmUI>();
         _interactive2RPlanarRobotArm = transform.Find("../Visualizer/Hand Guidance UI").GetComponent<Interactive2RPlanarRobotArm>();
-        _jacobianVisualizer = transform.Find("Self Learning Modules/7. Jacobian").GetComponent<Jacobian>();
+        _jacobianVisualizer = transform.Find("Self Learning Modules/8. Jacobian").GetComponent<Jacobian>();
     }
 
     public void CloseAllUIs()

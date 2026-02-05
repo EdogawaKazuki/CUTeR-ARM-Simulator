@@ -9,6 +9,7 @@ public class EndEffectorController : MonoBehaviour
     #region Variables
     [SerializeField]
     private List<EndEffector> _endEffectors = new List<EndEffector>();
+    private RobotController _robotController;
     [SerializeField]
     //private RobotController _robotController;
     private int _currentEndEffectorIndex;
@@ -28,6 +29,9 @@ public class EndEffectorController : MonoBehaviour
             _endEffectorNames.Add(_endEffectors[i].GetEndEffectorName());
         }
         SetEndEffector(_currentEndEffectorIndex);
+        _robotController = GameObject.Find("/Robot").GetComponent<RobotController>();
+        if (_robotController.robotMode == RobotController.RobotMode.ar)
+            HideEndEffector();
         statusText = GameObject.Find("Robot/RobotCanvas/EEStatus").GetComponent<TMP_Text>();
         _robotArm = GameObject.Find("Robot").transform;
     }

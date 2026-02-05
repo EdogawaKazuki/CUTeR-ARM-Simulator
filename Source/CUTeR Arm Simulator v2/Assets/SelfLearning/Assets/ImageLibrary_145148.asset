@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d52d5e452a6d64fb1bef148da49db9, type: 3}
+  m_Name: ImageLibrary_145148
+  m_EditorClassIdentifier: 
+  Description: Image Library for Demo
+  texture_list:
+  - {fileID: 2800000, guid: 3c6c120fc5bb9d74d95b5f22100ae142, type: 3}
+  - {fileID: 2800000, guid: 5b427123bd3b453459d3097cba38ff94, type: 3}
+  - {fileID: 2800000, guid: 7b1f3ddbb3ff0e94eb5f0031ce92815e, type: 3}
