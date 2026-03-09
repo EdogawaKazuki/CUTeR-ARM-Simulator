@@ -89,7 +89,12 @@ public class RobotJoint : MonoBehaviour
         transform.Find($"{prefixes[(int)mode]}/Extrusion {index}")?.gameObject.SetActive(value);
     }
     public void ShowFrame(bool value, JointFrameMode mode=JointFrameMode.Normal) { for(int i=0; i<3; i++) ShowAxis(i, value, mode); }
-    public void ShowDHFrame(bool value) { transform.Find("DHFrame")?.gameObject.SetActive(value); }
+    // public void ShowDHFrame(bool value) { transform.Find("DHFrame")?.gameObject.SetActive(value); }
+    // public void ShowDHFrameAxis(int axis, bool value) { 
+    //     Debug.Log("ShowDHFrameAxis: " + axis + " " + value);
+    //     transform.Find($"DHFrame/Brep {axis}").gameObject.SetActive(value); 
+    //     transform.Find($"DHFrame/Extrusion {axis}").gameObject.SetActive(value); 
+    // }
 
     public void ShowArrows(bool value)
     {

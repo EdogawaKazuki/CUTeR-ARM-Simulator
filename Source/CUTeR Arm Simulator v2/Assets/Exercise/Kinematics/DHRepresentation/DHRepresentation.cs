@@ -33,6 +33,11 @@ public class DHRepresentation : MonoBehaviour
     [SerializeField]
     List<GameObject> DHFrames = new List<GameObject>();
 
+    List<Toggle> DHFrameIndexesToggles = new List<Toggle>();
+    List<Toggle> DHFramesAxisToggles = new List<Toggle>();
+    Toggle DHFramesToggle;
+    List<bool> EnabledDHFrameIndexes = new List<bool>();
+    List<bool> EnabledDHFramesAxis = new List<bool>();
 
     private void OnEnable()
     {
@@ -57,12 +62,41 @@ public class DHRepresentation : MonoBehaviour
         {
             matrix2Text[i] = transform.Find("Input/Line4/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
-        transform.Find("Input/Line2/Values/one/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(0, value));
-        transform.Find("Input/Line2/Values/two/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(1, value));
-        transform.Find("Input/Line2/Values/three/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(2, value));
-        transform.Find("Input/Line2.5/Values/one/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(3, value));
-        transform.Find("Input/Line2.5/Values/two/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(4, value));
-        transform.Find("Input/Line2.5/Values/three/Button").GetComponent<Toggle>().onValueChanged.AddListener((value) => _robotController.ShowJointDHFrame(5, value));
+
+        // DH Frame Indexes Toggles
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2/Values/one/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[0].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(0, value));
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2/Values/two/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[1].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(1, value));
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2/Values/three/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[2].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(2, value));
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2.5/Values/one/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[3].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(3, value));
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2.5/Values/two/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[4].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(4, value));
+        DHFrameIndexesToggles.Add(transform.Find("Input/Line2.5/Values/three/Button").GetComponent<Toggle>());
+        DHFrameIndexesToggles[5].onValueChanged.AddListener((value) => ToggleDHFramesByIndex(5, value));
+        for (int i = 0; i < 6; i++)
+        {
+            EnabledDHFrameIndexes.Add(false);
+        }
+
+        // DH Frames Toggle
+        DHFramesToggle = transform.Find("Input/Line5/ShowDHFrames").GetComponent<Toggle>();
+        DHFramesToggle.onValueChanged.AddListener((value) => ToggleDHFrames(value));
+        
+        // DH Frames Axis Toggles
+        DHFramesAxisToggles.Add(transform.Find("Input/Line6/x").GetComponent<Toggle>());
+        DHFramesAxisToggles[0].onValueChanged.AddListener((value) => ToggleDHFramesByAxis(0, value));
+        DHFramesAxisToggles.Add(transform.Find("Input/Line6/y").GetComponent<Toggle>());
+        DHFramesAxisToggles[1].onValueChanged.AddListener((value) => ToggleDHFramesByAxis(1, value));
+        DHFramesAxisToggles.Add(transform.Find("Input/Line6/z").GetComponent<Toggle>());
+        DHFramesAxisToggles[2].onValueChanged.AddListener((value) => ToggleDHFramesByAxis(2, value));
+        for (int i = 0; i < 3; i++)
+        {
+            EnabledDHFramesAxis.Add(false);
+        }
+
         if (_robotController.GetRobotDoF() == 3)
         {
             transform.Find("Input/Line2").gameObject.SetActive(true);
@@ -226,9 +260,69 @@ matrix2Text[7].text = ( (98*c2*s1)/5 + 25*c2*s1*s3 + 25*c3*s1*s2).ToString("F2")
         }
 
     }
+    public void ToggleDHFramesByIndex(int index, bool value){
+        EnabledDHFrameIndexes[index] = value;
+        for (int i = 0; i < 3; i++){
+            if(EnabledDHFramesAxis[i]){
+                _robotController.ShowJointFrameAxis(index, i, value, JointFrameMode.DH);
+            }
+        }
+        if (value){
+            DHFramesToggle.isOn = true;
+            DHFramesToggle.onValueChanged.Invoke(true);
+        }
+        // bool allEnabled = true;
+        // bool allDisabled = true;
+        // for (int i = 0; i < 6; i++){
+        //     if(!EnabledDHFrameIndexes[i]) {
+        //         allEnabled = false;
+        //     } else {
+        //         allDisabled = false;
+        //     }
+        // }
+        // if(allEnabled){
+        //     DHFramesToggle.isOn = true;
+        //     DHFramesToggle.onValueChanged.Invoke(true);
+        // }
+        // if(allDisabled){
+        //     DHFramesToggle.isOn = false;
+        //     DHFramesToggle.onValueChanged.Invoke(false);
+        // }
+    }
     public void ToggleDHFrames(bool value)
     {
-        _robotController.ShowJointsDHFrame(value);
+        bool allDisabled = true;
+        if (value){
+            for (int i = 0; i < 6; i++){
+                if(EnabledDHFrameIndexes[i]) {
+                    allDisabled = false;
+                    break;
+                }
+            }
+            if(allDisabled){
+                for (int i = 0; i < 6; i++){
+                    DHFrameIndexesToggles[i].isOn = value;
+                    DHFrameIndexesToggles[i].onValueChanged.Invoke(value);
+                    // ToggleDHFramesByIndex(i, value);
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < 6; i++){
+                DHFrameIndexesToggles[i].isOn = value;
+                DHFrameIndexesToggles[i].onValueChanged.Invoke(value);
+                // ToggleDHFramesByIndex(i, value);
+            }
+        }
+
+    }
+    public void ToggleDHFramesByAxis(int axis, bool value){
+        EnabledDHFramesAxis[axis] = value;
+        for (int i = 0; i < 6; i++){
+            if(EnabledDHFrameIndexes[i]){
+                _robotController.ShowJointFrameAxis(i, axis, value, JointFrameMode.DH);
+            }
+        }
     }
     public void ToggleDHTable(bool value)
     {

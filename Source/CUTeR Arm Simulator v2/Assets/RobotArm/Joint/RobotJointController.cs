@@ -39,6 +39,7 @@ public class RobotJointController : MonoBehaviour
         Debug.Log("Total Joints: " + _jointNumber);
         SetJointAngles(_initialAngles);
         ShowJointsFrame(false);
+        ShowJointsFrame(false, JointFrameMode.DH);
         // Debug.Log("Joint number: " + _jointNumber);
     }
     
@@ -179,7 +180,7 @@ public class RobotJointController : MonoBehaviour
 
     public void ShowJointDHFrame(int index, bool value)
     {
-        _joints[index].ShowDHFrame(value);
+        _joints[index].ShowFrame(value, JointFrameMode.DH);
     }
 
     public void ShowJointDHBaseFrame(bool value)
@@ -191,7 +192,13 @@ public class RobotJointController : MonoBehaviour
         ShowJointDHBaseFrame(value);
         foreach (var joint in _joints)
         {
-            joint.ShowDHFrame(value);
+            joint.ShowFrame(value, JointFrameMode.DH);
+        }
+    }
+    public void ShowJointsDHFrameAxis(int axis, bool value){
+        foreach (var joint in _joints)
+        {
+            joint.ShowAxis(axis, value, JointFrameMode.DH);
         }
     }
     public void SetMask(bool value){

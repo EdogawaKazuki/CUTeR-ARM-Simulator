@@ -210,13 +210,15 @@ public class RobotController : MonoBehaviour
     public void Show3DWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/3d").gameObject.SetActive(value);}
     public void ShowHorizWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/horiz").gameObject.SetActive(value);}
     public void ShowVertWorkSpace(bool value){transform.Find("VisiualContent/Workingspace/vert").gameObject.SetActive(value);}
-    public void ShowFrames(bool value)
+    public void ShowFrames(bool value, JointFrameMode mode=JointFrameMode.Normal)
     {
         HeadLine.gameObject.SetActive(value);
         PointHead.gameObject.SetActive(value);
-        _robotJointController.ShowJointsFrame(value );
+        _robotJointController.ShowJointsFrame(value, mode);
         // _transparentRobotJointController.ShowJointsFrame(value && _robotClient.IsConnected());
     }
+    public void ShowJointFrame(int index, bool value, JointFrameMode mode=JointFrameMode.Normal) { _robotJointController.ShowJointFrame(index, value, mode); }
+    public void ShowJointFrameAxis(int index, int axis, bool value, JointFrameMode mode=JointFrameMode.Normal) { _robotJointController.ShowJointFrameAxis(index, axis, value, mode); }
 
     public void ShowArrow(int index, bool value)
     {
@@ -375,8 +377,9 @@ public class RobotController : MonoBehaviour
         }
     }
     public void SetMask(bool value) { _robotJointController.SetMask(value); }
-    public void ShowJointDHFrame(int index, bool value) { _robotJointController.ShowJointDHFrame(index, value); }
-    public void ShowJointsDHFrame(bool value) { _robotJointController.ShowJointsDHFrame(value); }
+    // public void ShowJointDHFrame(int index, bool value) { _robotJointController.ShowJointDHFrame(index, value); }
+    // public void ShowJointsDHFrame(bool value) { _robotJointController.ShowJointsDHFrame(value); }
+    // public void ShowJointsDHFrameAxis(int axis, bool value) { _robotJointController.ShowJointsDHFrameAxis(axis, value); }
     public void SetRobotVisible(bool value) { _robotJointController.SetJointsVisible(value); }
     // Endeffector Command
     public void ResetEndEffector() { _endEffectorController.ResetEndEffector(); }
