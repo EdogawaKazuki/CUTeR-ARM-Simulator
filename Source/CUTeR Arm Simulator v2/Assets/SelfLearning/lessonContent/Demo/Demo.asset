@@ -1,0 +1,1252 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8845737216376506072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_8
+  m_EditorClassIdentifier: 
+  Description: End Audio 1
+  Duration: 6
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 12
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 6
+--- !u!114 &-8543681092417776592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b27f1ce399dd154e8c9f0b4940e1a88, type: 3}
+  m_Name: VirtualObjectsInterpolation_15
+  m_EditorClassIdentifier: 
+  Description: Prismatic Move
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: prismatic_slider_demo
+  usePosition: 1
+  globalPosition: 0
+  targetPosition: {x: 0, y: 2, z: 0}
+  useRotation: 0
+  globalRotation: 0
+  targetRotation: {x: 0, y: 0, z: 0}
+  useScale: 0
+  targetScale: {x: 1, y: 1, z: 1}
+  smoothInterpolation: 1
+--- !u!114 &-8512196394455927347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 12.246667
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 10
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 12.246667
+--- !u!114 &-8323915896663896262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd6211fefdcf7746875db8308080e57, type: 3}
+  m_Name: VirtualObjectsShow_6
+  m_EditorClassIdentifier: 
+  Description: Wheel Show
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: Wheel_demo
+  showhidetype: 0
+  chooseposition: 1
+  position: {x: 500, y: 1682, z: -1000}
+  chooserotation: 1
+  rotation: {x: 0, y: 180, z: 0}
+  choosescale: 0
+  scale: {x: 0.3, y: 0.3, z: 0.3}
+--- !u!114 &-7540320076392036144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_14
+  m_EditorClassIdentifier: 
+  Description: Sliders
+  Duration: 19.443333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -3930563981631213007}
+  - {fileID: 694801933572365686}
+--- !u!114 &-7394648160165221816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Joint Showcase Audio
+  Duration: 8.806666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 842126700236052806}
+  - {fileID: -1866274478068417795}
+  - {fileID: -1814304135927528317}
+--- !u!114 &-7146066485810934648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_7
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 3
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &-6864207213878403260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Importance Audio
+  Duration: 14.1553335
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 4304261042498162730}
+--- !u!114 &-6351379492013303767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_9
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -4414796548037755469}
+  - {fileID: 1989585295652094635}
+--- !u!114 &-5584131411640408911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_3
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &-4787110885981902035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd6211fefdcf7746875db8308080e57, type: 3}
+  m_Name: VirtualObjectsShow_16
+  m_EditorClassIdentifier: 
+  Description: Prismatic Hide
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: prismatic_demo
+  showhidetype: 1
+  chooseposition: 0
+  position: {x: 0, y: 0, z: 0}
+  chooserotation: 0
+  rotation: {x: 0, y: 0, z: 0}
+  choosescale: 0
+  scale: {x: 0, y: 0, z: 0}
+--- !u!114 &-4414796548037755469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac35cb948d6f274aa10e833df77a87f, type: 3}
+  m_Name: MultipleJointMovement_14
+  m_EditorClassIdentifier: 
+  Description: Multiple Joint Movement Step
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndexes: 000000000100000002000000030000000400000005000000
+  targetAngles:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  showarrows: 0
+--- !u!114 &-4263125996367813085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac35cb948d6f274aa10e833df77a87f, type: 3}
+  m_Name: MultipleJointMovement_5
+  m_EditorClassIdentifier: 
+  Description: Multiple Joint Movement Step
+  Duration: 4
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndexes: 010000000200000004000000000000000300000005000000
+  targetAngles:
+  - 1
+  - 101
+  - 33
+  - 0
+  - 0
+  - 0
+  showarrows: 1
+--- !u!114 &-3930563981631213007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_3
+  m_EditorClassIdentifier: 
+  Description: Slider Audio 1
+  Duration: 6.443333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 7
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 6.443333
+--- !u!114 &-3843251254794670948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4a2ec19dd3b124ea2204ccb444ab77, type: 3}
+  m_Name: mcqstep_11
+  m_EditorClassIdentifier: 
+  Description: mcqstep Step
+  Duration: 0
+  isActive: 0
+  Group: 
+  branch_index: -1
+  question: Do you enjoy the lesson?
+  options:
+  - Yes
+  - No
+  correctoptionindex: 0
+  imageLibrary: {fileID: 11400000, guid: da13ae9cb5693b740b6f77a98a8fb39b, type: 2}
+  imageindex: 2
+  size: {x: 960, y: 540}
+--- !u!114 &-3638302335825293219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5d939e749154ee69ad02236a295155, type: 3}
+  m_Name: ShowJointFrame_8
+  m_EditorClassIdentifier: 
+  Description: Hide Joint Frame
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  selectAllJoints: 1
+  axis: 3
+  show: 0
+  mode: 0
+--- !u!114 &-2948170293837270861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_9
+  m_EditorClassIdentifier: 
+  Description: End Audio 2
+  Duration: 3.99
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 13
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 3.99
+--- !u!114 &-2605258171660479306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_12
+  m_EditorClassIdentifier: 
+  Description: Intro Audio 2
+  Duration: 5.6113334
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 1
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 5.6113334
+--- !u!114 &-2501238300181387859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352304eea14a8b84f8d4f839376f286d, type: 3}
+  m_Name: SetRobotArmSlider_12
+  m_EditorClassIdentifier: 
+  Description: Disable Sliders
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  enableSliders: 0
+--- !u!114 &-2155866328328056901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_4
+  m_EditorClassIdentifier: 
+  Description: Slider Audio 2
+  Duration: 11
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 8
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 11
+--- !u!114 &-2059643747678779602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_2
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 8.768666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 4
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 8.768666
+--- !u!114 &-1866274478068417795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_2
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &-1814304135927528317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 2.2193334
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 6
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 2.2193334
+--- !u!114 &-1177737123181156019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_14
+  m_EditorClassIdentifier: 
+  Description: Group Step
+  Duration: 12
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 7427061542007483326}
+  - {fileID: -7394648160165221816}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8296f9d4d6268e841838db2630bd1038, type: 3}
+  m_Name: Demo
+  m_EditorClassIdentifier: 
+  steps:
+  - {fileID: 8273342194070324257}
+  - {fileID: -2605258171660479306}
+  - {fileID: 2403255904735656461}
+  - {fileID: 450318416661843380}
+  - {fileID: -7540320076392036144}
+  - {fileID: 75167887236440581}
+  - {fileID: 3369084032393236066}
+  - {fileID: -8845737216376506072}
+  - {fileID: -3843251254794670948}
+  - {fileID: -2948170293837270861}
+--- !u!114 &75167887236440581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_9
+  m_EditorClassIdentifier: 
+  Description: Straight Line Movement
+  Duration: 18.155333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 5000340559805744740}
+  - {fileID: 5693433877539805550}
+--- !u!114 &450318416661843380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_14
+  m_EditorClassIdentifier: 
+  Description: Joints
+  Duration: 25.409332
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 6635301426576926737}
+  - {fileID: -2059643747678779602}
+  - {fileID: -1177737123181156019}
+--- !u!114 &694801933572365686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_3
+  m_EditorClassIdentifier: 
+  Description: Group Step
+  Duration: 13
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -2155866328328056901}
+  - {fileID: 7878634997214550954}
+--- !u!114 &705388204665824928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd6211fefdcf7746875db8308080e57, type: 3}
+  m_Name: VirtualObjectsShow_14
+  m_EditorClassIdentifier: 
+  Description: Prismatic Show
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: prismatic_demo
+  showhidetype: 0
+  chooseposition: 0
+  position: {x: 0, y: 0, z: 0}
+  chooserotation: 0
+  rotation: {x: 0, y: 0, z: 0}
+  choosescale: 0
+  scale: {x: 0, y: 0, z: 0}
+--- !u!114 &842126700236052806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 4.587333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 5
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 4.587333
+--- !u!114 &956574581146275801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_11
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 10
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &1389925255087010686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_16
+  m_EditorClassIdentifier: 
+  Description: Importance Visual
+  Duration: 11
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -5584131411640408911}
+  - {fileID: 6607296439576380760}
+  - {fileID: 3972948706612881479}
+  - {fileID: 1895622586628481875}
+--- !u!114 &1895622586628481875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144b8da8c392c6d4481362a4bcecd63d, type: 3}
+  m_Name: ShowImageStep_0
+  m_EditorClassIdentifier: 
+  Description: Show Image Step
+  Duration: 6
+  isActive: 1
+  Group: 
+  branch_index: -1
+  imageLibrary: {fileID: 11400000, guid: da13ae9cb5693b740b6f77a98a8fb39b, type: 2}
+  imageindex: 1
+  size: {x: 797, y: 656}
+--- !u!114 &1989585295652094635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656a7d0a8b50c42438dc0724d1b41f7b, type: 3}
+  m_Name: RobotHandGuidance_13
+  m_EditorClassIdentifier: 
+  Description: Robot Hand Guidance Step
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  mode: 0
+--- !u!114 &2403255904735656461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_14
+  m_EditorClassIdentifier: 
+  Description: Robotics Importance
+  Duration: 14.1553335
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 1389925255087010686}
+  - {fileID: -6864207213878403260}
+--- !u!114 &2774240762717907279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5d939e749154ee69ad02236a295155, type: 3}
+  m_Name: ShowJointFrame_3
+  m_EditorClassIdentifier: 
+  Description: Show Joint Frame Step
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  selectAllJoints: 1
+  axis: 3
+  show: 1
+  mode: 0
+--- !u!114 &3369084032393236066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_8
+  m_EditorClassIdentifier: 
+  Description: Drag Robot EE
+  Duration: 26.972666
+  isActive: 1
+  Group: 
+  branch_index: -2
+  steps:
+  - {fileID: -6351379492013303767}
+  - {fileID: 8411839638196765241}
+--- !u!114 &3562173656397263206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352304eea14a8b84f8d4f839376f286d, type: 3}
+  m_Name: SetRobotArmSlider_10
+  m_EditorClassIdentifier: 
+  Description: Enable Sliders
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  enableSliders: 1
+--- !u!114 &3972948706612881479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abbb39ba1e0bfd41b40ea4141bad33e, type: 3}
+  m_Name: VideoPlayStep_15
+  m_EditorClassIdentifier: 
+  Description: Video Play Step
+  Duration: 1.5
+  isActive: 1
+  Group: 
+  branch_index: -1
+  videoLibrary: {fileID: 11400000, guid: 0607d034590df66479fb7b5d9372819f, type: 2}
+  videoIndex: 1
+  volume: 0
+  horizontalposition: -0.3
+  verticalposition: 0
+  aspectRatio: 1
+  videoMode: 1
+  endofvideoType: 1
+--- !u!114 &4304261042498162730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 14.1553335
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 2
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 14.1553335
+--- !u!114 &4515455534357904993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_3
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 3
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &5000340559805744740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_12
+  m_EditorClassIdentifier: 
+  Description: Robot Straight Line
+  Duration: 14
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 2774240762717907279}
+  - {fileID: -4263125996367813085}
+  - {fileID: 8679750577979636004}
+  - {fileID: 6338810029449836333}
+  - {fileID: -3638302335825293219}
+--- !u!114 &5272702045983485158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_1
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 10
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &5693433877539805550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_2
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence
+  Duration: 18.155333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 8523877520542633301}
+--- !u!114 &6338810029449836333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d36c7162e54044a97dcc8632197d29, type: 3}
+  m_Name: MovementStep_6
+  m_EditorClassIdentifier: 
+  Description: Movement Step
+  Duration: 8
+  isActive: 1
+  Group: 
+  branch_index: -1
+  movement: 0
+  amplitude: 15
+  initialpos: {x: 0, y: 20, z: 10}
+--- !u!114 &6607296439576380760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abbb39ba1e0bfd41b40ea4141bad33e, type: 3}
+  m_Name: VideoPlayStep_1
+  m_EditorClassIdentifier: 
+  Description: Video Play Step
+  Duration: 1.5
+  isActive: 1
+  Group: 
+  branch_index: -1
+  videoLibrary: {fileID: 11400000, guid: 0607d034590df66479fb7b5d9372819f, type: 2}
+  videoIndex: 0
+  volume: 0
+  horizontalposition: 0.3
+  verticalposition: 0
+  aspectRatio: 1
+  videoMode: 1
+  endofvideoType: 1
+--- !u!114 &6635301426576926737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 4.6406665
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 3
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 4.6406665
+--- !u!114 &7001589728894203998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b27f1ce399dd154e8c9f0b4940e1a88, type: 3}
+  m_Name: VirtualObjectsInterpolation_2
+  m_EditorClassIdentifier: 
+  Description: Wheel Move
+  Duration: 3
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: Wheel_demo
+  usePosition: 1
+  globalPosition: 0
+  targetPosition: {x: 1500, y: 1642, z: -1000}
+  useRotation: 1
+  globalRotation: 0
+  targetRotation: {x: 0, y: 180, z: -180}
+  useScale: 0
+  targetScale: {x: 0.6, y: 0.6, z: 0.6}
+  smoothInterpolation: 1
+--- !u!114 &7242046409178319024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b27f1ce399dd154e8c9f0b4940e1a88, type: 3}
+  m_Name: VirtualObjectsInterpolation_17
+  m_EditorClassIdentifier: 
+  Description: Prismatic Move
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: prismatic_slider_demo
+  usePosition: 1
+  globalPosition: 0
+  targetPosition: {x: 0, y: 1.11, z: 0}
+  useRotation: 0
+  globalRotation: 0
+  targetRotation: {x: 0, y: 0, z: 0}
+  useScale: 0
+  targetScale: {x: 1, y: 1, z: 1}
+  smoothInterpolation: 1
+--- !u!114 &7427061542007483326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_18
+  m_EditorClassIdentifier: 
+  Description: Joint Showcase
+  Duration: 12
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -7146066485810934648}
+  - {fileID: -8323915896663896262}
+  - {fileID: 7001589728894203998}
+  - {fileID: 8069539874265703504}
+  - {fileID: 705388204665824928}
+  - {fileID: 8366218690348524394}
+  - {fileID: -8543681092417776592}
+  - {fileID: 7242046409178319024}
+  - {fileID: -4787110885981902035}
+--- !u!114 &7878634997214550954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_5
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence
+  Duration: 13
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 4515455534357904993}
+  - {fileID: 3562173656397263206}
+  - {fileID: 956574581146275801}
+  - {fileID: -2501238300181387859}
+--- !u!114 &8069539874265703504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd6211fefdcf7746875db8308080e57, type: 3}
+  m_Name: VirtualObjectsShow_7
+  m_EditorClassIdentifier: 
+  Description: Wheel Hide
+  Duration: 0
+  isActive: 1
+  Group: 
+  branch_index: -1
+  sceneObjectName: Wheel_demo
+  showhidetype: 1
+  chooseposition: 0
+  position: {x: 0, y: 0, z: 0}
+  chooserotation: 0
+  rotation: {x: 0, y: 0, z: 0}
+  choosescale: 0
+  scale: {x: 0, y: 0, z: 0}
+--- !u!114 &8273342194070324257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_13
+  m_EditorClassIdentifier: 
+  Description: Intro Audio 1
+  Duration: 7.5633335
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 0
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 7.5633335
+--- !u!114 &8366218690348524394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_8
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1
+--- !u!114 &8411839638196765241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_2
+  m_EditorClassIdentifier: 
+  Description: Lesson Subsequence
+  Duration: 26.972666
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -8512196394455927347}
+  - {fileID: 5272702045983485158}
+  - {fileID: 8647961727666822151}
+--- !u!114 &8523877520542633301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_1
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 18.155333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 9
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 18.155333
+--- !u!114 &8647961727666822151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_2
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 4.726
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
+  audioClipIndex: 11
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 4.726
+--- !u!114 &8679750577979636004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d977693fee7b046807f33ad5974b68, type: 3}
+  m_Name: WaitStep_4
+  m_EditorClassIdentifier: 
+  Description: Wait Step
+  Duration: 2
+  isActive: 1
+  Group: 
+  branch_index: -1

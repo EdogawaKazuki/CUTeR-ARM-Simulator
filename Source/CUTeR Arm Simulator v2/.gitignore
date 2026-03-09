@@ -18,6 +18,12 @@ Temp/
 *.opendb
 *.VC.db
 
+# Ignore large OpenCVForUnity WebGL binaries
+Assets/OpenCVForUnity/Plugins/WebGL/**/*.bc
+Assets/OpenCVForUnity/Plugins/WebGL/**/*.bc.meta
+Assets/OpenCVForUnity/Plugins/WebGL/**/opencvforunity*.bc
+Assets/OpenCVForUnity/Plugins/WebGL/**/opencvforunity*.bc.meta
+
 # OS generated files
 .DS_Store
 .DS_Store?
