@@ -4,6 +4,7 @@ Build/
 obj/
 
 # Unity specific
+UserSettings/Layouts/default-2022.dwlt
 Library/
 Temp/
 *.tmp
