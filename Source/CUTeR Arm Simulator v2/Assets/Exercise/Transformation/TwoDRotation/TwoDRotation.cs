@@ -86,16 +86,17 @@ public class TwoDRotation : MonoBehaviour
         if (value){
             if (index == 0)
             {
-                // turn on base frame and frame 1, turn off others
+                FrameBtn2.isOn = false;
+                FrameBtn2.onValueChanged.Invoke(false);
                 _robotJointController.ShowJointBaseFrame(true);
                 _robotJointController.ShowJointFrame(1, true);
-                FrameBtn2.isOn = false;
             }
             else
             {
+                FrameBtn1.isOn = false;
+                FrameBtn2.onValueChanged.Invoke(false);
                 _robotJointController.ShowJointFrame(1, true);
                 _robotJointController.ShowJointFrame(2, true);
-                FrameBtn1.isOn = false;
             }
         }
     }
