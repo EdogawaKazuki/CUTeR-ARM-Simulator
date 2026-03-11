@@ -16,9 +16,9 @@ public class ExerciseMenuPanel : MonoBehaviour
         new Color(0.5450981f, 0.764706f, 0.2901961f), 
         new Color(1f, 0.7568628f, 0f), 
         new Color(0.9568628f, 0.2588235f, 0.2078432f),
-        new Color(0.9568628f, 0.2588235f, 0.2078432f),
-        new Color(0.9568628f, 0.2588235f, 0.2078432f),
-        new Color(0.9568628f, 0.2588235f, 0.2078432f)
+        new Color(235/255f, 30/255f, 75/255f),
+        new Color(240/255f, 25/255f, 35/255f), // 240, 25, 35
+        new Color(200/255f, 30/255f, 35/255f) //200, 30, 35
     };
     // Start is called before the first frame update
     void OnEnable()

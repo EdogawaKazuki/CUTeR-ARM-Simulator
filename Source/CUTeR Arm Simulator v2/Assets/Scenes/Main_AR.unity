@@ -18581,7 +18581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1689237342346133782, guid: 42be8c60a7ea0774698345624610001c, type: 3}
       propertyPath: m_Name
-      value: 5. Singularity
+      value: 4. Singularity
       objectReference: {fileID: 0}
     - target: {fileID: 1952156353598099110, guid: 42be8c60a7ea0774698345624610001c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -32404,7 +32404,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7890154464384931669, guid: aea1b4e1958a81a49a73503cc2a5dddb, type: 3}
       propertyPath: m_Name
-      value: 3. Inverse Kinematics
+      value: 2. Inverse Kinematics
       objectReference: {fileID: 0}
     - target: {fileID: 8536616520820776920, guid: aea1b4e1958a81a49a73503cc2a5dddb, type: 3}
       propertyPath: m_Pivot.x
@@ -38370,7 +38370,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3400199100261418335, guid: 4ccdce0ff09c25a429af30f50c3fc323, type: 3}
       propertyPath: m_Name
-      value: 4. Jacobian Matrix
+      value: 3. Jacobian Matrix
       objectReference: {fileID: 0}
     - target: {fileID: 6883385850929393959, guid: 4ccdce0ff09c25a429af30f50c3fc323, type: 3}
       propertyPath: m_Pivot.x
