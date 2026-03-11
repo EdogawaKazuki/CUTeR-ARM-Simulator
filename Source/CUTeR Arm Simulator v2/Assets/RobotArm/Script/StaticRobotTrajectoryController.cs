@@ -318,7 +318,7 @@ public class StaticRobotTrajectoryController : MonoBehaviour
         float l1 = _robotController.A1;
         float l2 = _robotController.L1;
         float l3 = _robotController.A2;
-        float l4 = _robotController.L2;
+        float l4 = _robotController.L2toE;
         List<float> angles = new List<float> {0, 0, 0};
         float l23 = Mathf.Sqrt(l2 * l2 + l3 * l3);
         float alpha = Mathf.Atan(l3/l2);

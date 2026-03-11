@@ -168,7 +168,7 @@ public class SOARM101
     /// Forward Kinematics for SO Arm 101
     /// </summary>
     /// <param name="inputAngles">Joint angles (optional, uses current angles if null)</param>
-    /// <returns>Array containing [quaternion, position] where quaternion is Vector4 and position is Vector3</returns>
+    /// <returns>Array containing [transformation matrix, position] where transformation matrix is Matrix4x4 and position is Vector3</returns>
     public object[] ForwardKinematics(float[] inputAngles = null)
     {
         float[] useAngles = inputAngles ?? angles;
@@ -181,10 +181,10 @@ public class SOARM101
         
         result = result * TransformationMatrix(0, 0, grabPositionOffset);
         
-        Vector4 quaternion = RotationMatrixToQuaternion(result);
+        // Vector4 quaternion = RotationMatrixToQuaternion(result);
         Vector3 position = new Vector3(result.m03, result.m13, result.m23);
         
-        return new object[] { quaternion, position };
+        return new object[] { result, position };
     }
 
     /// <summary>

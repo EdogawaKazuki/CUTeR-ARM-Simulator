@@ -151,7 +151,7 @@ public class RobotClient : MonoBehaviour
         float L1 = _robotController.L1; // 19.41f;
         float A2 = _robotController.A2; // 2.91f;
         float L1_star = Mathf.Sqrt(L1 * L1 + A2 * A2);
-        float L2 = _robotController.L2; // 20.2f;
+        float L2 = _robotController.L2toE; // 20.2f;
         float alpha = Mathf.Atan(A2 / L1);
         if (x == 0)
         {

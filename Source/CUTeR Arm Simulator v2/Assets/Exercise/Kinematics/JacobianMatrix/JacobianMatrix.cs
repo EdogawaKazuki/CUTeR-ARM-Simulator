@@ -68,7 +68,7 @@ public class JacobianMatrix : MonoBehaviour
         float A1 = _robotController.A1;  //length properties of the teaching robot arm (in cm)
         float A2 = _robotController.A2; //length properties of the teaching robot arm (in cm)
         float L1 = _robotController.L1; //length properties of the teaching robot arm (in cm)
-        float L2 = _robotController.L2;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
+        float L2 = _robotController.L2toE;  //length properties of the teaching robot arm (in cm)//20.8 + 0.5 for plastic cap
 
         float[][] J = new float[3][];
         J[0] = new float[] { -Angle1Cos * (A2 * Angle2Sin + L1 * Angle2Cos + L2 * Angle23Cos), -Angle1Sin * (A2 * Angle2Cos - L1 * Angle2Sin + L2 * Angle23Sin), Angle1Sin * (L2 * Angle23Sin) };

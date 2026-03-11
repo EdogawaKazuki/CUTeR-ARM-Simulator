@@ -30,6 +30,11 @@ public class DHRepresentation : MonoBehaviour
     float s6;
     float c6;
     int RobotDoF;
+
+    float alpha1;
+    float L12;
+    // float alpha2;
+
     [SerializeField]
     List<GameObject> DHFrames = new List<GameObject>();
 
@@ -48,12 +53,12 @@ public class DHRepresentation : MonoBehaviour
             matrix1IndexText[i] = transform.Find("Input/Line2/Values/i").GetComponent<TMP_Text>();
         }
         matrix1Text = new TMP_Text[12];
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++) // first three dof table
         {
             matrix1Text[i] = transform.Find("Input/Line2/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
         matrix15Text = new TMP_Text[12];
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++) // last three dof table
         {
             matrix15Text[i] = transform.Find("Input/Line2.5/Values/" + (i + 1)).GetComponent<TMP_Text>();
         }
@@ -111,6 +116,9 @@ public class DHRepresentation : MonoBehaviour
             transform.Find("Input/Line3").gameObject.SetActive(false);
             transform.Find("Input/Line4").gameObject.SetActive(false);
         }
+        alpha1 = Mathf.Atan2(_robotController.A2, _robotController.L1);
+        L12 = Mathf.Sqrt(_robotController.L1 * _robotController.L1 + _robotController.A2 * _robotController.A2);
+        // alpha2 = Mathf.Atan2(_robotController.L2, _robotController.A3);
     }
     private void OnDisable()
     {
@@ -175,7 +183,7 @@ public class DHRepresentation : MonoBehaviour
             matrix1Text[4].text = "90°";
             matrix1Text[5].text = "0";
             matrix1Text[6].text = "0";
-            matrix1Text[7].text = "-8.30°\n+" + _robotController.GetJointAngle(1).ToString("F1") + "°";
+            matrix1Text[7].text = "-" + alpha1.ToString("F1") + "°\n+" + _robotController.GetJointAngle(1).ToString("F1") + "°";
             matrix1Text[8].text = "0°";
             matrix1Text[9].text = _robotController.L1.ToString("F1");
             matrix1Text[10].text = "0";
@@ -221,26 +229,26 @@ public class DHRepresentation : MonoBehaviour
             matrix1Text[0].text = "0°";
             matrix1Text[1].text = "0";
             matrix1Text[2].text = _robotController.A1.ToString("F1");
-            matrix1Text[3].text = _robotController.GetJointAngle(0).ToString("F1") + "°";
+            matrix1Text[3].text = _robotController.GetJointAngle(0).ToString("F1") + "°\n+90°";
             matrix1Text[4].text = "90°";
-            matrix1Text[5].text = "0";
+            matrix1Text[5].text = _robotController.A2.ToString("F1");
             matrix1Text[6].text = "0";
-            matrix1Text[7].text = "-8.30°\n+" + _robotController.GetJointAngle(1).ToString("F1") + "°";
+            matrix1Text[7].text = "-" + (Mathf.Rad2Deg * alpha1).ToString("F1") + "°\n+" + _robotController.GetJointAngle(1).ToString("F1") + "°";
             matrix1Text[8].text = "0°";
-            matrix1Text[9].text = Math.Sqrt(_robotController.L1 * _robotController.L1 + _robotController.A2 * _robotController.A2).ToString("F1");
+            matrix1Text[9].text = L12.ToString("F1");
             matrix1Text[10].text = "0";
-            matrix1Text[11].text = "8.30°\n+" + _robotController.GetJointAngle(2).ToString("F1") + "°";
+            matrix1Text[11].text = (Mathf.Rad2Deg * alpha1).ToString("F1") + "°\n+" + _robotController.GetJointAngle(2).ToString("F1") + "°";
 
-            matrix15Text[0].text = "90°";
-            matrix15Text[1].text = "0";
-            matrix15Text[2].text = _robotController.L2.ToString("F1");
-            matrix15Text[3].text = _robotController.GetJointAngle(3).ToString("F1") + "°";
+            matrix15Text[0].text = "0°";
+            matrix15Text[1].text = _robotController.L2.ToString("F1");
+            matrix15Text[2].text = "0";
+            matrix15Text[3].text = _robotController.GetJointAngle(3).ToString("F1") + "°\n-90°";
             matrix15Text[4].text = "-90°";
             matrix15Text[5].text = "0";
-            matrix15Text[6].text = "0";
+            matrix15Text[6].text = _robotController.L3.ToString("F1");
             matrix15Text[7].text = _robotController.GetJointAngle(4).ToString("F1") + "°";
             matrix15Text[8].text = "90°";
-            matrix15Text[9].text = "0";
+            matrix15Text[9].text = "-" + _robotController.A3.ToString("F1") + "°";
             matrix15Text[10].text = "0";
             matrix15Text[11].text = _robotController.GetJointAngle(5).ToString("F1") + "°";
   matrix2Text[0].text = (s6*(c4*s1 - s4*(c1*c2*c3 - c1*s2*s3)) - c6*(s5*(c1*c2*s3 + c1*c3*s2) - c5*(s1*s4 + c4*(c1*c2*c3 - c1*s2*s3)))).ToString("F2");
@@ -270,29 +278,14 @@ matrix2Text[7].text = ( (98*c2*s1)/5 + 25*c2*s1*s3 + 25*c3*s1*s2).ToString("F2")
         if (value){
             DHFramesToggle.isOn = true;
             DHFramesToggle.onValueChanged.Invoke(true);
+            _robotController.ShowBaseFrame(value, JointFrameMode.DH);
         }
-        // bool allEnabled = true;
-        // bool allDisabled = true;
-        // for (int i = 0; i < 6; i++){
-        //     if(!EnabledDHFrameIndexes[i]) {
-        //         allEnabled = false;
-        //     } else {
-        //         allDisabled = false;
-        //     }
-        // }
-        // if(allEnabled){
-        //     DHFramesToggle.isOn = true;
-        //     DHFramesToggle.onValueChanged.Invoke(true);
-        // }
-        // if(allDisabled){
-        //     DHFramesToggle.isOn = false;
-        //     DHFramesToggle.onValueChanged.Invoke(false);
-        // }
     }
     public void ToggleDHFrames(bool value)
     {
         bool allDisabled = true;
         if (value){
+
             for (int i = 0; i < 6; i++){
                 if(EnabledDHFrameIndexes[i]) {
                     allDisabled = false;
@@ -313,6 +306,7 @@ matrix2Text[7].text = ( (98*c2*s1)/5 + 25*c2*s1*s3 + 25*c3*s1*s2).ToString("F2")
                 DHFrameIndexesToggles[i].onValueChanged.Invoke(value);
                 // ToggleDHFramesByIndex(i, value);
             }
+            _robotController.ShowBaseFrame(value, JointFrameMode.DH);
         }
 
     }

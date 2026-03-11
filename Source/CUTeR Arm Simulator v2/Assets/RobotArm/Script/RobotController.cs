@@ -57,7 +57,12 @@ public class RobotController : MonoBehaviour
     // L2
     // 3 DoF 13.49
     // 6 DoF 29.72
-    public float L2 = 29.72f;  // End Effector to Frame 3 in y axis
+    public float L2toE = 29.72f;  // End Effector to Frame 3 in y axis
+
+    public float L2 = 13.49f;  // Frame 3 to Frame 2 in y axis
+    // public float A
+
+    public float L3 = 5.48f; // Frame 4 to Frame 3 in y axis
 
     private List<int> _pwmList;
 
@@ -217,6 +222,7 @@ public class RobotController : MonoBehaviour
         _robotJointController.ShowJointsFrame(value, mode);
         // _transparentRobotJointController.ShowJointsFrame(value && _robotClient.IsConnected());
     }
+    public void ShowBaseFrame(bool value, JointFrameMode mode=JointFrameMode.Normal) { _robotJointController.ShowJointBaseFrame(value, mode); }
     public void ShowJointFrame(int index, bool value, JointFrameMode mode=JointFrameMode.Normal) { _robotJointController.ShowJointFrame(index, value, mode); }
     public void ShowJointFrameAxis(int index, int axis, bool value, JointFrameMode mode=JointFrameMode.Normal) { _robotJointController.ShowJointFrameAxis(index, axis, value, mode); }
 
@@ -468,8 +474,8 @@ public class RobotController : MonoBehaviour
         float L1_new = Mathf.Sqrt(L1 * L1 + A2 * A2);
         float alpha  = Mathf.Atan2(A2, L1);
 
-        float L2_new = Mathf.Sqrt(L2 * L2 + A3 * A3);
-        float beta   = Mathf.Atan2(A3, L2);
+        float L2_new = Mathf.Sqrt(L2toE * L2toE + A3 * A3);
+        float beta   = Mathf.Atan2(A3, L2toE);
 
         // Base
         angles[0] = Mathf.Atan2(-x, y);
