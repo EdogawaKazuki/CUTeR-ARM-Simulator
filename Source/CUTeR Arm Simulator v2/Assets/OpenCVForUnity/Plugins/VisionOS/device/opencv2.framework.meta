@@ -2,29 +2,23 @@ fileFormatVersion: 2
 guid: 4cd787b32c2d24c57b89f39245741e30
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
-  isPreloaded: 1
+  isPreloaded: 0
   isOverridable: 0
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : 
-    second:
+    Any:
       enabled: 0
       settings: {}
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 0
       settings:
         DefaultValueInitialized: true
-  - first:
-      VisionOS: VisionOS
-    second:
+    VisionOS:
       enabled: 1
       settings:
         AddToEmbeddedBinaries: true
