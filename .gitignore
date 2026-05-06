@@ -7,3 +7,34 @@ Source/CUTeR Arm Simulator v2/Temp/
 *.csproj
 *.apk
 Source/CUTeR Arm Simulator v2/UserSettings/Layouts/default-6000.dwlt
+
+# Unity generated/local folders for nested Unity projects.
+
+/Source/CUTeR Arm Simulator v2/[Ll]ibrary/
+/Source/CUTeR Arm Simulator v2/[Tt]emp/
+/Source/CUTeR Arm Simulator v2/[Oo]bj/
+/Source/CUTeR Arm Simulator v2/[Bb]uild/
+/Source/CUTeR Arm Simulator v2/[Bb]uilds/
+/Source/CUTeR Arm Simulator v2/[Ll]ogs/
+/Source/CUTeR Arm Simulator v2/[Uu]ser[Ss]ettings/
+
+/Source/CUTeR Virtual Environment Builder/[Ll]ibrary/
+/Source/CUTeR Virtual Environment Builder/[Tt]emp/
+/Source/CUTeR Virtual Environment Builder/[Oo]bj/
+/Source/CUTeR Virtual Environment Builder/[Bb]uild/
+/Source/CUTeR Virtual Environment Builder/[Bb]uilds/
+/Source/CUTeR Virtual Environment Builder/[Ll]ogs/
+/Source/CUTeR Virtual Environment Builder/[Uu]ser[Ss]ettings/
+
+# Unity / IDE generated files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.tmp
+.vs/
+.idea/
