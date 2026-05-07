@@ -1,30 +1,17 @@
-
-# Mac Files
+# macOS
 .DS_Store
-Source/CUTeR Arm Simulator v2/Library/
-Source/CUTeR Arm Simulator v2/Logs/
-Source/CUTeR Arm Simulator v2/Temp/
-*.csproj
-*.apk
-Source/CUTeR Arm Simulator v2/UserSettings/Layouts/default-6000.dwlt
 
-# Unity generated/local folders for nested Unity projects.
-
-/Source/CUTeR Arm Simulator v2/[Ll]ibrary/
-/Source/CUTeR Arm Simulator v2/[Tt]emp/
-/Source/CUTeR Arm Simulator v2/[Oo]bj/
-/Source/CUTeR Arm Simulator v2/[Bb]uild/
-/Source/CUTeR Arm Simulator v2/[Bb]uilds/
-/Source/CUTeR Arm Simulator v2/[Ll]ogs/
-/Source/CUTeR Arm Simulator v2/[Uu]ser[Ss]ettings/
-
-/Source/CUTeR Virtual Environment Builder/[Ll]ibrary/
-/Source/CUTeR Virtual Environment Builder/[Tt]emp/
-/Source/CUTeR Virtual Environment Builder/[Oo]bj/
-/Source/CUTeR Virtual Environment Builder/[Bb]uild/
-/Source/CUTeR Virtual Environment Builder/[Bb]uilds/
-/Source/CUTeR Virtual Environment Builder/[Ll]ogs/
-/Source/CUTeR Virtual Environment Builder/[Uu]ser[Ss]ettings/
+# Unity generated/local folders
+# Matches Unity projects directly under /Source, e.g.
+# /Source/CUTeR Arm Simulator v2/
+# /Source/CUTeR Virtual Environment Builder/
+/Source/*/[Ll]ibrary/
+/Source/*/[Tt]emp/
+/Source/*/[Oo]bj/
+/Source/*/[Bb]uild/
+/Source/*/[Bb]uilds/
+/Source/*/[Ll]ogs/
+/Source/*/[Uu]ser[Ss]ettings/
 
 # Unity / IDE generated files
 *.csproj
@@ -36,5 +23,10 @@ Source/CUTeR Arm Simulator v2/UserSettings/Layouts/default-6000.dwlt
 *.booproj
 *.svd
 *.tmp
+
+# Build artifacts
+*.apk
+
+# IDE folders
 .vs/
 .idea/
