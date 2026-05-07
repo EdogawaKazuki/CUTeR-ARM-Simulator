@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "2G0YC5ZFBL02JQ",
         "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
-        "processId": 14037,
+        "processId": 4510,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -192,6 +192,24 @@
             "deviceId": "2G0YC5ZFBL02JQ",
             "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
             "processId": 14037,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC5ZFBL02JQ",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 26384,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC5ZFBL02JQ",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 31014,
+            "exited": false
+        },
+        {
+            "deviceId": "2G0YC5ZFBL02JQ",
+            "name": "com.DefaultCompany.CuTeRArmSimulatorRebuilt",
+            "processId": 4510,
             "exited": false
         }
     ],

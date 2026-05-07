@@ -96,6 +96,46 @@ MonoBehaviour:
   rotation: {x: 0, y: 180, z: 0}
   choosescale: 0
   scale: {x: 0.3, y: 0.3, z: 0.3}
+--- !u!114 &-8061444569217576360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_0
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  showarrows: 1
+  targetAngle: -10
+--- !u!114 &-7693857025211448360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_2
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 1
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &-7540320076392036144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,8 +149,8 @@ MonoBehaviour:
   m_Name: LessonSubsequence_14
   m_EditorClassIdentifier: 
   Description: Sliders
-  Duration: 19.443333
-  isActive: 1
+  Duration: 29.443333
+  isActive: 0
   Group: 
   branch_index: -1
   steps:
@@ -173,6 +213,26 @@ MonoBehaviour:
   branch_index: -1
   steps:
   - {fileID: 4304261042498162730}
+--- !u!114 &-6498536042180678233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_1
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 0
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &-6351379492013303767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +266,7 @@ MonoBehaviour:
   m_Name: WaitStep_3
   m_EditorClassIdentifier: 
   Description: Wait Step
-  Duration: 2
+  Duration: 5
   isActive: 1
   Group: 
   branch_index: -1
@@ -235,6 +295,26 @@ MonoBehaviour:
   rotation: {x: 0, y: 0, z: 0}
   choosescale: 0
   scale: {x: 0, y: 0, z: 0}
+--- !u!114 &-4760356365131566440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_4
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 2
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &-4414796548037755469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +341,26 @@ MonoBehaviour:
   - 0
   - 0
   showarrows: 0
+--- !u!114 &-4351470919157616708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_10
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 5
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &-4263125996367813085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +386,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  showarrows: 1
+  showarrows: 0
 --- !u!114 &-3930563981631213007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,28 +541,6 @@ MonoBehaviour:
   volume: 1
   audioStartPosition: 0
   audioEndPosition: 11
---- !u!114 &-2059643747678779602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
-  m_Name: PlayAudioStep_2
-  m_EditorClassIdentifier: 
-  Description: Play Audio Step
-  Duration: 8.768666
-  isActive: 1
-  Group: 
-  branch_index: -1
-  audioLibrary: {fileID: 11400000, guid: 1f9767b56d06efc4d9c124466187fe6d, type: 2}
-  audioClipIndex: 4
-  volume: 1
-  audioStartPosition: 0
-  audioEndPosition: 8.768666
 --- !u!114 &-1866274478068417795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,6 +580,46 @@ MonoBehaviour:
   volume: 1
   audioStartPosition: 0
   audioEndPosition: 2.2193334
+--- !u!114 &-1787770678093662153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_7
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 3
+  showarrows: 1
+  targetAngle: 20
+--- !u!114 &-1438110005069135996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2329a44a718d1b4583207deba75d2f2, type: 3}
+  m_Name: GroupLessonStep_10
+  m_EditorClassIdentifier: 
+  Description: Joint Demonstration
+  Duration: 12
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: 1700197144660077335}
+  - {fileID: 3533932553170688400}
 --- !u!114 &-1177737123181156019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +640,26 @@ MonoBehaviour:
   steps:
   - {fileID: 7427061542007483326}
   - {fileID: -7394648160165221816}
+--- !u!114 &-758788154944846265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_9
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 4
+  showarrows: 1
+  targetAngle: 20
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,6 +677,7 @@ MonoBehaviour:
   - {fileID: -2605258171660479306}
   - {fileID: 2403255904735656461}
   - {fileID: 450318416661843380}
+  - {fileID: -1438110005069135996}
   - {fileID: -7540320076392036144}
   - {fileID: 75167887236440581}
   - {fileID: 3369084032393236066}
@@ -578,13 +717,12 @@ MonoBehaviour:
   m_Name: LessonSubsequence_14
   m_EditorClassIdentifier: 
   Description: Joints
-  Duration: 25.409332
+  Duration: 16.640667
   isActive: 1
   Group: 
   branch_index: -1
   steps:
   - {fileID: 6635301426576926737}
-  - {fileID: -2059643747678779602}
   - {fileID: -1177737123181156019}
 --- !u!114 &694801933572365686
 MonoBehaviour:
@@ -599,7 +737,7 @@ MonoBehaviour:
   m_Name: GroupLessonStep_3
   m_EditorClassIdentifier: 
   Description: Group Step
-  Duration: 13
+  Duration: 23
   isActive: 1
   Group: 
   branch_index: -1
@@ -666,7 +804,7 @@ MonoBehaviour:
   m_Name: WaitStep_11
   m_EditorClassIdentifier: 
   Description: Wait Step
-  Duration: 10
+  Duration: 20
   isActive: 1
   Group: 
   branch_index: -1
@@ -689,9 +827,29 @@ MonoBehaviour:
   branch_index: -1
   steps:
   - {fileID: -5584131411640408911}
-  - {fileID: 6607296439576380760}
-  - {fileID: 3972948706612881479}
   - {fileID: 1895622586628481875}
+--- !u!114 &1700197144660077335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d17559430c8264188503200b62b90b, type: 3}
+  m_Name: PlayAudioStep_0
+  m_EditorClassIdentifier: 
+  Description: Play Audio Step
+  Duration: 10.763333
+  isActive: 1
+  Group: 
+  branch_index: -1
+  audioLibrary: {fileID: 11400000, guid: 3d69423d478bff64c94c7af949d65d38, type: 2}
+  audioClipIndex: 3
+  volume: 1
+  audioStartPosition: 0
+  audioEndPosition: 10.763333
 --- !u!114 &1895622586628481875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,12 +902,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Robotics Importance
   Duration: 14.1553335
-  isActive: 1
+  isActive: 0
   Group: 
   branch_index: -1
   steps:
   - {fileID: 1389925255087010686}
   - {fileID: -6864207213878403260}
+--- !u!114 &2570132811820844528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_11
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 5
+  showarrows: 1
+  targetAngle: 20
 --- !u!114 &2774240762717907279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,6 +970,36 @@ MonoBehaviour:
   steps:
   - {fileID: -6351379492013303767}
   - {fileID: 8411839638196765241}
+--- !u!114 &3533932553170688400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6805f38f723c4454dac9d340ee8a9cac, type: 3}
+  m_Name: LessonSubsequence_1
+  m_EditorClassIdentifier: 
+  Description: Joint Movements
+  Duration: 12
+  isActive: 1
+  Group: 
+  branch_index: -1
+  steps:
+  - {fileID: -8061444569217576360}
+  - {fileID: -6498536042180678233}
+  - {fileID: 7816742988496775125}
+  - {fileID: -7693857025211448360}
+  - {fileID: 5856462017529200203}
+  - {fileID: -4760356365131566440}
+  - {fileID: -1787770678093662153}
+  - {fileID: 5630743419845826773}
+  - {fileID: -758788154944846265}
+  - {fileID: 8020631538938060500}
+  - {fileID: 2570132811820844528}
+  - {fileID: -4351470919157616708}
 --- !u!114 &3562173656397263206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,31 +1019,6 @@ MonoBehaviour:
   branch_index: -1
   jointIndex: 0
   enableSliders: 1
---- !u!114 &3972948706612881479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abbb39ba1e0bfd41b40ea4141bad33e, type: 3}
-  m_Name: VideoPlayStep_15
-  m_EditorClassIdentifier: 
-  Description: Video Play Step
-  Duration: 1.5
-  isActive: 1
-  Group: 
-  branch_index: -1
-  videoLibrary: {fileID: 11400000, guid: 0607d034590df66479fb7b5d9372819f, type: 2}
-  videoIndex: 1
-  volume: 0
-  horizontalposition: -0.3
-  verticalposition: 0
-  aspectRatio: 1
-  videoMode: 1
-  endofvideoType: 1
 --- !u!114 &4304261042498162730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +1098,26 @@ MonoBehaviour:
   isActive: 1
   Group: 
   branch_index: -1
+--- !u!114 &5630743419845826773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_6
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 3
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &5693433877539805550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,6 +1137,26 @@ MonoBehaviour:
   branch_index: -1
   steps:
   - {fileID: 8523877520542633301}
+--- !u!114 &5856462017529200203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_5
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 2
+  showarrows: 1
+  targetAngle: 15
 --- !u!114 &6338810029449836333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,31 +1177,6 @@ MonoBehaviour:
   movement: 0
   amplitude: 15
   initialpos: {x: 0, y: 20, z: 10}
---- !u!114 &6607296439576380760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abbb39ba1e0bfd41b40ea4141bad33e, type: 3}
-  m_Name: VideoPlayStep_1
-  m_EditorClassIdentifier: 
-  Description: Video Play Step
-  Duration: 1.5
-  isActive: 1
-  Group: 
-  branch_index: -1
-  videoLibrary: {fileID: 11400000, guid: 0607d034590df66479fb7b5d9372819f, type: 2}
-  videoIndex: 0
-  volume: 0
-  horizontalposition: 0.3
-  verticalposition: 0
-  aspectRatio: 1
-  videoMode: 1
-  endofvideoType: 1
 --- !u!114 &6635301426576926737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,6 +1280,26 @@ MonoBehaviour:
   - {fileID: -8543681092417776592}
   - {fileID: 7242046409178319024}
   - {fileID: -4787110885981902035}
+--- !u!114 &7816742988496775125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_3
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 1
+  showarrows: 1
+  targetAngle: 15
 --- !u!114 &7878634997214550954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,7 +1313,7 @@ MonoBehaviour:
   m_Name: LessonSubsequence_5
   m_EditorClassIdentifier: 
   Description: Lesson Subsequence
-  Duration: 13
+  Duration: 23
   isActive: 1
   Group: 
   branch_index: -1
@@ -1104,6 +1322,26 @@ MonoBehaviour:
   - {fileID: 3562173656397263206}
   - {fileID: 956574581146275801}
   - {fileID: -2501238300181387859}
+--- !u!114 &8020631538938060500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb0b97b1bedd584cb523b185af5b0cd, type: 3}
+  m_Name: MoveJointStep_8
+  m_EditorClassIdentifier: 
+  Description: Move Joint Step
+  Duration: 1
+  isActive: 1
+  Group: 
+  branch_index: -1
+  jointIndex: 4
+  showarrows: 1
+  targetAngle: 0
 --- !u!114 &8069539874265703504
 MonoBehaviour:
   m_ObjectHideFlags: 0
