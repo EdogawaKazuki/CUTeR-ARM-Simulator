@@ -1,9 +1,27 @@
-
-# Mac Files
+# macOS
 .DS_Store
-Source/CUTeR Arm Simulator v2/Library/
-Source/CUTeR Arm Simulator v2/Logs/
-Source/CUTeR Arm Simulator v2/Temp/
+
+# Unity generated/local folders
+# Matches Unity projects directly under /Source, e.g.
+# /Source/CUTeR Arm Simulator v2/
+# /Source/CUTeR Virtual Environment Builder/
+/Source/*/[Ll]ibrary/
+/Source/*/[Tt]emp/
+/Source/*/[Oo]bj/
+/Source/*/[Bb]uild/
+/Source/*/[Bb]uilds/
+/Source/*/[Ll]ogs/
+/Source/*/[Uu]ser[Ss]ettings/
+
+# Unity / IDE generated files
 *.csproj
+*.booproj
+*.svd
+*.tmp
+
+# Build artifacts
 *.apk
-Source/CUTeR Arm Simulator v2/UserSettings/Layouts/default-6000.dwlt
+
+# IDE folders
+.vs/
+.idea/
